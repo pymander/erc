@@ -1,3 +1,11 @@
+2005-04-02  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc.el (define-erc-module, erc-with-buffer)
+	(erc-with-all-buffers-of-server, with-erc-channel-buffer): Add
+	edebug-form-spec.
+
+	* erc-compat (erc-define-minor-mode): Ditto.
+
 2005-03-29  Jorgen Schaefer  <forcer@forcix.cx>
 
 	* erc-spelling.el: New file.
