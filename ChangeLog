@@ -1,5 +1,8 @@
 2005-01-19  Michael Olson  <mwolson@gnu.org>
 
+	* AUTHORS: Move to format that cscvs can understand.  As an added
+	perk, entries line up nicer.
+
 	* erc.el, erc-fill.el, erc-pcomplete.el, debian/copyright: Merge a
 	few more copyright lines thanks to Alex Schroeder's BBDB file.
 
