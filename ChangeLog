@@ -3,6 +3,8 @@
 	* erc.el (erc-display-message): Apply patch from Henrik Enberg.
 	Check here to see if a message should be hidden, rather than
 	relying on code in each individual command.
+	(erc-version-string): Add "(CVS)" to the version string for
+	clarity.
 
 	* erc-backend.el (JOIN, KICK, MODE, NICK, PART, QUIT, TOPIC):
 	Don't check `erc-hide-list' here.

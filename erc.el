@@ -78,7 +78,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.744 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.744 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
