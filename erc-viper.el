@@ -55,7 +55,9 @@
 
 ;; Fix local variables in ERC buffers that already exist (buffers in
 ;; which `erc-mode-hook' has already been run).
-(mapc (lambda (buf) (viper-comint-mode-hook))
+(mapc (lambda (buf)
+        (with-current-buffer buf
+          (viper-comint-mode-hook)))
       (erc-buffer-list))
 
 (provide 'erc-viper)
