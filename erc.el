@@ -2772,6 +2772,8 @@ See also `erc-make-notice'"
 ARGS, PARSED, and TYPE are used to format MSG sensibly.
 
 See also `erc-format-message' and `erc-display-line'."
+  (unless (and (arrayp parsed)
+	       (member (erc-response.command parsed) erc-hide-list))
   (let ((string (if (symbolp msg)
 		    (apply 'erc-format-message msg args)
 		  msg)))
@@ -2789,7 +2791,7 @@ See also `erc-format-message' and `erc-display-line'."
     (when (vectorp parsed)
       (erc-put-text-property 0 (length string) 'erc-parsed parsed string)
       (erc-put-text-property 0 (length string) 'rear-sticky t string))
-    (erc-display-line string buffer)))
+      (erc-display-line string buffer))))
 
 (defun erc-message-type-member (position list)
   "Return non-nil if the erc-parsed text-property at POSITION is in LIST.

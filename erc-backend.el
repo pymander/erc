@@ -470,10 +470,7 @@ add things to `%s' instead."
         (erc-update-channel-member chnl nick nick t nil nil host login)
         ;; on join, we want to stay in the new channel buffer
         ;;(set-buffer ob)
-        (unless (member "JOIN" erc-hide-list)
-          (erc-display-message
-           parsed nil buffer
-           str))))))
+	(erc-display-message parsed nil buffer str)))))
 
 (define-erc-response-handler (KICK)
   "Handle kick messages received from the server." nil
@@ -499,10 +496,9 @@ add things to `%s' instead."
         (erc-display-message
          parsed 'notice buffer
          'KICK-by-you ?k tgt ?c ch ?r reason))
-       (t (unless (member "KICK" erc-hide-list)
-            (erc-display-message
+       (t (erc-display-message
              parsed 'notice buffer
-             'KICK ?k tgt ?n nick ?u login ?h host ?c ch ?r reason)))))))
+	   'KICK ?k tgt ?n nick ?u login ?h host ?c ch ?r reason))))))
 
 (define-erc-response-handler (MODE)
   "Handle server mode changes." nil
@@ -521,14 +517,13 @@ add things to `%s' instead."
         (with-current-buffer (or buf
                                  (current-buffer))
           (erc-update-modes tgt mode nick host login))
-        (unless (member "MODE" erc-hide-list)
           (if (or (string= login "") (string= host ""))
-              (erc-display-message
-               parsed 'notice buf
-               'MODE-nick ?n nick ?t tgt ?m mode)
-            (erc-display-message
-             parsed 'notice buf
-             'MODE ?n nick ?u login ?h host ?t tgt ?m mode))))
+	    (erc-display-message parsed 'notice buf
+				 'MODE-nick ?n nick
+				 ?t tgt ?m mode)
+	  (erc-display-message parsed 'notice buf
+			       'MODE ?n nick ?u login
+			       ?h host ?t tgt ?m mode)))
       (erc-banlist-update proc parsed))))
 
 (define-erc-response-handler (NICK)
@@ -565,9 +560,8 @@ add things to `%s' instead."
         (run-hook-with-args 'erc-nick-changed-functions nn nick))
        (t
         (erc-handle-user-status-change 'nick (list nick login host) (list nn))
-        (unless (member "NICK" erc-hide-list)
-          (erc-display-message
-           parsed 'notice bufs 'NICK ?n nick ?u login ?h host ?N nn)))))))
+	(erc-display-message parsed 'notice bufs 'NICK ?n nick
+			     ?u login ?h host ?N nn))))))
 
 (define-erc-response-handler (PART)
   "Handle part messages." nil
@@ -577,10 +571,9 @@ add things to `%s' instead."
     (multiple-value-bind (nick login host)
         (erc-parse-user (erc-response.sender parsed))
       (erc-remove-channel-member buffer nick)
-      (unless (member "PART" erc-hide-list)
-        (erc-display-message
-         parsed 'notice buffer
-         'PART ?n nick ?u login ?h host ?c chnl ?r (or reason "")))
+      (erc-display-message parsed 'notice buffer
+			   'PART ?n nick ?u login
+			   ?h host ?c chnl ?r (or reason ""))
       (when (string= nick (erc-current-nick))
         (run-hook-with-args 'erc-part-hook buffer)
         (erc-with-buffer
@@ -693,10 +686,9 @@ add things to `%s' instead."
       (setq bufs (erc-buffer-list-with-nick nick proc))
       (erc-remove-user nick)
       (setq reason (erc-wash-quit-reason reason nick login host))
-      (unless (member "QUIT" erc-hide-list)
-        (erc-display-message
-         parsed 'notice bufs
-         'QUIT ?n nick ?u login ?h host ?r reason)))))
+      (erc-display-message parsed 'notice bufs
+			   'QUIT ?n nick ?u login
+			   ?h host ?r reason))))
 
 (define-erc-response-handler (TOPIC)
   nil nil
@@ -707,10 +699,9 @@ add things to `%s' instead."
         (erc-parse-user (erc-response.sender parsed))
       (erc-update-channel-member ch nick nick nil nil nil host login)
       (erc-update-channel-topic ch (format "%s\C-o (%s, %s)" topic nick time))
-      (unless (member "TOPIC" erc-hide-list)
-        (erc-display-message
-         parsed 'notice (erc-get-buffer ch proc)
-         'TOPIC ?n nick ?u login ?h host ?c ch ?T topic)))))
+      (erc-display-message parsed 'notice (erc-get-buffer ch proc)
+			   'TOPIC ?n nick ?u login ?h host
+			   ?c ch ?T topic))))
 
 (define-erc-response-handler (WALLOPS)
   nil nil

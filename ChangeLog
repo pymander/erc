@@ -1,5 +1,12 @@
 2005-02-27  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-display-message): Apply patch from Henrik Enberg.
+	Check here to see if a message should be hidden, rather than
+	relying on code in each individual command.
+
+	* erc-backend.el (JOIN, KICK, MODE, NICK, PART, QUIT, TOPIC):
+	Don't check `erc-hide-list' here.
+
 	* erc-list.el, erc-match.el, erc.el, debian/copyright: Update
 	copyright information as a few more people have assignments
 	registered.
