@@ -1,3 +1,12 @@
+2005-01-21  Diane Murray  <dsm@muenster.de>
+
+	* erc-button.el (erc-button-add-face): Reverted my change to the
+	order faces since it had the unwanted effect of putting the button
+	face after all others.
+	(erc-button-face-has-priority): Removed this variable as it is not
+	necessary anymore - it was used to compensate for the above
+	mentioned change.
+
 2005-01-19  Francis Litterio  <franl@world.std.com>
 
 	* erc-button.el (erc-button-add-face): The face added by this
@@ -7,9 +16,8 @@
 	faces, set variable `erc-button-face-has-priority' to nil.
 	(erc-button-face-has-priority): New variable to control how
 	erc-button-add-face adds erc-button-face to existing faces.
-
-	* erc.el (erc-button-press-button): Silenced a byte-compiler
-	warning about a too few arguments in a call to `error'.
+	(erc-button-press-button): Silenced a byte-compiler warning about
+	too few arguments in a call to `error'.
 
 2005-01-19  Diane Murray  <dsm@muenster.de>
 
