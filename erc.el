@@ -79,7 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.739 $"
+(defconst erc-version-string "Version 5.0 $Revision: 1.740 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -4035,7 +4035,7 @@ If `point' is at the beginning of a channel name, use that as default."
     (read-from-minibuffer
      (concat "Set topic of " (erc-default-target) ": ")
 			  (when (boundp 'channel-topic)
-       (cons (apply 'concat (butlast (split-string channel-topic "\C-c")))
+       (cons (apply 'concat (split-string channel-topic "\C-c"))
 			     0)))))
   (let ((topic-list (split-string topic "\C-c"))) ; strip off the topic setter
     (erc-cmd-TOPIC (concat (erc-default-target) " " (car topic-list)))))
