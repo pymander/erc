@@ -99,7 +99,7 @@
 (require 'cl)
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 
-(defconst erc-backend-version "$Revision: 1.24 $")
+(defconst erc-backend-version "$Revision: 1.26 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -362,7 +362,7 @@ Would expand to:
   See also `erc-server-311'.\"))
 
 \(fn (NAME &rest ALIASES) &optional EXTRA-FN-DOC EXTRA-VAR-DOC &rest FN-BODY)"
-  (if (numberp name) (setq name (format "%03i" name)))
+  (if (numberp name) (setq name (intern (format "%03i" name))))
   (setq aliases (mapcar (lambda (a)
                           (if (numberp a)
                               (format "%03i" a)
@@ -400,6 +400,11 @@ add things to `%s' instead."
          (defun ,fn-name (proc parsed)
            ,fn-doc
            ,@fn-body)
+
+       ;; Make find-function and find-variable find them
+       (put ',fn-name 'definition-name ',name)
+       (put ',hook-name 'definition-name ',name)
+
        ;; Hashtable map of responses to hook variables
        ,@(loop for response in (cons name aliases)
                for var in (cons hook-name var-alternates)
@@ -412,7 +417,8 @@ add things to `%s' instead."
                for var in var-alternates
                for a in aliases
                nconc (list `(defalias ',fn ',fn-name)
-                           `(defvar ,var ',fn-name ,(format hook-doc a)))))))
+                           `(defvar ,var ',fn-name ,(format hook-doc a))
+			   `(put ',var 'definition-name ',hook-name))))))
 
 (define-erc-response-handler (ERROR)
   "Handle an ERROR command from the server." nil
