@@ -1,3 +1,12 @@
+2005-01-24  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc.el (erc-input-action): Quote `erc-action-history-list' so
+	that input history actually works.
+	(erc-process-ctcp-query): Fix and simplify logic.
+	(erc-get-channel-mode-from-keypress): Use `C-' string syntax.
+	(erc-load-irc-script-lines): Use `erc-command-indicator' instead
+	of `erc-prompt'.
+
 2005-01-23  Edward O'Connor  <ted@oconnor.cx>
 	
 	* erc-viper.el: Ensure that `viper-comint-mode-hook' runs in
