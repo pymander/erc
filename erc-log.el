@@ -94,7 +94,7 @@
 
 (require 'erc)
 
-(defconst erc-log-version "$Revision: 1.21 $"
+(defconst erc-log-version "$Revision: 1.22 $"
   "ERC log mode revision")
 
 (defgroup erc-log nil
@@ -332,7 +332,7 @@ You can save every individual message by putting this function on
                        (> erc-insert-marker (1+ erc-last-saved-position)))
 	      (write-region (1+ (marker-position erc-last-saved-position))
 			    (marker-position erc-insert-marker)
-			    file t 'nomessage))
+			    file t 'nomessage)
               (if (and erc-truncate-buffer-on-save (interactive-p))
                   (progn
                     (let ((inhibit-read-only t)) (erase-buffer))
