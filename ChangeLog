@@ -1,3 +1,8 @@
+2005-04-06  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (debrelease): Ignore errors from deleting Arch and CVS
+	metadata.
+
 2005-04-05  Michael Olson  <mwolson@gnu.org>
 
 	* ChangeLog, CREDITS, AUTHORS: Correct name and email address of
