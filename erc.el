@@ -78,7 +78,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.744 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.747 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -2772,8 +2772,6 @@ See also `erc-make-notice'"
 ARGS, PARSED, and TYPE are used to format MSG sensibly.
 
 See also `erc-format-message' and `erc-display-line'."
-  (unless (and (arrayp parsed)
-	       (member (erc-response.command parsed) erc-hide-list))
   (let ((string (if (symbolp msg)
 		    (apply 'erc-format-message msg args)
 		  msg)))
@@ -2788,10 +2786,12 @@ See also `erc-format-message' and `erc-display-line'."
 	   ((symbolp type)
 	    (erc-display-message-highlight type string))))
 
-    (when (vectorp parsed)
+    (if (not (erc-response-p parsed))
+	(erc-display-line string buffer)
+      (unless (member (erc-response.command parsed) erc-hide-list)
       (erc-put-text-property 0 (length string) 'erc-parsed parsed string)
-      (erc-put-text-property 0 (length string) 'rear-sticky t string))
-      (erc-display-line string buffer))))
+	(erc-put-text-property 0 (length string) 'rear-sticky t string)
+	(erc-display-line string buffer)))))
 
 (defun erc-message-type-member (position list)
   "Return non-nil if the erc-parsed text-property at POSITION is in LIST.
