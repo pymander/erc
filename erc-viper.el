@@ -40,16 +40,10 @@
 ;; Fix RET in ERC buffers, by telling Viper to pass RET through to the
 ;; normal keymap.
 
-(defvar viper-erc-modifier-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "RET") 'viper-exec-key-in-emacs)
-    map)
-  "Ensure that RET will always do the right thing in ERC buffers.")
-
 (add-to-list 'viper-major-mode-modifier-list
-             '(erc-mode insert-state viper-erc-modifier-map))
+             '(erc-mode insert-state viper-comint-mode-modifier-map))
 (add-to-list 'viper-major-mode-modifier-list
-             '(erc-mode vi-state viper-erc-modifier-map))
+             '(erc-mode vi-state viper-comint-mode-modifier-map))
 
 (viper-apply-major-mode-modifiers)
 
