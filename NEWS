@@ -1,6 +1,6 @@
 ERC NEWS                                                       -*- outline -*-
 
-* Changes since ERC 5.0
+* Changes since ERC 5.0.1
 
 ** If a channel key is required for a certain channel, ERC will prompt
 for one if `erc-prompt-for-channel-key' is non-nil.
@@ -11,9 +11,17 @@ for one if `erc-prompt-for-channel-key' is non-nil.
 
 **** You can now save logs and truncate buffers from the menu-bar.
 
-*** Channel tracking (erc-track.el)
+* Fixes since ERC 5.0
 
-**** Server buffers are now treated the same as channels and queries.
+** Narrowing in ERC buffers no longer causes formatting errors.
+
+** The BBDB module now loads correctly when customizing `erc-modules'.
+
+** The value of `erc-button-face' is now respected.
+
+** Fixed a bug which caused a read-only error during connection.
+
+** Server buffers are now tracked correctly.
 This means that `erc-track-priority-faces-only', `erc-track-exclude',
 and `erc-track-exclude-types' now work with server buffers.
 
