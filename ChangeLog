@@ -1,3 +1,11 @@
+2005-04-04  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el: Apply latest non-ascii patch from Kai Fan.
+	(erc-decode-parsed-server-response): Search
+	erc-response.command-args for channel name.  Decode the
+	erc-response struct using this channel name as key according to
+	the `erc-encoding-coding-alist'.
+
 2005-04-02  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc.el (define-erc-module, erc-with-buffer)

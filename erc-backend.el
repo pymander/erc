@@ -99,7 +99,7 @@
 (require 'cl)
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 
-(defconst erc-backend-version "$Revision: 1.26 $")
+(defconst erc-backend-version "$Revision: 1.27 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -159,16 +159,18 @@ PROCs `process-buffer' is `current-buffer' when this function is called."
 (defun erc-decode-parsed-server-response (parsed-response)
   "Decode a pre-parsed PARSED-RESPONSE before it can be handled.
 
-Decode `erc-response' according to the car of it's
-`command-args'.  If that is not a channel, use
-`erc-default-coding-system' for decoding."
-  (let* ((args (erc-response.command-args parsed-response))
-	 (first-arg (car args))
-	 (matchp (string-match "^[#&].*" first-arg))
-	 (decode-target (if matchp
-			    (erc-decode-string-from-target first-arg nil)
-			  nil))
-	 (decoded-args ()))
+If there is a channel name in `erc-response.command-args', decode
+`erc-response' acroding this channel name and
+`erc-encoding-coding-alist', or use `erc-default-coding-system'
+for decoding."
+  (let ((args (erc-response.command-args parsed-response))
+	(decode-target nil)
+	(decoded-args ()))
+    (dolist (arg args nil)
+      (when (string-match "^[#&].*" arg)
+	(setq decode-target arg)))
+    (when (stringp decode-target)
+      (setq decode-target (erc-decode-string-from-target decode-target nil)))
     (setf (erc-response.unparsed parsed-response)
 	  (erc-decode-string-from-target
 	   (erc-response.unparsed parsed-response)
