@@ -1,3 +1,16 @@
+2005-01-19  Francis Litterio  <franl@world.std.com>
+
+	* erc-button.el (erc-button-add-face): The face added by this
+	function is more important than the existing text's face, so we
+	now prepend erc-button-face to the list of existing faces when
+	adding a button.  To instead append erc-button-face to existing
+	faces, set variable `erc-button-face-has-priority' to nil.
+	(erc-button-face-has-priority): New variable to control how
+	erc-button-add-face adds erc-button-face to existing faces.
+
+	* erc.el (erc-button-press-button): Silenced a byte-compiler
+	warning about a too few arguments in a call to `error'.
+
 2005-01-19  Michael Olson  <mwolson@gnu.org>
 
 	* AUTHORS: Move to format that cscvs can understand.  As an added

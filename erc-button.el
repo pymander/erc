@@ -1,4 +1,4 @@
-;;; erc-button.el --- A way of buttonizing certain things in ERC buffers
+;; erc-button.el --- A way of buttonizing certain things in ERC buffers
 
 ;; Copyright (C) 1996,1997,1998,1999,2000,2001,2002,2003,2004
 ;;        Free Software Foundation, Inc.
@@ -60,7 +60,7 @@
 
 ;;; Variables
 
-(defconst erc-button-version "$Revision: 1.61 $"
+(defconst erc-button-version "$Revision: 1.62 $"
   "ERC button mode revision.")
 
 (defcustom erc-button-face 'bold
@@ -77,6 +77,14 @@ A button is a piece of text that you can activate by pressing
 Buttons will be displayed in this face when the mouse cursor is
 above them."
   :type 'face
+  :group 'erc-faces)
+
+(defcustom erc-button-face-has-priority t
+  "Flag indicating whether erc-button-face overrides existing faces.
+
+If non-nil, buttons displayed with erc-button-face will have that face
+merged into any existing faces on the button text with higher priority."
+  :type 'boolean
   :group 'erc-faces)
 
 (defcustom erc-button-url-regexp "\\(www\\.\\|\\(s?https?\\|ftp\\|file\\|gopher\\|news\\|telnet\\|wais\\|mailto\\):\\)\\(//[-a-zA-Z0-9_.]+:[0-9]*\\)?[-a-zA-Z0-9_=!?#$@~`%&*+\\/:;.,]+[-a-zA-Z0-9_=#$@~`%&*+\\/]"
@@ -359,7 +367,11 @@ that `erc-button-add-button' adds, except for the face."
     ;; new face is a list containing FACE and the old stuff.  end is
     ;; where this face changes.
     (while (< pos to)
-      (setq new (if old (append old (erc-list face)) face))
+      (setq new (if old
+		    (if erc-button-face-has-priority
+			(append (erc-list face) old)
+		      (append old (erc-list face)))
+		  face))
       (put-text-property pos end 'face new)
       (setq pos end
             old (erc-list (get-text-property pos 'face))
@@ -388,7 +400,7 @@ call it with the value of the `erc-data' text property."
     (unless fun
       (message "No button at point"))
     (when (and fun (symbolp fun) (not (fboundp fun)))
-      (error "Function %S is not bound"))
+      (error "Function %S is not bound" fun))
     (apply fun data)))
 
 (defun erc-button-next ()
