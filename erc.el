@@ -78,7 +78,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.747 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.748 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -6585,7 +6585,7 @@ All windows are opened in the current frame."
    (country-unknown . "%d: No such domain")
    (ctcp-empty . "Illegal empty CTCP query received from %n. Ignoring.")
    (ctcp-request . "==> CTCP request from %n (%u@%h): %r")
-   (ctcp-request-to . "==> CTCP request from %n (%u@%h) to %: %r")
+   (ctcp-request-to . "==> CTCP request from %n (%u@%h) to %t: %r")
    (ctcp-too-many . "Too many CTCP queries in single message. Ignoring")
    (flood-ctcp-off . "FLOOD PROTECTION: Automatic CTCP responses turned off.")
    (flood-strict-mode . "FLOOD PROTECTION: Switched to Strict Flood Control mode.")
