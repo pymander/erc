@@ -11,6 +11,10 @@
 	* erc.el (erc-button-press-button): Silenced a byte-compiler
 	warning about a too few arguments in a call to `error'.
 
+2005-01-19  Diane Murray  <dsm@muenster.de>
+
+	* NEWS: Added list of 5.0.1 fixes.
+
 2005-01-19  Michael Olson  <mwolson@gnu.org>
 
 	* AUTHORS: Move to format that cscvs can understand.  As an added
