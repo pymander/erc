@@ -79,7 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.741 $"
+(defconst erc-version-string "Version 5.0 $Revision: 1.742 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -6728,7 +6728,7 @@ See also `format-spec'."
     (error "Obscure usage of this function appeared"))
   (let ((entry (erc-retrieve-catalog-entry msg)))
     (when (not entry)
-      (error "No format spec for message" msg))
+      (error "No format spec for message %s" msg))
     (when (functionp entry)
       (setq entry (apply entry args)))
     (format-spec entry (apply 'format-spec-make args))))
