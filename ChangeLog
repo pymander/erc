@@ -1,3 +1,14 @@
+2005-01-21  Edward O'Connor  <ted@oconnor.cx>
+	
+	* erc.el (erc-mode): Set `require-final-newline' to nil in ERC
+	buffers. This prevents a Viper misfeature whereby extraneous
+	newlines are inserted into the ERC buffer when switching between
+	viper states.
+
+	* erc-log.el (erc-save-buffer-in-logs): Bind `require-final-newline'
+	to t when calling `write-region' to ensure that further log
+	entries start on fresh lines.
+	
 2005-01-21  Diane Murray  <dsm@muenster.de>
 
 	* erc-button.el (erc-button-add-face): Reverted my change to the

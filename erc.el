@@ -79,7 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.734 $"
+(defconst erc-version-string "Version 5.0 $Revision: 1.736 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -1465,6 +1465,9 @@ Turning on `erc-mode' runs the hook `erc-mode-hook'."
 ;;       table)))
   (when (boundp 'next-line-add-newlines)
     (set (make-local-variable 'next-line-add-newlines) nil))
+  ;; Prevents Viper from inserting extraneous newlines when the user
+  ;; switches from insert state to vi state.
+  (setq require-final-newline nil)
   (make-variable-buffer-local 'paragraph-separate)
   (make-variable-buffer-local 'paragraph-start)
   (setq line-move-ignore-invisible t)
