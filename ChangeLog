@@ -6,6 +6,8 @@
 	* erc.el, erc-fill.el, erc-pcomplete.el, debian/copyright: Merge a
 	few more copyright lines thanks to Alex Schroeder's BBDB file.
 
+	* Makefile: Change version to correspond with our new scheme.
+
 2005-01-18  Diane Murray  <dsm@muenster.de>
 
 	* erc-list.el (erc-chanlist-channel-line-regexp): Now matches
