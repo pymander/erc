@@ -79,7 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.737 $"
+(defconst erc-version-string "Version 5.0 $Revision: 1.738 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -3998,7 +3998,7 @@ If FACE is non-nil, it will be used to propertize the prompt.  If it is nil,
   (interactive "")
   (erc-set-active-buffer (current-buffer))
   (let ((action (read-from-minibuffer
-		 "Action: " nil nil nil erc-action-history-list)))
+		 "Action: " nil nil nil 'erc-action-history-list)))
     (if (not (string-match "^\\s-*$" action))
 	(erc-send-action (erc-default-target) action))))
 
@@ -4642,24 +4642,22 @@ See also `erc-display-message'."
 	(while queries
 	  (let* ((type (upcase (car (split-string (car queries)))))
 		 (hook (intern-soft (concat "erc-ctcp-query-" type "-hook"))))
-	    (if (and hook (boundp hook)
-		     erc-paranoid
-		     (not (string-equal type "ACTION")))
-		(if (erc-current-nick-p
-		     (car (erc-response.command-args parsed)))
-		    (erc-display-message
-		     parsed 'error 'active 'ctcp-request
-		     ?n nick ?u login ?h host ?r (car queries))
-		  (erc-display-message
-		   parsed 'error 'active 'ctcp-request-to
-		   ?n nick ?u login ?h host ?r (car queries)
-		   ?t (car (erc-response.command-args parsed)))))
-	    (if (boundp hook)
-		(if (equal type "ACTION")
+	    (if (and hook (boundp hook))
+		(if (string-equal type "ACTION")
 		    (run-hook-with-args-until-success
 		     hook proc parsed nick login host
 		     (car (erc-response.command-args parsed))
 		     (car queries))
+		  (when erc-paranoid
+		    (if (erc-current-nick-p
+			 (car (erc-response.command-args parsed)))
+			(erc-display-message
+			 parsed 'error 'active 'ctcp-request
+			 ?n nick ?u login ?h host ?r (car queries))
+		      (erc-display-message
+		       parsed 'error 'active 'ctcp-request-to
+		       ?n nick ?u login ?h host ?r (car queries)
+		       ?t (car (erc-response.command-args parsed)))))
 		  (run-hook-with-args-until-success
 		   hook proc nick login host
 		   (car (erc-response.command-args parsed))
@@ -5758,9 +5756,9 @@ Only useful when called with a key binding."
   (interactive "kChannel mode (RET to set more than one): ")
   (when (featurep 'xemacs)
     (setq key (char-to-string (event-to-character (aref key 0)))))
-  (cond ((equal key "\007")
+  (cond ((equal key "\C-g")
 	 (keyboard-quit))
-	((equal key "\015")
+	((equal key "\C-m")
 	 (erc-insert-mode-command))
 	((equal key "l")
 	 (call-interactively 'erc-set-channel-limit))
@@ -5943,15 +5941,13 @@ user input."
   (let* ((cb (current-buffer))
 	 (pnt (point))
 	 (s "")
-	 (sp (erc-prompt))
+	 (sp (or (erc-command-indicator) (erc-prompt)))
 	 (args (and (boundp 'erc-script-args) erc-script-args)))
     (if (and args (string-match "^ " args))
 	(setq args (substring args 1)))
     ;; prepare the prompt string for echo
-    (erc-put-text-property 0 (1- (length (erc-prompt)))
-			   'face 'erc-prompt-face sp)
-    (erc-put-text-property (length (erc-prompt)) (length sp)
-			   'face 'erc-input-face sp)
+    (erc-put-text-property 0 (length sp)
+			   'face 'erc-command-indicator-face sp)
     (while lines
       (setq s (car lines))
       (erc-log (concat "erc-load-script: CMD: " s))
