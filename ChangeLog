@@ -1,3 +1,7 @@
+2005-03-29  Jorgen Schaefer  <forcer@forcix.cx>
+
+	* erc-spelling.el: New file.
+
 2005-03-24  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc-backend.el (define-erc-response-handler): Add
