@@ -77,7 +77,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.749 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.750 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -1631,6 +1631,7 @@ See also `with-current-buffer'.
        (when ,buf
 	 (with-current-buffer ,buf
 	   ,@body)))))
+(put 'erc-with-buffer 'edebug-form-spec '((form &optional form) body))
 
 (defun erc-get-buffer (target &optional proc)
   "Return the buffer matching TARGET in the process PROC.
@@ -1688,6 +1689,7 @@ nil."
 		   ,@forms))
 	       (erc-buffer-list ,pre
 				,pro)))))
+(put 'erc-with-all-buffers-of-server 'edebug-form-spec '(form form body))
 
 (defun erc-iswitchb (&optional arg)
   "Use `iswitchb-read-buffer' to prompt for a ERC buffer to switch to.
@@ -5633,6 +5635,9 @@ match, returns that regexp."
 	;; We have `require'd cl, so we can return from the block named nil
 	(return ignored))))
 
+;; FIXME: with-erc-channel-buffer suffers from multiple
+;; evaluation. Also it is used in one single place in erc.el.  It
+;; should be fixed or removed and replaced with `erc-with-buffer'.
 (defmacro with-erc-channel-buffer (tgt proc &rest body)
   "Execute BODY for channel TGT and process PROC."
   `(if (not (and (stringp ,tgt)
@@ -5644,6 +5649,7 @@ match, returns that regexp."
 	   nil
 	 (with-current-buffer buffer
 	   ,@body)))))
+(put 'with-erc-channel-buffer 'edebug-form-spec '(form form body))
 
 (defun erc-ignored-reply-p (msg tgt proc)
   ;; FIXME: this docstring needs fixing -- Lawrence 2004-01-08
