@@ -1,3 +1,14 @@
+2005-02-06  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el: Apply patch from Kai Fan for non-ASCII character
+	support.
+	(erc-parse-server-response): Add call to
+	`erc-decode-parsed-server-response'.
+	(erc-decode-parsed-server-response): New function that decodes a
+	pre-parsed server response before it can be handled.
+	(PRIVMSG): Comment out call to `erc-decode-string-from-target'.
+	(TOPIC): Ditto.
+
 2005-02-01  Jorgen Schaefer  <forcer@users.sourceforge.net>
 
 	* erc.el (erc-process-sentinel-1): Don't reconnect on connection

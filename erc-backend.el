@@ -99,7 +99,7 @@
 (require 'cl)
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 
-(defconst erc-backend-version "$Revision: 1.23 $")
+(defconst erc-backend-version "$Revision: 1.24 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -152,7 +152,43 @@ PROCs `process-buffer' is `current-buffer' when this function is called."
     (setf (erc-response.command-args msg)
           (nreverse (erc-response.command-args msg)))
 
+    (erc-decode-parsed-server-response msg)
+
     (erc-handle-parsed-server-response proc msg)))))
+
+(defun erc-decode-parsed-server-response (parsed-response)
+  "Decode a pre-parsed PARSED-RESPONSE before it can be handled.
+
+Decode `erc-response' according to the car of it's
+`command-args'.  If that is not a channel, use
+`erc-default-coding-system' for decoding."
+  (let* ((args (erc-response.command-args parsed-response))
+	 (first-arg (car args))
+	 (matchp (string-match "^[#&].*" first-arg))
+	 (decode-target (if matchp
+			    (erc-decode-string-from-target first-arg nil)
+			  nil))
+	 (decoded-args ()))
+    (setf (erc-response.unparsed parsed-response)
+	  (erc-decode-string-from-target
+	   (erc-response.unparsed parsed-response)
+	   decode-target))
+    (setf (erc-response.sender parsed-response)
+	  (erc-decode-string-from-target
+	   (erc-response.sender parsed-response)
+	   decode-target))
+    (setf (erc-response.command parsed-response)
+	  (erc-decode-string-from-target
+	   (erc-response.command parsed-response)
+	   decode-target))
+    (dolist (arg (nreverse args) nil)
+      (push (erc-decode-string-from-target arg decode-target)
+	    decoded-args))
+    (setf (erc-response.command-args parsed-response) decoded-args)
+    (setf (erc-response.contents parsed-response)
+	  (erc-decode-string-from-target
+	   (erc-response.contents parsed-response)
+	   decode-target))))
 
 ;; (defun erc-parse-server-response (process response)
 ;;   "Parse a server PROCESS's IRC RESPONSE."
@@ -599,8 +635,11 @@ add things to `%s' instead."
 	     (privp (erc-current-nick-p tgt))
 	     s buffer
 	     fnick
-	     (msg (erc-decode-string-from-target msg
-						 (if privp sender-spec tgt))))
+             ;; Apparently we don't need this now that FKtPp's patch
+             ;; is installed
+;; 	     (msg (erc-decode-string-from-target msg
+;;  						 (if privp sender-spec tgt)))
+	     )
 	(setf (erc-response.contents parsed) msg)
 	(setq buffer (erc-get-buffer (if privp nick tgt) proc))
 	(when buffer
@@ -662,8 +701,7 @@ add things to `%s' instead."
 (define-erc-response-handler (TOPIC)
   nil nil
   (let* ((ch (first (erc-response.command-args parsed)))
-         (topic (erc-trim-string (erc-decode-string-from-target
-                                  (erc-response.contents parsed) ch)))
+         (topic (erc-trim-string (erc-response.contents parsed)))
          (time (format-time-string "%T %m/%d/%y" (current-time))))
     (multiple-value-bind (nick login host)
         (erc-parse-user (erc-response.sender parsed))
