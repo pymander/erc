@@ -77,7 +77,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.750 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.751 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -1866,6 +1866,7 @@ removed from the list will be disabled."
 	      (const :tag "Play sounds when you receive CTCP SOUND requests"
 		     sound)
 	      (const :tag "Add timestamps to messages" stamp)
+	      (const :tag "Check spelling" spelling)
 	      (const :tag "Track channel activity in the mode-line" track)
 	      (const :tag "Truncate buffers to a certain size" truncate)
 	      (const :tag "Translate morse code in messages" unmorse)

@@ -1,5 +1,9 @@
 2005-04-04  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-modules): Add entry for spelling module.
+
+	* erc-spelling.el: Add autoload line.
+
 	* erc-backend.el: Apply latest non-ascii patch from Kai Fan.
 	(erc-decode-parsed-server-response): Search
 	erc-response.command-args for channel name.  Decode the

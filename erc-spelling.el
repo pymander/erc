@@ -32,7 +32,7 @@
 (require 'erc)
 (require 'flyspell)
 
-(defconst erc-spelling-version "$Revision: 1.1 $"
+(defconst erc-spelling-version "$Revision: 1.2 $"
   "ERC spelling revision.")
 
 (defcustom erc-spelling-dictionaries nil
@@ -43,6 +43,7 @@ The dictionary is inherited from server buffers, so if you want a
 default dictionary for some server, you can use a server buffer
 name here.")
 
+;;;###autoload (autoload 'erc-spelling-mode "erc-spelling" nil t)
 (define-erc-module spelling nil
   "Enable flyspell mode in ERC buffers."
   ;; Use erc-connect-pre-hook instead of erc-mode-hook as pre-hook is
