@@ -1,0 +1,13 @@
+;; -*-emacs-lisp-*-
+;; Emacs startup file for the Debian erc package
+
+; add `/usr/share/{emacs20,xemacs20,...}/site-lisp/erc' to the
+; load-path
+(setq load-path (cons (concat "/usr/share/"
+                              "emacs"
+			      "/site-lisp/erc") load-path))
+(setq load-path (cons (concat "/usr/share/"
+                              (symbol-name flavor)
+			      "/site-lisp/erc") load-path))
+
+(load "erc-auto")

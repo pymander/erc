@@ -1,0 +1,34 @@
+#! /usr/bin/make -f
+## Written by Gergely Nagy <algernon@debian.org>
+## Adapted by Mario Lang <mlang@debian.org>
+
+PACKAGE	:= erc
+ELDIR	:= /usr/share/emacs/site-lisp/${PACKAGE}
+ELFILES	:= format-spec.el \
+	   $(filter-out erc-compat.el erc-bbdb.el erc-speedbar.el erc-speak.el erc-chess.el erc-ibuffer.el, \
+		        $(subst ${ELDIR}/,,$(wildcard ${ELDIR}/erc*.el)))
+FLAGS	= ${SITEFLAGS} -q -batch -l path.el -f batch-byte-compile
+FLAVOUR	= $@
+ELCDIR	= /usr/share/${FLAVOUR}/site-lisp/${PACKAGE}
+FILES = $(ELFILES)
+
+emacs: ;
+
+xemacs%: FILES=$(filter-out erc-track.el,${ELFILES})
+
+emacs20:
+	@echo install/erc: Handling install for emacsen flavor $@
+	@echo Sorry, ERC does no longer support emacs20.
+	@echo We recommend that you install emacs21.
+
+.DEFAULT: ${ELCDIR}/path.el
+	@echo install/erc: Handling install for emacsen flavor $@
+	@install -m 755 -d ${ELCDIR}
+	@cd ${ELDIR} && cp ${FILES} ${ELCDIR}
+	@cd ${ELCDIR} && \
+	echo "(setq load-path (cons \".\" load-path) byte-compile-warnings nil)" >path.el && \
+	${FLAVOUR} ${FLAGS} ${FILES}
+	@cd ${ELCDIR} && rm -f ${FILES} path.el
+
+.SUFFIXES:
+.PHONY:

@@ -1,0 +1,21 @@
+Tasks that need to be accomplished in order for a release to happen.
+
+* Stability
+
+
+* Debian
+
+** Copyright
+
+Which authors should be included in `debian/copyright' as upstream
+authors?  Which should be given copyright notices?
+
+** News
+
+What are the most important user-visible changes since 2004-09-13?
+These should be added to `debian/README.debian'.
+
+
+Local variables:
+mode: outline
+end:

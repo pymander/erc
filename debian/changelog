@@ -1,0 +1,257 @@
+erc (4.0.cvs.20041118-1) unstable; urgency=low
+
+  * New CVS snapshot:
+    - Fixed "`emacs-mule' coding system doesn't exist on xemacs"
+      (Closes: Bug#223415).
+    - Fixed "missing provide in erc-sound.el" (Closes: #228511).
+    - Fix the `debrelease' target to correctly set dir modes (Closes: #262495).
+
+ -- Mario Lang <mlang@debian.org>  Thu, 18 Nov 2004 17:44:25 +0100
+
+erc (4.0.cvs.20031027-1) unstable; urgency=low
+
+  * New CVS snapshot:
+    - Only disable erc-specific advices for `switch-to-buffer'.
+      (Closes: Bug#217022)
+
+ -- Mario Lang <mlang@debian.org>  Mon, 27 Oct 2003 10:11:03 +0100
+
+erc (4.0.cvs.20031008-1) unstable; urgency=low
+
+  * New CVS snapshot.
+
+ -- Mario Lang <mlang@debian.org>  Wed,  8 Oct 2003 20:55:09 +0200
+
+erc (4.0.cvs.20030913-2) unstable; urgency=low
+
+  * Fixed the building process in respect to generated diff.gz
+
+ -- Mario Lang <mlang@debian.org>  Sat, 13 Sep 2003 23:30:14 +0200
+
+erc (4.0.cvs.20030913-1) unstable; urgency=low
+
+  * New CVS snapshot.
+  * We are now constantly pinging the server.  Combined with the fact
+    that the autojoin module is now loaded by default, this should
+    (Closes: Bug#177371)
+  * Use load instead of require (Closes: Bug#210685)
+  * Last upload also fixed the customize bug, just forgot to close it
+    (Closes: Bug#185794)
+
+ -- Mario Lang <mlang@debian.org>  Sat, 13 Sep 2003 23:06:18 +0200
+
+erc (4.0.cvs.20030910-1) unstable; urgency=low
+
+  * New CVS snapshot.
+
+ -- Mario Lang <mlang@debian.org>  Wed, 10 Sep 2003 19:53:46 +0200
+
+erc (3.0.cvs.20030119-1) unstable; urgency=low
+
+  * New CVS snapshot release.
+  * Do warn and prevent install for emacs20 (Closes: Bug#173464)
+  * No longer call (erc-completion-mode 1) in startup file
+    (Closes: Bug#173934)
+  * Cleanup workarea (Closes: Bug#177441)
+
+ -- Mario Lang <mlang@debian.org>  Sun, 19 Jan 2002 13:10:10 +0100  
+
+erc (3.0.cvs.20021208-1) unstable; urgency=low
+
+  * New CVS snapshot release.
+  * Added (erc-completion-mode 1) to startup file.
+  * Dropped emacs20 compatibility.
+
+ -- Mario Lang <mlang@debian.org>  Sun,  8 Dec 2002 16:10:11 +0100
+ 
+erc (2.93.cvs.20021116-1) unstable; urgency=low
+
+  * New CVS snapshot release on 2002-11-16.
+  * Allow for coninous logging.
+    Put (erc-save-buffer-in-logs) on `erc-insert-post-hook' to get this
+    behaviour.
+    (Closes: Bug#133267)
+  * Lot of changes (Closes: Bug#155063), see README.Debian for details.
+  * Redo the package generationg strategy to avoid producing a
+    debian native package (make debrelease).
+
+ -- Mario Lang <mlang@debian.org>  Sat, 16 Nov 2002 20:10:00 +0100
+
+erc (2.93.cvs.20020819-1) unstable; urgency=low
+
+  * New CVS snapshot release on 2002-08-19.
+  * Fix load-path (silly!)
+
+ -- Mario Lang <mlang@debian.org>  Tue, 19 Aug 2002 10:33:00 +0100
+
+erc (2.93.cvs.20020814-1) unstable; urgency=low
+
+  * New maintainer (Closes: Bug#154636)
+  * New CVS snapshot release on 2002-08-14.
+  * Do not byte-compile errc-bbdb|chess|ibuffer|speedbar.el
+
+ -- Mario Lang <mlang@debian.org>  Tue, 13 Aug 2002 15:33:21 +0100
+
+erc (2.93.cvs.20020708-1) unstable; urgency=low
+
+  * New CVS snapshot release on 2002-07-08.
+  * Do not byte-compile erc-track.el for xemacs (Closes: #149351)
+  * Do not byte-compile erc-speak.el at all (Closes: #152043)
+  * Rewrote debian/scripts/install in make
+
+ -- Gergely Nagy <algernon@debian.org>  Mon,  8 Jul 2002 14:03:22 +0200
+
+erc (2.91.cvs.20020404-1) unstable; urgency=low
+
+  * New CVS snapshot release on 2002-04-04.
+    + Fixes for some XEmacs showstoppers
+    + Fixed a bug in /query handling
+    + Support for joining key protected channels
+  * Documented the warnings at install-time (Closes: #139534)
+
+ -- Gergely Nagy <algernon@debian.org>  Thu,  4 Apr 2002 23:21:05 +0200
+
+erc (2.91.cvs.20020306-1) unstable; urgency=low
+
+  * New CVS snaphost release on 2002-03-06.
+
+ -- Gergely Nagy <algernon@debian.org>  Wed,  6 Mar 2002 22:50:49 +0100
+
+erc (2.91.cvs.20020216-1) unstable; urgency=low
+
+  * New CVS snapshot release on 2002-02-16:
+    + Multiline input works now (C-q C-j to insert a newline)
+    + Completely new insert-hook system (see erc-insert-pre-hook and
+    erc-send-pre-hook and the-like.
+    + Many small bugfixes.
+
+  * Due to the new insert-hook system, erc-insert-hook doesn't work
+    anymore. Don't forget to update your ~/.emacs.
+
+ -- Gergely Nagy <algernon@debian.org>  Sat, 16 Feb 2002 23:45:23 +0100
+
+erc (2.1.cvs.20011215-1) unstable; urgency=high
+
+  * New CVS snapshot release on 2001-12-15:
+    + Support for saving (and optionally killing) a buffer on part
+    + New file: erc-replace.el, for washing and massaging messages
+
+  * Added format-spec.el (from the tramp package), as a workaround for
+    #123236. This closes: #123236.
+
+  * Urgency high, because without the above fix, erc is uninstallable on
+    emacs20 without either gnus or tramp.
+
+ -- Gergely Nagy <algernon@debian.org>  Sat, 15 Dec 2001 14:10:42 +0100
+
+erc (2.1.cvs.20011208-1) unstable; urgency=medium
+
+  * New CVS snapshot release on 2001-12-08:
+    + erc-track-modified-channels-minor-mode disabled on emacs20, to work
+    around Bug#122748 (Closes: #122748)
+    + A set of filling related bugfixes
+
+  * Urgency medium, becuase of #122748
+
+ -- Gergely Nagy <algernon@debian.org>  Sat,  8 Dec 2001 00:48:30 +0100
+
+erc (2.1.cvs.20011206-1) unstable; urgency=medium
+
+  * New CVS snapshot release on 2001-12-06:
+    + New filling strategy
+    + Channel-tracking rewritten as a minor-mode
+    + Fixed a longstanding bug, which surfaced under XEmacs
+
+  * Urgency medium, because of the XEmacs related fix
+
+ -- Gergely Nagy <algernon@debian.org>  Thu,  6 Dec 2001 17:20:40 +0100
+
+erc (2.1.cvs.20011129-1) unstable; urgency=medium
+
+  * New CVS snapshot release on 2001-11-29:
+
+  * New buffer naming scheme, buffers now have names like #emacs and
+    #emacs<2> instead of #emacs!nick@irc-server. You can freely rename
+    them now, without breaking anything.
+  * New customizable mode-line and header-line support.
+    Look at erc-mode-line-format, erc-header-line-format and
+    erc-prepare-mode-line-format
+    + Now you get the announced server name in the modeline.
+  * Completely new server message parsing, mimicking zenirc's
+    ...server-*-hooks
+    + See defgroup erc-server-hooks 
+  * Split up in several files.
+    + erc-complete, for TAB completion
+    + erc-ring, for command history
+    + erc-fill, for filling IRC messages
+    + erc-bbdb, integrating BBDB into ERC
+    + erc-speedbar, for using the speedbar with ERC
+  * Dropped the erc-speak package, everything is in erc proper now
+  * And many, many more...
+
+  * Please note that due to the new server message parsing, erc-join-hook,
+    erc-part-hook, and possible some other hooks got removed, check your
+    ~/.emacs.
+
+  * Urgency medium, because it would be really unfortunate to have the
+    older erc in woody..
+  
+ -- Gergely Nagy <algernon@debian.org>  Thu, 29 Nov 2001 13:43:22 +0100
+
+erc (2.1.cvs.20011025-4) unstable; urgency=low
+
+  * erc.el: (require 'cl), to reflect reality
+
+ -- Gergely Nagy <algernon@debian.org>  Tue,  6 Nov 2001 18:34:19 +0100
+
+erc (2.1.cvs.20011025-3) unstable; urgency=low
+
+  * debian/scripts/install.in: move #PKGFLAG# before the -f
+    batch-byte-compile option, so erc-speak can be configured
+    successfully.
+
+ -- Gergely Nagy <algernon@debian.org>  Wed, 31 Oct 2001 19:14:59 +0100
+
+erc (2.1.cvs.20011025-2) unstable; urgency=low
+
+  * Okay. Where's that rock?
+  * Rebuilt with a working fakeroot setup this time.
+
+ -- Gergely Nagy <algernon@debian.org>  Sat, 27 Oct 2001 01:04:57 +0200
+
+erc (2.1.cvs.20011025-1) unstable; urgency=low
+
+  * CVS snapshot release on 2001-10-25
+  * debian/control: New package: erc-speak
+  * debian/maint/{postinst,prerm,conffiles}: replaced with .in files
+  * debian/scripts/{install,remove}: likewise
+  * debian/scripts/startup: superceded by package-specific startup files
+  * debian/README.erc-speak: new file
+  * debian/rules: reworked to build erc-speak too
+
+ -- Gergely Nagy <algernon@debian.org>  Thu, 25 Oct 2001 13:00:07 +0200
+
+erc (2.1.cvs.1.73-1) unstable; urgency=low
+
+  * CVS snapshot release, erc.el revision 1.73
+  	+ supports auto-query
+  	+ smiley support
+  	+ lots of other features and fixes
+  * debian/scripts/startup: added two functions to autoload
+  * various cleanups in maintainer scripts and debian/rules
+
+ -- Gergely Nagy <algernon@debian.org>  Sun, 21 Oct 2001 17:42:26 +0200
+
+erc (2.1.cvs.1.56-1) unstable; urgency=low
+
+  * CVS snapshot release, erc.el revision 1.56
+    + fixes to nick completion, among other things
+  * Default to `ircd' port instead of `irc' (Closes: #114349)
+
+ -- Gergely Nagy <algernon@debian.org>  Thu,  4 Oct 2001 19:16:19 +0200
+
+erc (2.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #113192)
+
+ -- Gergely Nagy <algernon@debian.org>  Sun, 23 Sep 2001 14:58:31 +0200

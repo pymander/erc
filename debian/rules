@@ -1,0 +1,77 @@
+#! /usr/bin/make -f
+## Written by Gergely Nagy <algernon@debian.org>
+## This is under GPL v2.
+
+PACKAGE		= erc
+PKGDIR		= debian/${PACKAGE}
+SOURCES		= $(wildcard *.el)
+DOCDIR		= /usr/share/doc/${PACKAGE}
+LISPDIR		= /usr/share/emacs/site-lisp/erc
+
+build: ;
+
+clean: 
+	test -e debian/control 
+	rm -rf debian/erc debian/files
+
+install: build
+	test -e debian/control
+	install -d ${PKGDIR}${LISPDIR} ${PKGDIR}/etc/emacs/site-start.d
+	install -m 0644 ${SOURCES} ${PKGDIR}${LISPDIR}
+
+binary-erc: install
+	test -e debian/control && test "x`whoami`" = "xroot"
+## Install debian-specific stuff
+# Some directories
+	install -d ${PKGDIR}${DOCDIR} \
+		${PKGDIR}/usr/lib/emacsen-common/packages/install \
+		${PKGDIR}/usr/lib/emacsen-common/packages/remove
+# The changelog..
+	install -m 0644 debian/changelog ${PKGDIR}${DOCDIR}/changelog.Debian
+	install -m 0644 ChangeLog ${PKGDIR}${DOCDIR}/changelog
+	cat ChangeLog.2004 >> ${PKGDIR}${DOCDIR}/changelog
+	cat ChangeLog.2003 >> ${PKGDIR}${DOCDIR}/changelog
+	cat ChangeLog.2002 >> ${PKGDIR}${DOCDIR}/changelog
+	cat ChangeLog.2001 >> ${PKGDIR}${DOCDIR}/changelog
+# ..the copyright file..
+	install -m 0644 debian/copyright ${PKGDIR}${DOCDIR}/
+# ..some documentation
+	install -m 0644 CREDITS HISTORY ${PKGDIR}${DOCDIR}/
+# the emacs-install scripts
+	install -m 0755 debian/scripts/install \
+		${PKGDIR}/usr/lib/emacsen-common/packages/install/${PACKAGE}
+	install -m 0755 debian/scripts/remove \
+		${PKGDIR}/usr/lib/emacsen-common/packages/remove/${PACKAGE}
+# Install an autoload script
+	install -m 0644 debian/scripts/startup.${PACKAGE} \
+		${PKGDIR}/etc/emacs/site-start.d/50${PACKAGE}.el
+## Compress stuff
+	gzip -9f ${PKGDIR}${DOCDIR}/changelog.Debian \
+		 ${PKGDIR}${DOCDIR}/changelog
+## Fix permissions
+	find ${PKGDIR} -print0 2>/dev/null | xargs -0r chown \
+						   --no-dereference 0.0
+	find ${PKGDIR} ! -type l -print 0 2>/dev/null | xargs -0r \
+		chmod go=rX,u+rw,a-s
+## Install stuff to DEBIAN/
+	install -d ${PKGDIR}/DEBIAN
+	install -m 0755 debian/maint/postinst debian/maint/prerm \
+		${PKGDIR}/DEBIAN/
+# Install conffile list
+	install -m 0644 debian/maint/conffiles ${PKGDIR}/DEBIAN/conffiles
+## Install READMEs
+	install -m 0644 debian/README.erc-speak debian/README.Debian \
+		${PKGDIR}${DOCDIR}/
+## Generate DEBIAN/md5sums
+	cd ${PKGDIR} >/dev/null ;\
+	 find * -type f ! -regex '^DEBIAN/.*' -print0 | xargs -r0 md5sum > DEBIAN/md5sums
+## Generate DEBIAN/control
+	dpkg-gencontrol -isp -p${PACKAGE} -P${PKGDIR}
+## Build the binary package
+	dpkg --build ${PKGDIR} ..
+
+binary-indep: binary-erc
+binary-arch: ;
+binary: binary-indep binary-arch
+
+.PHONY: binary binary-arch binary-indep clean build binary-erc install

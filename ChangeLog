@@ -1,0 +1,296 @@
+2005-01-17  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile: Version is 5.01, but only in the Makefile.  It has not
+	been released yet.
+
+	* erc-auto.in, erc-autojoin.el, erc-bbdb.el, erc-button.el,
+	erc-chess.el, erc-complete.el, erc-dcc.el, erc-fill.el,
+	erc-goodies.el, erc-ibuffer.el, erc-identd.el, erc-imenu.el,
+	erc-list.el, erc-match.el, erc-menu.el, erc-nets.el,
+	erc-netsplit.el, erc-nickserv.el, erc-notify.el, erc-pcomplete.el,
+	erc-ring.el, erc-speak.el, erc-speedbar.el, erc-stamp.el,
+	erc-track.el, erc-xdcc.el, erc.el, debian/copyright: Update
+	copyright notices.  If anyone has signed papers for Emacs in
+	general, merge them with the FSF's entry.
+
+2005-01-16  Diane Murray  <dsm@muenster.de>
+
+	* erc.el (erc): `erc-set-active-buffer' was being called before
+	`erc-process' was set, so that channels weren't being marked
+	active correctly upon join; fixed.
+
+2005-01-15  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc-backend.el (def-edebug-spec): This macro caused problems (in
+	XEmacs). Use its expansion directly.
+
+2005-01-15  Diane Murray  <dsm@muenster.de>
+
+	* erc-button.el (erc-button-add-button): Reverted previous change
+	since `:suppress-face' doesn't seem to be checked for a certain
+	face.
+	(erc-button-add-face): FACE is now appended to the `old' face.
+	This should fix the problem of faces being "covered" by
+	`erc-button-face'.
+
+2005-01-14  Diane Murray  <dsm@muenster.de>
+
+	* erc.el, erc-backend.el (erc-cmd-OPS, erc-cmd-COUNTRY,
+	erc-cmd-NICK, erc-process-ctcp-query, ERROR, PONG, 311, 312, 313,
+	314, 317, 319, 320, 321, 322, 330, 352): Use catalog entries
+	instead of hard-coded text messages.
+	(english): Added new catalog entries `country', `country-unknown',
+	`ctcp-empty', `ctcp-request-to', `ctcp-too-many', `nick-too-long',
+	`ops', `ops-none', `ERROR', `PONG', `s311', `s312', `s313',
+	`s314', `s317', `s317-on-since', `s319', `s320', `s321', `s322',
+	`s330', and `s352'.
+	(erc-send-current-line): Use `erc-set-active-buffer' (change was
+	lost in previous bug fix).
+
+2005-01-14  Francis Litterio  <franl@world.std.com>
+
+	* erc-button.el (erc-button-add-button): Fixed a bug where the
+	overlay created by widget-convert-button has a `face' property
+	that hides the `face' property set on the underlying button text.
+
+	* erc-goodies.el: Docstring fix.
+
+	* erc-button.el: Improved docstring for variable erc-button-face.
+
+2005-01-13  Diane Murray  <dsm@muenster.de>
+
+	* erc-menu.el (erc-menu-definition): "Topic set by channel
+	operator": Small word change.  "Identify to NickServ...": Check
+	that we're connected to the server.  Added "Save buffer in log"
+	and "Truncate buffer".
+
+2005-01-13  Lawrence Mitchell  <wence@gmx.li>
+
+	* erc.el (erc-display-line-1): Widen before we try to insert
+	anything, this makes sure input isn't broken when the buffer is
+	narrowed by the user.
+	(erc-beg-of-input-line): Simplify, just return the position of
+	`erc-insert-marker' or error if does not exist.
+	(erc-send-current-line): Widen before trying to send anything.
+
+2005-01-13  Diane Murray  <dsm@muenster.de>
+
+	* erc.el, erc-backend.el, erc-list.el:
+	(erc-update-mode-line-buffer): Strip controls characters from
+	`channel-topic' since we add our own control character to it.
+	(TOPIC, 332): Use \C-o instead of \C-c to force an end of IRC
+	control characters as it also ends bold, underline, and inverse -
+	\C-c only ends colors.
+	(erc-chanlist-322): Strip control characters from channel and
+	topic.  No need to interpret controls when we're applying overlays
+	to the lines.
+
+	* erc.el, erc-backend.el, erc-button.el, erc-netsplit.el,
+	erc-nicklist.el: Fixed so that each server has an active buffer.
+	(erc-active-buffer): Now a buffer-local variable.
+	(erc-active-buffer, erc-set-active-buffer): New functions.
+	(erc-display-line, erc-echo-notice-in-active-non-server-buffer,
+	erc-process-away, MODE): Call `erc-active-buffer' to get the
+	active buffer for the current server.
+	(erc, erc-process-sentinel-1, erc-grab-region, erc-input-action,
+	erc-send-current-line, erc-invite-only-mode,
+	erc-toggle-channel-mode, erc-channel-names, MODE, erc-nick-popup,
+	erc-nicklist-call-erc-command): Use `erc-set-active-buffer' to set
+	the active buffer for the current server.
+	(erc-cmd-WHOLEFT): Use 'active as BUFFER in `erc-display-message'.
+
+	* erc-track.el (erc-track-modified-channels): Server buffers are
+	now treated the same as channels and queries.  This means that
+	`erc-track-priority-faces-only', `erc-track-exclude', and
+	`erc-track-exclude-types' now work with server buffers.
+
+2005-01-12  Diane Murray  <dsm@muenster.de>
+
+	* erc-backend.el (475): Prompt for the channel's key if
+	`erc-prompt-for-channel-key' is non-nil.  Send a new JOIN message
+	with the key if a key is provided.
+
+	* erc.el (erc-command-indicator): Fixed customization choices so
+	that there's no `mismatch' message when nil is the value.
+
+2005-01-11  Michael Olson  <mwolson@gnu.org>
+
+	* erc-bbdb.el (bbdb): Lowercase the name of the module.  This
+	fixes a bug which caused an error to occur when trying to enable
+	the module using the customization interface.
+
+2005-01-08  Edward O'Connor  <ted@oconnor.cx>
+
+	* erc-track.el: Support using faces to indicate channel activity
+	in the modeline under XEmacs.
+	(erc-modified-channels-object): New function.
+	(erc-modified-channels-display): Use it.
+	`erc-modified-channels-string' renamed to
+	`erc-modified-channels-object' (because it's no longer a string on
+	XEmacs). The new function `erc-modified-channels-object' is used
+	to generate updated values for the same-named variable.
+
+2005-01-08  Diane Murray <dsm@muenster.de>
+
+	* ChangeLog.2002: Changed instances of my sourceforge username and
+	email address to real name and email.
+
+	* erc.el (erc-modules): Changed customization tag descriptions, so
+	that they all start with a verb; added new modules to choices.
+
+2005-01-08  Mario Lang  <mlang@delysid.org>
+
+	* debian/rules: Introduce new variable DOCDIR to simplify stuff a
+	bit.
+
+2005-01-08  Michael Olson  <mwolson@gnu.org>
+
+	* AUTHORS, ChangeLog.2004: Change bpalmer's email address as
+	requested.
+
+	* CREDITS: Add everyone who is mentioned in the ChangeLogs.
+
+	* debian/copyright (Copyright): Add last few people.  This can now
+	be considered a complete list, as far as CVS entries are
+	concerned.  If people have assigned copyright to the FSF, merge
+	them with the entry for the FSF.
+
+	* debian/README.Debian: Add entry for XEmacs-related change in
+	`erc-track.el'.
+
+	* erc.el (erc-cmd-MODE): New command that changes or displays the
+	mode for a channel or user.  The functionality was present before
+	this change, but there was no documentation for it.
+
+	* erc-auto.in, erc-*.el: Fully investigate copyright headers and
+	change them appropriately.  If a file has been pulled off of
+	erc.el at one time, keep track of copyright from the time of
+	separation, but not before.  If a file has been derived from a
+	work outside of erc, keep copyright statements in place.
+
+	* Makefile (VERSION): Change to 5.0! :^) Congrats on all the great
+	work.  I'll wait until hober commits his XEmacs compatibility
+	patch to erc-track.el, and then release.
+	(distclean): Alias for `realclean' target.
+
+2005-01-07  Michael Olson  <mwolson@gnu.org>
+
+	* AUTHORS: Add Marco Toledo, who has CVS access to this project.
+
+	* ChangeLog.2004: Add my name to my one contribution to erc last
+	year.
+
+	* CREDITS: Add people that were discovered while scouring
+	ChangeLogs.
+
+	* debian/copyright: Add everyone from `AUTHORS' to Upstream
+	Authors.  Anyone who has contributed 15 or more lines of
+	code (according to ChangeLogs) is listed in Copyright section.
+	Accurate years are included.
+
+	* debian/README.Debian: Paste content of NEWS and reformat
+	slightly.
+
+	* debian/rules: Concatenate the ChangeLogs during the Debian
+	install process and then gzip them.
+
+	* Makefile (MISC): Add ChangeLog.yyyy files to list.
+	(ChangeLog): Remove rule since we do not dynamically generate the
+	ChangeLog anymore.
+
+	* MkChangeLog: Removed since we do not use it to generate the
+	ChangeLog anymore.  cvs2cl does a much better job anyway.
+
+	* NEWS: Use 3rd level heading instead of bullets for lists that
+	contain descriptions.
+
+2005-01-07  Diane Murray <dsm@muenster.de>
+
+	* erc-list.el: Require 'sort.
+	(erc-chanlist): Disable undo in the channel list buffer.
+
+	* erc.el, erc-menu.el: The `IRC' menu is now automatically added
+	to the menu-bar.  Add the call to `easy-menu-add' to
+	`erc-mode-hook' when running in XEmacs (without this the menu
+	doesn't appear).
+
+	* NEWS: Added the information from
+	http://emacswiki.org/cgi-bin/wiki/ErcCvsFeatures and the newer
+	changes which weren't yet documented on that page.
+
+2005-01-06  Hoan Ton-That  <hoan@ton-that.org>
+
+	* erc-log.el (erc-current-logfile): Only downcase the logfile
+	name, not the whole filename.  Also expand relative to
+	`erc-log-channels-directory'.
+	(erc-generate-log-file-name-with-date)
+	(erc-generate-log-file-name-short)
+	(erc-generate-log-file-name-long): Don't expand filename, done in
+	`erc-current-logfile'.
+
+2005-01-06  Lawrence Mitchell  <wence@gmx.li>
+
+	* NEWS: New file, details user visible changes from version to
+	version.
+
+	* HACKING (NEWS entries): Mention NEWS file, and what its purpose
+	is.
+
+2005-01-05  Michael Olson  <mwolson@gnu.org>
+
+	* FOR-RELEASE: New file containing the list of release-critical
+	tasks.  Feel free to add to it.
+
+	* debian/rules (binary-erc): Add ChangeLog files.
+
+2005-01-04  Michael Olson  <mwolson@gnu.org>
+
+	* ChangeLog.2001, ChangeLog.2002, ChangeLog.2003, ChangeLog.2004:
+	ChangeLog entries from previous years.
+
+	* ChangeLog: New file containing ChangeLog entries for the current
+	year.  Please update this file manually whenever a change is
+	committed.  This is a new policy.
+
+	* AUTHORS: Add myself to list.  Some entries were space-delimited
+	instead of TAB-delimited, and since the latter seemed to be the
+	default, make the other entries conform.
+
+	* HACKING (ChangeLog Entries): Update section to reflect new
+	policy toward ChangeLog entries, which is that they should be
+	manually updated whenever a change is committed.
+
+2005-01-04  Diane Murray <dsm@muenster.de>
+
+	* erc.el (erc-connection-established, erc-login): Update the
+	mode-line.
+	(erc-update-mode-line-buffer): If `erc-current-nick' returns nil,
+	use an empty string for ?n character in format spec.  Set
+	`mode-line-process' to ":connecting" while the connection is being
+	established.
+
+2005-01-04  Lawrence Mitchell <wence@gmx.li>
+
+	* AUTHORS: Update list of authors.
+
+2005-01-02  Diane Murray <dsm@muenster.de>
+
+	* erc-goodies.el (erc-control-characters): New customization
+	group.
+	(erc-interpret-controls-p): Small fix, addition to
+	documentation. Updated customization to allow 'remove as a value.
+	Use 'erc-control-characters as `:group'.
+	(erc-interpret-mirc-color): Use 'erc-control-characters as
+	`:group'.
+	(erc-beep-p): Updated documentation.  Use 'erc-control-characters
+	as `:group'.
+	(define-erc-module irccontrols): Add `erc-controls-highlight' to
+	`erc-insert-modify-hook' and `erc-send-modify-hook' since it
+	changes the text's appearance.
+	(erc-controls-remove-regexp, erc-controls-interpret-regexp): New
+	variables.
+	(erc-controls-highlight): Fixed so that highlighting works even if
+	there is no following control character.  Fixed mirc color
+	highlighting; now respecting `erc-interpret-mirc-color'.  Fixed a
+	bug where emacs would get stuck in a loop when \C-g was in a
+	message and `erc-beep-p' was set to nil (default setting).

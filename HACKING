@@ -1,0 +1,99 @@
+* Hacking on ERC 101                                            -*- outline -*-
+
+* Function/variable naming conventions
+
+The Emacs Lisp manual has some good advice on coding conventions
+(info "(elisp)Tips").  Remember, above all, that Emacs does not have a
+package system, so prefix all global variables/functions with `erc-'.
+If you have a macro that follows the standard `with-foo' pattern, or
+`define-foo' pattern, you can probably get away with naming it without
+a prefix, should it not conflict with an existing symbol, it's
+probably a good idea to have `erc' somewhere in the name.  For
+example:
+
+  Good:
+   
+    (defun erc-foo-p (...) ...)
+
+    (defmacro with-erc-foo (...) ...)
+
+    (defmacro define-erc-foo (...) ...)
+
+    (defvar erc-frob-foo ...)
+
+  Bad:
+
+    (defun foo-p (...) ...)
+
+    (defmacro with-foo (...) ...)
+
+    (defmacro define-foo (...) ...)
+
+    (defvar frob-foo ...)
+
+* ChangeLog Entries
+
+ERC's ChangeLog entries are *no longer* generated automatically from
+the CVS logs.  As such, please try to update the `ChangeLog' file
+every time you commit a change.
+
+The GNU Coding Standards have some good tips for writing ChangeLog
+entries: http://www.gnu.org/prep/standards_40.html#SEC40
+
+Emacs has modes to alleviate the writing of entries, see the info
+nodes:
+  (info "(emacs)Change Log")
+and
+  (info "(emacs)Change Logs and VC")
+
+* NEWS entries
+
+We maintain a list of user-visible changes between versions in the
+file NEWS.  This should be of the same form as the Emacs NEWS file
+(viewable, as an example, via C-h n (view-emacs-news)).  This file
+should not document internal changes, only ones which show their faces
+to the outside world.
+
+* Documentation
+
+If you add a new function or variable, or change an existing one,
+please add a docstring describing what it does.  Again, there are
+certain conventions to follow which are detailed at length in:
+
+  (info "(elisp)Tips")
+
+The most important:
+
+** Docstrings
+
+Each function should have a docstring summarising what the function
+does.  The first line should be able to stand on its own (for
+apropos).  You should generally try and use the imperative form in
+docstrings.  e.g. "Return non-nil if...", rather than "Returns
+non-nil if..."
+Similarly, variables should have a docstring describing what the
+variable controls, and what different values mean.  User-visible
+variables should start the docstring with a "*".  Again, the first
+sentence should stand on its own as a description of the variable
+(for apropos and eldoc-mode).
+
+** Function arguments
+
+Arguments should, where possible, have descriptive names.  This is
+especially useful for those of us who use eldoc-mode.  Note also,
+that, since elisp is a lisp-2, we can call an argument which is a
+list "list", rather than "lst", or some other lisp-1ism.
+
+You can catch a lot of these problems if you use checkdoc.  M-x
+checkdoc-defun RET on a function will pick up on most errors.
+
+* Other conventions
+
+Compatibility functions for Emacs/XEmacsisms should go in erc-compat,
+and be prefixed with `erc-'.
+
+ERC modules should be defined with `define-erc-module'.
+
+Some of the code in ERC is rather crufty, and could do with cleaning
+up, don't necessarily take all of it as being a wonderful example of
+coding standards.
