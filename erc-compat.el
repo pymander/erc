@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.17 $"
+(defconst erc-compat-version "$Revision: 1.18 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
@@ -43,7 +43,8 @@
     (progn
       (define-minor-mode erc-compat-test "Testing `define-minor-mode'." nil nil nil (ignore))
       (mapc 'unintern (apropos-internal "^erc-compat-test"))
-      (defalias 'erc-define-minor-mode 'define-minor-mode))
+      (defalias 'erc-define-minor-mode 'define-minor-mode)
+      (put 'erc-define-minor-mode 'edebug-form-spec 'define-minor-mode))
   (error 
    (defmacro erc-define-minor-mode (mode doc &optional init-value lighter
                                     keymap &rest body)
@@ -76,6 +77,12 @@
             ,@body
             ,mode)
           (add-minor-mode ,mode ,lighter ,keymap))))
+   (put 'erc-define-minor-mode 'edebug-form-spec
+	'(&define name stringp
+		  [&optional sexp sexp &or consp symbolp]
+		  [&rest
+		   [keywordp sexp]]
+		  def-body))
    ))
 
 ;; MULE: decode-coding-string and encode-coding-string -- note that
