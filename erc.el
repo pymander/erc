@@ -79,7 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.740 $"
+(defconst erc-version-string "Version 5.0 $Revision: 1.741 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -3742,8 +3742,8 @@ be displayed."
     ;; display help when given no arguments
     (when (string-match "^\\s-*$" topic)
       (signal 'wrong-number-of-arguments nil))
-    ;; strip trailing ^C
-    (when (string-match "\\(.*\\)\C-c" oldtopic)
+    ;; strip trailing ^O
+    (when (string-match "\\(.*\\)\C-o" oldtopic)
       (erc-cmd-TOPIC (concat (match-string 1 oldtopic) topic)))))
 (defalias 'erc-cmd-AT 'erc-cmd-APPENDTOPIC)
 (put 'erc-cmd-APPENDTOPIC 'do-not-parse-args t)
@@ -4035,9 +4035,9 @@ If `point' is at the beginning of a channel name, use that as default."
     (read-from-minibuffer
      (concat "Set topic of " (erc-default-target) ": ")
 			  (when (boundp 'channel-topic)
-       (cons (apply 'concat (split-string channel-topic "\C-c"))
+       (cons (apply 'concat (butlast (split-string channel-topic "\C-o")))
 			     0)))))
-  (let ((topic-list (split-string topic "\C-c"))) ; strip off the topic setter
+  (let ((topic-list (split-string topic "\C-o"))) ; strip off the topic setter
     (erc-cmd-TOPIC (concat (erc-default-target) " " (car topic-list)))))
 
 (defun erc-set-channel-limit (&optional limit)
@@ -5745,14 +5745,13 @@ This command is sent even if excess flood is detected."
 
 (defun erc-get-channel-mode-from-keypress (key)
   "Read a key sequence and call the corresponding channel mode function.
-After doing C-c C-m type in a channel mode letter.
+After doing C-c C-o type in a channel mode letter.
 
 C-g means quit.
 RET let's you type more than one mode at a time.
 If \"l\" is pressed, `erc-set-channel-limit' gets called.
 If \"k\" is pressed, `erc-set-channel-key' gets called.
-Anything else will be sent to `erc-toggle-channel-mode'.
-Only useful when called with a key binding."
+Anything else will be sent to `erc-toggle-channel-mode'."
   (interactive "kChannel mode (RET to set more than one): ")
   (when (featurep 'xemacs)
     (setq key (char-to-string (event-to-character (aref key 0)))))
