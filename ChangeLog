@@ -1,3 +1,9 @@
+2005-02-01  Jorgen Schaefer  <forcer@users.sourceforge.net>
+
+	* erc.el (erc-process-sentinel-1): Don't reconnect on connection
+	refused. This error is reported differently when using
+	open-network-stream-nowait.
+
 2005-01-26  Diane Murray  <dsm@muenster.de>
 
 	* erc.el (erc-cmd-APPENDTOPIC, erc-set-topic): The control
