@@ -1,3 +1,8 @@
+2005-01-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el, erc-fill.el, erc-pcomplete.el, debian/copyright: Merge a
+	few more copyright lines thanks to Alex Schroeder's BBDB file.
+
 2005-01-17  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile: Version is 5.01, but only in the Makefile.  It has not

@@ -4,9 +4,7 @@
 ;;     Free Software Foundation, Inc.
 ;; Copyright (C) 2001 Tijs van Bakel
 ;; Copyright (C) 2001,2002 Gergely Nagy
-;; Copyright (C) 2001,2002 Shae Erisson
 ;; Copyright (C) 2002,2003 Brian P Templeton
-;; Copyright (C) 2002,2003 Sacha Chua
 ;; Copyright (C) 2002,2003,2004 Francis Litterio
 ;; Copyright (C) 2003 Arne Schwabe
 ;; Copyright (C) 2004 Johan Bockgard

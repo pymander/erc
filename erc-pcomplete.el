@@ -1,6 +1,5 @@
 ;;; erc-pcomplete.el --- Provides programmable completion for ERC
 
-;; Copyright (C) 2002,2003 Sacha Chua
 ;; Copyright (C) 2002,2003,2004 Free Software Foundation, Inc.
 ;; Copyright (C) 2004 Jeremy Bertram Maitin-Shepard
 
