@@ -5,17 +5,18 @@ ERC NEWS                                                       -*- outline -*-
 ** If a channel key is required for a certain channel, ERC will prompt
 for one if `erc-prompt-for-channel-key' is non-nil.
 
-** ERC now sets `require-final-newline' to nil in ERC buffers.
-This will probably not have any visible effect for you, but helps to
-work around an annoying bug when using ERC with Viper. Remember, you may
-always work around this by setting `require-final-newline' to t via
-`erc-mode-hook'.
-
 ** Changes and additions to modules
 
 *** Menu (erc-menu.el)
 
 **** You can now save logs and truncate buffers from the menu-bar.
+
+*** Viper (erc-viper.el)
+
+**** This is a new module, for making Viper and ERC play nicely together.
+
+If you use ERC and Viper, adding (require 'erc-viper) to your
+~/.ercrc.el should be all that's necessary to enable this.
 
 * Fixes since ERC 5.0
 

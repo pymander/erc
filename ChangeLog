@@ -1,3 +1,15 @@
+2005-01-22  Edward O'Connor  <ted@oconnor.cx>
+	
+	* erc.el (erc-mode): Remove frobbing of `require-final-newline'.
+
+	* erc-log.el (erc-save-buffer-in-logs): Remove frobbing of
+	`require-final-newline'.
+
+	* erc-viper.el: New file. This is where all ERC/Viper
+	compatiibilty code should live. When and if ERC is bundled with
+	Emacs, some of the hacks in this file should be merged into Viper
+	itself.
+
 2005-01-21  Edward O'Connor  <ted@oconnor.cx>
 	
 	* erc.el (erc-mode): Set `require-final-newline' to nil in ERC
