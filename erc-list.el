@@ -3,7 +3,6 @@
 ;; Copyright (C) 2002,2004,2005 Free Software Foundation, Inc.
 ;; Copyright (C) 2002,2003,2004 Francis Litterio
 ;; Copyright (C) 2004 Brian Palmer
-;; Copyright (C) 2004 Johan Bockgård
 
 ;; Author: Mario Lang <mlang@lexx.delysid.org>
 ;; Keywords: comm
@@ -37,7 +36,7 @@
 (unless (fboundp 'make-overlay)
   (require 'overlay))
 
-(defconst erc-list-version "$Revision: 1.39 $"
+(defconst erc-list-version "$Revision: 1.40 $"
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

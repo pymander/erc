@@ -1,3 +1,9 @@
+2005-02-27  Michael Olson  <mwolson@gnu.org>
+
+	* erc-list.el, erc-match.el, erc.el, debian/copyright: Update
+	copyright information as a few more people have assignments
+	registered.
+
 2005-02-06  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el: Apply patch from Kai Fan for non-ASCII character

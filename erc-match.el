@@ -2,7 +2,6 @@
 
 ;; Copyright (C) 2002,2003,2004 Free Software Foundation, Inc.
 ;; Copyright (C) 2004 Jeremy Bertram Maitin-Shepard
-;; Copyright (C) 2004 Johan Bockgard
 
 ;; Author: Andreas Fuchs <asf@void.at>
 ;; Keywords: comm, faces
@@ -39,7 +38,7 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.40 $"
+(defconst erc-match-version "$Revision: 1.41 $"
   "ERC match mode revision.")
 
 (defgroup erc-match nil
