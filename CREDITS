@@ -41,7 +41,7 @@ Adrian Aichner <adrian@xemacs.org>:
   * Provided fixes for spelling errors in many docstrings, comments 
     and (embarrassingly) a function name.
 
-Marco Toledo <mtoledo@users.sourceforge.net>:
+Marcelo Toledo <marcelo@marcelotoledo.org>:
   * Made it possible to display notices in the current buffer.
 
 Arne Schwabe <arne@rfc2549.org>:

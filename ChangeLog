@@ -1,3 +1,8 @@
+2005-04-05  Michael Olson  <mwolson@gnu.org>
+
+	* ChangeLog, CREDITS, AUTHORS: Correct name and email address of
+	Marcelo Toledo.
+
 2005-04-04  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-modules): Add entry for spelling module.
@@ -412,7 +417,7 @@
 
 2005-01-07  Michael Olson  <mwolson@gnu.org>
 
-	* AUTHORS: Add Marco Toledo, who has CVS access to this project.
+	* AUTHORS: Add Marcelo Toledo, who has CVS access to this project.
 
 	* ChangeLog.2004: Add my name to my one contribution to erc last
 	year.
