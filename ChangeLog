@@ -1,3 +1,8 @@
+2005-03-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc-log.el (erc-save-buffer-in-logs): Replace tabs with spaces
+	in code indentation.
+	
 2005-02-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-display-message): Apply corrected patch from Henrik

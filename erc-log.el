@@ -330,9 +330,9 @@ You can save every individual message by putting this function on
             ;; early on in the initalisation, don't try and write the log out
             (when (and (markerp erc-last-saved-position)
                        (> erc-insert-marker (1+ erc-last-saved-position)))
-	      (write-region (1+ (marker-position erc-last-saved-position))
-			    (marker-position erc-insert-marker)
-			    file t 'nomessage)
+              (write-region (1+ (marker-position erc-last-saved-position))
+                            (marker-position erc-insert-marker)
+                            file t 'nomessage)
               (if (and erc-truncate-buffer-on-save (interactive-p))
                   (progn
                     (let ((inhibit-read-only t)) (erase-buffer))
