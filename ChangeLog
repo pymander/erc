@@ -1,3 +1,9 @@
+2005-03-24  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc-backend.el (define-erc-response-handler): Add
+	`definition-name' property to constructed symbols so that
+	find-function and find-variable will find them.
+
 2005-03-21  Michael Olson  <mwolson@gnu.org>
 
 	* erc-dcc.el, erc-goodies.el, erc-list.el, erc-notify.el,
