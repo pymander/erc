@@ -1,3 +1,10 @@
+2005-01-23  Edward O'Connor  <ted@oconnor.cx>
+	
+	* erc-viper.el: Ensure that `viper-comint-mode-hook' runs in
+	buffers whose `erc-mode-hook' has already run when this file is
+	loaded.
+	Explicitly `require' erc.el.
+
 2005-01-22  Edward O'Connor  <ted@oconnor.cx>
 	
 	* erc.el (erc-mode): Remove frobbing of `require-final-newline'.

@@ -32,6 +32,11 @@
 
 (require 'viper)
 
+;; We need this for `erc-mode-hook' and `erc-buffer-list'. Perhaps it
+;; would be better to use an `eval-after-load', so that there could be
+;; some autodetection / loading of this file from within erc.el?
+(require 'erc)
+
 ;; Fix RET in ERC buffers, by telling Viper to pass RET through to the
 ;; normal keymap.
 
@@ -53,6 +58,11 @@
 
 ;; Fix various local variables in Viper.
 (add-hook 'erc-mode-hook 'viper-comint-mode-hook)
+
+;; Fix local variables in ERC buffers that already exist (buffers in
+;; which `erc-mode-hook' has already been run).
+(mapc (lambda (buf) (viper-comint-mode-hook))
+      (erc-buffer-list))
 
 (provide 'erc-viper)
 ;;; erc-viper.el ends here
