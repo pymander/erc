@@ -37,7 +37,7 @@
 (unless (fboundp 'make-overlay)
   (require 'overlay))
 
-(defconst erc-list-version "$Revision: 1.38 $"
+(defconst erc-list-version "$Revision: 1.39 $"
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -82,9 +82,13 @@ display the channel list."
   "Face used for the even lines in erc's channel list."
   :group 'erc-faces)
 
+(defface erc-chanlist-highlight '((t (:foreground "red")))
+  "Face used to highlight the current line in the channel list."
+  :group 'erc-faces)
+
 ;; This should perhaps be a defface that inherits values from the highlight face
 ;; but xemacs does not support inheritance
-(defcustom erc-chanlist-highlight-face 'highlight
+(defcustom erc-chanlist-highlight-face 'erc-chanlist-highlight
   "Face used for highlighting the current line in a list."
   :type 'face
   :group 'erc-faces)
