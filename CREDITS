@@ -86,6 +86,8 @@ Henrik Enberg <henrik@enberg.org>:
   * Added variables `erc-frame-alist' and `erc-frame-dedicated-p'
     (erc.el).
   * Made handling of `erc-hide-list' smarter.
+  * Use optimal amount of spacing around modified channels indicator
+    in erc-track.el.
 
 Peter Solodov <peter@alcor.concordia.ca>:
   * Contributed a patch for erc-fill.el.

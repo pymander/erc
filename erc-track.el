@@ -39,7 +39,7 @@
 
 ;;; Code:
 
-(defconst erc-track-version "$Revision: 1.74 $"
+(defconst erc-track-version "$Revision: 1.75 $"
   "ERC track mode revision")
 
 (defgroup erc-track nil
@@ -197,7 +197,11 @@ an appropriate initial value for this flavor of Emacs."
                     e-m-c-s))
             (push "] " e-m-c-s)
             (reverse e-m-c-s))
-        (concat " [" (mapconcat 'identity (nreverse strings) ",") "] "))
+        (concat (if (eq erc-track-position-in-mode-line 'after-modes)
+		    "[" " [")
+		(mapconcat 'identity (nreverse strings) ",")
+		(if (eq erc-track-position-in-mode-line 'before-modes)
+		    "] " "]")))
     (if (featurep 'xemacs) '() "")))
 
 (defvar erc-modified-channels-object (erc-modified-channels-object nil)

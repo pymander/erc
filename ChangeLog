@@ -6,6 +6,10 @@
 	erc-response struct using this channel name as key according to
 	the `erc-encoding-coding-alist'.
 
+	* erc-track.el: Apply patch from Henrik Enberg.
+	(erc-modified-channels-object): Use optimal amount of whitespace
+	around modified channels indicator.
+
 2005-04-02  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc.el (define-erc-module, erc-with-buffer)
