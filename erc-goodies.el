@@ -333,7 +333,8 @@ See `erc-interpret-controls-p' and `erc-interpret-mirc-color' for options."
                         (start (match-beginning 0))
                         (end (+ (match-beginning 0)
                                 (length (match-string 5 s)))))
-                    (setq s (replace-match "" nil nil s 1))
+                    (setq s (erc-replace-match-subexpression-in-string
+                             "" s control 1 start))
                     (cond ((and erc-interpret-mirc-color (or fg-color bg-color))
                            (setq fg fg-color)
                            (setq bg bg-color))

@@ -39,7 +39,7 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.39 $"
+(defconst erc-match-version "$Revision: 1.40 $"
   "ERC match mode revision.")
 
 (defgroup erc-match nil
@@ -240,6 +240,7 @@ keyword, pal, dangerous-host, fool"
     (modify-syntax-entry ?- "w" table)
     (modify-syntax-entry ?_ "w" table)
     (modify-syntax-entry ?| "w" table)
+    (modify-syntax-entry ?\\ "w" table)
     table)
   "Syntax table used when highlighting messages.
 This syntax table should make all the legal nick characters word

@@ -79,7 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 $Revision: 1.738 $"
+(defconst erc-version-string "Version 5.0 $Revision: 1.739 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -6113,7 +6113,8 @@ See also `erc-emacs-time-to-erc-time'."
 	  output	(apply 'format format-args))
     ;; Change all "1 units" to "1 unit".
     (while (string-match "\\([^0-9]\\|^\\)1 \\S-+\\(s\\)" output)
-      (setq output (replace-match "" nil nil output 2)))
+      (setq output (erc-replace-match-subexpression-in-string
+		    "" output (match-string 2 output) 2 (match-beginning 2))))
     output))
 
 

@@ -58,9 +58,14 @@
    (remove-hook 'erc-send-modify-hook 'erc-button-add-buttons)
    (remove-hook 'erc-complete-functions 'erc-button-next)))
 
+;; Make XEmacs use `erc-button-face'.
+(when (featurep 'xemacs)
+  (add-hook 'erc-mode-hook
+            (lambda () (set (make-local-variable 'widget-button-face) nil))))
+
 ;;; Variables
 
-(defconst erc-button-version "$Revision: 1.63 $"
+(defconst erc-button-version "$Revision: 1.64 $"
   "ERC button mode revision.")
 
 (defcustom erc-button-face 'bold
@@ -223,6 +228,7 @@ PAR is a number of a regexp grouping whose text will be passed to
     (modify-syntax-entry ?- "w" table)
     (modify-syntax-entry ?_ "w" table)
     (modify-syntax-entry ?| "w" table)
+    (modify-syntax-entry ?\\ "w" table)
     table)
   "Syntax table used when buttonizing messages.
 This syntax table should make all the legal nick characters word
@@ -338,6 +344,8 @@ that `erc-button-add-button' adds, except for the face."
           (and data (list 'erc-data data))))
   (widget-convert-button 'link from to :action 'erc-button-press-button
 			 :suppress-face t
+                         ;; Make XEmacs use `erc-button-face'.
+                         :button-face erc-button-face
                          ;; Make XEmacs behave with mouse-clicks, for
                          ;; some reason, widget stuff overrides the
                          ;; 'keymap text-property.

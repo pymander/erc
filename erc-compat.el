@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.16 $"
+(defconst erc-compat-version "$Revision: 1.17 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
@@ -170,6 +170,17 @@ See `erc-encoding-coding-alist'."
           (date-to-time emacs-build-time)
           emacs-build-time))
 
+;; XEmacs' `replace-match' does not replace matching subexpressions in strings.
+(defun erc-replace-match-subexpression-in-string
+  (newtext string match subexp start &optional fixedcase literal)
+  "Replace the subexpression SUBEXP of the last match in STRING with NEWTEXT.
+MATCH is the text which matched the subexpression (see `match-string').
+START is the beginning position of the last match (see `match-beginning').
+See `replace-match' for explanations of FIXEDCASE and LITERAL."
+  (cond ((featurep 'xemacs)
+         (string-match match string start)
+         (replace-match newtext fixedcase literal string))
+        (t (replace-match newtext fixedcase literal string subexp))))
 
 (provide 'erc-compat)
 

@@ -18,6 +18,16 @@ for one if `erc-prompt-for-channel-key' is non-nil.
 If you use ERC and Viper, adding (require 'erc-viper) to your
 ~/.ercrc.el should be all that's necessary to enable this.
 
+* Fixes since ERC 5.0.1
+
+** Made some XEmacs compatibility fixes.
+
+** Nicknames containing a backslash are now correctly highlighted as
+current-nick and buttonized as nicks.
+
+** `erc-server-select' doesn't offer networks without servers as a
+choice anymore.
+
 * Fixes since ERC 5.0
 
 ** Narrowing in ERC buffers no longer causes formatting errors.

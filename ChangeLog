@@ -1,3 +1,9 @@
+2005-01-25  Diane Murray  <dsm@muenster.de>
+
+	* erc.el, erc-button.el, erc-compat.el, erc-goodies.el,
+	erc-match.el, erc-nets.el, ChangeLog, NEWS: Merged bug fixes made
+	on release_5_0_branch since 5.0.1 release.
+
 2005-01-24  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc.el (erc-input-action): Quote `erc-action-history-list' so
@@ -45,6 +51,28 @@
 	(erc-button-face-has-priority): Removed this variable as it is not
 	necessary anymore - it was used to compensate for the above
 	mentioned change.
+
+	* NEWS: Added the latest fixes.
+
+2005-01-20  Diane Murray  <dsm@muenster.de>
+
+	* erc-button.el, erc-match.el:
+	(erc-button-syntax-table, erc-match-syntax-table): Added \ as a
+	legal character for nicknames.
+
+	* erc-nets.el (erc-server-select): Fixed so that only networks
+	with servers found in `erc-server-alist' are available as choices.
+
+	* erc.el, erc-compat.el, erc-goodies.el:
+	(erc-replace-match-subexpression-in-string): New function.  Needed
+	because `replace-match' in XEmacs doesn't replace regular
+	expression subexpressions in strings, only in buffers.
+	(erc-seconds-to-string, erc-controls-interpret): Use the new
+	function.
+
+	* erc-button.el (erc-button-add-button): Use the `:button-face'
+	key combined with an `erc-mode' local `widget-button-face' set to
+	nil to get the widget overlay face suppressed in XEmacs.
 
 2005-01-19  Francis Litterio  <franl@world.std.com>
 

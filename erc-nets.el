@@ -27,7 +27,7 @@
 
 (require 'erc)
 
-(defconst erc-nets-version "$Revision: 1.18 $"
+(defconst erc-nets-version "$Revision: 1.19 $"
   "ERC networks revision.")
 
 ;; Variables
@@ -781,15 +781,16 @@ As an example:
 
 ;;;###autoload
 (defun erc-server-select ()
-  "Interactively select a server to connect to using the `erc-networks-alist'
-and `erc-server-alist'."
+  "Interactively select a server to connect to using `erc-server-alist'."
   (interactive)
   (let* ((completion-ignore-case t)
 	 (net (intern
 	       (completing-read "Network: "
-				(mapcar (lambda (x)
-					  (list (symbol-name (car x))))
-					erc-networks-alist))))
+				(remove-duplicates
+				 (mapcar (lambda (x)
+					   (list (symbol-name (nth 1 x))))
+					 erc-server-alist)
+				 :test #'equal))))
 	 (srv (assoc
 	       (completing-read "Server: "
 				(delq nil
