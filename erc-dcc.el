@@ -2,7 +2,6 @@
 
 ;; Copyright (C) 1993,1994,1995,1998,2002,2003,2004
 ;;     Free Software Foundation, Inc.
-;; Copyright (C) 2003 Francis Litterio
 
 ;; Author: Ben A. Mesander <ben@gnu.ai.mit.edu>
 ;;         Noah Friedman <friedman@prep.ai.mit.edu>
@@ -54,7 +53,7 @@
 
 (require 'erc)
 
-(defconst erc-dcc-version "$Revision: 1.87 $"
+(defconst erc-dcc-version "$Revision: 1.88 $"
   "ERC DCC revision")
 
 (defgroup erc-dcc nil

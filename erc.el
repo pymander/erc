@@ -5,7 +5,6 @@
 ;; Copyright (C) 2001 Tijs van Bakel
 ;; Copyright (C) 2001,2002 Gergely Nagy
 ;; Copyright (C) 2002,2003 Brian P Templeton
-;; Copyright (C) 2002,2003,2004 Francis Litterio
 ;; Copyright (C) 2003 Arne Schwabe
 ;; Copyright (C) 2004 Jeremy Bertram Maitin-Shepard
 ;; Copyright (C) 2004 Brian Palmer
@@ -78,7 +77,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.748 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.749 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location

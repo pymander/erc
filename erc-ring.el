@@ -1,7 +1,6 @@
 ;; erc-ring.el -- Command history handling for erc using ring.el
 
 ;; Copyright (C) 2001,2002,2003,2004 Free Software Foundation, Inc.
-;; Copyright (C) 2003 Francis Litterio
 
 ;; Author: Alex Schroeder <alex@gnu.org>
 ;; Keywords: comm
@@ -38,7 +37,7 @@
 (require 'comint)
 (require 'ring)
 
-(defvar erc-ring-version "$Revision: 1.15 $"
+(defvar erc-ring-version "$Revision: 1.16 $"
   "ERC ring revision")
 
 ;;;###autoload (autoload 'erc-ring-mode "erc-ring" nil t)

@@ -36,7 +36,7 @@ binary-erc: install
 # ..the copyright file..
 	install -m 0644 debian/copyright ${PKGDIR}${DOCDIR}/
 # ..some documentation
-	install -m 0644 CREDITS HISTORY ${PKGDIR}${DOCDIR}/
+	install -m 0644 CREDITS HISTORY NEWS ${PKGDIR}${DOCDIR}/
 # the emacs-install scripts
 	install -m 0755 debian/scripts/install \
 		${PKGDIR}/usr/lib/emacsen-common/packages/install/${PACKAGE}
@@ -47,7 +47,8 @@ binary-erc: install
 		${PKGDIR}/etc/emacs/site-start.d/50${PACKAGE}.el
 ## Compress stuff
 	gzip -9f ${PKGDIR}${DOCDIR}/changelog.Debian \
-		 ${PKGDIR}${DOCDIR}/changelog
+		 ${PKGDIR}${DOCDIR}/changelog \
+		 ${PKGDIR}${DOCDIR}/NEWS
 ## Fix permissions
 	find ${PKGDIR} -print0 2>/dev/null | xargs -0r chown \
 						   --no-dereference 0.0

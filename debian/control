@@ -2,7 +2,7 @@ Source: erc
 Section: net
 Priority: optional
 Maintainer: Mario Lang <mlang@debian.org>
-Standards-Version: 3.5.7
+Standards-Version: 3.6.1
 
 Package: erc
 Architecture: all

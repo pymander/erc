@@ -1,34 +1,49 @@
-#! /usr/bin/make -f
+#!/bin/sh
+# -*- Makefile -*-
+
+# This wrapper was written by Michael Olson <mwolson@gnu.org>.
+
+# The purpose for doing this is to ensure that only the first argument
+# is acted on.  There does not seem to be a feasible way of doing this
+# using Make.
+
+# The only inconveniences we suffer here are (1) an extra shell
+# instance is loaded and (2) all `$' characters must be escaped.
+
+make -f - $1 <<EOF
 ## Written by Gergely Nagy <algernon@debian.org>
 ## Adapted by Mario Lang <mlang@debian.org>
 
 PACKAGE	:= erc
-ELDIR	:= /usr/share/emacs/site-lisp/${PACKAGE}
-ELFILES	:= format-spec.el \
-	   $(filter-out erc-compat.el erc-bbdb.el erc-speedbar.el erc-speak.el erc-chess.el erc-ibuffer.el, \
-		        $(subst ${ELDIR}/,,$(wildcard ${ELDIR}/erc*.el)))
-FLAGS	= ${SITEFLAGS} -q -batch -l path.el -f batch-byte-compile
-FLAVOUR	= $@
-ELCDIR	= /usr/share/${FLAVOUR}/site-lisp/${PACKAGE}
-FILES = $(ELFILES)
+ELDIR	:= /usr/share/emacs/site-lisp/\${PACKAGE}
+ELFILES	:= \$(filter-out erc-bbdb.el erc-speedbar.el erc-speak.el erc-chess.el erc-ibuffer.el, \
+	     \$(subst \${ELDIR}/,,\$(wildcard \${ELDIR}/erc*.el)))
+SITEFLAG = --no-site-file
+FLAGS	= -q -batch -l path.el -f batch-byte-compile
+FLAVOUR	= \$@
+ELCDIR	= /usr/share/\${FLAVOUR}/site-lisp/\${PACKAGE}
+FILES = \$(ELFILES)
 
 emacs: ;
 
-xemacs%: FILES=$(filter-out erc-track.el,${ELFILES})
+xemacs%: SITEFLAG = -no-site-file
+
+emacs21: ELFILES += format-spec.el
 
 emacs20:
-	@echo install/erc: Handling install for emacsen flavor $@
+	@echo install/erc: Handling install for emacsen flavor \$@
 	@echo Sorry, ERC does no longer support emacs20.
 	@echo We recommend that you install emacs21.
 
-.DEFAULT: ${ELCDIR}/path.el
-	@echo install/erc: Handling install for emacsen flavor $@
-	@install -m 755 -d ${ELCDIR}
-	@cd ${ELDIR} && cp ${FILES} ${ELCDIR}
-	@cd ${ELCDIR} && \
+.DEFAULT: \${ELCDIR}/path.el
+	@echo install/erc: Handling install for emacsen flavor \$(FLAVOUR)
+	@install -m 755 -d \${ELCDIR}
+	@cd \${ELDIR} && cp \${FILES} \${ELCDIR}
+	@cd \${ELCDIR} && \
 	echo "(setq load-path (cons \".\" load-path) byte-compile-warnings nil)" >path.el && \
-	${FLAVOUR} ${FLAGS} ${FILES}
-	@cd ${ELCDIR} && rm -f ${FILES} path.el
+	\${FLAVOUR} \${SITEFLAG} \${FLAGS} \${FILES}
+	@cd \${ELCDIR} && rm -f \${FILES} path.el
 
 .SUFFIXES:
 .PHONY:
+EOF

@@ -285,3 +285,57 @@ in XEmacs.
   o `erc-track-position-in-mode-line' - Set the position in the
     mode-line where modified channels are shown (only works in GNU
     Emacs versions above 21.3).
+
+* Changes since ERC 3.0.cvs.20030119
+
+** The module system has again changed a lot.  You can now customize
+  the variable `erc-modules' and define once and for all which
+  extension modules you want to use.  This unfortunately may require
+  you to change your current erc initialisation code a bit, if you
+  have some existing customsations.  On the other hand, this change
+  makes the configuration of extension modules a lot easier for new
+  users.  In theory, you should be able to configure all aspects of
+  ERC by using the customize interface, you should no longer really
+  need to write Lisp code for trivial customizations.
+
+  By default, the following modules are now loaded: (pcomplete
+  netsplit fill track ring button autojoin)
+
+  Please use M-x customize-variable RET erc-modules RET to change the
+  default if it does not suite your needs.
+
+** THe symbol used in `erc-nickserv-passwords' for debian.org IRC servers
+  (formerly called OpenProjects, now FreeNode) has changed from
+  openprojects to freenode.  You may need to update your configuration
+  for a successful automatic nickserv identification.
+
+* Changes since ERC 2.93.cvs.20020819
+
+** New module erc-dcc:
+
+This finally implements DCC.  It requires server sockets to fully work
+in both directions.  This feature is currently only available in Emacs
+21.3.50 (CVS). Here is a short list of what should work though.
+
+** Compatibility:
+  * Emacs 21.2, DCC get, and accepting DCC chat offers.
+  * XEmacs 21, Only accepting DCC chat offers.
+
+** erc is switching to global-minor-modes for activation of submodules.
+
+This allows you to customize such a mode and get automatic loading of
+the module.  No longer putting a lot of require statments in .emacs.
+At least this is the long-term plan, not all modules are converted
+yet.
+
+** The most important user visible change is that you now need to activate
+erc-completion-mode, to get TAB completion.  The new completion code
+is based on pcomplete.  To get the old code, manually load
+erc-complete and bind TAB to erc-complete in erc-mode-map.
+
+To activate completion on startup, put (erc-completion-mode 1) in your
+.emacs file.
+
+Same applies to timestamps.  You no longer need to (require
+'erc-stamp), you can customize the variable `erc-timestamp-mode', and
+the rest should be automatic.
