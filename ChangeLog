@@ -6,6 +6,21 @@
 	* erc.el, erc-fill.el, erc-pcomplete.el, debian/copyright: Merge a
 	few more copyright lines thanks to Alex Schroeder's BBDB file.
 
+2005-01-18  Diane Murray  <dsm@muenster.de>
+
+	* erc-list.el (erc-chanlist-channel-line-regexp): Now matches
+	private channels, the channels `#' and `&', and channels with
+	names including non-ascii characters.
+	(erc-chanlist-join-channel): Don't attempt to join private
+	channels since the channel name is unknown.
+
+	* erc-goodies.el (erc-make-read-only): Add `rear-nonsticky'
+	property to avoid `Text is read-only' errors during connection.
+	`front-nonsticky' does not exist, changed to `front-sticky'.
+	(erc-controls-interpret, erc-controls-strip): Just work on the
+	string, don't open a temporary buffer.
+	(erc-controls-propertize): Now accepts optional argument STR.
+
 2005-01-17  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile: Version is 5.01, but only in the Makefile.  It has not

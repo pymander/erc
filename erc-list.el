@@ -37,7 +37,7 @@
 (unless (fboundp 'make-overlay)
   (require 'overlay))
 
-(defconst erc-list-version "$Revision: 1.37 $"
+(defconst erc-list-version "$Revision: 1.38 $"
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,7 +94,7 @@ display the channel list."
 ;; All variables below this line are for internal use only.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar erc-chanlist-channel-line-regexp "^\\([#&]\\S-+\\)\\s-+[0-9]+"
+(defvar erc-chanlist-channel-line-regexp "^\\([#&\\*][^ \t\n]*\\)\\s-+[0-9]+"
   "Regexp that matches a channel line in the channel list buffer.")
 
 (defvar erc-chanlist-buffer nil)
@@ -368,14 +368,16 @@ devoted to the channel list)."
     (delete-window)))
 
 (defun erc-chanlist-join-channel ()
-  "Join the channel listed on the current line of the channel list buffer."
+  "Join the channel listed on the current line of the channel list buffer.
+Private channels, which are shown as asterisks (*), are ignored."
   (interactive)
   (save-excursion
     (beginning-of-line)
-    (if (looking-at erc-chanlist-channel-line-regexp)
-	(let ((channel-name (match-string 1)))
-	  (if (stringp channel-name)
-	      (run-at-time 0.5 nil 'erc-join-channel channel-name))))))
+    (when (looking-at erc-chanlist-channel-line-regexp)
+      (let ((channel-name (match-string 1)))
+	(when (and (stringp channel-name)
+		   (not (string= channel-name "*")))
+	  (run-at-time 0.5 nil 'erc-join-channel channel-name))))))
 
 (provide 'erc-list)
 

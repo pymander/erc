@@ -104,7 +104,8 @@ DISPLAY-START is ignored."
   "Make all the text in the current buffer read-only.
 Put this function on `erc-insert-post-hook' and/or `erc-send-post-hook'."
   (put-text-property (point-min) (point-max) 'read-only t)
-  (put-text-property (point-min) (point-max) 'front-nonsticky t))
+  (put-text-property (point-min) (point-max) 'front-sticky t)
+  (put-text-property (point-min) (point-max) 'rear-nonsticky t))
 
 ;; Distingush non-commands
 (defvar erc-noncommands-list '(erc-cmd-ME
@@ -313,22 +314,60 @@ The value `erc-interpret-controls-p' must also be t for this to work."
    (remove-hook 'erc-send-modify-hook 'erc-controls-highlight)))
 
 (defun erc-controls-interpret (str)
-   "Returns a new string that is a copy of STR with all IRC control and color
-characters converted into text-properties.  See `erc-controls-highlight' for
-more information."
-   (with-temp-buffer
-     (insert str)
-     (erc-controls-highlight)
-     (buffer-string)))
+   "Return a copy of STR after dealing with IRC control characters.
+See `erc-interpret-controls-p' and `erc-interpret-mirc-color' for options."
+   (when str
+     (let ((s str))
+       (cond ((eq erc-interpret-controls-p 'remove)
+              (erc-controls-strip s))
+             (erc-interpret-controls-p
+              (let ((boldp nil)
+                    (inversep nil)
+                    (underlinep nil)
+                    (fg nil)
+                    (bg nil))
+                (while (string-match erc-controls-highlight-regexp s)
+                  (let ((control (match-string 1 s))
+                        (fg-color (match-string 2 s))
+                        (bg-color (match-string 4 s))
+                        (start (match-beginning 0))
+                        (end (+ (match-beginning 0)
+                                (length (match-string 5 s)))))
+                    (setq s (replace-match "" nil nil s 1))
+                    (cond ((and erc-interpret-mirc-color (or fg-color bg-color))
+                           (setq fg fg-color)
+                           (setq bg bg-color))
+                          ((string= control "\C-b")
+                           (setq boldp (not boldp)))
+                          ((string= control "\C-v")
+                           (setq inversep (not inversep)))
+                          ((string= control "\C-_")
+                           (setq underlinep (not underlinep)))
+                          ((string= control "\C-c")
+                           (setq fg nil
+                                 bg nil))
+                          ((string= control "\C-g")
+                           (when erc-beep-p
+                             (ding)))
+                          ((string= control "\C-o")
+                           (setq boldp nil
+                                 inversep nil
+                                 underlinep nil
+                                 fg nil
+                                 bg nil))
+                          (t nil))
+                    (erc-controls-propertize
+                     start end boldp inversep underlinep fg bg s)))
+                s))
+             (t s)))))
 
 (defun erc-controls-strip (str)
-  "Returns a new string that is a copy of STR with all IRC control and color
-characters removed.  See `erc-controls-highlight' for more information."
-  (if (= (length str) 0)
-      str
-    (let ((newstr (erc-controls-interpret str)))
-      (set-text-properties 0 (1- (length newstr)) nil newstr)
-      newstr)))
+  "Return a copy of STR with all IRC control characters removed."
+  (when str
+    (let ((s str))
+      (while (string-match erc-controls-remove-regexp s)
+        (setq s (replace-match "" nil nil s)))
+      s)))
 
 (defvar erc-controls-remove-regexp
   "\C-b\\|\C-_\\|\C-v\\|\C-g\\|\C-o\\|\C-c[0-9]?[0-9]?\\(,[0-9][0-9]?\\)?"
@@ -388,7 +427,11 @@ This is useful for `erc-insert-modify-hook' and
                                         boldp inversep underlinep fg bg)))))
         (t nil)))
 
-(defun erc-controls-propertize (from to boldp inversep underlinep fg bg)
+(defun erc-controls-propertize (from to boldp inversep underlinep fg bg
+                                     &optional str)
+  "Prepend properties from IRC control characters between FROM and TO.
+If optional argument STR is provided, apply to STR, otherwise prepend properties
+to a region in the current buffer."
   (font-lock-prepend-text-property
    from
    to
@@ -407,7 +450,9 @@ This is useful for `erc-insert-modify-hook' and
              nil)
            (if bg
                (list (erc-get-bg-color-face bg))
-             nil))))
+             nil))
+   str)
+  str)
 
 (defun erc-toggle-interpret-controls (&optional arg)
   "Toggle interpretation of control sequences in messages.
