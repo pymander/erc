@@ -1,3 +1,40 @@
+2005-03-21  Michael Olson  <mwolson@gnu.org>
+
+	* erc-dcc.el, erc-goodies.el, erc-list.el, erc-notify.el,
+	erc-ring.el, erc.el: Copyright assignment occurred.
+
+	* debian/scripts/install: Make a shell wrapper around the original
+	Makefile and inline the Makefile.  The problem is that Debian
+	passes all the Emacs variants at once, rotating them at every
+	invocation of the install script, which happens once per variant.
+	This caused each installation to happen N-1 times more often than
+	it should have.  As a result, we need to only deal with the first
+	argument.
+	(ELFILES): Only add format-spec.el if we are compiling for
+	emacs21.  Don't filter out erc-compat.el.
+	(SITEFLAG): New variable that indicates that the "nosite" option
+	should look like.
+	(.DEFAULT): Use $(FLAVOUR) instead of $@ for clarity.
+
+	* debian/rules: Install NEWS file and compress it.
+
+	* debian/maint/postinst: Be more cautious about configuration
+	step.
+
+	* debian/copyright (Copyright): Another assignment came in.
+
+	* debian/control (Standards-Version): Update to a newer version as
+	recommended by lintian.
+
+	* debian/changelog: Changes made for the Debian package.
+
+	* debian/README.Debian: Keep only the General Notes section.
+
+	* NEWS: Move old history items here from debian/README.Debian.
+
+	* Makefile (SNAPSHOTDATE): Deprecate this option since we hope to
+	release more often.
+
 2005-03-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (erc-save-buffer-in-logs): Replace tabs with spaces

@@ -1,6 +1,5 @@
 VERSION=5.1
-SNAPSHOTDATE=20050119
-SNAPDIR=erc-$(VERSION).cvs.$(SNAPSHOTDATE)
+SNAPDIR=erc-$(VERSION)
 
 SPECIAL = erc-auto.el
 UNCOMPILED = erc-chess.el erc-bbdb.el erc-ibuffer.el erc-speak.el \
