@@ -53,11 +53,17 @@
 ;; Fix various local variables in Viper.
 (add-hook 'erc-mode-hook 'viper-comint-mode-hook)
 
-;; Fix local variables in ERC buffers that already exist (buffers in
-;; which `erc-mode-hook' has already been run).
+;; Fix ERC buffers that already exist (buffers in which `erc-mode-hook'
+;; has already been run).
 (mapc (lambda (buf)
         (with-current-buffer buf
-          (viper-comint-mode-hook)))
+          (viper-comint-mode-hook)
+          ;; If there *is* a final newline in this buffer, delete it, as
+          ;; it interferes with ERC /-commands.
+          (let ((last (1- (point-max))))
+            (when (eq (char-after last) 10)
+              (goto-char last)
+              (delete-char 1)))))
       (erc-buffer-list))
 
 (provide 'erc-viper)
