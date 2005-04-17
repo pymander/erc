@@ -1,3 +1,13 @@
+2005-04-17  Adrian Aichner  <adrian@xemacs.org>
+
+	* erc-log.el: Remove stray whitespace.
+	* erc.el: Ditto.
+
+2005-04-09  Aidan Kehoe  <kehoea@parhasard.net>
+
+	* erc.el: autoload erc-select-read-args, which, because it parses
+	erc-select's args, can be called before erc.el is loaded. 
+
 2005-04-07  Edward O'Connor  <ted@oconnor.cx>
 	
 	* erc-viper.el: Remove final newlines from previously-existing ERC

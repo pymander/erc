@@ -77,7 +77,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.751 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.752 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -2082,6 +2082,7 @@ functions in here get called with the parameters SERVER and NICK."
   :group 'erc-hooks
   :type 'hook)
 
+;;;###autoload
 (defun erc-select-read-args ()
   "Prompt the user for values of nick, server, port, and password."
   (let (user-input server port nick passwd)
@@ -5409,7 +5410,7 @@ Specifically, return the position of `erc-insert-marker'."
 	
 	;; Only when last hook has been run...
 	(run-hook-with-args 'erc-send-completed-hook str))))))
-  
+
 (defun erc-user-input ()
   "Return the input of the user in the current buffer."
   ;; We use erc-bol to ignore the prompt.

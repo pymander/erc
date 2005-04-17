@@ -94,7 +94,7 @@
 
 (require 'erc)
 
-(defconst erc-log-version "$Revision: 1.22 $"
+(defconst erc-log-version "$Revision: 1.24 $"
   "ERC log mode revision")
 
 (defgroup erc-log nil
@@ -279,7 +279,7 @@ The result is converted to lowercase, as IRC is case-insensitive"
 		      (erc-current-nick)
 		      erc-session-server erc-session-port))
    erc-log-channels-directory))
-	     
+
 (defun erc-generate-log-file-name-with-date (buffer &rest ignore)
   "This function computes a short log file name.
 The name of the log file is composed of BUFFER and the current date.
