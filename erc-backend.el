@@ -99,7 +99,7 @@
 (require 'cl)
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 
-(defconst erc-backend-version "$Revision: 1.27 $")
+(defconst erc-backend-version "$Revision: 1.28 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -452,33 +452,34 @@ add things to `%s' instead."
       ;; strip the stupid combined JOIN facility (IRC 2.9)
       (if (string-match "^\\(.*\\)?\^g.*$" chnl)
           (setq chnl (match-string 1 chnl)))
-      (let* ((str (cond
-                   ;; If I have joined a channel
-                   ((erc-current-nick-p nick)
-                    (setq buffer (erc erc-session-server erc-session-port
-                                      nick erc-session-user-full-name
-                                      nil nil
-                                      erc-default-recipients chnl erc-process))
-                    (when buffer
-                      (set-buffer buffer)
-                      (erc-add-default-channel chnl)
-                      (erc-send-command (format "MODE %s" chnl)))
-                    (erc-with-buffer (chnl proc)
-                      (erc-channel-begin-receiving-names))
-                    (erc-update-mode-line)
-                    (run-hooks 'erc-join-hook)
-                    (erc-make-notice
-                     (erc-format-message 'JOIN-you ?c chnl)))
-                   (t
-                    (setq buffer (erc-get-buffer chnl proc))
-                    (erc-make-notice
-                     (erc-format-message
-                      'JOIN ?n nick ?u login ?h host ?c chnl))))))
-        (when buffer (set-buffer buffer))
-        (erc-update-channel-member chnl nick nick t nil nil host login)
-        ;; on join, we want to stay in the new channel buffer
-        ;;(set-buffer ob)
-	(erc-display-message parsed nil buffer str)))))
+      (save-excursion
+	(let* ((str (cond
+		     ;; If I have joined a channel
+		     ((erc-current-nick-p nick)
+		      (setq buffer (erc erc-session-server erc-session-port
+					nick erc-session-user-full-name
+					nil nil
+					erc-default-recipients chnl erc-process))
+		      (when buffer
+			(set-buffer buffer)
+			(erc-add-default-channel chnl)
+			(erc-send-command (format "MODE %s" chnl)))
+		      (erc-with-buffer (chnl proc)
+				       (erc-channel-begin-receiving-names))
+		      (erc-update-mode-line)
+		      (run-hooks 'erc-join-hook)
+		      (erc-make-notice
+		       (erc-format-message 'JOIN-you ?c chnl)))
+		     (t
+		      (setq buffer (erc-get-buffer chnl proc))
+		      (erc-make-notice
+		       (erc-format-message
+			'JOIN ?n nick ?u login ?h host ?c chnl))))))
+	  (when buffer (set-buffer buffer))
+	  (erc-update-channel-member chnl nick nick t nil nil host login)
+	  ;; on join, we want to stay in the new channel buffer
+	  ;;(set-buffer ob)
+	  (erc-display-message parsed nil buffer str))))))
 
 (define-erc-response-handler (KICK)
   "Handle kick messages received from the server." nil
