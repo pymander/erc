@@ -108,6 +108,10 @@ Andreas Schwab <schwab@suse.de>:
 Kai Fan (m_pupil AT yahoo DOT com) (aka "It's me FKtPp ;)"):
   * Enhanced non-ASCII character support (erc-backend.el).
 
+Daniel Brockman (daniel AT brockman DOT se):
+  * Submitted small patch that fixed a load failure in erc-autoaway.el
+    when using Emacs21.
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably

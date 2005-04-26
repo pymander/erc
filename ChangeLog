@@ -1,3 +1,9 @@
+2005-04-25  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el (erc-autoaway-reestablish-idletimer): Move code
+	block higher in file to fix a load failure when using Emacs21.
+	Thanks to Daniel Brockman for the report and fix.
+
 2005-04-24  Adrian Aichner  <adrian@xemacs.org>
 
 	* erc-backend.el (JOIN): save-excursion so that

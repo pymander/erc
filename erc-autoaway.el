@@ -29,7 +29,7 @@
 
 (require 'erc)
 
-(defconst erc-autoaway-version "$Revision: 1.20 $"
+(defconst erc-autoaway-version "$Revision: 1.21 $"
   "ERC Autoaway revision.")
 
 (defgroup erc-autoaway nil
@@ -117,6 +117,19 @@ See `erc-auto-discard-away'."
   :group 'erc-autoaway
   :type 'regexp)
 
+(defun erc-autoaway-reestablish-idletimer ()
+  "Reestablish the emacs idletimer.
+You have to call this function each time you change
+`erc-autoaway-idle-seconds', if `erc-autoaway-use-emacs-idle' is set."
+  (interactive)
+  (when erc-autoaway-idletimer
+    (cancel-timer erc-autoaway-idletimer))
+  (setq erc-autoaway-idletimer
+	(run-with-idle-timer erc-autoaway-idle-seconds
+			     t
+			     'erc-autoaway-set-away
+			     erc-autoaway-idle-seconds)))
+
 (defcustom erc-autoaway-idle-seconds 1800
   "*Number of seconds after which ERC will set you automatically away.
 If you are changing this variable using lisp instead of customizing it,
@@ -147,19 +160,6 @@ on another net too."
              (not (string-match erc-autoaway-no-auto-discard-regexp line)))
     (erc-autoaway-set-back line))
   (setq erc-autoaway-last-sent-time (erc-current-time)))
-
-(defun erc-autoaway-reestablish-idletimer ()
-  "Reestablish the emacs idletimer.
-You have to call this function each time you change
-`erc-autoaway-idle-seconds', if `erc-autoaway-use-emacs-idle' is set."
-  (interactive)
-  (when erc-autoaway-idletimer
-    (cancel-timer erc-autoaway-idletimer))
-  (setq erc-autoaway-idletimer
-	(run-with-idle-timer erc-autoaway-idle-seconds
-			     t
-			     'erc-autoaway-set-away
-			     erc-autoaway-idle-seconds)))
 
 (defun erc-autoaway-set-back (line)
   "Discard the away state globally."
