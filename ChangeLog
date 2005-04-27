@@ -118,6 +118,11 @@
 	* Makefile (SNAPSHOTDATE): Deprecate this option since we hope to
 	release more often.
 
+2005-03-20  Jorgen Schaefer  <forcer@users.sourceforge.net>
+
+	* erc.el (erc-define-catalog, `ctcp-request-to'): Fix typo (%: ->
+	%t:).
+
 2005-03-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (erc-save-buffer-in-logs): Replace tabs with spaces
