@@ -1,3 +1,7 @@
+2005-04-27  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc.el (erc-complete-word): Simplify.
+
 2005-04-27  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (debrelease): Use a slightly different approach when

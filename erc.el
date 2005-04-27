@@ -77,7 +77,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.752 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.753 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
@@ -2144,9 +2144,12 @@ Non-interactively, it takes keyword arguments
    (nick   (erc-compute-nick))
    password 
    (full-name (erc-compute-full-name)))
-That is, if called with (erc-select :server \"irc.freenode.net\" :full-name \"Harry S Truman\") , 
-server and full-name will be set to those values, whereas erc-compute-port, erc-compute-nick and 
-erc-compute-full-name will be invoked for those parameters' values"
+
+That is, if called with
+   (erc-select :server \"irc.freenode.net\" :full-name \"Harry S Truman\")
+server and full-name will be set to those values, whereas
+erc-compute-port, erc-compute-nick and erc-compute-full-name will
+be invoked for those parameters' values"
   (interactive (erc-select-read-args))
 
   (run-hook-with-args 'erc-before-connect server port nick)
@@ -4104,12 +4107,8 @@ This places `point' just after the prompt, or at the beginning of the line."
 
 This function uses `erc-complete-functions'."
   (interactive)
-  (let ((funs erc-complete-functions))
-    (while (and funs
-		(not (funcall (car funs))))
-      (setq funs (cdr funs)))
-    (if (not funs)
-	(beep))))
+  (unless (run-hook-with-args-until-success 'erc-complete-functions)
+    (beep)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
