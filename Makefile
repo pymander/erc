@@ -43,14 +43,14 @@ debrelease: $(ALLSOURCE) $(SPECIAL)
 	cd ../ && \
 	tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR)
 	cp -R debian ../$(SNAPDIR)
-	-[ -d ../$(SNAPDIR)/debian/CVS ] && rm -R \
+	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
 	  ../$(SNAPDIR)/debian/CVS \
 	  ../$(SNAPDIR)/debian/maint/CVS \
-	  ../$(SNAPDIR)/debian/scripts/CVS
-	-[ -d ../$(SNAPDIR)/debian/.arch-ids ] && rm -R \
+	  ../$(SNAPDIR)/debian/scripts/CVS || :
+	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -R \
 	  ../$(SNAPDIR)/debian/.arch-ids \
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
-	  ../$(SNAPDIR)/debian/scripts/.arch-ids
+	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	cd ../$(SNAPDIR) && dpkg-buildpackage -rfakeroot
 
 release: autoloads

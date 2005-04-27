@@ -1,3 +1,10 @@
+2005-04-27  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (debrelease): Use a slightly different approach when
+	removing CVS and Arch cruft.
+
+	* debian/changelog: Update for 5.0.2-1 package.
+
 2005-04-25  Michael Olson  <mwolson@gnu.org>
 
 	* erc-autoaway.el (erc-autoaway-reestablish-idletimer): Move code

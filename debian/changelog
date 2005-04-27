@@ -1,17 +1,17 @@
-erc (5.0.2-1.1) unstable; urgency=low
+erc (5.0.2-1) unstable; urgency=low
 
-  * Non-maintainer upload.
-  * New upstream release.
-  * Bug fix: "erc will not install at same time as emacs21", thanks to
-    Ryan Senior (Closes: #267511).
-  * debian/README.Debian: Moved news entries to newly-created NEWS.gz
-    file.
-  * debian/copyright: Adjust for copyright assignment that occurred after
-    5.0.2 release.
-  * format-spec.el: Added to make erc compile properly on emacs21.  Some
-    upstream fix will be made in the future.
+  * Michael W. Olson <mwolson@gnu.org>:
+    * New upstream release.
+    * Bug fix: "erc will not install at same time as emacs21", thanks to
+      Ryan Senior (Closes: #267511).
+    * debian/README.Debian: Moved news entries to newly-created NEWS.gz
+      file.
+    * debian/copyright: Adjust for copyright assignment that occurred after
+      5.0.2 release.
+    * format-spec.el: Added to make erc compile properly on emacs21.  Some
+      upstream fix will be made in the future.
 
- -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Sun, 20 Mar 2005 03:17:44 -0500
+ -- Mario Lang <mlang@debian.org>  Mon, 18 Apr 2005 19:13:02 +0200
 
 erc (4.0.cvs.20041118-1) unstable; urgency=low
 
