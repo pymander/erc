@@ -36,7 +36,7 @@
 (require 'erc)
 (require 'erc-stamp); for the timestamp stuff
 
-(defconst erc-fill-version "$Revision: 1.30 $"
+(defconst erc-fill-version erc-version-string
   "ERC fill revision.")
 
 (defgroup erc-fill nil

@@ -32,7 +32,7 @@
 (require 'erc)
 (require 'flyspell)
 
-(defconst erc-spelling-version "$Revision: 1.2 $"
+(defconst erc-spelling-version erc-version-string
   "ERC spelling revision.")
 
 (defcustom erc-spelling-dictionaries nil

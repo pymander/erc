@@ -41,7 +41,7 @@
 (require 'bbdb-gui)
 (require 'bbdb-hooks)
 
-(defconst erc-bbdb-version "$Revision: 1.25 $"
+(defconst erc-bbdb-version erc-version-string
   "ERC BBDB revision.")
 
 (defgroup erc-bbdb nil

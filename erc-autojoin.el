@@ -34,7 +34,7 @@
 (require 'erc)
 ;;; Minor Mode
 
-(defconst erc-autojoin-version "$Revision: 1.12 $"
+(defconst erc-autojoin-version erc-version-string
   "ERC autojoin revision.")
 
 (defgroup erc-autojoin nil

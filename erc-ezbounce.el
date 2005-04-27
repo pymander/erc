@@ -28,7 +28,7 @@
 
 (require 'erc)
 
-(defconst erc-ezb-version "$Revision: 1.9 $"
+(defconst erc-ezb-version erc-version-string
   "ERC EZBouncer revision.")
 
 (defgroup erc-ezbounce nil

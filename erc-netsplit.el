@@ -31,7 +31,7 @@
 
 (require 'erc)
 
-(defconst erc-netsplit-version "$Revision: 1.13 $"
+(defconst erc-netsplit-version erc-version-string
   "ERC netsplit version.")
 
 (defgroup erc-netsplit nil

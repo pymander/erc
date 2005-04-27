@@ -60,7 +60,7 @@
 (require 'erc)
 (require 'erc-nets)
 
-(defconst erc-nickserv-version "$Revision: 1.22 $"
+(defconst erc-nickserv-version erc-version-string
   "ERC NickServ revision.")
 
 ;; Customization:

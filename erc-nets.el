@@ -27,7 +27,7 @@
 
 (require 'erc)
 
-(defconst erc-nets-version "$Revision: 1.19 $"
+(defconst erc-nets-version erc-version-string
   "ERC networks revision.")
 
 ;; Variables

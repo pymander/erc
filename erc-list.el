@@ -35,7 +35,7 @@
 (unless (fboundp 'make-overlay)
   (require 'overlay))
 
-(defconst erc-list-version "$Revision: 1.41 $"
+(defconst erc-list-version erc-version-string
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

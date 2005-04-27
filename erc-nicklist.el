@@ -59,7 +59,7 @@
 
 (require 'erc)
 
-(defconst erc-nicklist-version "$Revision: 1.4 $"
+(defconst erc-nicklist-version erc-version-string
   "ERC Nicklist version.")
 
 (defgroup erc-nicklist nil
