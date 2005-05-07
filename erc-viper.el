@@ -61,7 +61,7 @@
           ;; If there *is* a final newline in this buffer, delete it, as
           ;; it interferes with ERC /-commands.
           (let ((last (1- (point-max))))
-            (when (eq (char-after last) 10)
+            (when (eq (char-after last) ?\n)
               (goto-char last)
               (delete-char 1)))))
       (erc-buffer-list))
