@@ -1,3 +1,15 @@
+2005-05-30  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc.el (erc-cmd-BANLIST, erc-cmd-MASSUNBAN): Delete superfluous
+	arg to `format'.
+	(erc-load-irc-script): Use `insert-file-contents' instead of
+	`insert-file'. Simplify.
+
+2005-05-29  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-version-string): Move this up so that it is
+	evaluated before the `require' statements.  Not a major change.
+
 2005-04-27  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc.el (erc-complete-word): Simplify.
