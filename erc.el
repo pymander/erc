@@ -68,6 +68,9 @@
 
 ;;; Code:
 
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.753 $"
+  "ERC version.  This is used by function `erc-version'.")
+
 (require 'cl)
 (require 'font-lock)
 (require 'format-spec)
@@ -76,9 +79,6 @@
 (require 'erc-compat)
 (require 'erc-backend)
 (require 'erc-menu)
-
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.753 $"
-  "ERC version.  This is used by function `erc-version'.")
 
 (defvar erc-official-location
   "http://erc.sf.net (comments mailto://mlang@delysid.org)"
