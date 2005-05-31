@@ -37,13 +37,13 @@
 (require 'comint)
 (require 'ring)
 
-(defvar erc-ring-version erc-version-string
+(defvar erc-ring-version "$Revision: 1.17 $"
   "ERC ring revision")
 
 ;;;###autoload (autoload 'erc-ring-mode "erc-ring" nil t)
 (define-erc-module ring nil
-  "Stores input in a ring so that previous commands and messages can be
-  recalled using M-p and M-n"
+  "Stores input in a ring so that previous commands and messages can
+be recalled using M-p and M-n."
   ((add-hook 'erc-send-pre-hook 'erc-add-to-input-ring)
    (define-key erc-mode-map "\M-p" 'erc-previous-command)
    (define-key erc-mode-map "\M-n" 'erc-next-command))
@@ -55,9 +55,11 @@
 (make-variable-buffer-local 'erc-input-ring)
 
 (defvar erc-input-ring-index nil
-  "Position in the input ring for erc.  If nil, the input line is blank and the user is
-conceptually 'after' the most recently added item in the ring.  If an integer, the input
-line is non-blank and displays the item from the ring indexed by this variable.")
+  "Position in the input ring for erc.
+If nil, the input line is blank and the user is conceptually 'after'
+the most recently added item in the ring. If an integer, the input
+line is non-blank and displays the item from the ring indexed by this
+variable.")
 (make-variable-buffer-local 'erc-input-ring-index)
 
 (defun erc-input-ring-setup ()
@@ -73,9 +75,9 @@ Call this function when setting up the mode."
   (setq erc-input-ring-index nil))
 
 (defun erc-clear-input-ring ()
-  "Removes all entries from the input ring, then calls garbage-collect.  You
-might use this for security purposes if you have typed a command containing a
-password."
+  "Remove all entries from the input ring, then call garbage-collect.
+You might use this for security purposes if you have typed a command
+containing a password."
   (interactive)
   (setq erc-input-ring (make-ring comint-input-ring-size)
 	erc-input-ring-index nil)
