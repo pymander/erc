@@ -34,7 +34,7 @@
 
 (require 'erc)
 
-(defconst erc-replace-version "$Revision: 1.8 $"
+(defvar erc-replace-version erc-version-string
   "Revision of the ERC replace module.")
 
 (defgroup erc-replace nil
