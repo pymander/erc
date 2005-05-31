@@ -5,7 +5,7 @@
 ;; This file is protected by the GNU GPL, same conditions as with
 ;; Emacs apply, although this file is not part of GNU Emacs.
 
-;;  Commentary:
+;;; Commentary:
 
 ;; This file contains code to speech enable ERC using Emacspeak's functionality
 ;; to access a speech synthesizer.

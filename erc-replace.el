@@ -21,7 +21,7 @@
 ;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;; Commentary:
+;;; Commentary:
 
 ;; This module allows you to systematically replace text in incoming
 ;; messages.  Load erc-replace, and customize `erc-replace-alist'.
@@ -30,11 +30,11 @@
 ;; (require 'erc-replace)
 ;; (erc-replace-mode 1)
 
-;; Code:
+;;; Code:
 
 (require 'erc)
 
-(defconst erc-replace-version erc-version-string
+(defconst erc-replace-version "$Revision: 1.8 $"
   "Revision of the ERC replace module.")
 
 (defgroup erc-replace nil
