@@ -1,24 +1,57 @@
 ERC NEWS                                                       -*- outline -*-
 
-* Changes since ERC 5.0.1
+* Fixes since ERC 5.0.2
+
+** Fix typo in the `ctcp-request-to' entry of the English catalog.
+
+** Debugging with edegug has been made easier in all of the
+erc-with-* and with-erc* macros.
+
+** Non-ASCII character sets should be better supported when sending
+and processing messages.
+
+** A load failure with erc-autoaway.el and Emacs21 has been fixed.
+
+** Changes and additions to modules
+
+*** Backend (erc-backend.el)
+
+**** Move the check for hidden messages into `erc-display-message'
+so there isn't so much replicated code.
+
+**** Add `definition-name' property to constructed symbols so that
+`find-function' and `find-variable' will be able to locate them.
+
+**** Make sure logs are inserted info the correct channel buffers.
+There was previously an error when using `erc-insert-log-on-open' in
+combination with autojoin to multiple channels.
+
+*** Button (erc-button.el)
+
+**** The layering of `erc-button-face' on other faces in ERC buffers
+has been improved.
+
+*** Channel tracking (erc-track.el)
+
+**** Use optimal amount of whitespace around modified channels
+indicator.  Previously, there was an additional unnecessary space.
+
+* Fixes since ERC 5.0.1
 
 ** If a channel key is required for a certain channel, ERC will prompt
 for one if `erc-prompt-for-channel-key' is non-nil.
 
-** Changes and additions to modules
+** ERC doesn't try to reconnect if the network connection is refused
+when using `open-network-stream-nowait' as the `erc-connect-function'.
 
-*** Menu (erc-menu.el)
+** Messages from multiple servers will not go to the currently active
+buffer.  The messages from each server will be contained in the most
+recently active channel/server buffer that corresponds with the
+server.
 
-**** You can now save logs and truncate buffers from the menu-bar.
+** Some text messages were cleaned up slightly.
 
-*** Viper (erc-viper.el)
-
-**** This is a new module, for making Viper and ERC play nicely together.
-
-If you use ERC and Viper, adding (require 'erc-viper) to your
-~/.ercrc.el should be all that's necessary to enable this.
-
-* Fixes since ERC 5.0.1
+** Button faces should no longer "cover" other faces.
 
 ** Made some XEmacs compatibility fixes.
 
@@ -27,6 +60,14 @@ current-nick and buttonized as nicks.
 
 ** `erc-server-select' doesn't offer networks without servers as a
 choice anymore.
+
+** Non-ASCII character support has been improved.
+
+** Changes and additions to modules
+
+*** Menu (erc-menu.el)
+
+**** You can now save logs and truncate buffers from the menu-bar.
 
 * Fixes since ERC 5.0
 

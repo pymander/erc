@@ -1,3 +1,7 @@
+2005-05-31  Michael Olson  <mwolson@gnu.org>
+
+	* NEWS: Add entries for the upcoming 5.0.3 release.
+
 2005-05-31  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc-replace.el, erc-speak.el: Clean up comment formatting.
