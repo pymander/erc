@@ -189,6 +189,60 @@ See `replace-match' for explanations of FIXEDCASE and LITERAL."
          (replace-match newtext fixedcase literal string))
         (t (replace-match newtext fixedcase literal string subexp))))
 
+;; If a version of Emacs or XEmacs does not have gnus or tramp, they
+;; will not have the format-spec library.  We deal with this by
+;; providing copies of its functions if the library is not available.
+(condition-case nil
+    (require 'format-spec)
+  (error
+   (defun format-spec (format specification)
+     "Return a string based on FORMAT and SPECIFICATION.
+FORMAT is a string containing `format'-like specs like \"bash %u %k\",
+while SPECIFICATION is an alist mapping from format spec characters
+to values."
+     (with-temp-buffer
+       (insert format)
+       (goto-char (point-min))
+       (while (search-forward "%" nil t)
+         (cond
+          ;; Quoted percent sign.
+          ((eq (char-after) ?%)
+           (delete-char 1))
+          ;; Valid format spec.
+          ((looking-at "\\([-0-9.]*\\)\\([a-zA-Z]\\)")
+           (let* ((num (match-string 1))
+                  (spec (string-to-char (match-string 2)))
+                  (val (cdr (assq spec specification))))
+             (delete-region (1- (match-beginning 0)) (match-end 0))
+             (unless val
+               (error "Invalid format character: %s" spec))
+             (insert (format (concat "%" num "s") val))))
+          ;; Signal an error on bogus format strings.
+          (t
+           (error "Invalid format string"))))
+       (buffer-string)))
+
+   (defun format-spec-make (&rest pairs)
+     "Return an alist suitable for use in `format-spec' based on PAIRS.
+PAIRS is a list where every other element is a character and a value,
+starting with a character."
+     (let (alist)
+       (while pairs
+         (unless (cdr pairs)
+           (error "Invalid list of pairs"))
+         (push (cons (car pairs) (cadr pairs)) alist)
+         (setq pairs (cddr pairs)))
+       (nreverse alist)))))
+
+;; Emacs has `cancel-timer', but XEmacs uses `delete-itimer'.
+(defun erc-cancel-timer (timer)
+  (cond ((fboundp 'cancel-timer)
+         (cancel-timer timer))
+        ((fboundp 'delete-itimer)
+         (delete-itimer timer))
+        (t
+         (error "Cannot find `cancel-timer' variant"))))
+
 (provide 'erc-compat)
 
 ;;; erc-compat.el ends here

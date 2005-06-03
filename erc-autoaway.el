@@ -89,7 +89,7 @@ Related variables: `erc-public-away-p' and `erc-away-nickname'."
    (remove-hook 'erc-server-001-functions 'erc-autoaway-reset-idletime)
    (remove-hook 'erc-timer-hook 'erc-autoaway-possibly-set-away)
    (when erc-autoaway-idletimer
-     (cancel-timer erc-autoaway-idletimer)
+     (erc-cancel-timer erc-autoaway-idletimer)
      (setq erc-autoaway-idletimer nil))))
 
 (defcustom erc-auto-set-away t
@@ -123,7 +123,7 @@ You have to call this function each time you change
 `erc-autoaway-idle-seconds', if `erc-autoaway-use-emacs-idle' is set."
   (interactive)
   (when erc-autoaway-idletimer
-    (cancel-timer erc-autoaway-idletimer))
+    (erc-cancel-timer erc-autoaway-idletimer))
   (setq erc-autoaway-idletimer
 	(run-with-idle-timer erc-autoaway-idle-seconds
 			     t

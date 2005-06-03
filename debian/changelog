@@ -1,3 +1,18 @@
+erc (5.0.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bug fix: "erc: fails to load when using erc-autoaway [PATCH]", thanks
+    to Daniel Brockman (Closes: #306179).
+  * Bug fix: "erc 5.0 is out", thanks to Cai Qian (Closes: #301952).
+  * Bug fix: "erc: cannot connect to Undernet", thanks to Frederic Roussel
+    (Closes: #282003).
+  * Bug fix: "erc: erc-nickserv fails everything when server name contains
+    digits", thanks to Pietro Giorgianni (Closes: #266347).
+  * The functionality of format-spec.el is provided in erc-compat.el, so
+    we no longer need to bundle it.
+
+ --
+
 erc (5.0.2-1) unstable; urgency=low
 
   * Michael W. Olson <mwolson@gnu.org>:

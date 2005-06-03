@@ -12,6 +12,8 @@ and processing messages.
 
 ** A load failure with erc-autoaway.el and Emacs21 has been fixed.
 
+** A few XEmacs warnings were fixed.
+
 ** Changes and additions to modules
 
 *** Backend (erc-backend.el)
@@ -35,6 +37,9 @@ has been improved.
 
 **** Use optimal amount of whitespace around modified channels
 indicator.  Previously, there was an additional unnecessary space.
+
+**** Fix an error that occurred when unchecked buffers existed when
+invoking /QUIT.
 
 * Fixes since ERC 5.0.1
 

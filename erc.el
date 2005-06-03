@@ -73,7 +73,6 @@
 
 (require 'cl)
 (require 'font-lock)
-(require 'format-spec)
 (require 'pp)
 (require 'thingatpt)
 (require 'erc-compat)
@@ -2385,7 +2384,7 @@ action."
       (let ((buf (process-buffer cproc)))
 	(erc-with-all-buffers-of-server cproc nil (setq erc-connected nil))
 	(when erc-ping-handler
-	  (progn (cancel-timer erc-ping-handler)
+	  (progn (erc-cancel-timer erc-ping-handler)
 		 (setq erc-ping-handler nil)))
 	(run-hook-with-args 'erc-disconnected-hook
 			    (erc-current-nick) (system-name) "")
@@ -4324,7 +4323,7 @@ If this is set to nil, pinging the server is disabled."
 
 (defun erc-setup-periodical-server-ping (&rest ignore)
   "Set up a timer to periodically ping the current server."
-  (and erc-ping-handler (cancel-timer erc-ping-handler))
+  (and erc-ping-handler (erc-cancel-timer erc-ping-handler))
   (when erc-send-ping-interval
     (setq erc-ping-handler
 	  (run-with-timer

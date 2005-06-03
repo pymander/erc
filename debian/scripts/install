@@ -28,8 +28,6 @@ emacs: ;
 
 xemacs%: SITEFLAG = -no-site-file
 
-emacs21: ELFILES += format-spec.el
-
 emacs20:
 	@echo install/erc: Handling install for emacsen flavor \$@
 	@echo Sorry, ERC does no longer support emacs20.

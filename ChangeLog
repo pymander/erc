@@ -1,6 +1,45 @@
 2005-05-31  Michael Olson  <mwolson@gnu.org>
 
+	* debian/changelog: First draft of entries for the 5.0.3 release.
+
+	* debian/README.Debian: Note that ERC will now install correctly
+	on versions of Emacs or XEmacs that do not have the `format-spec'
+	library.  Correct some grammar and prune the content a bit.
+
+	* debian/scripts/install (emacs20): Remove line since we no longer
+	need to deal with format-spec.el.
+
 	* NEWS: Add entries for the upcoming 5.0.3 release.
+
+	* erc.el: Don't require format-spec since this is provided in
+	erc-compat.el now.
+	(erc-process-sentinel, erc-setup-periodical-server-ping): Use
+	`erc-cancel-timer' instead of `cancel-timer'.
+	(erc-version-string): Update to 5.0.3.
+
+	* erc-autoaway.el (autoaway, erc-autoaway-reestablish-idletimer):
+	Use `erc-cancel-timer' instead of `cancel-timer'.
+
+	* erc-compat.el (format-spec, format-spec-make): If we cannot load
+	the `format-spec' library, provide versions of these functions.
+	This should keep problems from surfacing with Emacs21 Debian
+	builds.
+	(erc-cancel-timer): New function created to take the place of
+	`cancel-timer' since XEmacs calls it something else.
+
+	* erc-track.el (erc-modified-channels-update): Accept any number
+	of arguments, which are ignored.  This allows it to be run from
+	`erc-disconnected-hook' without extra bother.
+	(track): Add `erc-modified-channels-update' to
+	`erc-disconnected-hook' so that the indicators are removed
+	correctly in some edge cases.
+	(erc-modified-channels-display): Make sure that we never pass nil
+	to the function in `erc-track-shorten-function'.  This happens
+	when we have deleted buffers in `erc-modified-channels-alist'.
+	Also, make sure that the buffer has a non-nil short-name before
+	adding it to the string list.  This should fix some XEmacs
+	warnings when running /quit with unchecked buffers, as well as get
+	rid of a stray buffer problem (or so it is hoped).
 
 2005-05-31  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 

@@ -468,11 +468,13 @@ START is the minimum length of the name used."
        (defadvice switch-to-buffer (after erc-update (&rest args) activate)
          (erc-modified-channels-update))
      (add-hook 'window-configuration-change-hook 'erc-modified-channels-update))
-   (add-hook 'erc-insert-post-hook 'erc-track-modified-channels))
+   (add-hook 'erc-insert-post-hook 'erc-track-modified-channels)
+   (add-hook 'erc-disconnected-hook 'erc-modified-channels-update))
   ((erc-track-remove-from-mode-line)
    (if (featurep 'xemacs)
        (ad-disable-advice 'switch-to-buffer 'after 'erc-update)
      (remove-hook 'window-configuration-change-hook 'erc-modified-channels-update))
+   (remove-hook 'erc-disconnected-hook 'erc-modified-channels-update)
    (remove-hook 'erc-insert-post-hook 'erc-track-modified-channels)))
 
 ;;;###autoload (autoload 'erc-track-when-inactive-mode "erc-track" nil t)
@@ -524,11 +526,12 @@ only consider active buffers visible.")
 times.  Without it, you cannot debug `erc-modified-channels-display',
 because the debugger also cases changes to the window-configuration.")
 
-(defun erc-modified-channels-update ()
+(defun erc-modified-channels-update (&rest args)
   "This function updates the information in `erc-modified-channels-alist'
 according to buffer visibility.  It calls
 `erc-modified-channels-display' at the end. This should usually be
-called via `window-configuration-change-hook'."
+called via `window-configuration-change-hook'.
+ARGS are ignored."
   (interactive)
   (unless erc-modified-channels-update-inside
     (let ((erc-modified-channels-update-inside t))
@@ -594,20 +597,24 @@ Use `erc-make-mode-line-buffer-name' to create buttons."
     (let* ((buffers (mapcar 'car erc-modified-channels-alist))
 	   (counts (mapcar 'cadr erc-modified-channels-alist))
 	   (faces (mapcar 'cddr erc-modified-channels-alist))
-	   (long-names (mapcar 'buffer-name buffers))
+	   (long-names (mapcar #'(lambda (buf)
+				   (or (buffer-name buf)
+				       ""))
+			       buffers))
 	   (short-names (if (functionp erc-track-shorten-function)
 			    (funcall erc-track-shorten-function
 				     long-names)
 			  long-names))
 	   strings)
       (while buffers
-	(setq strings (cons (erc-make-mode-line-buffer-name
-			     (car short-names)
-			     (car buffers)
-			     (car faces)
-			     (car counts))
-			    strings)
-	      short-names (cdr short-names)
+	(when (car short-names)
+	  (setq strings (cons (erc-make-mode-line-buffer-name
+			       (car short-names)
+			       (car buffers)
+			       (car faces)
+			       (car counts))
+			      strings)))
+	(setq short-names (cdr short-names)
 	      buffers (cdr buffers)
 	      counts (cdr counts)
 	      faces (cdr faces)))
