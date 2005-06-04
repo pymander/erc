@@ -306,8 +306,8 @@ command."
 
 (defun erc-prettify-channel-list ()
   "Make the channel list buffer look pretty.
-When this function runs, the current buffer must be the channel list
-buffer, or it doesn't nothing."
+When this function runs, the current buffer must be the channel
+list buffer, or it does nothing."
   (if (eq major-mode 'erc-chanlist-mode)
       (save-excursion
 	(let ((inhibit-read-only t))

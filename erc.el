@@ -1630,6 +1630,7 @@ See also `with-current-buffer'.
        (when ,buf
 	 (with-current-buffer ,buf
 	   ,@body)))))
+(put 'erc-with-buffer 'lisp-indent-function 1)
 (put 'erc-with-buffer 'edebug-form-spec '((form &optional form) body))
 
 (defun erc-get-buffer (target &optional proc)
@@ -1688,6 +1689,7 @@ nil."
 		   ,@forms))
 	       (erc-buffer-list ,pre
 				,pro)))))
+(put 'erc-with-all-buffers-of-server 'lisp-indent-function 1)
 (put 'erc-with-all-buffers-of-server 'edebug-form-spec '(form form body))
 
 (defun erc-iswitchb (&optional arg)
@@ -1817,7 +1819,7 @@ This is useful for flood protection.")
   "Used to keep track of how many times an attempt at changing nick is made.")
 (make-variable-buffer-local 'erc-nick-change-attempt-count)
 
-(defcustom erc-modules '(netsplit fill track completion ring button autojoin
+(defcustom erc-modules '(netsplit fill track pcomplete ring button autojoin
 			 noncommands irccontrols)
   "A list of modules which erc should enable.
 If you set the value of this without using `customize' remember to call
@@ -1829,7 +1831,7 @@ removed from the list will be disabled."
 	   (dolist (module erc-modules)
 	     (unless (member module val)
 	       (let ((f (intern-soft (format "erc-%s-mode" module))))
-		 (when (symbol-value f)
+		 (when (fboundp f)
 		   (message "Disabling `erc-%s'" module)
 		   (funcall f 0))))))
 	 (set-default sym val)
@@ -5649,6 +5651,7 @@ match, returns that regexp."
 	   nil
 	 (with-current-buffer buffer
 	   ,@body)))))
+(put 'with-erc-channel-buffer 'lisp-indent-function 1)
 (put 'with-erc-channel-buffer 'edebug-form-spec '(form form body))
 
 (defun erc-ignored-reply-p (msg tgt proc)

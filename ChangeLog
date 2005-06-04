@@ -1,3 +1,23 @@
+2005-06-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-with-buffer): Set `lisp-indent-function' so Emacs
+	Lisp mode knows how to indent erc-with-buffer blocks.
+	(with-erc-channel-buffer): Ditto.
+	(erc-with-all-buffers-of-server): Ditto.
+	(erc-modules): Use pcomplete by default, not completion, since
+	erc-complete.el is deprecated.  Use `fboundp' instead of
+	`symbol-value' to check for existence of a function before calling
+	it.  This was causing an error when untoggling the `completion'
+	option and trying to save via the customize interface.
+
+	* erc-track.el (erc-modified-channels-update): If a buffer is not
+	currently connected, remove it from the modified channels list.
+	This should fix the problem where residue was left on the mode
+	line after quitting ERC.
+
+	* erc-list.el (erc-prettify-channel-list): Docfix; thanks to John
+	Paul Wallington for reporting this.
+
 2005-05-31  Michael Olson  <mwolson@gnu.org>
 
 	* debian/changelog: First draft of entries for the 5.0.3 release.

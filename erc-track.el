@@ -539,7 +539,9 @@ ARGS are ignored."
 		(let ((buffer (car elt)))
 		  (when (or (not (bufferp buffer))
 			    (not (buffer-live-p buffer))
-			    (erc-buffer-visible buffer))
+			    (erc-buffer-visible buffer)
+                            (not (with-current-buffer buffer
+                                   erc-connected)))
 		    (erc-modified-channels-remove-buffer buffer))))
 	      erc-modified-channels-alist)
       (erc-modified-channels-display)
