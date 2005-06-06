@@ -104,6 +104,7 @@ Simon Siegler <simon@trz-kril.de>:
 
 Andreas Schwab <schwab@suse.de>:
   * Corrected a bug in sorting of channel users (erc.el).
+  * Fixed an unnecessary use of the `format' function (erc.el).
 
 Kai Fan (m_pupil AT yahoo DOT com) (aka "It's me FKtPp ;)"):
   * Enhanced non-ASCII character support (erc-backend.el).

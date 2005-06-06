@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.758 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.759 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -3789,8 +3789,7 @@ The ban list is fetched from the server if necessary."
 
     (cond
      ((not (erc-channel-p chnl))
-      (erc-display-line (erc-make-notice
-			 (format "You're not on a channel\n"))
+      (erc-display-line (erc-make-notice "You're not on a channel\n")
 			'active))
 
      ((not (get 'channel-banlist 'received-from-server))
@@ -3861,7 +3860,7 @@ Unban all currently banned users in the current channel."
 
      ((not (erc-channel-p chnl))
       (erc-display-line
-       (erc-make-notice (format "You're not on a channel\n"))
+       (erc-make-notice "You're not on a channel\n")
        'active))
 
      ((not (get 'channel-banlist 'received-from-server))

@@ -2,6 +2,8 @@
 
 	* erc.el (erc-modules): Fix a mistake I made when editing this a
 	few days ago.  Modes should now be disabled properly.
+	(erc-cmd-BANLIST, erc-cmd-MASSUNBAN): Remove unnecessary call to
+	`format'.  Thanks to Andreas Schwab for reporting this.
 
 	* debian/changelog: Close "README file missing" bug.
 
