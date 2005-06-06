@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.755 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.758 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -1831,7 +1831,7 @@ removed from the list will be disabled."
 	   (dolist (module erc-modules)
 	     (unless (member module val)
 	       (let ((f (intern-soft (format "erc-%s-mode" module))))
-		 (when (fboundp f)
+		 (when (and (fboundp f) (boundp f) (symbol-value f))
 		   (message "Disabling `erc-%s'" module)
 		   (funcall f 0))))))
 	 (set-default sym val)

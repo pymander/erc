@@ -1,5 +1,8 @@
 2005-06-06  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-modules): Fix a mistake I made when editing this a
+	few days ago.  Modes should now be disabled properly.
+
 	* debian/changelog: Close "README file missing" bug.
 
 	* debian/rules (binary-erc): Install README file.
