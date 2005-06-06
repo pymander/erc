@@ -62,7 +62,7 @@ binary-erc: install
 	install -m 0644 debian/maint/conffiles ${PKGDIR}/DEBIAN/conffiles
 ## Install READMEs
 	install -m 0644 debian/README.erc-speak debian/README.Debian \
-		${PKGDIR}${DOCDIR}/
+		README ${PKGDIR}${DOCDIR}/
 ## Generate DEBIAN/md5sums
 	cd ${PKGDIR} >/dev/null ;\
 	 find * -type f ! -regex '^DEBIAN/.*' -print0 | xargs -r0 md5sum > DEBIAN/md5sums

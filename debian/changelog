@@ -8,6 +8,8 @@ erc (5.0.3-1) unstable; urgency=low
     (Closes: #282003).
   * Bug fix: "erc: erc-nickserv fails everything when server name contains
     digits", thanks to Pietro Giorgianni (Closes: #266347).
+  * Bug fix: "erc: README file missing", thanks to Milan Zamazal 
+    (Closes: #312195).
   * The functionality of format-spec.el is provided in erc-compat.el, so
     we no longer need to bundle it.
 

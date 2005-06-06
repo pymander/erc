@@ -1,3 +1,9 @@
+2005-06-06  Michael Olson  <mwolson@gnu.org>
+
+	* debian/changelog: Close "README file missing" bug.
+
+	* debian/rules (binary-erc): Install README file.
+
 2005-06-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-with-buffer): Set `lisp-indent-function' so Emacs
