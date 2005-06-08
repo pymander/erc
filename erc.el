@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.759 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.760 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -2990,7 +2990,7 @@ If no USER argument is specified, list the contents of `erc-ignore-list'."
 (defun erc-cmd-UNIGNORE (user)
   "Remove the user specified in USER from the ignore list."
   (let ((ignored-nick (car (with-current-buffer (erc-server-buffer)
-			     (member-ignore-case user erc-ignore-list)))))
+			     (erc-member-ignore-case user erc-ignore-list)))))
     (if (null ignored-nick)
 	(erc-display-line
 	 (erc-make-notice (format "%s is not currently ignored!" user))
