@@ -1,3 +1,8 @@
+2005-06-16  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc.el (erc-mode-map): Suppress `font-lock-fontify-block' key
+	binding since it destroys face properties.
+
 2005-06-08  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-cmd-UNIGNORE): Use `erc-member-ignore-case' instead

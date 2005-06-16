@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.760 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.761 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -1161,6 +1161,14 @@ which the local user typed."
     (define-key map "\C-c\C-u" 'erc-kill-input)
     (define-key map "\M-\t" 'ispell-complete-word)
     (define-key map "\t" 'erc-complete-word)
+
+    ;; Suppress `font-lock-fontify-block' key binding since it
+    ;; destroys face properties.
+    (if (fboundp 'command-remapping)
+	(define-key map [remap font-lock-fontify-block] 'undefined)
+      (substitute-key-definition
+       'font-lock-fontify-block 'undefined map global-map))
+
     map)
   "ERC keymap.")
 
