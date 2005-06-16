@@ -113,6 +113,10 @@ Daniel Brockman (daniel AT brockman DOT se):
   * Submitted small patch that fixed a load failure in erc-autoaway.el
     when using Emacs21.
 
+John Paul Wallington (jpw AT pobox DOT com):
+  * Recommended replacing calls to `string-to-int' with
+    `string-to-number'.
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
