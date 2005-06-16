@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.761 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.762 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -4286,7 +4286,7 @@ See also `erc-display-error-notice'."
 	  (setq newnick (concat (truncate-string-to-width
 				 nick
 				 (if (and erc-connected nicklen)
-				     (- (string-to-int nicklen) 1)
+				     (- (string-to-number nicklen) 1)
 				   ;; rfc2812 max nick length = 9
 				   ;; we must assume this is the server's setting
 				   ;; if we haven't established a connection yet

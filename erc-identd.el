@@ -55,7 +55,7 @@ system."
   (if (null port)
       (setq port 8113)
     (if (stringp port)
-	(setq port (string-to-int port))))
+	(setq port (string-to-number port))))
   (if erc-identd-process
       (delete-process erc-identd-process))
   (setq erc-identd-process

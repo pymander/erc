@@ -53,7 +53,7 @@
 
 (require 'erc)
 
-(defconst erc-dcc-version erc-version-string
+(defconst erc-dcc-version "$Revision: 1.89 $"
   "ERC DCC revision")
 
 (defgroup erc-dcc nil
@@ -578,7 +578,7 @@ It extracts the information about the dcc request and adds it to
 	 'dcc-send-offered
 	 ?f filename ?n nick ?u login ?h host
 	 ?s (if (string= size "") "unknown" size))
-	(and (< (string-to-int port) 1025)
+	(and (< (string-to-number port) 1025)
 	     (erc-display-message
 	      nil 'notice proc
 	      'dcc-privileged-port
@@ -587,7 +587,7 @@ It extracts the information about the dcc request and adds it to
 	 'GET (format "%s!%s@%s" nick login host)
 	 nil proc
 	 :ip ip :port port :file filename
-	 :size (string-to-int size))
+	 :size (string-to-number size))
 	(if (and (eq erc-dcc-send-request 'auto)
                  (erc-dcc-auto-mask-p (format "\"%s!%s@%s\"" nick login host)))
 	    (erc-dcc-get-file (car erc-dcc-list) filename proc))))
@@ -630,7 +630,7 @@ match, returns that regexp and nil otherwise."
 	 nil 'notice proc
 	 'dcc-chat-offered
 	 ?n nick ?u login ?h host ?p port)
-	(and (< (string-to-int port) 1025)
+	(and (< (string-to-number port) 1025)
 	     (erc-display-message
 	      nil 'notice proc
 	    'dcc-privileged-port ?p port))
@@ -825,7 +825,7 @@ filter and a process sentinel, and making the connection."
 	    (funcall erc-dcc-connect-function
 		     "dcc-get" buffer
 		     (plist-get entry :ip)
-		     (string-to-int (plist-get entry :port))
+		     (string-to-number (plist-get entry :port))
 		     entry))
       (set-process-buffer proc buffer)
       ;; The following two lines make saving as-is work under Windows
@@ -1035,7 +1035,7 @@ other client."
           (funcall erc-dcc-connect-function
                    "dcc-chat" nil
                    (plist-get entry :ip)
-                   (string-to-int (plist-get entry :port))
+                   (string-to-number (plist-get entry :port))
                    entry))
     ;; XXX: connected, should we kill the ip/port properties?
     (setq entry (plist-put entry :peer proc))

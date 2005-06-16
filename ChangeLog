@@ -1,3 +1,17 @@
+2005-06-16  Michael Olson  <mwolson@gnu.org>
+
+	* CREDITS: Add John Paul Wallington.
+
+	* erc.el: Thanks to John Paul Wallington for the following.
+	(erc-nickname-in-use): Use `string-to-number' instead of
+	`string-to-int'.
+
+	* erc-dcc.el (erc-dcc-handle-ctcp-send)
+	(erc-dcc-handle-ctcp-chat, erc-dcc-get-file)
+	(erc-dcc-chat-accept): Ditto.
+
+	* erc-identd.el (erc-identd-start): Ditto.
+
 2005-06-16  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc.el (erc-mode-map): Suppress `font-lock-fontify-block' key
