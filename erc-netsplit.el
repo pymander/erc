@@ -31,11 +31,11 @@
 
 (require 'erc)
 
-(defconst erc-netsplit-version erc-version-string
+(defconst erc-netsplit-version ""
   "ERC netsplit version.")
 
 (defgroup erc-netsplit nil
-  "Netsplit detection tries to automatically figure when a 
+  "Netsplit detection tries to automatically figure when a
 netsplit happens, and filters the QUIT messages. It also keeps
 track of netsplits, so that it can filter the JOIN messages on a netjoin too."
   :group 'erc)

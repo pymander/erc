@@ -25,7 +25,7 @@
 ;; Foundation, Inc., 675 Mass Ave., Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;; 
+;;
 ;; This provides a minimal mIRC style nicklist buffer for ERC.  To
 ;; activate, do M-x erc-nicklist RET in the channel buffer you want
 ;; the nicklist to appear for.  To close and quit the nicklist
@@ -53,13 +53,13 @@
 ;; o Allow toggling of visibility of nicklist via ERC commands.
 
 ;;; History:
-;; 
+;;
 
 ;;; Code:
 
 (require 'erc)
 
-(defconst erc-nicklist-version erc-version-string
+(defconst erc-nicklist-version ""
   "ERC Nicklist version.")
 
 (defgroup erc-nicklist nil

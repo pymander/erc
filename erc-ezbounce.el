@@ -22,13 +22,13 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
 (require 'erc)
 
-(defconst erc-ezb-version erc-version-string
+(defconst erc-ezb-version ""
   "ERC EZBouncer revision.")
 
 (defgroup erc-ezbounce nil

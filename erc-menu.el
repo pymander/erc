@@ -29,7 +29,7 @@
 
 (require 'easymenu)
 
-(defconst erc-menu-version erc-version-string
+(defconst erc-menu-version ""
   "ERC menu revision")
 
 (defvar erc-menu-definition

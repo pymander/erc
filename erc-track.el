@@ -39,7 +39,7 @@
 
 ;;; Code:
 
-(defconst erc-track-version erc-version-string
+(defconst erc-track-version ""
   "ERC track mode revision")
 
 (defgroup erc-track nil

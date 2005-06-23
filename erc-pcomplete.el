@@ -44,7 +44,7 @@
 (require 'erc-compat)
 (require 'time-date)
 
-(defconst erc-pcomplete-version erc-version-string
+(defconst erc-pcomplete-version ""
   "ERC pcomplete mode revision")
 
 (defgroup erc-pcomplete nil

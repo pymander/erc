@@ -27,7 +27,7 @@
 
 (require 'erc)
 
-(defconst erc-nets-version erc-version-string
+(defconst erc-nets-version ""
   "ERC networks revision.")
 
 ;; Variables

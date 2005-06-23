@@ -45,7 +45,7 @@
 (require 'erc)
 (require 'imenu)
 
-(defconst erc-imenu-version erc-version-string
+(defconst erc-imenu-version ""
   "ERC imenu revision.")
 
 (defun erc-unfill-notice ()

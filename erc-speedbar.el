@@ -37,7 +37,7 @@
 (require 'speedbar)
 (condition-case nil (require 'dframe) (error nil))
 
-(defconst erc-speedbar-version erc-version-string
+(defconst erc-speedbar-version ""
   "ERC Speedbar version.")
 
 ;;; Customization:

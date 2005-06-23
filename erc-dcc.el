@@ -53,7 +53,7 @@
 
 (require 'erc)
 
-(defconst erc-dcc-version "$Revision: 1.89 $"
+(defconst erc-dcc-version ""
   "ERC DCC revision")
 
 (defgroup erc-dcc nil

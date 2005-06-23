@@ -37,7 +37,7 @@
 (require 'comint)
 (require 'ring)
 
-(defvar erc-ring-version erc-version-string
+(defvar erc-ring-version ""
   "ERC ring revision")
 
 ;;;###autoload (autoload 'erc-ring-mode "erc-ring" nil t)

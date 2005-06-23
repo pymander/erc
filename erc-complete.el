@@ -28,7 +28,7 @@
 ;; pcomplete.  There is no autoload cookie in this file.  If you want
 ;; to use the code in this file, add the following to your ~/.emacs:
 
-;; (autoload 'erc-complete "erc-complete" "Complete nick at point." t) 
+;; (autoload 'erc-complete "erc-complete" "Complete nick at point." t)
 
 ;;; Code:
 
@@ -36,7 +36,7 @@
 (require 'erc-match); for erc-pals
 (require 'hippie-exp); for the hippie expand stuff
 
-(defconst erc-complete-version erc-version-string
+(defconst erc-complete-version ""
   "ERC complete revision.")
 
 ;;;###autoload

@@ -94,7 +94,7 @@
 
 (require 'erc)
 
-(defconst erc-log-version erc-version-string
+(defconst erc-log-version ""
   "ERC log mode revision")
 
 (defgroup erc-log nil

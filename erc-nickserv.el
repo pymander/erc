@@ -52,7 +52,7 @@
 ;;
 ;; If you'd rather not identify yourself automatically but would like access
 ;; to the functions contained in this file, just load this file without
-;; enabling `erc-services-mode'.  
+;; enabling `erc-services-mode'.
 ;;
 
 ;;; Code:
@@ -60,7 +60,7 @@
 (require 'erc)
 (require 'erc-nets)
 
-(defconst erc-nickserv-version erc-version-string
+(defconst erc-nickserv-version ""
   "ERC NickServ revision.")
 
 ;; Customization:

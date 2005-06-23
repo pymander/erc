@@ -99,7 +99,7 @@
 (require 'cl)
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 
-(defconst erc-backend-version erc-version-string)
+(defconst erc-backend-version "")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
