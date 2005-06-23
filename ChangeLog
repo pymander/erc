@@ -1,3 +1,11 @@
+2005-06-23  Michael Olson  <mwolson@gnu.org>
+
+	* CREDITS: Add entries for Luigi Panzeri and Andreas Schwab.
+
+	* erc-nickserv.el (erc-nickserv-alist): Add entries for Azzurra
+	and OFTC.  Thanks to Luigi Panzeri and Andreas Schwab for
+	providing these.
+
 2005-06-16  Michael Olson  <mwolson@gnu.org>
 
 	* CREDITS: Add John Paul Wallington.
