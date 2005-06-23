@@ -105,6 +105,7 @@ Simon Siegler <simon@trz-kril.de>:
 Andreas Schwab <schwab@suse.de>:
   * Corrected a bug in sorting of channel users (erc.el).
   * Fixed an unnecessary use of the `format' function (erc.el).
+  * Added an entry for OFTC in erc-nickserv-alist.
 
 Kai Fan (m_pupil AT yahoo DOT com) (aka "It's me FKtPp ;)"):
   * Enhanced non-ASCII character support (erc-backend.el).
@@ -116,6 +117,9 @@ Daniel Brockman (daniel AT brockman DOT se):
 John Paul Wallington (jpw AT pobox DOT com):
   * Recommended replacing calls to `string-to-int' with
     `string-to-number'.
+
+Luigi Panzeri (matley AT muppetslab DOT org):
+  * Provided an erc-nickserv-alist entry for Azzurra.
 
 ----
 

@@ -209,10 +209,23 @@ Example of use:
      "IDENTIFY"
      nil
      "")
-     (Austnet "NickOP!service@austnet.org"
+     (Austnet
+      "NickOP!service@austnet.org"
       "/msg\\s-NickOP@austnet.org\\s-identify\\s-<password>"
       "nickop@austnet.org"
       "identify"
+      nil)
+     (Azzurra
+      "NickServ!service@azzurra.org"
+      "/ns\sIDENTIFY\spassword"
+      "NickServ"
+      "IDENTIFY"
+      nil)
+     (OFTC
+      "NickServ!services@services.oftc.net"
+      "/msg\\s-NickServ\\s-IDENTIFY\\s-\^_password"
+      "NickServ"
+      "IDENTIFY"
       nil))
    "Alist of NickServer details, sorted by network.
 Every element in the list has the form
