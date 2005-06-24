@@ -1,3 +1,11 @@
+2005-06-24  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc.el (erc-default-coding-system)
+	(erc-handle-user-status-change): Docstring fix.
+	(with-erc-channel-buffer): Removed.
+	(erc-ignored-reply-p): Replace `with-erc-channel-buffer' with
+	`erc-with-buffer'.
+
 2005-06-23  Michael Olson  <mwolson@gnu.org>
 
 	* CREDITS: Add entries for Luigi Panzeri and Andreas Schwab.

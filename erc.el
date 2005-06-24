@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (Arch)"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.763 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -2498,12 +2498,12 @@ The command line must contain neither prefix nor trailing `\\n'"
 This is either a coding system, a cons, or a function.
 
 If a cons, the encoding system for outgoing text is in the car
-and the decoding system for incoming text is in the cdr.  The
-most interesting use for this is to put `undecided' in the cdr.
-If a function, it is called with no should return a coding system
-or a cons as described above.  Note that you can use the
-dynamically bound variable `target' to get the current target.
-See `erc-coding-system-for-target'.
+and the decoding system for incoming text is in the cdr. The most
+interesting use for this is to put `undecided' in the cdr. If a
+function, it is called with no arguments and should return a
+coding system or a cons as described above. Note that you can use
+the dynamically bound variable `target' to get the current
+target. See `erc-coding-system-for-target'.
 
 If you need to send non-ASCII text to people not using a client that
 does decoding on its own, you must tell ERC what encoding to use.
@@ -5272,7 +5272,7 @@ and L is a list containing additional TYPE-specific arguments.
 
 So far the following TYPE/L pairs are supported:
 
-       event			TYP		       L
+       Event			TYPE		       L
 
     nickname change	       'nick		    (NEW-NICK)"
   (erc-log (format "user-change: type: %S  nlh: %S  l: %S" type nlh l))
@@ -5644,23 +5644,6 @@ match, returns that regexp."
 	;; We have `require'd cl, so we can return from the block named nil
 	(return ignored))))
 
-;; FIXME: with-erc-channel-buffer suffers from multiple
-;; evaluation. Also it is used in one single place in erc.el.  It
-;; should be fixed or removed and replaced with `erc-with-buffer'.
-(defmacro with-erc-channel-buffer (tgt proc &rest body)
-  "Execute BODY for channel TGT and process PROC."
-  `(if (not (and (stringp ,tgt)
-		 (erc-channel-p ,tgt)
-		 (processp ,proc)))
-       nil
-     (let ((buffer (erc-get-buffer ,tgt ,proc)))
-       (if (not (bufferp buffer))
-	   nil
-	 (with-current-buffer buffer
-	   ,@body)))))
-(put 'with-erc-channel-buffer 'lisp-indent-function 1)
-(put 'with-erc-channel-buffer 'edebug-form-spec '(form form body))
-
 (defun erc-ignored-reply-p (msg tgt proc)
   ;; FIXME: this docstring needs fixing -- Lawrence 2004-01-08
   "Return non-nil if MSG matches something in `erc-ignore-reply-list'.
@@ -5670,12 +5653,11 @@ user matches any regexp in `erc-ignore-reply-list'."
   (let ((target-nick (erc-message-target msg)))
     (if (not target-nick)
 	nil
-      (with-erc-channel-buffer
-       tgt proc
-       (let ((user (erc-get-server-user target-nick)))
-	 (when user
-	      (erc-list-match erc-ignore-reply-list
-			   (erc-user-spec user))))))))
+      (erc-with-buffer (tgt proc)
+	(let ((user (erc-get-server-user target-nick)))
+	  (when user
+	    (erc-list-match erc-ignore-reply-list
+			    (erc-user-spec user))))))))
 
 (defun erc-message-target (msg)
   "Return the addressed target in MSG.
