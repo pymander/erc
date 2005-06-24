@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.763 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.764 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -2693,10 +2693,10 @@ If STRING is nil, the function does nothing."
 		(save-restriction
 		  (narrow-to-region insert-position (point))
 		  (run-hooks 'erc-insert-modify-hook)
-		  (run-hooks 'erc-insert-post-hook)))))
-	  (erc-update-undo-list (- (or (marker-position erc-insert-marker)
-				       (point-max))
-				   insert-position)))))))
+		  (run-hooks 'erc-insert-post-hook))))))
+	(erc-update-undo-list (- (or (marker-position erc-insert-marker)
+				     (point-max))
+				 insert-position))))))
 
 (defun erc-update-undo-list (shift)
   ;; Translate buffer positions in buffer-undo-list by SHIFT.

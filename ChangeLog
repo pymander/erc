@@ -5,6 +5,7 @@
 	(with-erc-channel-buffer): Removed.
 	(erc-ignored-reply-p): Replace `with-erc-channel-buffer' with
 	`erc-with-buffer'.
+	(erc-display-line-1): Revision 1.730 broke undo. Fix it.
 
 2005-06-23  Michael Olson  <mwolson@gnu.org>
 
