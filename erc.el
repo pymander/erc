@@ -4084,7 +4084,8 @@ Prompt for one if called interactively."
 `erc-quit-reason' works with this just like with `erc-cmd-QUIT'."
   (interactive (list (read-from-minibuffer
 		      (format "Reason for quitting %s: "
-			      erc-announced-server-name))))
+			      (or erc-announced-server-name
+				  erc-session-server)))))
   (erc-cmd-QUIT reason))
 
 ;; Movement of point

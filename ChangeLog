@@ -1,3 +1,16 @@
+2005-06-26  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autojoin.el (erc-autojoin-add, erc-autojoin-remove): Use
+	`erc-session-server' if `erc-announced-server-name' is nil.  This
+	happens when servers don't send a 004 message.
+
+	* erc.el (erc-quit-server): Ditto.
+
+	* erc-ibuffer.el (erc-server, erc-server-name): Ditto.
+
+	* erc-notify.el (erc-notify-JOIN, erc-notify-NICK)
+	(erc-notify-QUIT): Ditto.
+
 2005-06-24  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc.el (erc-default-coding-system)

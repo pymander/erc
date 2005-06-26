@@ -90,7 +90,7 @@ servers, presumably in the same domain."
   (let* ((chnl (erc-response.contents parsed))
 	 (nick (car (erc-parse-user (erc-response.sender parsed))))
 	 (server (with-current-buffer (process-buffer proc)
-		   erc-announced-server-name)))
+		   (or erc-announced-server-name erc-session-server))))
     (when (erc-current-nick-p nick)
       (when (and erc-autojoin-domain-only
 		 (string-match "[^.]+\\.\\([^.]+\\.[^.]+\\)$" server))
@@ -113,7 +113,7 @@ servers, presumably in the same domain."
   (let* ((chnl (car (erc-response.command-args parsed)))
 	 (nick (car (erc-parse-user (erc-response.sender parsed))))
 	 (server (with-current-buffer (process-buffer proc)
-		   erc-announced-server-name)))
+		   (or erc-announced-server-name erc-session-server))))
     (when (erc-current-nick-p nick)
       (when (and erc-autojoin-domain-only
 		 (string-match "[^.]+\\.\\([^.]+\\.[^.]+\\)$" server))

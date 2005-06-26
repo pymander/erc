@@ -67,7 +67,8 @@
   (with-current-buffer buf
     (and (eq major-mode 'erc-mode)
 	 (boundp 'erc-announced-server-name)
-	 (string-match qualifier erc-announced-server-name))))
+	 (string-match qualifier (or erc-announced-server-name
+				     erc-session-server)))))
 
 (ibuffer-define-column erc-modified (:name "M")
   (if (and (boundp 'erc-track-mode)
@@ -91,7 +92,7 @@
 (ibuffer-define-column erc-server-name (:name "Server")
   (if (and (boundp 'erc-process) (processp erc-process))
       (with-current-buffer (process-buffer erc-process)
-	erc-announced-server-name)
+	(or erc-announced-server-name erc-session-server))
     ""))
 
 (ibuffer-define-column erc-target (:name "Target")

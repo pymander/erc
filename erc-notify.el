@@ -147,7 +147,8 @@ to `erc-last-ison' to prevent any further notifications."
 	       (not (erc-member-ignore-case nick erc-last-ison)))
       (add-to-list 'erc-last-ison nick)
       (run-hook-with-args 'erc-notify-signon-hook
-			  erc-announced-server-name nick)
+			  (or erc-announced-server-name erc-session-server)
+			  nick)
       (erc-display-message
        parsed 'notice proc
        'notify_on ?n nick ?m (erc-network-name)))
@@ -162,7 +163,8 @@ to `erc-last-ison' to prevent any further notifications."
 	       (not (erc-member-ignore-case nick erc-last-ison)))
       (add-to-list 'erc-last-ison nick)
       (run-hook-with-args 'erc-notify-signon-hook
-			  erc-announced-server-name nick)
+			  (or erc-announced-server-name erc-session-server)
+			  nick)
       (erc-display-message
        parsed 'notice proc
        'notify_on ?n nick ?m (erc-network-name)))
@@ -180,7 +182,8 @@ nick from `erc-last-ison' to prevent any further notifications."
 						  (string= (erc-downcase x) (erc-downcase y))))
 				  erc-last-ison))
       (run-hook-with-args 'erc-notify-signoff-hook
-			  erc-announced-server-name nick)
+			  (or erc-announced-server-name erc-session-server)
+			  nick)
       (erc-display-message
        parsed 'notice proc
        'notify_off ?n nick ?m (erc-network-name)))
