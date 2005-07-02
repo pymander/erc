@@ -1,3 +1,7 @@
+2005-06-29  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
+
+	* erc-nickserv.el (erc-nickserv-alist): Fix regexp for Azzurra.
+
 2005-06-26  Michael Olson  <mwolson@gnu.org>
 
 	* erc-autojoin.el (erc-autojoin-add, erc-autojoin-remove): Use

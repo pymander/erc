@@ -52,7 +52,7 @@
 ;;
 ;; If you'd rather not identify yourself automatically but would like access
 ;; to the functions contained in this file, just load this file without
-;; enabling `erc-services-mode'.
+;; enabling `erc-services-mode'.  
 ;;
 
 ;;; Code:
@@ -60,7 +60,7 @@
 (require 'erc)
 (require 'erc-nets)
 
-(defconst erc-nickserv-version ""
+(defconst erc-nickserv-version "$Revision: 1.24 $"
   "ERC NickServ revision.")
 
 ;; Customization:
@@ -217,7 +217,7 @@ Example of use:
       nil)
      (Azzurra
       "NickServ!service@azzurra.org"
-      "/ns\sIDENTIFY\spassword"
+      "/ns\\s-IDENTIFY\\s-password"
       "NickServ"
       "IDENTIFY"
       nil)
