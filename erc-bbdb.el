@@ -4,6 +4,12 @@
 
 ;; Author: Andreas Fuchs <asf@void.at>
 ;; Maintainer: Mario Lang <mlang@delysid.org>
+;; Changes by Edgar Gonçalves <edgar.goncalves@inesc-id.pt>
+;; May 31 2005:
+;;     - new variable: erc-bbdb-bitlbee-name-field - the field name for the
+;;       msn/icq/etc nick
+;;     - nick doesn't go the the name. now it asks for an existing record to
+;;       merge with. If none, then create a new one with the nick as name.
 
 ;; This is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -88,7 +94,14 @@ or a person joined a channel visible on any frame."
   :type 'symbol)
 
 (defcustom erc-bbdb-irc-highlight-field 'irc-highlight
-  "The notes field name to use for highlighting of a person's messages"
+  "The notes field name to use for highlighting a person's messages."
+  :group 'erc-bbdb
+  :type 'symbol)
+
+(defcustom erc-bbdb-bitlbee-name-field 'bitlbee-name
+  "The notes field name to use for annotating bitlbee displayed name.
+This is the name that a bitlbee (AIM/MSN/ICQ) contact provides as
+their \"displayed name\"."
   :group 'erc-bbdb
   :type 'symbol)
 
@@ -97,13 +110,27 @@ or a person joined a channel visible on any frame."
   :group 'erc-bbdb
   :type 'boolean)
 
-(defun erc-bbdb-search-name-and-create (create-p name nick finger-host)
+(defun erc-bbdb-search-name-and-create (create-p name nick finger-host silent)
   (let* ((ircnick (cons erc-bbdb-irc-nick-field (concat "^"
 							(regexp-quote nick))))
 	 (finger (cons bbdb-finger-host-field (regexp-quote finger-host)))
 	 (record (or (bbdb-search (bbdb-records) nil nil nil ircnick)
 		     (and name (bbdb-search-simple name nil))
 		     (bbdb-search (bbdb-records) nil nil nil finger)
+		     (unless silent
+		       (let ((found-a-record nil)
+			     (record nil))
+			 (while (not found-a-record)
+			   (let ((wanted-name (read-string "Type a name to look for or choose a new one: " nick)))
+			     (setq name wanted-name)
+			     (setq record (car (bbdb-search (bbdb-records) wanted-name nil)))
+			     (if record
+				   (when (y-or-n-p (concat "Found a record with name "
+							   (bbdb-record-name record)
+							   ".  Do you want to use it? (Answering no will ask you for another name): "))
+				     (setq found-a-record t))
+				   (setq found-a-record t))))
+			 record))
 		     (when create-p
 		       (bbdb-create-internal (or name
 						 "John Doe")
@@ -124,14 +151,16 @@ or a person joined a channel visible on any frame."
 							   'visible))))))
       (bbdb-display-records (list record)))))
 
-(defun erc-bbdb-insinuate-and-show-entry (create-p proc nick name finger-host &optional chan new-nick)
+(defun erc-bbdb-insinuate-and-show-entry (create-p proc nick name finger-host silent &optional chan new-nick)
   (let ((record (erc-bbdb-search-name-and-create
-		 create-p name nick finger-host)))
+		 create-p nil nick finger-host silent))) ;; don't search for a name
     (when record
       (bbdb-annotate-notes record (or new-nick nick) erc-bbdb-irc-nick-field)
       (bbdb-annotate-notes record finger-host bbdb-finger-host-field)
+      (and name
+	   (bbdb-annotate-notes record name erc-bbdb-bitlbee-name-field t))
       (and chan
-           (not (eq chan t))
+	   (not (eq chan t))
 	   (bbdb-annotate-notes record chan erc-bbdb-irc-channel-field))
       (erc-bbdb-highlight-record record)
       (erc-bbdb-show-entry record chan proc))))
@@ -139,12 +168,12 @@ or a person joined a channel visible on any frame."
 (defun erc-bbdb-whois (proc parsed)
   (let (; We could use server name too, probably
 	(nick (second (erc-response.command-args parsed)))
-	(name (erc-response.contents parsed))
+	(name (erc-response.contents parsed)) ;; msn nick!
 	(finger-host (concat (third (erc-response.command-args parsed))
-                             "@"
-                             (fourth (erc-response.command-args parsed)))))
+			     "@"
+			     (fourth (erc-response.command-args parsed)))))
     (erc-bbdb-insinuate-and-show-entry erc-bbdb-auto-create-on-whois-p proc
-				       nick name finger-host t)))
+				       nick name finger-host nil t)))
 
 (defun erc-bbdb-JOIN (proc parsed)
   (let* ((sender (erc-parse-user (erc-response.sender parsed)))
@@ -154,7 +183,7 @@ or a person joined a channel visible on any frame."
 	     (finger-host (concat (nth 1 sender) "@" (nth 2 sender))))
 	  (erc-bbdb-insinuate-and-show-entry
 	   erc-bbdb-auto-create-on-join-p proc
-	   nick nil finger-host channel)))))
+	   nick nil finger-host t channel)))))
 
 (defun erc-bbdb-NICK (proc parsed)
   "Annotate new nick name to a record in case it already exists."
@@ -164,7 +193,7 @@ or a person joined a channel visible on any frame."
       (let* ((finger-host (concat (nth 1 sender) "@" (nth 2 sender))))
 	(erc-bbdb-insinuate-and-show-entry
 	 erc-bbdb-auto-create-on-nick-p proc
-	 nick nil finger-host nil (erc-response.contents parsed))))))
+	 nick nil finger-host t nil (erc-response.contents parsed))))))
 
 (defun erc-bbdb-init-highlighting-hook-fun (proc parsed)
   (erc-bbdb-init-highlighting))
@@ -222,3 +251,9 @@ counterparts `erc-pals', `erc-dangerous-hosts' and `erc-fools'."
 (provide 'erc-bbdb)
 
 ;;; erc-bbdb.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; standard-indent: 4
+;; End:

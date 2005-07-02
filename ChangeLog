@@ -1,3 +1,65 @@
+2005-07-02  Michael Olson  <mwolson@gnu.org>
+
+	* images: New directory containing the images that are used by
+	erc-nicklist.el.  These are from Gaim, and are thought to be
+	available under the terms of the GPL.
+
+	* erc-bbdb.el: Add local variables section to preserve tabs, since
+	that is the style used throughout this file.  Apply patch from
+	Edgar Gonçalves as follows.
+	(erc-bbdb-bitlbee-name-field): New variable that indicates the
+	field name to use for annotating the "displayed name" of a bitlbee
+	contact.
+	(erc-bbdb-irc-highlight-field): Docfix.
+	(erc-bbdb-search-name-and-create): Prompt the user for the name of
+	a contact if none was found.  Merge the new entries into the
+	specified contact.  If new arg SILENT is non-nil, do not prompt
+	the user for a name or offer to merge the new entry.
+	(erc-bbdb-insinuate-and-show-entry): New arg SILENT is accepted,
+	which is passed on to erc-bbdb-search-name-and-create.
+	(erc-bbdb-whois): Tell erc-bbdb-search-name-and-create to prompt
+	for name if necessary.
+	(erc-bbdb-JOIN, erb-bbdb-NICK): Forbid
+	erc-bbdb-search-name-and-create from prompting for a name.
+
+	* erc-nicklist.el: Add local variables section to preserve tabs,
+	since that is the style used throughout this file.  Apply patch
+	from Edgar Gonçalves as follows.
+	(erc-nicklist-use-icons): New option; if non-nil, display an icon
+	instead of the name of the chat medium.
+	(erc-nicklist-icons-directory): New option indicating the path to
+	the PNG files that are used for chat icons.
+	(erc-nicklist-use-icons): New option indicating whether to put
+	voiced nicks on top, bottom, or not to differentiate them.  The
+	default is to put them on the bottom.
+	(erc-nicklist-bitlbee-connected-p): New variable that indicates
+	whether or not we are currently using bitlbee.  An attempt will be
+	made to auto-detect the proper value.  This is bound in the
+	`erc-nicklist-insert-contents' function.
+	(erc-nicklist-nicklist-images-alist): New variable that maps a
+	host type to its icon.  This is set by `erc-nicklist'.
+	(erc-nicklist-insert-medium-name-or-icon): New function that
+	inserts an icon or string that identifies the current host type.
+	(erc-nicklist-search-for-nick): New function that attempts to find
+	a BBDB record that corresponds with this contact given its
+	finger-host.  If found, return its bitlbee-nick field.
+	(erc-nicklist-insert-contents): New function that inserts the
+	contents of the nick list, including text properties and images.
+	(erc-nicklist): Populate `erc-nicklist-images-alist'.  Move
+	nicklist content generation code to
+	`erc-nicklist-insert-contents'.
+	(erc-nicklist-mode-map): Map C-j to erc-nicklist-kbd-menu and RET
+	to erc-nicklist-kbd-cmd-QUERY.
+	(erc-nicklist-call-erc-command): Make use of
+	`switch-to-buffer-other-window'.
+	(erc-nicklist-cmd-QUERY): New function that opens a query buffer
+	for the given contact.
+	(erc-nicklist-kbd-cmd-QUERY): Ditto; contains most of the code.
+	(erc-nicklist-kbd-menu): New function that shows the nicklist
+	action menu.
+	(erc-nicklist-channel-users-info): Renamed from
+	`erc-nicklist-channel-nicks'.  Implement sorting voiced users.
+
 2005-06-29  Johan Bockgård  <bojohan+sf@dd.chalmers.se>
 
 	* erc-nickserv.el (erc-nickserv-alist): Fix regexp for Azzurra.

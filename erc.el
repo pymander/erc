@@ -79,6 +79,7 @@
 (require 'erc-backend)
 (require 'erc-menu)
 
+
 (defvar erc-official-location
   "http://erc.sf.net (comments mailto://mlang@delysid.org)"
   "Location of the ERC client on the Internet.")
