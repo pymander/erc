@@ -80,7 +80,7 @@
 (require 'erc)
 (require 'cl)
 
-(defconst erc-nicklist-version "$Revision: 1.6 $"
+(defconst erc-nicklist-version "$Revision: 1.7 $"
   "ERC Nicklist version.")
 
 (defgroup erc-nicklist nil
@@ -187,7 +187,9 @@ Seach for the BBDB record of this contact.  If not found, return nil."
   "Insert the nicklist contents, with text properties and the optional images."
   (let ((erc-nicklist-bitlbee-connected-p
 	 (and (string-match "#bitlbee" (buffer-name channel))
-	      (not (string-match "oftc.net" erc-session-server)))))
+	      (not (string-match "oftc.net" (or erc-announced-server-name
+						erc-session-server
+						""))))))
     (setq buffer-read-only nil)
     (erase-buffer)
     (dolist (u (erc-nicklist-channel-users-info channel))
@@ -267,15 +269,16 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 
 Depending on what COMMAND is, it's called with one of POINT, BUFFER,
 or WINDOW as arguments."
-  (let* ((p (text-properties-at point))
-	 (b (plist-get p 'erc-nicklist-channel)))
-    (if (memq command '(erc-nicklist-quit ignore))
-	(funcall command window)
-      ;; EEEK!  Horrble, but it's the only way we can ensure the
-      ;; response goes to the correct buffer.
-      (erc-set-active-buffer b)
-      (switch-to-buffer-other-window b)
-      (funcall command (plist-get p 'erc-nicklist-nick)))))
+  (when command
+    (let* ((p (text-properties-at point))
+	   (b (plist-get p 'erc-nicklist-channel)))
+      (if (memq command '(erc-nicklist-quit ignore))
+	  (funcall command window)
+	;; EEEK!  Horrble, but it's the only way we can ensure the
+	;; response goes to the correct buffer.
+	(erc-set-active-buffer b)
+	(switch-to-buffer-other-window b)
+	(funcall command (plist-get p 'erc-nicklist-nick))))))
 
 (defun erc-nicklist-cmd-QUERY (user &optional server)
   "Opens a query buffer with USER."

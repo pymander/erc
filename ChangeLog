@@ -1,3 +1,20 @@
+2005-07-09  Michael Olson  <mwolson@gnu.org>
+
+	* erc-nicklist.el (erc-nicklist-insert-contents): Check
+	erc-announced-name before erc-session-server.  Make sure that we
+	can never get a stringp (nil) error.
+	(erc-nicklist-call-erc-command): If given no command, do nothing.
+	This fixes an error that used to occur when a stray mouse click
+	was made outside of the popup window, but on the erc-nicklist
+	menu.
+
+	* erc-bbdb.el (erc-bbdb-search-name-and-create): Get rid of the
+	infinite input loop when you want to create a new record.  Replace
+	most of that with a completing read of existing nicks.  If no nick
+	is chosen, create a new John Doe record.  The net effect of this
+	is that the old behavior is re-instated, with the addition of one
+	completing read that happens when you do a /whois.
+
 2005-07-09  Johan Bockgård  <bojohan@users.sourceforge.net>
 
 	* erc.el (erc-process-input-line): Docfix.
@@ -7,7 +24,7 @@
 
 	* erc-compat.el (erc-propertize): Move here from erc.el. Always
 	return a copy of the string (like `propertize' in GNU Emacs).
-	
+
 	* erc-nicklist.el (erc-nicklist-icons-directory)
 	(erc-nicklist-voiced-position)
 	(erc-nicklist-insert-medium-name-or-icon): Docfix.

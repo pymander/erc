@@ -47,7 +47,7 @@
 (require 'bbdb-gui)
 (require 'bbdb-hooks)
 
-(defconst erc-bbdb-version "$Revision: 1.27 $"
+(defconst erc-bbdb-version "$Revision: 1.28 $"
   "ERC BBDB revision.")
 
 (defgroup erc-bbdb nil
@@ -118,19 +118,8 @@ their \"displayed name\"."
 		     (and name (bbdb-search-simple name nil))
 		     (bbdb-search (bbdb-records) nil nil nil finger)
 		     (unless silent
-		       (let ((found-a-record nil)
-			     (record nil))
-			 (while (not found-a-record)
-			   (let ((wanted-name (read-string "Type a name to look for or choose a new one: " nick)))
-			     (setq name wanted-name)
-			     (setq record (car (bbdb-search (bbdb-records) wanted-name nil)))
-			     (if record
-				   (when (y-or-n-p (concat "Found a record with name "
-							   (bbdb-record-name record)
-							   ".  Do you want to use it? (Answering no will ask you for another name): "))
-				     (setq found-a-record t))
-				   (setq found-a-record t))))
-			 record))
+		       (bbdb-completing-read-one-record
+			"Merge using record of: "))
 		     (when create-p
 		       (bbdb-create-internal (or name
 						 "John Doe")
