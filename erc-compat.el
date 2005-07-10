@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.20 $"
+(defconst erc-compat-version "$Revision: 1.21 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
@@ -146,6 +146,16 @@ See `erc-encoding-coding-alist'."
                       (eq field (get-text-property (point) 'field)))
             (forward-char))
           (point)))))
+
+(if (not (fboundp 'propertize))
+    (defun erc-propertize (string &rest props)
+      (let ((string (copy-sequence string)))
+	(while props
+	  (put-text-property 0 (length string)
+			     (nth 0 props) (nth 1 props) string)
+	  (setq props (cddr props)))
+	string))
+  (defalias 'erc-propertize 'propertize))
 
 ;;; XEmacs does not have `view-mode-enter', but its `view-mode' has a
 ;;; similar argument list.  And we need this in erc-match.el.
