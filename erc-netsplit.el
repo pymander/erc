@@ -16,9 +16,9 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with GNU Emacs; see the file COPYING. If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+;; Boston, MA 02110-1301 USA
 
 ;;; Commentary:
 
@@ -31,11 +31,11 @@
 
 (require 'erc)
 
-(defconst erc-netsplit-version ""
+(defconst erc-netsplit-version "$Revision: 1.14 $"
   "ERC netsplit version.")
 
 (defgroup erc-netsplit nil
-  "Netsplit detection tries to automatically figure when a
+  "Netsplit detection tries to automatically figure when a 
 netsplit happens, and filters the QUIT messages. It also keeps
 track of netsplits, so that it can filter the JOIN messages on a netjoin too."
   :group 'erc)
