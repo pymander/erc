@@ -1,5 +1,13 @@
 2005-07-09  Johan Bockgård  <bojohan@users.sourceforge.net>
 
+	* erc.el (erc-process-input-line): Docfix.
+	(erc-update-mode-line-buffer): Use `erc-propertize' instead of
+	`propertize'.
+	(erc-propertize): Move to erc-compat.el.
+
+	* erc-compat.el (erc-propertize): Move here from erc.el. Always
+	return a copy of the string (like `propertize' in GNU Emacs).
+	
 	* erc-nicklist.el (erc-nicklist-icons-directory)
 	(erc-nicklist-voiced-position)
 	(erc-nicklist-insert-medium-name-or-icon): Docfix.

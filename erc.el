@@ -68,7 +68,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.764 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.766 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -78,7 +78,6 @@
 (require 'erc-compat)
 (require 'erc-backend)
 (require 'erc-menu)
-
 
 (defvar erc-official-location
   "http://erc.sf.net (comments mailto://mlang@delysid.org)"
@@ -632,15 +631,6 @@ E.g. '(\"i\" \"m\" \"s\" \"b Quake!*@*\")
   (let ((newstring (copy-sequence string)))
     (set-text-properties 0 (length newstring) nil newstring)
     newstring))
-
-(if (not (fboundp 'propertize))
-    (defun erc-propertize (string &rest props)
-      (while props
-	(put-text-property 0 (length string)
-			   (nth 0 props) (nth 1 props) string)
-	(setq props (cddr props)))
-      string)
-  (defalias 'erc-propertize 'propertize))
 
 (defcustom erc-prompt "ERC>"
   "Prompt used by ERC.  Trailing whitespace is not required."
@@ -2871,7 +2861,7 @@ erc-cmd-FOO, this returns a string /FOO."
 Returns non-nil if the command is actually sent to the server, and nil
 otherwise.
 
-If the command in the LINE is not boundp as a function `erc-cmd-COMMAND',
+If the command in the LINE is not bound as a function `erc-cmd-<COMMAND>',
 it is passed to `erc-cmd-default'.  If LINE is not a command (ie. doesn't
 start with /<COMMAND>) then it is sent as a message.
 
@@ -6399,7 +6389,7 @@ format-time-message."
 			 (erc-replace-regexp-in-string
 			  "%"
 			  "%%"
-			  (propertize header 'help-echo help-echo)))))
+			  (erc-propertize header 'help-echo help-echo)))))
 		(t (setq header-line-format header))))))
     (if (featurep 'xemacs)
 	(redraw-modeline)
