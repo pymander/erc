@@ -1,3 +1,14 @@
+2005-07-09  Johan Bockgård  <bojohan@users.sourceforge.net>
+
+	* erc-nicklist.el (erc-nicklist-icons-directory)
+	(erc-nicklist-voiced-position)
+	(erc-nicklist-insert-medium-name-or-icon): Docfix.
+	(erc-nicklist-insert-contents): Simplify.
+	(erc-nicklist-mode-map): Bind RET instead of `return'. Bind
+	`down-mouse-3' instead of `mouse-3'.
+	(erc-nicklist-kbd-cmd-QUERY): Cleanup regexp.
+	(erc-nicklist-channel-users-info): Docfix. Simplify.
+
 2005-07-02  Michael Olson  <mwolson@gnu.org>
 
 	* images: New directory containing the images that are used by

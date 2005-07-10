@@ -80,7 +80,7 @@
 (require 'erc)
 (require 'cl)
 
-(defconst erc-nicklist-version ""
+(defconst erc-nicklist-version "$Revision: 1.6 $"
   "ERC Nicklist version.")
 
 (defgroup erc-nicklist nil
@@ -95,13 +95,14 @@ By \"chat medium\", we mean IRC, AOL, MSN, ICQ, etc."
 
 (defcustom erc-nicklist-icons-directory
   (concat default-directory "images/")
-  "*Path of the PNG files for chat icons.
+  "*Directory of the PNG files for chat icons.
 Icons are displayed if `erc-nicklist-use-icons' is non-nil."
   :group 'erc-nicklist
   :type 'string)
 
 (defcustom erc-nicklist-voiced-position 'bottom
-  "*Voiced nicks appear on top, bottom or are not differentiated."
+  "*Position of voiced nicks in the nicklist.
+The value can be `top', `bottom' or nil (don't sort)."
   :group 'erc-nicklist
   :type  '(choice
 	   (const :tag "Top" 'top)
@@ -146,9 +147,9 @@ See also `erc-nicklist-window-size'."
   "Alist that maps a connection type to an icon.")
 
 (defun erc-nicklist-insert-medium-name-or-icon (host is-away)
-  "Inserts an icon or a string identifying the current host
-type. This is configured using `erc-nicklist-use-icons'
-and `erc-nicklist-icons-directory'."
+  "Inserts an icon or a string identifying the current host type.
+This is configured using `erc-nicklist-use-icons' and
+`erc-nicklist-icons-directory'."
       (cond ((and erc-nicklist-bitlbee-connected-p
 		  (string= "login.icq.com" host))
 	     (if erc-nicklist-use-icons
@@ -185,45 +186,39 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 (defun erc-nicklist-insert-contents (channel)
   "Insert the nicklist contents, with text properties and the optional images."
   (let ((erc-nicklist-bitlbee-connected-p
-	 (if (and (string-match "#bitlbee" (buffer-name channel))
-		  (not (or (string-match "oftc.net" erc-session-server))))
-	     t nil)))
+	 (and (string-match "#bitlbee" (buffer-name channel))
+	      (not (string-match "oftc.net" erc-session-server)))))
     (setq buffer-read-only nil)
     (erase-buffer)
-    (mapc (lambda (u)
-	    (let* ((server-user (car u))
-		   (channel-user (cdr u))
-		   (nick     (erc-server-user-nickname server-user))
-		   (host     (erc-server-user-host server-user))
-		   (login    (erc-server-user-login server-user))
-		   (full-name(erc-server-user-full-name server-user))
-		   (info     (erc-server-user-info server-user))
-		   (channels (erc-server-user-buffers server-user))
-		   (op       (erc-channel-user-op channel-user))
-		   (voice    (erc-channel-user-voice channel-user))
-		   (bbdb-nick (erc-nicklist-search-for-nick (concat login "@" host)))
-		   (away-status (if voice "" "\n(Away)"))
-		   (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick) "" "\n")
-					 "Login: " login "@" host
-					 away-status)))
-	      ;; identify the network (for bitlebee usage):
-	      ;; TODO: find out some proper way of doing this
-	      (erc-nicklist-insert-medium-name-or-icon host (not voice))
-	      (unless (or voice erc-nicklist-use-icons)
-		(setq nick (concat "(" nick ")")))
-	      (when op
-		(setq nick (concat nick " (OP)")))
-	      (insert (propertize nick
-				  'erc-nicklist-nick
-				  nick
-				  'mouse-face
-				  'region
-				  'erc-nicklist-channel
-				  channel
-				  'help-echo
-				  balloon-text)
-		      "\n")))
-	  (erc-nicklist-channel-users-info channel))
+    (dolist (u (erc-nicklist-channel-users-info channel))
+      (let* ((server-user (car u))
+	     (channel-user (cdr u))
+	     (nick     (erc-server-user-nickname server-user))
+	     (host     (erc-server-user-host server-user))
+	     (login    (erc-server-user-login server-user))
+	     (full-name(erc-server-user-full-name server-user))
+	     (info     (erc-server-user-info server-user))
+	     (channels (erc-server-user-buffers server-user))
+	     (op       (erc-channel-user-op channel-user))
+	     (voice    (erc-channel-user-voice channel-user))
+	     (bbdb-nick (erc-nicklist-search-for-nick (concat login "@" host)))
+	     (away-status (if voice "" "\n(Away)"))
+	     (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick) "" "\n")
+				   "Login: " login "@" host
+				   away-status)))
+	;; identify the network (for bitlebee usage):
+	;; TODO: find out some proper way of doing this
+	(erc-nicklist-insert-medium-name-or-icon host (not voice))
+	(unless (or voice erc-nicklist-use-icons)
+	  (setq nick (concat "(" nick ")")))
+	(when op
+	  (setq nick (concat nick " (OP)")))
+	(insert (erc-propertize nick
+				'erc-nicklist-nick    nick
+				'mouse-face           'highlight
+				'erc-nicklist-channel channel
+				'help-echo            balloon-text)
+		"\n")))
     (erc-nicklist-mode)))
 
 
@@ -255,10 +250,10 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 
 (defvar erc-nicklist-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "<mouse-3>") 'erc-nicklist-menu)
+    (define-key map (kbd "<down-mouse-3>") 'erc-nicklist-menu)
     (define-key map "\C-j" 'erc-nicklist-kbd-menu)
     (define-key map "q"  'erc-nicklist-quit)
-    (define-key map [(return)] 'erc-nicklist-kbd-cmd-QUERY)
+    (define-key map (kbd "RET") 'erc-nicklist-kbd-cmd-QUERY)
     map)
   "Keymap for `erc-nicklist-mode'.")
 
@@ -299,7 +294,7 @@ or WINDOW as arguments."
 	 (nick   (or (and (string-match "(\\(.*\\))" nick)
 			  (match-string 1 nick))
 		     nick))
-	 (nick   (or (and (string-match "+\\(.*\\)" nick)
+	 (nick   (or (and (string-match "\\+\\(.*\\)" nick)
 			  (match-string 1 nick))
 		     nick))
 	 (send   (format "QUERY %s %s" nick server)))
@@ -368,27 +363,24 @@ ARG is a parametrized event (see `interactive')."
 
 
 (defun erc-nicklist-channel-users-info (channel)
-  "Return a nick-sorted list of all users on CHANNEL. Result are
-elements in the form (SERVER-USER . CHANNEL-USER). The list has
-all the voiced users according to `erc-nicklist-voiced-position'."
-  (let* ((nicks (with-current-buffer channel
-		  (erc-get-channel-user-list)))
-	 (sorted-nicks (sort nicks
-			     #'(lambda (x y)
-				 (string< (downcase (erc-server-user-nickname (car x)))
-					  (downcase (erc-server-user-nickname (car y))))))))
+  "Return a nick-sorted list of all users on CHANNEL.
+Result are elements in the form (SERVER-USER . CHANNEL-USER). The
+list has all the voiced users according to
+`erc-nicklist-voiced-position'."
+  (let* ((nicks (erc-sort-channel-users-alphabetically
+		 (with-current-buffer channel (erc-get-channel-user-list)))))
     (if erc-nicklist-voiced-position
 	(let ((voiced-nicks (remove-if #'(lambda (x)
 					   (erc-channel-user-voice (cdr x)))
-				       sorted-nicks))
+				       nicks))
 	      (devoiced-nicks (remove-if-not #'(lambda (x)
 						 (erc-channel-user-voice (cdr x)))
-					     sorted-nicks)))
+					     nicks)))
 	  (cond ((eq erc-nicklist-voiced-position 'top)
 		 (append devoiced-nicks voiced-nicks))
 		((eq erc-nicklist-voiced-position 'bottom)
 		 (append voiced-nicks devoiced-nicks))))
-	sorted-nicks)))
+      nicks)))
 
 
 
