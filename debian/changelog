@@ -1,3 +1,10 @@
+erc (5.0.4-1) unstable; urgency=low
+
+  * New upstream release: Fix regression from 5.0.2 with the undo feature.
+  * debian/control: Make myself the maintainer.
+
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Tue, 12 Jul 2005 18:12:11 -0500
+
 erc (5.0.3-1) unstable; urgency=low
 
   * New upstream release.
@@ -13,7 +20,7 @@ erc (5.0.3-1) unstable; urgency=low
   * The functionality of format-spec.el is provided in erc-compat.el, so
     we no longer need to bundle it.
 
- --
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Fri, 24 Jun 2005 15:17:18 -0500
 
 erc (5.0.2-1) unstable; urgency=low
 

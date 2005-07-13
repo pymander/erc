@@ -57,6 +57,7 @@ release: autoloads
 	rm -rf ../erc-$(VERSION)
 	mkdir ../erc-$(VERSION)
 	cp $(SPECIAL) $(UNCOMPILED) $(SOURCE) $(MISC) ../erc-$(VERSION)
-	cd ..; tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*
+	(cd ..; tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*; \
+		zip -r erc-$(VERSION).zip erc-$(VERSION))
 
 todo:	erc.elc

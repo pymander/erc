@@ -1,5 +1,9 @@
 ERC NEWS                                                       -*- outline -*-
 
+* Fixes since ERC 5.0.3
+
+** Fix a problem with undo in channels.
+
 * Fixes since ERC 5.0.2
 
 ** Fix typo in the `ctcp-request-to' entry of the English catalog.

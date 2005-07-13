@@ -1,3 +1,11 @@
+2005-07-12  Michael Olson  <mwolson@gnu.org>
+
+	* debian/changelog: Build 5.0.4-1.
+
+	* Makefile (release): Prepare zip file in addition to tarball.
+
+	* NEWS: Add item for the undo fix.
+
 2005-07-09  Michael Olson  <mwolson@gnu.org>
 
 	* erc-nicklist.el (erc-nicklist-insert-contents): Check
