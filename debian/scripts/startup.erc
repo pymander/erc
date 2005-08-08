@@ -5,9 +5,9 @@
 ; load-path
 (setq load-path (cons (concat "/usr/share/"
                               "emacs"
-			      "/site-lisp/erc") load-path))
+                              "/site-lisp/erc") load-path))
 (setq load-path (cons (concat "/usr/share/"
                               (symbol-name flavor)
-			      "/site-lisp/erc") load-path))
+                              "/site-lisp/erc") load-path))
 
 (load "erc-auto")

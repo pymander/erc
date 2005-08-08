@@ -1,3 +1,15 @@
+erc (5.0.4-2) unstable; urgency=low
+
+  * Makefile: Use debuild.
+  * debian/control:
+    - Update Standards-Version to 3.6.2.
+    - Add emacsen to Depends.
+    - Add Romain Francoise to Uploaders.
+  * debian/scripts/startup.erc: Minor whitespace fixup.
+  * erc.el: Fix make-variable-buffer-local compiler warning.
+
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Mon,  8 Aug 2005 14:35:02 -0500
+
 erc (5.0.4-1) unstable; urgency=low
 
   * New upstream release: Fix regression from 5.0.2 with the undo feature.

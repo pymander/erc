@@ -1,3 +1,26 @@
+2005-08-08  Michael Olson  <mwolson@gnu.org>
+
+	* debian/changelog: Create 5.0.4-2 package.
+
+	* debian/control (Uploaders): Add Romain Francoise.
+	(Standards-Version): Update to 3.6.2.
+	(Depends): Add `emacsen'.
+
+	* debian/scripts/startup.erc (load-path): Minor whitespace fixup.
+
+	* Makefile (clean): Split target from realclean and make it remove
+	files that aren't packaged in releases.
+	(clean, release): Minor cleanups.
+	(debrelease): Use debuild rather than dpkg-buildpackage since the
+	former calls lintian.  Minor cleanups.
+	(debrelease-mwolson): New target that removes old Debian packages,
+	calls debrelease, and copies the resulting package to my dist dir.
+	(upload): New target that automates the process of uploading an
+	ERC release to sourceforge.
+
+	* erc.el (erc-mode): Use `make-local-variable' instead of
+	`make-variable-buffer-local'.
+
 2005-07-12  Michael Olson  <mwolson@gnu.org>
 
 	* debian/changelog: Build 5.0.4-1.

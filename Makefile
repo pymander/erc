@@ -31,17 +31,19 @@ erc-auto.el: erc-auto.in $(SOURCE)
 		-f batch-byte-compile $<
 
 clean:
-	rm -f *~ *.elc
+	-rm -f *~ *.elc
 
-distclean realclean: clean
+realclean: clean
 	-rm -f $(TARGET) $(SPECIAL)
 
-debrelease: $(ALLSOURCE) $(SPECIAL)
-	rm -Rf ../$(SNAPDIR) && \
-	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR) && \
-	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR) && \
-	cd ../ && \
-	tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR)
+distclean:
+	-rm -f $(TARGET)
+	-rm -Rf ../$(SNAPDIR)
+
+debrelease: $(ALLSOURCE) $(SPECIAL) distclean
+	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
+	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
+	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
 	cp -R debian ../$(SNAPDIR)
 	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
 	  ../$(SNAPDIR)/debian/CVS \
@@ -51,13 +53,27 @@ debrelease: $(ALLSOURCE) $(SPECIAL)
 	  ../$(SNAPDIR)/debian/.arch-ids \
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
-	cd ../$(SNAPDIR) && dpkg-buildpackage -rfakeroot
+	(cd ../$(SNAPDIR) && debuild -rfakeroot)
 
-release: autoloads
-	rm -rf ../erc-$(VERSION)
-	mkdir ../erc-$(VERSION)
+debrelease-mwolson:
+	-rm -f ../../dist/erc_*
+	-rm -f ../erc_$(VERSION)*
+	$(MAKE) debrelease
+	cp ../erc_$(VERSION)* ../../dist
+
+release: autoloads distclean
+	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
 	cp $(SPECIAL) $(UNCOMPILED) $(SOURCE) $(MISC) ../erc-$(VERSION)
-	(cd ..; tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*; \
-		zip -r erc-$(VERSION).zip erc-$(VERSION))
+	(cd .. && tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*; \
+	  zip -r erc-$(VERSION).zip erc-$(VERSION))
 
 todo:	erc.elc
+
+upload:
+	(cd .. && echo open ftp://upload.sourceforge.net > upload.lftp ; \
+	  echo cd /incoming >> upload.lftp ; \
+	  echo mput erc-$(VERSION).zip >> upload.lftp ; \
+	  echo mput erc-$(VERSION).tar.gz >> upload.lftp ; \
+	  echo close >> upload.lftp ; \
+	  lftp -f upload.lftp ; \
+	  rm -f upload.lftp)

@@ -1460,12 +1460,11 @@ Turning on `erc-mode' runs the hook `erc-mode-hook'."
 ;;       table)))
   (when (boundp 'next-line-add-newlines)
     (set (make-local-variable 'next-line-add-newlines) nil))
-  (make-variable-buffer-local 'paragraph-separate)
-  (make-variable-buffer-local 'paragraph-start)
   (setq line-move-ignore-invisible t)
-  (setq paragraph-separate (concat "\C-l\\|\\(^" (regexp-quote (erc-prompt))
-				   "\\)"))
-  (setq paragraph-start (concat "\\(" (regexp-quote (erc-prompt)) "\\)"))
+  (set (make-local-variable 'paragraph-separate)
+       (concat "\C-l\\|\\(^" (regexp-quote (erc-prompt)) "\\)"))
+  (set (make-local-variable 'paragraph-start)
+       (concat "\\(" (regexp-quote (erc-prompt)) "\\)"))
   ;; Run the mode hooks
   (run-hooks 'erc-mode-hook))
 

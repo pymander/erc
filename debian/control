@@ -1,12 +1,13 @@
 Source: erc
 Section: net
 Priority: optional
-Maintainer: Mario Lang <mlang@debian.org>
-Standards-Version: 3.6.1
+Maintainer: Michael W. Olson (GNU address) <mwolson@gnu.org>
+Uploaders: Mario Lang <mlang@debian.org>, Romain Francoise <rfrancoise@debian.org>
+Standards-Version: 3.6.2
 
 Package: erc
 Architecture: all
-Depends: make, emacs21 | xemacs21
+Depends: make, emacs21 | xemacs21 | emacsen
 Suggests: speedbar, bbdb, emacspeak
 Recommends: emacs-chess
 Replaces: erc-speak
