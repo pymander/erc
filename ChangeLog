@@ -1,3 +1,13 @@
+2005-08-10  Michael Olson  <mwolson@gnu.org>
+
+	* debian/copyright (Copyright): Remove notices for 4 people, since
+	they didn't contribute legally-significant changes, or have had
+	these changes overwritten.
+
+	* erc-log.el: Remove copyright notice.
+
+	* erc.el: Remove 3 copyright notices.
+
 2005-08-09  Michael Olson  <mwolson@gnu.org>
 
 	* debian/changelog: Create 5.0.4-3 package.  This doesn't serve
