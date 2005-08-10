@@ -1,3 +1,10 @@
+erc (5.0.4-3) unstable; urgency=low
+
+  * Attempt to ensure that the full set of changes is generated.
+    Thanks to Romain Francoise for the advice.
+
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Tue,  9 Aug 2005 18:23:09 -0500
+
 erc (5.0.4-2) unstable; urgency=low
 
   * Makefile: Use debuild.

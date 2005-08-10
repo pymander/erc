@@ -1,5 +1,7 @@
 VERSION=5.1
 SNAPDIR=erc-$(VERSION)
+LASTUPLOAD = 5.0.4-2
+BUILDOPTS  =
 
 SPECIAL = erc-auto.el
 UNCOMPILED = erc-chess.el erc-bbdb.el erc-ibuffer.el erc-speak.el \
@@ -53,7 +55,13 @@ debrelease: $(ALLSOURCE) $(SPECIAL) distclean
 	  ../$(SNAPDIR)/debian/.arch-ids \
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
-	(cd ../$(SNAPDIR) && debuild -rfakeroot)
+	(cd ../$(SNAPDIR) && \
+	  dpkg-buildpackage -v$(LASTUPLOAD) $(BUILDOPTS) \
+	    -us -uc -rfakeroot && \
+	  echo "Running lintian ..." && \
+	  lintian -i ../erc_$(VERSION)*.deb || : && \
+	  echo "Done running lintian." && \
+	  debsign)
 
 debrelease-mwolson:
 	-rm -f ../../dist/erc_*
