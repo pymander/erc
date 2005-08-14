@@ -1,3 +1,12 @@
+2005-08-14  Michael Olson  <mwolson@gnu.org>
+
+	* erc-stamp.el (erc-add-timestamp): If the text at point is
+	invisible, don't insert a timestamp.  Thanks to Pascal
+	J. Bourguignon for the suggestion.
+
+	* erc-match.el (erc-text-matched-hook): Don't hide fools by
+	default, but include it in the available options.
+
 2005-08-10  Michael Olson  <mwolson@gnu.org>
 
 	* debian/copyright (Copyright): Remove notices for 4 people, since

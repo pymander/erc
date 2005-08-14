@@ -140,21 +140,22 @@ from entering them and instead jump over them."
 
 This function is meant to be called from `erc-insert-modify-hook'
 or `erc-send-modify-hook'."
-  (let ((ct (current-time)))
-    (if (fboundp erc-insert-timestamp-function)
-	(funcall erc-insert-timestamp-function
-		 (erc-format-timestamp ct erc-timestamp-format))
-      (error "Timestamp function unbound"))
-    (when (and (fboundp erc-insert-away-timestamp-function)
-	       erc-away-timestamp-format
-	       (with-current-buffer (erc-server-buffer) away)
-	       (not erc-timestamp-format))
-      (funcall erc-insert-away-timestamp-function
-	       (erc-format-timestamp ct erc-away-timestamp-format)))
-    (add-text-properties (point-min) (point-max)
-			 (list 'timestamp ct))
-    (add-text-properties (point-min) (point-max)
-			 (list 'point-entered 'erc-echo-timestamp))))
+  (unless (get-text-property (point) 'invisible)
+    (let ((ct (current-time)))
+      (if (fboundp erc-insert-timestamp-function)
+	  (funcall erc-insert-timestamp-function
+		   (erc-format-timestamp ct erc-timestamp-format))
+	(error "Timestamp function unbound"))
+      (when (and (fboundp erc-insert-away-timestamp-function)
+		 erc-away-timestamp-format
+		 (with-current-buffer (erc-server-buffer) away)
+		 (not erc-timestamp-format))
+	(funcall erc-insert-away-timestamp-function
+		 (erc-format-timestamp ct erc-away-timestamp-format)))
+      (add-text-properties (point-min) (point-max)
+			   (list 'timestamp ct))
+      (add-text-properties (point-min) (point-max)
+			   (list 'point-entered 'erc-echo-timestamp)))))
 
 (defun erc-insert-timestamp-left (string)
   "Insert timestamps at the beginning of the line."

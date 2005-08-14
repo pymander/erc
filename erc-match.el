@@ -213,11 +213,12 @@ be formatted. The various format specs are:
   :group 'erc-match
   :type 'string)
 
-(defcustom erc-text-matched-hook '(erc-log-matches erc-hide-fools)
+(defcustom erc-text-matched-hook '(erc-log-matches)
   "Hook run when text matches a given match-type.
 Functions in this hook are passed as arguments:
 \(match-type nick!user@host message) where MATCH-TYPE is a symbol of:
 keyword, pal, dangerous-host, fool"
+  :options '(erc-log-matches erc-hide-fools)
   :group 'erc-match
   :type 'hook)
 
