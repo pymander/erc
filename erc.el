@@ -64,7 +64,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.767 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.770 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -3356,11 +3356,10 @@ If the target is \",\", the last person you've got a message from will
 be used. If the target is \".\", the last person you've sent a message
 to will be used."
   (cond
-   ((string-match "^\\s-*\\(\\S-+\\)\\(\\s-*$\\|\\s-+.*\\)" line)
+   ((string-match "^\\s-*\\(\\S-+\\) ?\\(.*\\)" line)
     (let ((tgt (match-string 1 line))
 	  (s (match-string 2 line)))
       (erc-log (format "cmd: MSG(%s): [%s] %s" message-command tgt s))
-      (if (string-match "^ " s) (setq s (substring s 1)))
       (cond
        ((string= tgt ",")
 	(if (car last-peers)
@@ -3672,9 +3671,7 @@ This only has effect if the variable `erc-kill-queries-on-quit' is non-nil."
 			      " -"
 			      (make-string (length people) ?o)
 			      " "
-			      (reduce (lambda (&optional a b)
-					(concat a " " b))
-				      people)))
+			      (mapconcat 'identity people " ")))
     t))
 
 (defun erc-cmd-OP (&rest people)
@@ -3684,9 +3681,7 @@ This only has effect if the variable `erc-kill-queries-on-quit' is non-nil."
 			      " +"
 			      (make-string (length people) ?o)
 			      " "
-			      (reduce (lambda (&optional a b)
-					(concat a " " b))
-				      people)))
+			      (mapconcat 'identity people " ")))
     t))
 
 (defun erc-cmd-TIME (&optional line)
