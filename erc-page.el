@@ -82,7 +82,7 @@ inserted into the server buffer."
       (if erc-page-function
 	  (funcall erc-page-function nick page-msg)
 	;; if no function is defined
-	(message text)
+	(message "%s" text)
 	(beep))
       ;; insert text into buffer
       (erc-display-message
@@ -93,10 +93,12 @@ inserted into the server buffer."
   "Send a CTCP page to the user given as the first word in LINE.
 The rest of LINE is the message to send.  Note that you will only
 receive pages if `erc-page-mode' is on."
-  (when (string-match "^\\s-*\\(\\S-+\\)\\s-*\\s-*\\(\\S-+\\)" line)
+  (when (string-match "^\\s-*\\(\\S-+\\) ?\\(.*\\)" line)
     (let ((nick (match-string 1 line))
 	  (msg (match-string 2 line)))
       (erc-cmd-CTCP nick "PAGE" msg))))
+
+(put 'erc-cmd-PAGE 'do-not-parse-args t)
 
 (provide 'erc-page)
 
