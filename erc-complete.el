@@ -36,7 +36,7 @@
 (require 'erc-match); for erc-pals
 (require 'hippie-exp); for the hippie expand stuff
 
-(defconst erc-complete-version "$Revision: 1.17 $"
+(defconst erc-complete-version "$Revision: 1.18 $"
   "ERC complete revision.")
 
 ;;;###autoload
@@ -88,7 +88,7 @@ typing \"f o TAB\" will directly give you foobar.  Use this with
 `erc-nick-completion'."
   (delete
    (erc-current-nick)
-   (mapcar (function car) channel-members)))
+   (mapcar (function car) (erc-get-channel-user-list))))
 
 (defcustom erc-nick-completion-postfix ": "
   "*When `erc-complete' is used in the first word after the prompt,
@@ -112,7 +112,8 @@ The type of completion depends on `erc-nick-completion'."
 	 (try-complete-erc-nick old erc-pals))
 	((eq erc-nick-completion 'all)
 	 (try-complete-erc-nick old (append
-				     (mapcar (function car) channel-members)
+				     (mapcar (function car)
+					     (erc-get-channel-user-list))
 				     (erc-command-list))))
 	((functionp erc-nick-completion)
 	 (try-complete-erc-nick old (funcall erc-nick-completion)))
@@ -214,3 +215,8 @@ Window configurations are stored in
 (provide 'erc-complete)
 
 ;;; erc-complete.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

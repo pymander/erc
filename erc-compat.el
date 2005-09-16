@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.21 $"
+(defconst erc-compat-version "$Revision: 1.22 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
@@ -45,38 +45,38 @@
       (mapc 'unintern (apropos-internal "^erc-compat-test"))
       (defalias 'erc-define-minor-mode 'define-minor-mode)
       (put 'erc-define-minor-mode 'edebug-form-spec 'define-minor-mode))
-  (error 
+  (error
    (defmacro erc-define-minor-mode (mode doc &optional init-value lighter
-                                    keymap &rest body)
+					 keymap &rest body)
      "Define a minor mode like in Emacs."
      ;; Deal with at least /some/ keywords.
      ;; the rest don't seem to be as important.
      (let (keyw globalp group)
        (while (keywordp (setq keyw (car body)))
-         (setq body (cdr body))
-         (case keyw
-           (:global (setq globalp (pop body)))
-           (:group (setq group (pop body)))
-           (t (pop body))))
+	 (setq body (cdr body))
+	 (case keyw
+	   (:global (setq globalp (pop body)))
+	   (:group (setq group (pop body)))
+	   (t (pop body))))
        `(progn
-          (if ,group
-              (defcustom ,mode ,init-value
-                "Non-nil if the corresponding mode is enabled."
-                :group ,group
-                :type 'boolean)
-              (defvar ,mode ,init-value
-                "Non-nil if the corresponding mode is enabled."))
-          (unless ,globalp
-            (make-variable-buffer-local ',mode))
-          (defun ,mode (&optional arg)
-            ,doc
-            (interactive)
-            (setq ,mode (if arg
-                            (> (prefix-numeric-value arg) 0)
-                            (not ,mode)))
-            ,@body
-            ,mode)
-          (add-minor-mode ,mode ,lighter ,keymap))))
+	  (if ,group
+	      (defcustom ,mode ,init-value
+		"Non-nil if the corresponding mode is enabled."
+		:group ,group
+		:type 'boolean)
+	    (defvar ,mode ,init-value
+	      "Non-nil if the corresponding mode is enabled."))
+	  (unless ,globalp
+	    (make-variable-buffer-local ',mode))
+	  (defun ,mode (&optional arg)
+	    ,doc
+	    (interactive)
+	    (setq ,mode (if arg
+			    (> (prefix-numeric-value arg) 0)
+			  (not ,mode)))
+	    ,@body
+	    ,mode)
+	  (add-minor-mode ,mode ,lighter ,keymap))))
    (put 'erc-define-minor-mode 'edebug-form-spec
 	'(&define name stringp
 		  [&optional sexp sexp &or consp symbolp]
@@ -140,12 +140,12 @@ See `erc-encoding-coding-alist'."
 (if (not (fboundp 'field-end))
     (defun field-end (pos &optional ignored)
       (save-excursion
-        (let ((field (get-text-property pos 'field)))
-          (goto-char pos)
-          (while (and field
-                      (eq field (get-text-property (point) 'field)))
-            (forward-char))
-          (point)))))
+	(let ((field (get-text-property pos 'field)))
+	  (goto-char pos)
+	  (while (and field
+		      (eq field (get-text-property (point) 'field)))
+	    (forward-char))
+	  (point)))))
 
 (if (not (fboundp 'propertize))
     (defun erc-propertize (string &rest props)
@@ -181,11 +181,13 @@ See `erc-encoding-coding-alist'."
          (replace-in-string string regexp rep literal))))
 ;;; Done!
 
-;; XEmacs has a string representation of the build time. Really!
+;; XEmacs has a string representation of the build time.  It's
+;; possible for date-to-time to throw an "invalid date" error, so
+;; we'll just use a string instead of a time.
 (setq erc-emacs-build-time
       (if (stringp emacs-build-time)
-          (date-to-time emacs-build-time)
-          emacs-build-time))
+	  emacs-build-time
+	(format-time-string "%Y-%m-%d" emacs-build-time)))
 
 ;; XEmacs' `replace-match' does not replace matching subexpressions in strings.
 (defun erc-replace-match-subexpression-in-string
@@ -195,9 +197,9 @@ MATCH is the text which matched the subexpression (see `match-string').
 START is the beginning position of the last match (see `match-beginning').
 See `replace-match' for explanations of FIXEDCASE and LITERAL."
   (cond ((featurep 'xemacs)
-         (string-match match string start)
-         (replace-match newtext fixedcase literal string))
-        (t (replace-match newtext fixedcase literal string subexp))))
+	 (string-match match string start)
+	 (replace-match newtext fixedcase literal string))
+	(t (replace-match newtext fixedcase literal string subexp))))
 
 ;; If a version of Emacs or XEmacs does not have gnus or tramp, they
 ;; will not have the format-spec library.  We deal with this by
@@ -214,22 +216,22 @@ to values."
        (insert format)
        (goto-char (point-min))
        (while (search-forward "%" nil t)
-         (cond
-          ;; Quoted percent sign.
-          ((eq (char-after) ?%)
-           (delete-char 1))
-          ;; Valid format spec.
-          ((looking-at "\\([-0-9.]*\\)\\([a-zA-Z]\\)")
-           (let* ((num (match-string 1))
-                  (spec (string-to-char (match-string 2)))
-                  (val (cdr (assq spec specification))))
-             (delete-region (1- (match-beginning 0)) (match-end 0))
-             (unless val
-               (error "Invalid format character: %s" spec))
-             (insert (format (concat "%" num "s") val))))
-          ;; Signal an error on bogus format strings.
-          (t
-           (error "Invalid format string"))))
+	 (cond
+	  ;; Quoted percent sign.
+	  ((eq (char-after) ?%)
+	   (delete-char 1))
+	  ;; Valid format spec.
+	  ((looking-at "\\([-0-9.]*\\)\\([a-zA-Z]\\)")
+	   (let* ((num (match-string 1))
+		  (spec (string-to-char (match-string 2)))
+		  (val (cdr (assq spec specification))))
+	     (delete-region (1- (match-beginning 0)) (match-end 0))
+	     (unless val
+	       (error "Invalid format character: %s" spec))
+	     (insert (format (concat "%" num "s") val))))
+	  ;; Signal an error on bogus format strings.
+	  (t
+	   (error "Invalid format string"))))
        (buffer-string)))
 
    (defun format-spec-make (&rest pairs)
@@ -238,21 +240,26 @@ PAIRS is a list where every other element is a character and a value,
 starting with a character."
      (let (alist)
        (while pairs
-         (unless (cdr pairs)
-           (error "Invalid list of pairs"))
-         (push (cons (car pairs) (cadr pairs)) alist)
-         (setq pairs (cddr pairs)))
+	 (unless (cdr pairs)
+	   (error "Invalid list of pairs"))
+	 (push (cons (car pairs) (cadr pairs)) alist)
+	 (setq pairs (cddr pairs)))
        (nreverse alist)))))
 
 ;; Emacs has `cancel-timer', but XEmacs uses `delete-itimer'.
 (defun erc-cancel-timer (timer)
   (cond ((fboundp 'cancel-timer)
-         (cancel-timer timer))
-        ((fboundp 'delete-itimer)
-         (delete-itimer timer))
-        (t
-         (error "Cannot find `cancel-timer' variant"))))
+	 (cancel-timer timer))
+	((fboundp 'delete-itimer)
+	 (delete-itimer timer))
+	(t
+	 (error "Cannot find `cancel-timer' variant"))))
 
 (provide 'erc-compat)
 
 ;;; erc-compat.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

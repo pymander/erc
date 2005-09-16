@@ -27,7 +27,7 @@
 
 (require 'erc)
 
-(defconst erc-nets-version "$Revision: 1.19 $"
+(defconst erc-nets-version "$Revision: 1.20 $"
   "ERC networks revision.")
 
 ;; Variables
@@ -682,13 +682,13 @@ PORTS is either a number, a list of numbers, or a list of port ranges."
   "Alist of IRC networks. (NET MATCHER) where
 NET is a symbol naming that IRC network and
 MATCHER is used to find a corresponding network to a server while connected to
-  it. If it is regexp, it's used to match against `erc-announced-server-name'.
+  it. If it is regexp, it's used to match against `erc-server-announced-name'.
   It can also be a function (predicate). Then it is executed with the
   server buffer as current-buffer."
   :group 'erc-networks
   :type '(repeat
-          (list :tag "Network"
-                (symbol :tag "Network name")
+	  (list :tag "Network"
+		(symbol :tag "Network name")
 		(choice :tag "Network's common server ending"
 		 (regexp)
 		 (const :tag "Network has no common server ending" nil)))))
@@ -709,11 +709,11 @@ search for a match in `erc-networks-alist'."
       (intern (cdr (assoc "NETWORK" erc-server-parameters)))
     (or
      ;; Loop through `erc-networks-alist' looking for a match.
-     (let ((server (or erc-announced-server-name erc-session-server)))
+     (let ((server (or erc-server-announced-name erc-session-server)))
        (loop for (name matcher) in erc-networks-alist
-             when (and matcher
-                       (string-match (concat matcher "\\'") server))
-             do (return name)))
+	     when (and matcher
+		       (string-match (concat matcher "\\'") server))
+	     do (return name)))
      'Unknown)))
 
 (defun erc-network ()
@@ -727,24 +727,18 @@ network as a symbol."
     (intern (downcase (symbol-name erc-network)))))
 
 (condition-case nil
-    (make-obsolete 'erc-current-network 'erc-network "Obsolete since erc-nets 1.5")
-  (wrong-number-of-arguments (make-obsolete 'erc-current-network 'erc-network)))
+    (make-obsolete 'erc-current-network 'erc-network
+		   "Obsolete since erc-nets 1.5")
+  (wrong-number-of-arguments (make-obsolete 'erc-current-network
+					    'erc-network)))
 
 (defun erc-network-name ()
   "Returns the name of the current network as a string."
   (with-current-buffer (erc-server-buffer) (symbol-name erc-network)))
 
-;; Why was this function marked obsolete?  There is no other function that
-;; returns the name of the current network as a string.  Some of us use these
-;; functions in our personal ERC configuration code.  (franl, 2004-03-13)
-;;
-;;(condition-case nil
-;;    (make-obsolete 'erc-network-name 'erc-network "Obsolete since erc-nets 1.5")
-;;  (wrong-number-of-arguments (make-obsolete 'erc-network-name 'erc-network)))
-
 (defun erc-set-network-name (proc parsed)
   "Set `erc-network' to the value returned by `erc-determine-network'."
-  (unless erc-connected
+  (unless erc-server-connected
     (setq erc-network (erc-determine-network)))
   nil)
 
@@ -775,8 +769,8 @@ As an example:
 	     (push p result))
 	    ((listp p)
 	     (setq result (nconc (loop for i from (cadr p) downto (car p)
-                                       collect i)
-                                 result)))))
+				       collect i)
+				 result)))))
     (nreverse result)))
 
 ;;;###autoload
@@ -810,7 +804,7 @@ As an example:
 ;; It does not work yet, help me with it if you
 ;; think it is worth the effort.
 
-(defvar erc-settings 
+(defvar erc-settings
   '((pals freenode ("kensanata" "shapr" "anti\\(fuchs\\|gone\\)"))
     (format-nick-function (freenode "#emacs") erc-format-@nick))
   "Experimental: Alist of configuration options.
@@ -842,9 +836,7 @@ VALUE is the options value.")
     val))
 
 (erc-get 'pals 'freenode)
-	       
-	       
-  
+
 
 (provide 'erc-nets)
 
@@ -853,5 +845,4 @@ VALUE is the options value.")
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

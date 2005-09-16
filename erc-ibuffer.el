@@ -31,7 +31,7 @@
 
 (require 'ibuffer)
 
-(defconst erc-ibuffer-version "$Revision: 1.26 $"
+(defconst erc-ibuffer-version "$Revision: 1.27 $"
   "ERC ibuffer revision.")
 
 (defgroup erc-ibuffer nil
@@ -66,8 +66,7 @@
        regexp)))
   (with-current-buffer buf
     (and (eq major-mode 'erc-mode)
-	 (boundp 'erc-announced-server-name)
-	 (string-match qualifier (or erc-announced-server-name
+	 (string-match qualifier (or erc-server-announced-name
 				     erc-session-server)))))
 
 (ibuffer-define-column erc-modified (:name "M")
@@ -90,15 +89,15 @@
     " "))
 
 (ibuffer-define-column erc-server-name (:name "Server")
-  (if (and (boundp 'erc-process) (processp erc-process))
-      (with-current-buffer (process-buffer erc-process)
-	(or erc-announced-server-name erc-session-server))
+  (if (and (boundp 'erc-server-process) (processp erc-server-process))
+      (with-current-buffer (process-buffer erc-server-process)
+	(or erc-server-announced-name erc-session-server))
     ""))
 
 (ibuffer-define-column erc-target (:name "Target")
   (if (eq major-mode 'erc-mode)
-      (cond ((and (boundp 'erc-process) (processp erc-process)
-		  (eq (current-buffer) (process-buffer erc-process)))
+      (cond ((and (boundp 'erc-server-process) (processp erc-server-process)
+		  (eq (current-buffer) (process-buffer erc-server-process)))
 	     (concat "Server " erc-session-server ":"
 		     (erc-port-to-string erc-session-port)))
 	    ((erc-channel-p (erc-default-target))
@@ -110,48 +109,48 @@
 
 (ibuffer-define-column erc-topic (:name "Topic")
   (if (and (eq major-mode 'erc-mode)
-	   (boundp 'channel-topic))
-      (erc-controls-interpret channel-topic)
+	   erc-channel-topic)
+      (erc-controls-interpret erc-channel-topic)
     ""))
 
 (ibuffer-define-column
  erc-members (:name "Users")
   (if (and (eq major-mode 'erc-mode)
-          (boundp 'erc-channel-users)
-          (hash-table-p erc-channel-users)
-          (> (hash-table-size erc-channel-users) 0))
+	   (boundp 'erc-channel-users)
+	   (hash-table-p erc-channel-users)
+	   (> (hash-table-size erc-channel-users) 0))
      (number-to-string (hash-table-size erc-channel-users))
     ""))
 
 (ibuffer-define-column erc-away (:name "A")
-  (if (and (boundp 'erc-process)
-	   (processp erc-process)
-	   (with-current-buffer (process-buffer erc-process)
-	     away))
+  (if (and (boundp 'erc-server-process)
+	   (processp erc-server-process)
+	   (with-current-buffer (process-buffer erc-server-process)
+	     erc-away))
       "A"
     " "))
 
 (ibuffer-define-column
  erc-op (:name "O")
   (if (and (eq major-mode 'erc-mode)
-          (erc-channel-user-op-p (erc-current-nick)))
+	   (erc-channel-user-op-p (erc-current-nick)))
       "@"
     " "))
 
 (ibuffer-define-column erc-voice (:name "V")
   (if (and (eq major-mode 'erc-mode)
-           (erc-channel-user-voice-p (erc-current-nick)))
+	   (erc-channel-user-voice-p (erc-current-nick)))
       "+"
     " "))
 
 (ibuffer-define-column erc-channel-modes (:name "Mode")
   (if (and (eq major-mode 'erc-mode)
-	   (or (> (length channel-modes) 0)
-	       channel-user-limit))
+	   (or (> (length erc-channel-modes) 0)
+	       erc-channel-user-limit))
       (concat (apply 'concat
-		     "(+" channel-modes)
-	      (if channel-user-limit
-		  (format "l %d" channel-user-limit)
+		     "(+" erc-channel-modes)
+	      (if erc-channel-user-limit
+		  (format "l %d" erc-channel-user-limit)
 		"")
 	      ")")
     (if (not (eq major-mode 'erc-mode))
@@ -176,3 +175,8 @@
 (provide 'erc-ibuffer)
 
 ;;; erc-ibuffer.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

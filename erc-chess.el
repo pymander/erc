@@ -34,7 +34,7 @@
 
 ;;;; Variables
 
-(defconst erc-chess-version "$Revision: 1.25 $"
+(defconst erc-chess-version "$Revision: 1.26 $"
   "ERC chess revision.")
 
 (defgroup erc-chess nil
@@ -86,13 +86,13 @@ This is the main handler for the erc-chess module."
   (cond
    ((eq event 'initialize)
     (setq erc-chess-partner (car args))
-    (setq erc-process (nth 1 args))
+    (setq erc-server-process (nth 1 args))
     t)
 
    ((eq event 'send)
     ;; Transmit the string given in `(car args)' to the nick
     ;; saved in `erc-chess-partner'.
-    (let ((buf (process-buffer erc-process))
+    (let ((buf (process-buffer erc-server-process))
 	  (nick erc-chess-partner)
 	  (msg (substring (car args) 0 (1- (length (car args))))))
       (when (buffer-live-p buf)
@@ -107,7 +107,7 @@ This is the main handler for the erc-chess module."
 	(chess-display-popup display)))
 
      ((eq event 'destroy)
-      (let* ((buf (process-buffer erc-process))
+      (let* ((buf (process-buffer erc-server-process))
 	     (nick (erc-downcase erc-chess-partner))
 	     (engine (current-buffer)))
 	(with-current-buffer (erc-server-buffer)
@@ -126,7 +126,7 @@ This is the main handler for the erc-chess module."
 This function adds to `erc-chess-alist' too."
   ;; Maybe move that into the connect callback?
   (let* ((objects (chess-session 'erc-chess t 'erc-chess-response-handler
-				 nick erc-process))
+				 nick erc-server-process))
 	 (engine (car objects))
 	 (display (cadr objects)))
     (when engine
@@ -175,3 +175,8 @@ NICK should be the first and only arg to /chess"
 (provide 'erc-chess)
 
 ;;; erc-chess.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

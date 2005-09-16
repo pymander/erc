@@ -35,7 +35,7 @@
 (unless (fboundp 'make-overlay)
   (require 'overlay))
 
-(defconst erc-list-version "$Revision: 1.43 $"
+(defconst erc-list-version "$Revision: 1.44 $"
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -228,12 +228,14 @@ to RFC and send the LIST header (#321) at start of list transmission."
 	    (message "")
 	    t))
 
-	(setq erc-chanlist-buffer (get-buffer-create (format "*Channels on %s*" (erc-response.sender parsed))))
+	(setq erc-chanlist-buffer (get-buffer-create
+				   (format "*Channels on %s*"
+					   (erc-response.sender parsed))))
 	(with-current-buffer erc-chanlist-buffer
 	  (setq buffer-read-only nil)
 	  (erase-buffer)
 	  (erc-chanlist-mode)
-	  (setq erc-process proc)
+	  (setq erc-server-process proc)
 	  (if erc-chanlist-hide-modeline
 	      (setq mode-line-format nil))
 	  (setq buffer-read-only t))
@@ -242,10 +244,10 @@ to RFC and send the LIST header (#321) at start of list transmission."
     ;; Now that we've setup our callbacks, pull the trigger.
     (if (interactive-p)
 	(message "Collecting channel list for server %s" erc-session-server))
-    (erc-send-command (if (null channels)
+    (erc-server-send (if (null channels)
 			  "LIST"
 			(concat "LIST "
-                                (mapconcat #'identity channels ","))))))
+				(mapconcat #'identity channels ","))))))
 
 (defun erc-chanlist-322 (proc parsed)
   "Process an IRC 322 message.
@@ -256,24 +258,24 @@ command."
       (cdr (erc-response.command-args parsed))
     (let ((topic (erc-response.contents parsed)))
       (with-current-buffer erc-chanlist-buffer
-        (save-excursion
-          (goto-char (point-max))
-          (let (buffer-read-only)
-            (insert (format "%-26s%4s %s\n" (erc-controls-strip channel)
-                            num-users
-                            (erc-controls-strip topic))))
-          
-          ;; Maybe display a progress indicator in the minibuffer.
-          (when (and erc-chanlist-progress-message
-                     (> (erc-time-diff
-                         erc-chanlist-last-time (erc-current-time))
-                        3))
-            (setq erc-chanlist-last-time (erc-current-time))
-            (message "Accumulating channel list ... %c"
-                     (aref [?/ ?| ?\\ ?- ?! ?O ?o] (random 7))))
+	(save-excursion
+	  (goto-char (point-max))
+	  (let (buffer-read-only)
+	    (insert (format "%-26s%4s %s\n" (erc-controls-strip channel)
+			    num-users
+			    (erc-controls-strip topic))))
 
-          ;; Return success to prevent other hook functions from being run.
-          t)))))
+	  ;; Maybe display a progress indicator in the minibuffer.
+	  (when (and erc-chanlist-progress-message
+		     (> (erc-time-diff
+			 erc-chanlist-last-time (erc-current-time))
+			3))
+	    (setq erc-chanlist-last-time (erc-current-time))
+	    (message "Accumulating channel list ... %c"
+		     (aref [?/ ?| ?\\ ?- ?! ?O ?o] (random 7))))
+
+	  ;; Return success to prevent other hook functions from being run.
+	  t)))))
 
 (defun erc-chanlist-post-command-hook ()
   "Keep the current line highlighted."
@@ -287,9 +289,9 @@ command."
 (defun erc-chanlist-highlight-line ()
   "Highlight the current line."
   (unless erc-chanlist-highlight-overlay
-    (setq erc-chanlist-highlight-overlay 
+    (setq erc-chanlist-highlight-overlay
 	  (make-overlay (point-min) (point-min)))
-    ; Detach it from the buffer. 
+    ;; Detach it from the buffer.
     (delete-overlay erc-chanlist-highlight-overlay)
     (overlay-put erc-chanlist-highlight-overlay
 		 'face erc-chanlist-highlight-face)
@@ -346,7 +348,8 @@ Either sort by channel names or by number of users in each channel."
 	  (setq erc-chanlist-sort-state 'channel))
 
 	(goto-char (point-min))
-	(if (search-forward-regexp "^[0-9]+ channels (sorted by \\(.*\\)).$" nil t)
+	(if (search-forward-regexp "^[0-9]+ channels (sorted by \\(.*\\)).$"
+				   nil t)
 	    (replace-match (if (eq erc-chanlist-sort-state 'channel)
 			       "channel name"
 			     "number of users")
@@ -357,7 +360,7 @@ Either sort by channel names or by number of users in each channel."
 	(forward-line 1)
 	(recenter -1)
 
-      	(erc-prettify-channel-list)))))
+	(erc-prettify-channel-list)))))
 
 (defun erc-chanlist-quit ()
   "Quit Chanlist mode.
@@ -388,5 +391,4 @@ Private channels, which are shown as asterisks (*), are ignored."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

@@ -78,9 +78,12 @@
 ;;; Code:
 
 (require 'erc)
+(condition-case nil
+    (require 'erc-bbdb)
+  (error nil))
 (require 'cl)
 
-(defconst erc-nicklist-version "$Revision: 1.7 $"
+(defconst erc-nicklist-version "$Revision: 1.8 $"
   "ERC Nicklist version.")
 
 (defgroup erc-nicklist nil
@@ -134,8 +137,8 @@ If BUFFER is nil, use the value of `current-buffer'."
 
 See also `erc-nicklist-window-size'."
   (let ((width (floor (* (window-width) (/ erc-nicklist-window-size 100.0))))
-        (buffer (erc-nicklist-buffer-name))
-        window)
+	(buffer (erc-nicklist-buffer-name))
+	window)
     (split-window-horizontally (- width))
     (setq window (next-window))
     (set-window-buffer window (get-buffer-create buffer))
@@ -154,20 +157,26 @@ This is configured using `erc-nicklist-use-icons' and
 		  (string= "login.icq.com" host))
 	     (if erc-nicklist-use-icons
 		 (if is-away
-		     (insert-image (cdr (assoc 'icq-away erc-nicklist-images-alist)))
-		     (insert-image (cdr (assoc 'icq      erc-nicklist-images-alist))))
+		     (insert-image (cdr (assoc 'icq-away
+					       erc-nicklist-images-alist)))
+		     (insert-image (cdr (assoc 'icq
+					       erc-nicklist-images-alist))))
 		 (insert "ICQ")))
 	    (erc-nicklist-bitlbee-connected-p
 	     (if erc-nicklist-use-icons
 		 (if is-away
-		     (insert-image (cdr (assoc 'msn-away erc-nicklist-images-alist)))
-		     (insert-image (cdr (assoc 'msn      erc-nicklist-images-alist))))
+		     (insert-image (cdr (assoc 'msn-away
+					       erc-nicklist-images-alist)))
+		     (insert-image (cdr (assoc 'msn
+					       erc-nicklist-images-alist))))
 		 (insert "MSN")))
 	    (t
 	     (if erc-nicklist-use-icons
 		 (if is-away
-		     (insert-image (cdr (assoc 'irc-away erc-nicklist-images-alist)))
-		     (insert-image (cdr (assoc 'irc      erc-nicklist-images-alist))))
+		     (insert-image (cdr (assoc 'irc-away
+					       erc-nicklist-images-alist)))
+		     (insert-image (cdr (assoc 'irc
+					       erc-nicklist-images-alist))))
 		 (insert "IRC"))))
       (insert " "))
 
@@ -175,21 +184,24 @@ This is configured using `erc-nicklist-use-icons' and
   "Return the bitlbee-nick field for this contact given FINGER-HOST.
 Seach for the BBDB record of this contact.  If not found, return nil."
   (when (boundp 'erc-bbdb-bitlbee-name-field)
-    (let ((record (car (member-if (lambda (r) (let ((fingers (bbdb-record-finger-host r)))
-						(when fingers
-						  (string-match finger-host
-								(car (bbdb-record-finger-host r))))))
-				  (bbdb-records)))))
+    (let ((record (car
+		   (member-if
+		    (lambda (r)
+		      (let ((fingers (bbdb-record-finger-host r)))
+			(when fingers
+			  (string-match finger-host
+					(car (bbdb-record-finger-host r))))))
+		    (bbdb-records)))))
       (when record
 	(bbdb-get-field record erc-bbdb-bitlbee-name-field)))))
 
 (defun erc-nicklist-insert-contents (channel)
   "Insert the nicklist contents, with text properties and the optional images."
   (let ((erc-nicklist-bitlbee-connected-p
-	 (and (string-match "#bitlbee" (buffer-name channel))
-	      (not (string-match "oftc.net" (or erc-announced-server-name
-						erc-session-server
-						""))))))
+	 (and (string-match "^#bitlbee\\b" (buffer-name channel))
+	      (not (string-match "oftc\\.net" (or erc-server-announced-name
+						  erc-session-server
+						  ""))))))
     (setq buffer-read-only nil)
     (erase-buffer)
     (dolist (u (erc-nicklist-channel-users-info channel))
@@ -205,7 +217,8 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 	     (voice    (erc-channel-user-voice channel-user))
 	     (bbdb-nick (erc-nicklist-search-for-nick (concat login "@" host)))
 	     (away-status (if voice "" "\n(Away)"))
-	     (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick) "" "\n")
+	     (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick)
+						 "" "\n")
 				   "Login: " login "@" host
 				   away-status)))
 	;; identify the network (for bitlebee usage):
@@ -216,10 +229,10 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 	(when op
 	  (setq nick (concat nick " (OP)")))
 	(insert (erc-propertize nick
-				'erc-nicklist-nick    nick
-				'mouse-face           'highlight
+				'erc-nicklist-nick nick
+				'mouse-face 'highlight
 				'erc-nicklist-channel channel
-				'help-echo            balloon-text)
+				'help-echo balloon-text)
 		"\n")))
     (erc-nicklist-mode)))
 
@@ -231,12 +244,18 @@ Seach for the BBDB record of this contact.  If not found, return nil."
     (unless (or (not erc-nicklist-use-icons)
 		erc-nicklist-images-alist)
       (setq erc-nicklist-images-alist
-	    `((msn      . ,(create-image (concat erc-nicklist-icons-directory "msn-online.png")))
-	      (msn-away . ,(create-image (concat erc-nicklist-icons-directory "msn-offline.png")))
-	      (irc      . ,(create-image (concat erc-nicklist-icons-directory "irc-online.png")))
-	      (irc-away . ,(create-image (concat erc-nicklist-icons-directory "irc-offline.png")))
-	      (icq      . ,(create-image (concat erc-nicklist-icons-directory "icq-online.png")))
-	      (icq-away . ,(create-image (concat erc-nicklist-icons-directory "icq-offline.png"))))))
+	    `((msn      . ,(create-image (concat erc-nicklist-icons-directory
+						 "msn-online.png")))
+	      (msn-away . ,(create-image (concat erc-nicklist-icons-directory
+						 "msn-offline.png")))
+	      (irc      . ,(create-image (concat erc-nicklist-icons-directory
+						 "irc-online.png")))
+	      (irc-away . ,(create-image (concat erc-nicklist-icons-directory
+						 "irc-offline.png")))
+	      (icq      . ,(create-image (concat erc-nicklist-icons-directory
+						 "icq-online.png")))
+	      (icq-away . ,(create-image (concat erc-nicklist-icons-directory
+						 "icq-offline.png"))))))
     (erc-nicklist-make-window)
     (with-current-buffer (get-buffer (erc-nicklist-buffer-name channel))
       (erc-nicklist-insert-contents channel)))
@@ -245,10 +264,10 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 (defun erc-nicklist-update ()
   "Update the ERC nicklist buffer."
   (let ((b (get-buffer (erc-nicklist-buffer-name)))
-        (channel (current-buffer)))
+	(channel (current-buffer)))
     (when b
       (with-current-buffer b
-        (erc-nicklist-insert-contents channel)))))
+	(erc-nicklist-insert-contents channel)))))
 
 (defvar erc-nicklist-mode-map
   (let ((map (make-sparse-keymap)))
@@ -338,12 +357,12 @@ Deletes WINDOW and stops updating the nicklist buffer."
   "Show the ERC nicklist menu."
   (interactive)
   (let* ((point (point))
-         (window (selected-window))
-         (buffer (current-buffer)))
+	 (window (selected-window))
+	 (buffer (current-buffer)))
     (with-current-buffer buffer
       (erc-nicklist-call-erc-command
        (car (x-popup-menu point
-                          erc-nicklist-menu))
+			  erc-nicklist-menu))
        point
        buffer
        window))))
@@ -354,12 +373,12 @@ Deletes WINDOW and stops updating the nicklist buffer."
 ARG is a parametrized event (see `interactive')."
   (interactive "e")
   (let* ((point (nth 1 (cadr arg)))
-         (window (caadr arg))
-         (buffer (window-buffer window)))
+	 (window (caadr arg))
+	 (buffer (window-buffer window)))
     (with-current-buffer buffer
       (erc-nicklist-call-erc-command
        (car (x-popup-menu arg
-                          erc-nicklist-menu))
+			  erc-nicklist-menu))
        point
        buffer
        window))))
@@ -377,7 +396,8 @@ list has all the voiced users according to
 					   (erc-channel-user-voice (cdr x)))
 				       nicks))
 	      (devoiced-nicks (remove-if-not #'(lambda (x)
-						 (erc-channel-user-voice (cdr x)))
+						 (erc-channel-user-voice
+						  (cdr x)))
 					     nicks)))
 	  (cond ((eq erc-nicklist-voiced-position 'top)
 		 (append devoiced-nicks voiced-nicks))
@@ -394,5 +414,4 @@ list has all the voiced users according to
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

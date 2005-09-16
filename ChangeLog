@@ -4,12 +4,120 @@
 	"%s" text).
 	(erc-cmd-PAGE): Simplify regexp. Put `do-not-parse-args' t.
 
+2005-09-05  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-flood-limit, erc-flood-limit2): Remove since they
+	are no longer needed.
+	(erc-send-input): Detect whether we want flood control to be
+	active.  The previous behavior was to always force the message.
+	(erc-toggle-flood-control): Adapt to new flood control method.  No
+	more 'strict.
+	(erc-cmd-SV): Use concat rather than
+	format-time-string.
+	(erc-format-target, erc-format-target-and/or-server): Shorten
+	logic statements.
+
+	* erc-compat.el (erc-emacs-build-time): Use a string
+	representation rather than trying to coerce a time out of a string
+	on XEmacs.
+
+	* erc-identd.el (erc-identd-start): Use make-network-process
+	instead of open-network-stream.  Error out if this is not defined.
+
+	* erc-backend.el (erc-send-line): New command that sends a line
+	using flood control, using a callback for display.  It isn't used
+	yet.
+
+2005-09-04  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el: Add defvaralias and make-obsolete-variable for
+	erc-default-coding-system.
+	(channel-topic, channel-modes, channel-user-limit, channel-key,
+	invitation, away, channel-list, bad-nick): Rename globally to
+	erc-{name-of-variable}.
+
 2005-09-03  Johan Bockgård  <bojohan@users.sourceforge.net>
 
 	* erc.el (erc-message): Simplify regexp.
 	(erc-cmd-DEOP, erc-cmd-OP): Simplify.
 
+2005-08-29  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el: Alias erc-send-command to erc-server-send.  ErBot needs
+	this to work without modification.  Add defvaralias for
+	erc-process.  Make this and the other backwards-compatibility
+	functions and variables be marked obsolete as of ERC 5.1.
+
+	* erc-backend.el: Add autoload for erc-log macro.
+	(erc-server-connect): Set some variables before defining process
+	handlers.  It probably doesn't make any difference.
+
+2005-08-26  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el: Add defvaralias for erc-announced-server-name, since
+	this seems to be widely used.
+
+2005-08-17  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc): Remove unnecessary boundp check.
+
+	* erc-autoaway.el: Fix compiler warning.
+
+	* erc-backend.el (erc-server-version): Since this isn't used by
+	any code, and isn't generally useful, remove it.
+	(erc-server-send-queue): Use erc-current-time rather than
+	float-time.
+	(004): Don't set erc-server-version.
+
+	* erc-dcc.el (erc-dcc-chat-request, erc-dcc-get-parent): Move to
+	fix a compiler warning.
+
+	* erc-ibuffer.el (erc-server): Remove unnecessary boundp check.
+
+	* erc-identd.el (erc-identd-start): Use read-string instead of
+	read-input.
+
+	* erc-imenu.el (erc-unfill-notice): Use a while loop instead of
+	replace-regexp.
+
+	* erc-nicklist.el: Add conditional dependency on erc-bbdb.
+	(erc-nicklist-insert-contents): Tighten some regexps.
+
+	* erc-notify.el (erc-notify-list): Docfix.
+
+	* erc-spelling.el (erc-spelling-dictionaries): Add :type and
+	:group to silence a compiler warning.
+
 2005-08-14  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-session-server, erc-session-port)
+	(erc-announced-server-name, erc-server-version)
+	(erc-server-parameters): Moved here from erc.el.
+	(erc-server-last-peers): Moved, renamed from last-peers.
+	(erc-server-lag): Moved, renamed from erc-lag.
+	(erc-server-duplicates): Moved, renamed from erc-duplicates.
+	(erc-server-duplicate-timeout): Moved, renamed from
+	erc-duplicate-timeout.
+	(erc-server): New customization group hosting all options from
+	this file.
+	(erc-server-prevent-duplicates): Moved, renamed from
+	erc-prevent-duplicates.
+	(erc-server-duplicate-timeout): Moved, renamed from
+	erc-duplicate-timeout.
+	(erc-server-auto-reconnect, erc-split-line-length)
+	(erc-server-coding-system, erc-encoding-coding-alist)
+	(erc-server-connect-function, erc-server-flood-margin)
+	(erc-server-flood-penalty): Change group to 'erc-server.
+	(erc-server-send-ping-interval): Moved, renamed from
+	erc-ping-interval.
+	(erc-server-ping-handler): Moved, renamed from erc-ping-handler.
+	(erc-server-setup-periodical-server-ping): Moved, renamed from
+	erc-setup-periodical-server-ping.
+	(erc-server-connect): Add to docstring.  Move more initialization
+	here.
+	(erc-server-processing-p): Docfix.
+	(erc-server-connect): Use 'raw-text like in the original version.
+	(erc-server-filter-function): Don't reset process coding system.
 
 	* erc-stamp.el (erc-add-timestamp): If the text at point is
 	invisible, don't insert a timestamp.  Thanks to Pascal
@@ -17,6 +125,73 @@
 
 	* erc-match.el (erc-text-matched-hook): Don't hide fools by
 	default, but include it in the available options.
+
+2005-08-13  Michael Olson  <mwolson@gnu.org>
+
+	* erc-*.el: s/erc-send-command/erc-server-send/g.
+	s/erc-process/erc-server-process/g (sort of).  Occasional
+	whitespace and indentation fixes.
+
+	* erc-backend.el: Specify a few local variables for indentation.
+	Take one item off of the TODO list.
+	(erc-server-filter-data): Renamed from erc-previous-read.  From
+	circe.
+	(erc-server-processing-p): New variable that indicates when we're
+	currently processing a message.  From circe.
+	(erc-split-line-length): New option that gives the maximum line
+	length of a single message.  From circe.
+	(erc-default-coding-system): Moved here from erc.el.
+	(erc-split-line): Renamed from erc-split-command and taken from
+	circe.
+	(erc-connect-function, erc-connect, erc-process-sentinel-1)
+	(erc-process-sentinel, erc-flood-exceeded-p, erc-send-command)
+	(erc-message, erc-upcase-first-word, erc-send-ctcp-message)
+	(erc-send-ctcp-notice): Moved here from erc.el.
+	(erc-server-filter-function): Renamed from erc-process-filter.
+	From circe.
+	(erc-server-process): Renamed from `erc-process' and moved here
+	from erc.el.
+	(erc-server-coding-system): Renamed from
+	`erc-default-coding-system'.
+	(erc-encoding-coding-alist): Moved here from erc.el.
+	(erc-server-flood-margin, erc-server-flood-penalty):
+	(erc-server-flood-last-message, erc-server-flood-queue):
+	(erc-server-flood-timer): New options from circe that allow
+	tweaking of flood control.
+	(erc-server-connect-function): Renamed from erc-connect-function.
+	(erc-flood-exceeded-p): Removed.
+	(erc-coding-system-for-target)
+	(erc-encode-string-for-target, erc-decode-string-from-target):
+	Moved here from erc.el
+	(erc-server-send): Renamed from erc-send-command.  Adapted from
+	the circe function by the same name.
+	(erc-server-send-queue): New function from circe that implements
+	handling of a flood queue.
+	(erc-server-current-nick): Renamed from current-nick.
+	(erc-server-quitting): Renamed from `quitting'.
+	(erc-server-last-sent-time): Renamed from `last-sent-time'.
+	(erc-server-last-ping-time): Renamed from `last-ping-time'.
+	(erc-server-lines-sent): Renamed from `lines-sent'.
+	(erc-server-auto-reconnect): Renamed from `erc-auto-reconnect'.
+	(erc-server-coding-system): Docfix.
+	(erc-server-connect): Renamed from `erc-connect'.  Require SERVER
+	and PORT parameters.  Initialize several variables here.  Don't
+	set `erc-insert-marker'.  Use a per-server coding system via
+	erc-server-default-encoding.
+
+	* erc.el (erc-version-string): Changed to indicate we are running
+	the `more-backend' branch.
+	(erc-kill-queries-on-quit): Removed, since this is unused.
+	(erc-send-single-line): Implement flood control using
+	erc-split-line.
+	(erc-send-input): Move functionality of erc-send-single-line in
+	here.
+	(erc-send-single-line): Assimilated!
+	(erc-display-command, erc-display-msg): Handle display hooks.
+	(erc-auto-reconnect, current-nick, last-sent-time)
+	(last-ping-time, last-ctcp-time, erc-lines-sent, erc-bytes-sent)
+	(quitting): Moved to erc-backend.el.
+	(erc): Docfix.  Don't initialize quite so many things here.
 
 2005-08-10  Michael Olson  <mwolson@gnu.org>
 
@@ -445,7 +620,7 @@
 
 	* erc-log.el (erc-save-buffer-in-logs): Replace tabs with spaces
 	in code indentation.
-	
+
 2005-02-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-display-message): Apply corrected patch from Henrik

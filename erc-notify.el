@@ -39,7 +39,8 @@
   :group 'erc)
 
 (defcustom erc-notify-list nil
-  "*List of nicknames you want to be notified about online/offline status change."
+  "*List of nicknames you want to be notified about online/offline
+status change."
   :group 'erc-notify
   :type '(repeat string))
 
@@ -114,7 +115,8 @@ changes."
     (erc-once-with-server-event
      303
      '(let* ((server (erc-response.sender parsed))
-	     (ison-list (delete "" (split-string (erc-response.contents parsed))))
+	     (ison-list (delete "" (split-string
+				    (erc-response.contents parsed))))
 	     (new-list ison-list)
 	     (old-list (with-current-buffer (erc-server-buffer)
 			 erc-last-ison)))
@@ -134,7 +136,7 @@ changes."
 	  (setq old-list (cdr old-list)))
 	(setq erc-last-ison ison-list)
 	t))
-    (erc-send-command
+    (erc-server-send
      (concat "ISON " (mapconcat 'identity erc-notify-list " ")))
     (setq erc-last-ison-time now)))
 
@@ -147,7 +149,7 @@ to `erc-last-ison' to prevent any further notifications."
 	       (not (erc-member-ignore-case nick erc-last-ison)))
       (add-to-list 'erc-last-ison nick)
       (run-hook-with-args 'erc-notify-signon-hook
-			  (or erc-announced-server-name erc-session-server)
+			  (or erc-server-announced-name erc-session-server)
 			  nick)
       (erc-display-message
        parsed 'notice proc
@@ -163,7 +165,7 @@ to `erc-last-ison' to prevent any further notifications."
 	       (not (erc-member-ignore-case nick erc-last-ison)))
       (add-to-list 'erc-last-ison nick)
       (run-hook-with-args 'erc-notify-signon-hook
-			  (or erc-announced-server-name erc-session-server)
+			  (or erc-server-announced-name erc-session-server)
 			  nick)
       (erc-display-message
        parsed 'notice proc
@@ -179,10 +181,11 @@ nick from `erc-last-ison' to prevent any further notifications."
 	       (erc-member-ignore-case nick erc-last-ison))
       (setq erc-last-ison (delete (find nick erc-last-ison
 					:test #'(lambda (x y)
-						  (string= (erc-downcase x) (erc-downcase y))))
+						  (string= (erc-downcase x)
+							   (erc-downcase y))))
 				  erc-last-ison))
       (run-hook-with-args 'erc-notify-signoff-hook
-			  (or erc-announced-server-name erc-session-server)
+			  (or erc-server-announced-name erc-session-server)
 			  nick)
       (erc-display-message
        parsed 'notice proc
@@ -208,20 +211,23 @@ with args, toggle notify status of people."
 	 'notify_current ?l ison))))
    ((string= (car args) "-l")
     (erc-display-message nil 'notice 'active
-			 'notify_list ?l (mapconcat 'identity erc-notify-list " ")))
+			 'notify_list ?l (mapconcat 'identity erc-notify-list
+						    " ")))
    (t
     (while args
       (if (erc-member-ignore-case (car args) erc-notify-list)
 	  (progn
 	    (setq erc-notify-list (delete (car args) erc-notify-list))
-	    ;; Remove the nick from the value of erc-last-ison in every server buffer.
-	    ;; This prevents seeing a signoff notification for a nick that you have
-	    ;; just _removed_ from your notify list.
+	    ;; Remove the nick from the value of erc-last-ison in
+	    ;; every server buffer.  This prevents seeing a signoff
+	    ;; notification for a nick that you have just _removed_
+	    ;; from your notify list.
 	    (dolist (buf (erc-buffer-list))
 	      (with-current-buffer buf
 		(if (erc-server-buffer-p)
 		    (setq erc-last-ison (delete (car args) erc-last-ison))))))
-	(setq erc-notify-list (cons (erc-string-no-properties (car args)) erc-notify-list)))
+	(setq erc-notify-list (cons (erc-string-no-properties (car args))
+				    erc-notify-list)))
       (setq args (cdr args)))
     (erc-display-message
      nil 'notice 'active
@@ -237,3 +243,8 @@ with args, toggle notify status of people."
 (provide 'erc-notify)
 
 ;;; erc-notify.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

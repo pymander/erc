@@ -47,7 +47,7 @@
 (require 'bbdb-gui)
 (require 'bbdb-hooks)
 
-(defconst erc-bbdb-version "$Revision: 1.28 $"
+(defconst erc-bbdb-version "$Revision: 1.29 $"
   "ERC BBDB revision.")
 
 (defgroup erc-bbdb nil
@@ -244,5 +244,4 @@ counterparts `erc-pals', `erc-dangerous-hosts' and `erc-fools'."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

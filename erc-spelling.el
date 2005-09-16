@@ -32,16 +32,8 @@
 (require 'erc)
 (require 'flyspell)
 
-(defconst erc-spelling-version "$Revision: 1.3 $"
+(defconst erc-spelling-version "$Revision: 1.4 $"
   "ERC spelling revision.")
-
-(defcustom erc-spelling-dictionaries nil
-  "An alist mapping buffer names to dictionaries.
-The `car' of every cell is a buffer name, the `cadr' is the
-string name of an associated dictionary.
-The dictionary is inherited from server buffers, so if you want a
-default dictionary for some server, you can use a server buffer
-name here.")
 
 ;;;###autoload (autoload 'erc-spelling-mode "erc-spelling" nil t)
 (define-erc-module spelling nil
@@ -50,6 +42,18 @@ name here.")
   ;; called AFTER the server buffer is initialized.
   ((add-hook 'erc-connect-pre-hook 'erc-spelling-init))
   ((remove-hook 'erc-connect-pre-hook 'erc-spelling-init)))
+
+(defcustom erc-spelling-dictionaries nil
+  "An alist mapping buffer names to dictionaries.
+The `car' of every cell is a buffer name, the `cadr' is the
+string name of an associated dictionary.
+The dictionary is inherited from server buffers, so if you want a
+default dictionary for some server, you can use a server buffer
+name here."
+  :type '(choice (const nil)
+                 (repeat (cons (string :tag "Buffer")
+                               (string :tag "Dictionary"))))
+  :group 'erc-spelling)
 
 (defun erc-spelling-init ()
   "Enable flyspell mode in an ERC buffer."
@@ -80,4 +84,5 @@ name here.")
        (erc-bol))))
 
 (provide 'erc-spelling)
+
 ;;; erc-spelling.el ends here

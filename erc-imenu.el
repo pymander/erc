@@ -45,7 +45,7 @@
 (require 'erc)
 (require 'imenu)
 
-(defconst erc-imenu-version "$Revision: 1.9 $"
+(defconst erc-imenu-version "$Revision: 1.10 $"
   "ERC imenu revision.")
 
 (defun erc-unfill-notice ()
@@ -63,7 +63,8 @@ Don't rely on this function, read it first!"
     (with-temp-buffer
       (insert str)
       (goto-char (point-min))
-      (replace-regexp "\n[ ]+" " ")
+      (while (re-search-forward "\n +" nil t)
+	(replace-match " "))
       (buffer-substring (point-min) (point-max)))))
 
 ;;;###autoload
@@ -80,10 +81,10 @@ Don't rely on this function, read it first!"
     (goto-char (point-max))
     (imenu-progress-message prev-pos 0)
     (while (if (bolp)
-               (> (forward-line -1)
-                  -1)
-             (progn (forward-line 0)
-                    t))
+	       (> (forward-line -1)
+		  -1)
+	     (progn (forward-line 0)
+		    t))
       (imenu-progress-message prev-pos nil t)
       (save-match-data
 	(when (looking-at (concat (regexp-quote erc-notice-prefix)
@@ -118,17 +119,24 @@ Don't rely on this function, read it first!"
 	(when (looking-at "<\\(\\S-+\\)> \\(.+\\)$")
 	  (let ((from (match-string 1))
 		(message-text (match-string 2)))
-	    (push (cons (concat from ": " message-text) (point)) 
+	    (push (cons (concat from ": " message-text) (point))
 		  message-alist)))))
-    (and notice-alist      (push (cons "notices" notice-alist) index-alist))
-    (and join-alist        (push (cons "joined" join-alist) index-alist))
-    (and left-alist        (push (cons "parted" left-alist) index-alist))
-    (and quit-alist        (push (cons "quit" quit-alist) index-alist))
-    (and mode-change-alist (push (cons "mode-change" mode-change-alist) index-alist))
-    (and message-alist     (push (cons "messages" message-alist) index-alist))
-    (and topic-change-alist (push (cons "topic-change" topic-change-alist) index-alist))
+    (and notice-alist (push (cons "notices" notice-alist) index-alist))
+    (and join-alist (push (cons "joined" join-alist) index-alist))
+    (and left-alist (push (cons "parted" left-alist) index-alist))
+    (and quit-alist (push (cons "quit" quit-alist) index-alist))
+    (and mode-change-alist (push (cons "mode-change" mode-change-alist)
+				 index-alist))
+    (and message-alist (push (cons "messages" message-alist) index-alist))
+    (and topic-change-alist (push (cons "topic-change" topic-change-alist)
+				  index-alist))
     index-alist))
 
 (provide 'erc-imenu)
 
 ;;; erc-imenu.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

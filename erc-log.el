@@ -93,7 +93,7 @@
 
 (require 'erc)
 
-(defconst erc-log-version "$Revision: 1.25 $"
+(defconst erc-log-version "$Revision: 1.26 $"
   "ERC log mode revision")
 
 (defgroup erc-log nil
@@ -106,7 +106,8 @@ The function must take five arguments: BUFFER, TARGET, NICK, SERVER and PORT.
 BUFFER is the buffer to be saved,
 TARGET is the name of the channel, or the target of the query,
 NICK is the current nick,
-SERVER and PORT are the parameters used to connect BUFFERs `erc-process'."
+SERVER and PORT are the parameters used to connect BUFFERs
+`erc-server-process'."
   :group 'erc-log
   :type '(choice (const erc-generate-log-file-name-long)
 		 (const erc-generate-log-file-name-short)
@@ -136,7 +137,7 @@ default value.
 Log files are stored in `erc-log-channels-directory'."
   :group 'erc-log
   :type '(choice boolean
-                 function))
+		 function))
 (make-variable-buffer-local 'erc-enable-logging)
 
 (defcustom erc-log-channels-directory "~/log"
@@ -183,7 +184,7 @@ also be a predicate function. To only log when you are not set away, use:
 \(setq erc-enable-logging
       (lambda (buffer)
 	(with-current-buffer buffer
-	  (not away))))"
+	  (not erc-away))))"
   ;; enable
   ((add-hook 'erc-insert-post-hook
 	     'erc-save-buffer-in-logs)
@@ -197,13 +198,13 @@ also be a predicate function. To only log when you are not set away, use:
 
 (when erc-enable-logging
   (add-hook 'erc-kill-buffer-hook
-            'erc-save-buffer-in-logs)
+	    'erc-save-buffer-in-logs)
   (add-hook 'erc-kill-channel-hook
-            'erc-save-buffer-in-logs)
+	    'erc-save-buffer-in-logs)
   (add-hook 'erc-quit-hook
-            'erc-conditional-save-queries)
+	    'erc-conditional-save-queries)
   (add-hook 'erc-part-hook
-            'erc-conditional-save-buffer))
+	    'erc-conditional-save-buffer))
 
 (define-key erc-mode-map "\C-c\C-l" 'erc-save-buffer-in-logs)
 
@@ -219,12 +220,12 @@ This function is destined to be run from `erc-connect-pre-hook'."
 	(setq local-write-file-hooks
 	      '(erc-save-buffer-in-logs)) ;Emacs >=19
       (make-local-variable 'write-file-hooks)
-      (setq write-file-hooks              ;Emacs 18
+      (setq write-file-hooks		  ;Emacs 18
 	    '(erc-save-buffer-in-logs)))
     (when erc-log-insert-log-on-open
       (ignore-errors (insert-file-contents (erc-current-logfile))
-                    (move-marker erc-last-saved-position
-                                 (1- (point-max)))))))
+		     (move-marker erc-last-saved-position
+				  (1- (point-max)))))))
 
 ;;; Append, so that 'erc-initialize-log-marker keeps running first.
 (add-hook 'erc-connect-pre-hook 'erc-log-setup-logging 'append)
@@ -263,8 +264,8 @@ is writeable (it will be created as necessary) and
   (and erc-log-channels-directory
        (erc-directory-writable-p erc-log-channels-directory)
        (if (functionp erc-enable-logging)
-           (funcall erc-enable-logging (or buffer (current-buffer)))
-           erc-enable-logging)))
+	   (funcall erc-enable-logging (or buffer (current-buffer)))
+	 erc-enable-logging)))
 
 (defun erc-current-logfile (&optional buffer)
   "Return the logfile to use for BUFFER.
@@ -274,7 +275,7 @@ The result is converted to lowercase, as IRC is case-insensitive"
   (expand-file-name
    (downcase (funcall erc-generate-log-file-name-function
 		      (or buffer (current-buffer))
-                      (or (erc-default-target) (buffer-name buffer))
+		      (or (erc-default-target) (buffer-name buffer))
 		      (erc-current-nick)
 		      erc-session-server erc-session-port))
    erc-log-channels-directory))
@@ -321,32 +322,31 @@ You can save every individual message by putting this function on
   (or buffer (setq buffer (current-buffer)))
   (when (erc-logging-enabled buffer)
     (let ((file (erc-current-logfile buffer))
-          (coding-system-for-write erc-log-file-coding-system))
+	  (coding-system-for-write erc-log-file-coding-system))
       (save-excursion
-        (with-current-buffer buffer
-          (save-restriction
-            (widen)
-            ;; early on in the initalisation, don't try and write the log out
-            (when (and (markerp erc-last-saved-position)
-                       (> erc-insert-marker (1+ erc-last-saved-position)))
-              (write-region (1+ (marker-position erc-last-saved-position))
-                            (marker-position erc-insert-marker)
-                            file t 'nomessage)
-              (if (and erc-truncate-buffer-on-save (interactive-p))
-                  (progn
-                    (let ((inhibit-read-only t)) (erase-buffer))
-                    (move-marker erc-last-saved-position (point-max))
-                    (erc-display-prompt))
-                (move-marker erc-last-saved-position
-                             ;; If we place erc-last-saved-position
-                             ;; at erc-insert-marker, because text
-                             ;; gets inserted /before/
-                             ;; erc-insert-marker, the log file will
-                             ;; not be saved (erc-last-saved-position
-                             ;; will always be equal to
-                             ;; erc-insert-marker).
-                             (1- (marker-position erc-insert-marker)))))
-            (set-buffer-modified-p nil))))))
+	(with-current-buffer buffer
+	  (save-restriction
+	    (widen)
+	    ;; early on in the initalisation, don't try and write the log out
+	    (when (and (markerp erc-last-saved-position)
+		       (> erc-insert-marker (1+ erc-last-saved-position)))
+	      (write-region (1+ (marker-position erc-last-saved-position))
+			    (marker-position erc-insert-marker)
+			    file t 'nomessage)
+	      (if (and erc-truncate-buffer-on-save (interactive-p))
+		  (progn
+		    (let ((inhibit-read-only t)) (erase-buffer))
+		    (move-marker erc-last-saved-position (point-max))
+		    (erc-display-prompt))
+		(move-marker erc-last-saved-position
+			     ;; If we place erc-last-saved-position at
+			     ;; erc-insert-marker, because text gets
+			     ;; inserted /before/ erc-insert-marker,
+			     ;; the log file will not be saved
+			     ;; (erc-last-saved-position will always
+			     ;; be equal to erc-insert-marker).
+			     (1- (marker-position erc-insert-marker)))))
+	    (set-buffer-modified-p nil))))))
   t)
 
 (provide 'erc-log)
@@ -356,5 +356,4 @@ You can save every individual message by putting this function on
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

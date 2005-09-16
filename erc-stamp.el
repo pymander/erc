@@ -36,7 +36,7 @@
 (require 'erc)
 (require 'erc-compat)
 
-(defconst erc-stamp-version "$Revision: 1.40 $"
+(defconst erc-stamp-version "$Revision: 1.41 $"
   "ERC stamp mode revision.")
 
 (defgroup erc-stamp nil
@@ -148,7 +148,7 @@ or `erc-send-modify-hook'."
 	(error "Timestamp function unbound"))
       (when (and (fboundp erc-insert-away-timestamp-function)
 		 erc-away-timestamp-format
-		 (with-current-buffer (erc-server-buffer) away)
+		 (with-current-buffer (erc-server-buffer) erc-away)
 		 (not erc-timestamp-format))
 	(funcall erc-insert-away-timestamp-function
 		 (erc-format-timestamp ct erc-away-timestamp-format)))
@@ -161,9 +161,9 @@ or `erc-send-modify-hook'."
   "Insert timestamps at the beginning of the line."
   (goto-char (point-min))
   (let* ((ignore-p (and erc-timestamp-only-if-changed-flag
-                        (string-equal string erc-timestamp-last-inserted)))
-         (len (length string))
-         (s (if ignore-p (make-string len ? ) string)))
+			(string-equal string erc-timestamp-last-inserted)))
+	 (len (length string))
+	 (s (if ignore-p (make-string len ? ) string)))
     (unless ignore-p (setq erc-timestamp-last-inserted string))
     (erc-put-text-property 0 len 'field 'erc-timestamp s)
     (insert s)))
@@ -189,8 +189,8 @@ if the timestamp is to be printed to the right.  If nil,
 the correct column."
   :group 'erc-stamp
   :type '(choice
-          (integer :tag "Column number")
-          (const :tag "Unspecified" nil)))
+	  (integer :tag "Column number")
+	  (const :tag "Unspecified" nil)))
 
 (defun erc-insert-timestamp-right (string)
   "Insert timestamp on the right side of the screen.
@@ -215,22 +215,22 @@ be printed just before the window-width."
     (goto-char (point-max))
     (forward-char -1);; before the last newline
     (let* ((current-window (get-buffer-window (current-buffer)))
-           (pos (cond
+	   (pos (cond
 		 (erc-timestamp-right-column
 		  (+ erc-timestamp-right-column (length string)))
-                 ((and (boundp 'erc-fill-mode)
-                       erc-fill-mode
-                       (boundp 'erc-fill-column))
-                  (1+ erc-fill-column))
-                 (current-window
-                  (- (window-width current-window)
-                     1))
-                 (fill-column
-                  (1+ fill-column))
-                 (t
-                  (- (window-width)
-                     1))))
-           (from (point)))
+		 ((and (boundp 'erc-fill-mode)
+		       erc-fill-mode
+		       (boundp 'erc-fill-column))
+		  (1+ erc-fill-column))
+		 (current-window
+		  (- (window-width current-window)
+		     1))
+		 (fill-column
+		  (1+ fill-column))
+		 (t
+		  (- (window-width)
+		     1))))
+	   (from (point)))
 	(setq pos (- pos (length string)))
 	(if (= pos (indent-to pos))
 	    (insert string)
@@ -238,7 +238,7 @@ be printed just before the window-width."
 	  (indent-to pos)
 	  (insert string))
 	(erc-put-text-property from (1+ (point)) 'field 'erc-timestamp)
-        (erc-put-text-property from (1+ (point)) 'rear-nonsticky t))))
+	(erc-put-text-property from (1+ (point)) 'rear-nonsticky t))))
 
 ;; for testing: (setq erc-timestamp-only-if-changed-flag nil)
 
@@ -249,11 +249,12 @@ Return the empty string if FORMAT is nil."
       (let ((ts (format-time-string format time)))
 	(erc-put-text-property 0 (length ts) 'face 'erc-timestamp-face ts)
 	(erc-put-text-property 0 (length ts) 'invisible 'timestamp ts)
-	(erc-put-text-property 0 (length ts) 'isearch-open-invisible 'timestamp ts)
+	(erc-put-text-property 0 (length ts)
+			       'isearch-open-invisible 'timestamp ts)
 	;; N.B. Later use categories instead of this harmless, but
 	;; inelegant, hack. -- BPT
-        (when erc-timestamp-intangible
-          (erc-put-text-property 0 (length ts) 'intangible t ts))
+	(when erc-timestamp-intangible
+	  (erc-put-text-property 0 (length ts) 'intangible t ts))
 	ts)
     ""))
 
@@ -304,5 +305,4 @@ NOW is position of point currently."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

@@ -37,7 +37,7 @@
 (require 'speedbar)
 (condition-case nil (require 'dframe) (error nil))
 
-(defconst erc-speedbar-version "$Revision: 1.19 $"
+(defconst erc-speedbar-version "$Revision: 1.20 $"
   "ERC Speedbar version.")
 
 ;;; Customization:
@@ -112,7 +112,7 @@ This will add a speedbar major display mode."
   (erase-buffer)
   (let (serverp chanp)
     (with-current-buffer buffer
-      (setq serverp (eq buffer (process-buffer erc-process)))
+      (setq serverp (eq buffer (process-buffer erc-server-process)))
       (setq chanp (erc-channel-p (erc-default-target)))
       (setq queryp (erc-query-buffer-p)))
     (cond (serverp
@@ -127,9 +127,10 @@ This will add a speedbar major display mode."
 
 (defun erc-speedbar-server-buttons (directory depth)
   "Insert the initial list of servers you are connected to."
-  (let ((servers (erc-buffer-list (lambda ()
-				    (eq (current-buffer)
-					(process-buffer erc-process))))))
+  (let ((servers (erc-buffer-list
+		  (lambda ()
+		    (eq (current-buffer)
+			(process-buffer erc-server-process))))))
     (when servers
       (speedbar-with-writable
 	(dolist (server servers)
@@ -156,11 +157,12 @@ This will add a speedbar major display mode."
 
 (defun erc-speedbar-channel-buttons (directory depth server-buffer)
   (when (get-buffer server-buffer)
-    (let* ((proc (with-current-buffer server-buffer erc-process))
-	   (targets (erc-buffer-list (lambda ()
-				       (not (eq (process-buffer erc-process)
-						(current-buffer))))
-				     proc)))
+    (let* ((proc (with-current-buffer server-buffer erc-server-process))
+	   (targets (erc-buffer-list
+		     (lambda ()
+		       (not (eq (process-buffer erc-server-process)
+				(current-buffer))))
+		     proc)))
       (when targets
 	(speedbar-with-writable
 	  (dolist (target targets)
@@ -190,21 +192,21 @@ INDENT is the current indentation level."
 	     (end-of-line) (forward-char 1)
 	     (let ((modes (with-current-buffer channel
 			    (concat (apply 'concat
-					   channel-modes)
-				    (cond ((and channel-user-limit channel-key)
+					   erc-channel-modes)
+				    (cond ((and erc-channel-user-limit erc-channel-key)
 					   (if erc-show-channel-key-p
-					       (format "lk %.0f %s" channel-user-limit channel-key)
-					     (format "kl %.0f" channel-user-limit)))
-					  (channel-user-limit
+					       (format "lk %.0f %s" erc-channel-user-limit erc-channel-key)
+					     (format "kl %.0f" erc-channel-user-limit)))
+					  (erc-channel-user-limit
 					   ;; Emacs has no bignums
-					   (format "l %.0f" channel-user-limit))
-					  (channel-key
+					   (format "l %.0f" erc-channel-user-limit))
+					  (erc-channel-key
 					   (if erc-show-channel-key-p
-					       (format "k %s" channel-key)
+					       (format "k %s" erc-channel-key)
 					     "k"))
 					  (t "")))))
 		   (topic (erc-controls-interpret
-			   (with-current-buffer channel channel-topic))))
+			   (with-current-buffer channel erc-channel-topic))))
 	       (speedbar-make-tag-line
 		'angle ?i nil nil
 		(concat "Modes: +" modes) nil nil nil
@@ -356,5 +358,4 @@ The INDENT level is ignored."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

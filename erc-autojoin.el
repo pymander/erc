@@ -34,7 +34,7 @@
 (require 'erc)
 ;;; Minor Mode
 
-(defconst erc-autojoin-version "$Revision: 1.14 $"
+(defconst erc-autojoin-version "$Revision: 1.15 $"
   "ERC autojoin revision.")
 
 (defgroup erc-autojoin nil
@@ -83,14 +83,14 @@ servers, presumably in the same domain."
   (dolist (l erc-autojoin-channels-alist)
     (when (string-match (car l) server)
       (dolist (chan (cdr l))
-	(erc-send-command (concat "join " chan))))))
+	(erc-server-send (concat "join " chan))))))
 
 (defun erc-autojoin-add (proc parsed)
   "Add the channel being joined to `erc-autojoin-channels-alist'."
   (let* ((chnl (erc-response.contents parsed))
 	 (nick (car (erc-parse-user (erc-response.sender parsed))))
 	 (server (with-current-buffer (process-buffer proc)
-		   (or erc-announced-server-name erc-session-server))))
+		   (or erc-server-announced-name erc-session-server))))
     (when (erc-current-nick-p nick)
       (when (and erc-autojoin-domain-only
 		 (string-match "[^.]+\\.\\([^.]+\\.[^.]+\\)$" server))
@@ -113,7 +113,7 @@ servers, presumably in the same domain."
   (let* ((chnl (car (erc-response.command-args parsed)))
 	 (nick (car (erc-parse-user (erc-response.sender parsed))))
 	 (server (with-current-buffer (process-buffer proc)
-		   (or erc-announced-server-name erc-session-server))))
+		   (or erc-server-announced-name erc-session-server))))
     (when (erc-current-nick-p nick)
       (when (and erc-autojoin-domain-only
 		 (string-match "[^.]+\\.\\([^.]+\\.[^.]+\\)$" server))
@@ -135,5 +135,4 @@ servers, presumably in the same domain."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

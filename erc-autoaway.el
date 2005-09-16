@@ -29,7 +29,7 @@
 
 (require 'erc)
 
-(defconst erc-autoaway-version "$Revision: 1.23 $"
+(defconst erc-autoaway-version "$Revision: 1.24 $"
   "ERC Autoaway revision.")
 
 (defgroup erc-autoaway nil
@@ -117,6 +117,8 @@ See `erc-auto-discard-away'."
   :group 'erc-autoaway
   :type 'regexp)
 
+(eval-when-compile (defvar erc-autoaway-idle-seconds))
+
 (defun erc-autoaway-reestablish-idletimer ()
   "Reestablish the emacs idletimer.
 You have to call this function each time you change
@@ -141,8 +143,9 @@ you have to run `erc-autoaway-reestablish-idletimer' afterwards."
 	   (erc-autoaway-reestablish-idletimer)))
   :type 'number)
 
-(defcustom erc-autoaway-message "I'm gone (autoaway after %i seconds of idletime)"
-  "*Message ERC will use when he sets you automatically away. 
+(defcustom erc-autoaway-message
+  "I'm gone (autoaway after %i seconds of idletime)"
+  "*Message ERC will use when he sets you automatically away.
 It is used as a `format' string with the argument of the idletime in
 seconds."
   :group 'erc-autoaway
@@ -156,8 +159,8 @@ seconds."
 This is one global variable since a user talking on one net can talk
 on another net too."
   (when (and erc-auto-discard-away
-             (stringp line)
-             (not (string-match erc-autoaway-no-auto-discard-regexp line)))
+	     (stringp line)
+	     (not (string-match erc-autoaway-no-auto-discard-regexp line)))
     (erc-autoaway-set-back line))
   (setq erc-autoaway-last-sent-time (erc-current-time)))
 
@@ -196,3 +199,8 @@ exceeds `erc-autoaway-idle-seconds'."
 (provide 'erc-autoaway)
 
 ;;; erc-autoaway.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

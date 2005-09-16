@@ -44,7 +44,7 @@
 (require 'erc-compat)
 (require 'time-date)
 
-(defconst erc-pcomplete-version "$Revision: 1.29 $"
+(defconst erc-pcomplete-version "$Revision: 1.30 $"
   "ERC pcomplete mode revision")
 
 (defgroup erc-pcomplete nil
@@ -77,8 +77,8 @@ the most recent speakers are listed first."
   (interactive)
   (when (> (point) (erc-beg-of-input-line))
     (let ((last-command (if (eq last-command 'erc-complete-word)
-			    'pcomplete
-			  last-command)))
+                            'pcomplete
+                          last-command)))
       (call-interactively 'pcomplete))
     t))
 
@@ -149,7 +149,7 @@ the most recent speakers are listed first."
 
 (defun pcomplete/erc-mode/MSG ()
   (pcomplete-here (append (pcomplete-erc-all-nicks)
-			  (pcomplete-erc-channels)))
+                          (pcomplete-erc-channels)))
   (while (pcomplete-here (pcomplete-erc-nicks))))
 
 (defun pcomplete/erc-mode/NAMES ()
@@ -167,7 +167,7 @@ the most recent speakers are listed first."
 
 (defun pcomplete/erc-mode/QUERY ()
   (pcomplete-here (append (pcomplete-erc-all-nicks)
-			  (pcomplete-erc-channels)))
+                          (pcomplete-erc-channels)))
   (while (pcomplete-here (pcomplete-erc-nicks)))
   )
 
@@ -189,8 +189,8 @@ the most recent speakers are listed first."
   "Returns a list of strings of the defined user commands."
   (let ((case-fold-search nil))
     (mapcar (lambda (x)
-	      (concat "/" (downcase (substring (symbol-name x) 8))))
-	    (apropos-internal "erc-cmd-[A-Z]+"))))
+              (concat "/" (downcase (substring (symbol-name x) 8))))
+            (apropos-internal "erc-cmd-[A-Z]+"))))
 
 (defun pcomplete-erc-ops ()
   "Returns a list of nicks with ops."
@@ -225,7 +225,7 @@ the most recent speakers are listed first."
 (defun pcomplete-erc-all-nicks (&optional postfix)
   "Returns a list of all nicks on the current server."
   (let (nicks)
-    (with-current-buffer (process-buffer erc-process)
+    (with-current-buffer (process-buffer erc-server-process)
       (maphash (lambda (nick user)
                  (setq nicks (cons (concat nick postfix) nicks)))
                erc-server-users))
@@ -234,7 +234,7 @@ the most recent speakers are listed first."
 (defun pcomplete-erc-channels ()
   "Returns a list of channels associated with the current server."
   (mapcar (lambda (buf) (with-current-buffer buf (erc-default-target)))
-	  (erc-channel-list erc-process)))
+          (erc-channel-list erc-server-process)))
 
 ;;; Functions for parsing
 
@@ -249,22 +249,26 @@ the most recent speakers are listed first."
 These are the words from the beginning of the line after the prompt
 up to where point is right now."
   (let* ((start (save-excursion (erc-bol) (point)))
-	 (end (point))
-	 args beginnings)
+         (end (point))
+         args beginnings)
     (save-excursion
       (if (< (skip-chars-backward " \t\n" start) 0)
-	  (setq args '("")
-		beginnings (list end)))
+          (setq args '("")
+                beginnings (list end)))
       (setq end (point))
       (while (< (skip-chars-backward "^ \t\n" start) 0)
-	(setq beginnings (cons (point) beginnings)
-	      args (cons (buffer-substring-no-properties
-			  (point) end)
-			 args))
-	(skip-chars-backward " \t\n" start)
-	(setq end (point))))
+        (setq beginnings (cons (point) beginnings)
+              args (cons (buffer-substring-no-properties
+                          (point) end)
+                         args))
+        (skip-chars-backward " \t\n" start)
+        (setq end (point))))
     (cons args beginnings)))
 
 (provide 'erc-pcomplete)
 
 ;;; erc-pcomplete.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:

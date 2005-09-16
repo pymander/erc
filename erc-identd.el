@@ -51,16 +51,20 @@ machine -- using iptables, or a program like redir which can be
 run from inetd.  The idea is to provide a simple identd server
 when you need one, without having to install one globally on your
 system."
-  (interactive (list (read-input "Serve identd requests on port: " "8113")))
+  (interactive (list (read-string "Serve identd requests on port: " "8113")))
   (if (null port)
       (setq port 8113)
     (if (stringp port)
 	(setq port (string-to-number port))))
   (if erc-identd-process
       (delete-process erc-identd-process))
-  (setq erc-identd-process
-	(open-network-stream-server "identd" (generate-new-buffer "identd")
-				    port nil 'erc-identd-filter)))
+  (if (fboundp 'make-network-process)
+      (setq erc-identd-process
+	    (make-network-process :name "identd"
+				  :buffer (generate-new-buffer "identd")
+				  :service port :server t :noquery t
+				  :filter 'erc-identd-filter))
+    (error "Your Emacs is too old; cannot start ident server")))
 
 (defun erc-identd-stop (&rest ignore)
   (interactive)
@@ -69,4 +73,10 @@ system."
     (setq erc-identd-process nil)))
 
 (provide 'erc-identd)
+
 ;;; erc-identd.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

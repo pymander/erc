@@ -31,8 +31,8 @@
 
 ;; Imenu Autoload
 (add-hook 'erc-mode-hook
-	  (lambda ()
-	    (setq imenu-create-index-function 'erc-create-imenu-index)))
+          (lambda ()
+            (setq imenu-create-index-function 'erc-create-imenu-index)))
 (autoload 'erc-create-imenu-index "erc-imenu" "Imenu index creation function")
 
 ;;; Automatically scroll to bottom
@@ -80,16 +80,17 @@ DISPLAY-START is ignored."
       ;; works, but it solves the problem, and has no negative side effects.
       ;; (Fran Litterio, 2003/01/07)
       (let ((resize-mini-windows nil))
-	(save-selected-window
-	  (select-window window)
-	  (save-restriction
-	    (widen)
-	    (when (and erc-insert-marker
-		       (> (point) erc-insert-marker)) ; we're editing a line. Scroll.
-	      (save-excursion
-		(goto-char (point-max))
-		(recenter (or erc-input-line-position -1))
-		(sit-for 0))))))))
+        (save-selected-window
+          (select-window window)
+          (save-restriction
+            (widen)
+            (when (and erc-insert-marker
+                       ;; we're editing a line. Scroll.
+                       (> (point) erc-insert-marker))
+              (save-excursion
+                (goto-char (point-max))
+                (recenter (or erc-input-line-position -1))
+                (sit-for 0))))))))
 
 ;;; Make read only
 (define-erc-module readonly nil
@@ -108,11 +109,11 @@ Put this function on `erc-insert-post-hook' and/or `erc-send-post-hook'."
 
 ;; Distingush non-commands
 (defvar erc-noncommands-list '(erc-cmd-ME
-			       erc-cmd-COUNTRY
-			       erc-cmd-SV
-			       erc-cmd-SM
-			       erc-cmd-SMV
-			       erc-cmd-LASTLOG)
+                               erc-cmd-COUNTRY
+                               erc-cmd-SV
+                               erc-cmd-SM
+                               erc-cmd-SMV
+                               erc-cmd-LASTLOG)
   "List of commands that are aliases for CTCP ACTION or for erc messages.
 
 If a command's function symbol is in this list, the typed command
@@ -128,11 +129,11 @@ themselves."
 (defun erc-send-distinguish-noncommands (str)
   "If STR is an ERC non-command, set `erc-insert-this' to nil."
   (let* ((command (erc-extract-command-from-line str))
-	 (cmd-fun (and command
-		       (car command))))
+         (cmd-fun (and command
+                       (car command))))
     (when (and cmd-fun
-	       (not (string-match "\n.+$" str))
-	       (memq cmd-fun erc-noncommands-list))
+               (not (string-match "\n.+$" str))
+               (memq cmd-fun erc-noncommands-list))
       (setq erc-insert-this nil))))
 
 ;;; IRC control character processing.
@@ -278,9 +279,9 @@ The value `erc-interpret-controls-p' must also be t for this to work."
   (if (stringp n) (setq n (string-to-number n)))
   (if (not (numberp n))
       (progn
-	(message "erc-get-bg-color-face: n is NaN: %S" n)
-	(beep)
-	'default)
+        (message "erc-get-bg-color-face: n is NaN: %S" n)
+        (beep)
+        'default)
     (when (> n 16)
       (erc-log (format "   Wrong color: %s" n))
       (setq n (mod n 16)))
@@ -294,9 +295,9 @@ The value `erc-interpret-controls-p' must also be t for this to work."
   (if (stringp n) (setq n (string-to-number n)))
   (if (not (numberp n))
       (progn
-	(message "erc-get-fg-color-face: n is NaN: %S" n)
-	(beep)
-	'default)
+        (message "erc-get-fg-color-face: n is NaN: %S" n)
+        (beep)
+        'default)
     (when (> n 16)
       (erc-log (format "   Wrong color: %s" n))
       (setq n (mod n 16)))
@@ -461,11 +462,11 @@ If ARG is positive, interpretation is turned on.
 Else interpretation is turned off."
   (interactive "P")
   (cond ((and (numberp arg) (> arg 0))
-	 (setq erc-interpret-controls-p t))
-	(arg (setq erc-interpret-controls-p nil))
-	(t (setq erc-interpret-controls-p (not erc-interpret-controls-p))))
+         (setq erc-interpret-controls-p t))
+        (arg (setq erc-interpret-controls-p nil))
+        (t (setq erc-interpret-controls-p (not erc-interpret-controls-p))))
   (message "ERC color interpretation %s"
-	   (if erc-interpret-controls-p "ON" "OFF")))
+           (if erc-interpret-controls-p "ON" "OFF")))
 
 ;; Smiley
 (define-erc-module smiley nil
@@ -506,8 +507,8 @@ If called interactively and prefix argument is given, search on all connected
 servers.  If called from a program, PROC specifies the server process."
   (interactive
    (list (read-string "Search for: ")
-	 (if current-prefix-arg
-	     nil erc-process)))
+         (if current-prefix-arg
+             nil erc-server-process)))
   (if (fboundp 'multi-occur)
       (multi-occur (erc-buffer-list nil proc) string)
     (error "`multi-occur' is not defined as a function")))

@@ -52,7 +52,7 @@
 ;;
 ;; If you'd rather not identify yourself automatically but would like access
 ;; to the functions contained in this file, just load this file without
-;; enabling `erc-services-mode'.  
+;; enabling `erc-services-mode'.
 ;;
 
 ;;; Code:
@@ -60,7 +60,7 @@
 (require 'erc)
 (require 'erc-nets)
 
-(defconst erc-nickserv-version "$Revision: 1.25 $"
+(defconst erc-nickserv-version "$Revision: 1.26 $"
   "ERC NickServ revision.")
 
 ;; Customization:
@@ -248,7 +248,7 @@ ANSWER is the command to use for the answer.  The default is 'privmsg.
 		 (regexp :tag "Identify request sent by Nickserv")
 		 (string :tag "Identify to")
 		 (string :tag "Identify keyword")
-		 (boolean :tag "Use current-nick in identify message?")
+		 (boolean :tag "Use current nick in identify message?")
 		 (choice :tag "Command to use (optional)"
 		  (string :tag "Command")
 		  (const :tag "No special command necessary" nil)))))
@@ -262,35 +262,36 @@ specifically asked the user to IDENTIFY.
 If `erc-prompt-for-nickserv-password' is non-nil, prompt the user for the
 password for this nickname, otherwise try to send it automatically."
   (unless (and (null erc-nickserv-passwords)
-               (null erc-prompt-for-nickserv-password))
+	       (null erc-prompt-for-nickserv-password))
     (let* ((network (erc-network))
-           (nickserv (nth 1 (assoc network erc-nickserv-alist)))
-           (identify-regex (nth 2 (assoc network erc-nickserv-alist)))
-           (sspec (erc-response.sender parsed))
-           (nick (car (erc-response.command-args parsed)))
-           (msg (erc-response.contents parsed)))
+	   (nickserv (nth 1 (assoc network erc-nickserv-alist)))
+	   (identify-regex (nth 2 (assoc network erc-nickserv-alist)))
+	   (sspec (erc-response.sender parsed))
+	   (nick (car (erc-response.command-args parsed)))
+	   (msg (erc-response.contents parsed)))
       ;; continue only if we're sure it's the real nickserv for this network
       ;; and it's asked us to identify
       (when (and nickserv (equal sspec nickserv)
-                 (string-match identify-regex msg))
-        (erc-log "NickServ IDENTIFY request detected")
-        (erc-nickserv-call-identify-function nick)
+		 (string-match identify-regex msg))
+	(erc-log "NickServ IDENTIFY request detected")
+	(erc-nickserv-call-identify-function nick)
 	nil))))
 
 (defun erc-nickserv-identify-on-connect (server nick)
   "Identify to Nickserv after the connection to the server is established."
   (unless (and (null erc-nickserv-passwords)
-               (null erc-prompt-for-nickserv-password))
+	       (null erc-prompt-for-nickserv-password))
     (erc-nickserv-call-identify-function nick)))
 
 (defun erc-nickserv-identify-on-nick-change (nick old-nick)
   "Identify to Nickserv whenever your nick changes."
   (unless (and (null erc-nickserv-passwords)
-               (null erc-prompt-for-nickserv-password))
+	       (null erc-prompt-for-nickserv-password))
     (erc-nickserv-call-identify-function nick)))
 
 (defun erc-nickserv-call-identify-function (nickname)
-  "Call `erc-nickserv-identify' interactively or run it with NICKNAME's password.
+  "Call `erc-nickserv-identify' interactively or run it with NICKNAME's
+password.
 The action is determined by the value of `erc-prompt-for-nickserv-password'."
   (if erc-prompt-for-nickserv-password
       (call-interactively 'erc-nickserv-identify)
@@ -306,11 +307,11 @@ The action is determined by the value of `erc-prompt-for-nickserv-password'."
 When called interactively, read the password using `read-passwd'."
   (interactive
    (list (read-passwd
-          (format "NickServ password for %s on %s (RET to cancel): "
-                  (erc-current-nick)
-                  (or (and (erc-network)
-                           (symbol-name (erc-network)))
-                      "Unknown network")))))
+	  (format "NickServ password for %s on %s (RET to cancel): "
+		  (erc-current-nick)
+		  (or (and (erc-network)
+			   (symbol-name (erc-network)))
+		      "Unknown network")))))
   (when (and password (not (string= "" password)))
     (let* ((erc-auto-discard-away nil)
 	   (network (erc-network))
@@ -331,5 +332,4 @@ When called interactively, read the password using `read-passwd'."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

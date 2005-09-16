@@ -38,7 +38,7 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.43 $"
+(defconst erc-match-version "$Revision: 1.44 $"
   "ERC match mode revision.")
 
 (defgroup erc-match nil
@@ -327,7 +327,8 @@ car is the string."
 (defun erc-add-fool ()
   "Add fool interactively to `erc-fools'."
   (interactive)
-  (erc-add-entry-to-list 'erc-fools "Add fool: " (erc-get-server-nickname-alist)))
+  (erc-add-entry-to-list 'erc-fools "Add fool: "
+			 (erc-get-server-nickname-alist)))
 
 ;;;###autoload
 (defun erc-delete-fool ()
@@ -364,7 +365,7 @@ car is the string."
 NICKUSERHOST will be ignored."
   (with-syntax-table erc-match-syntax-table
     (and msg
-         (string-match (concat "\\b"
+	 (string-match (concat "\\b"
 			       (regexp-quote (erc-current-nick))
 			       "\\b")
 		       msg))))
@@ -470,35 +471,35 @@ Use this defun with `erc-insert-modify-hook'."
 		(match-face (intern (concat match-prefix "-face"))))
 	   (when (funcall match-pred nickuserhost message)
 	     (cond
-              ;; Highlight the nick of the message
+	      ;; Highlight the nick of the message
 	      ((and (eq match-htype 'nick)
-                    nick-end)
+		    nick-end)
 	       (erc-put-text-property
 		nick-beg nick-end
 		'face match-face (current-buffer)))
-              ;; Highlight the nick of the message, or the current
-              ;; nick if there's no nick in the message (e.g. /NAMES
-              ;; output)
-              ((and (string= match-type "current-nick")
-                    (eq match-htype 'nick-or-keyword))
-               (if nick-end 
-                   (erc-put-text-property
-                    nick-beg nick-end
-                    'face match-face (current-buffer))
-                 (goto-char (+ 2 (or nick-end
-                                     (point-min))))
-                 (while (re-search-forward match-regex nil t)
-                   (erc-put-text-property (match-beginning 0) (match-end 0)
-                                          'face match-face))))
-              ;; Highlight the whole message
+	      ;; Highlight the nick of the message, or the current
+	      ;; nick if there's no nick in the message (e.g. /NAMES
+	      ;; output)
+	      ((and (string= match-type "current-nick")
+		    (eq match-htype 'nick-or-keyword))
+	       (if nick-end
+		   (erc-put-text-property
+		    nick-beg nick-end
+		    'face match-face (current-buffer))
+		 (goto-char (+ 2 (or nick-end
+				     (point-min))))
+		 (while (re-search-forward match-regex nil t)
+		   (erc-put-text-property (match-beginning 0) (match-end 0)
+					  'face match-face))))
+	      ;; Highlight the whole message
 	      ((eq match-htype 'all)
 	       (erc-put-text-property
 		(point-min) (point-max)
 		'face match-face (current-buffer)))
-              ;; Highlight all occurrences of the word to be
-              ;; highlighted.
+	      ;; Highlight all occurrences of the word to be
+	      ;; highlighted.
 	      ((and (string= match-type "keyword")
-                    (eq match-htype 'keyword))
+		    (eq match-htype 'keyword))
 	       (mapc (lambda (elt)
 		       (let ((regex elt)
 			     (face match-face))
@@ -512,7 +513,7 @@ Use this defun with `erc-insert-modify-hook'."
 			    (match-beginning 0) (match-end 0)
 			    'face face))))
 		     match-regex))
-              ;; Highlight all occurrences of our nick.
+	      ;; Highlight all occurrences of our nick.
 	      ((and (string= match-type "current-nick")
 		    (eq match-htype 'keyword))
 	       (goto-char (+ 2 (or nick-end
@@ -520,7 +521,7 @@ Use this defun with `erc-insert-modify-hook'."
 	       (while (re-search-forward match-regex nil t)
 		 (erc-put-text-property (match-beginning 0) (match-end 0)
 					'face match-face)))
-              ;; Else twiddle your thumbs.
+	      ;; Else twiddle your thumbs.
 	      (t nil))
 	     (run-hook-with-args
 	      'erc-text-matched-hook
@@ -531,9 +532,6 @@ Use this defun with `erc-insert-modify-hook'."
        (if nickuserhost
 	   (append to-match-nick-dep to-match-nick-indep)
 	 to-match-nick-indep)))))
-
-;; used in erc.el for session buffers only -- silence the compiler, here
-(defvar away)
 
 (defun erc-log-matches (match-type nickuserhost message)
   "Log matches in a separate buffer, determined by MATCH-TYPE.
@@ -548,7 +546,7 @@ deactivate/activate match logging in the latter. See
     (when (and
 	   (or (eq erc-log-matches-flag t)
 	       (and (eq erc-log-matches-flag 'away)
-		    away))
+		    erc-away))
 	   match-buffer-name)
       (let ((line (format-spec erc-log-match-format
 		   (format-spec-make
@@ -567,8 +565,8 @@ deactivate/activate match logging in the latter. See
 (defun erc-log-matches-make-buffer (name)
   "Create or get a log-matches buffer named NAME and return it."
   (let* ((buffer-already (get-buffer name))
-	 (buffer         (or buffer-already
-			     (get-buffer-create name))))
+	 (buffer (or buffer-already
+		     (get-buffer-create name))))
     (with-current-buffer buffer
       (unless buffer-already
 	(insert " == Type \"q\" to dismiss messages ==\n")
@@ -579,7 +577,7 @@ deactivate/activate match logging in the latter. See
 
 (defun erc-log-matches-come-back (proc parsed)
   "Display a notice that messages were logged while away."
-  (when (and away
+  (when (and erc-away
 	     (eq erc-log-matches-flag 'away))
     (mapc
      (lambda (match-type)
@@ -590,7 +588,7 @@ deactivate/activate match logging in the latter. See
 				  (with-current-buffer buffer
 				    (get-text-property (1- (point-max))
 						       'timestamp))))
-		  (away-time     (erc-emacs-time-to-erc-time away)))
+		  (away-time     (erc-emacs-time-to-erc-time erc-away)))
 	     (when (and away-time last-msg-time
 			(erc-time-gt last-msg-time away-time))
 	       (erc-display-message
@@ -635,5 +633,4 @@ This function should be called from `erc-text-matched-hook'."
 ;; Local Variables:
 ;; indent-tabs-mode: t
 ;; tab-width: 8
-;; standard-indent: 4
 ;; End:

@@ -4,7 +4,7 @@
 # Get the file from http://www.mirc.co.uk/servers.ini
 
 # TODO: We need a separate file where we can store regexp/functions
-# to match a erc-announced-server-name against a erc-networks-alist entry.
+# to match a erc-server-announced-name against a erc-networks-alist entry.
 # For sanity, we'df need a lookup procedure here, and insert the
 # regexp/function instead of the nil value in the erc-networks-alist.
 #

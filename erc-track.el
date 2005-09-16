@@ -39,7 +39,7 @@
 
 ;;; Code:
 
-(defconst erc-track-version "$Revision: 1.78 $"
+(defconst erc-track-version "$Revision: 1.79 $"
   "ERC track mode revision")
 
 (defgroup erc-track nil
@@ -65,7 +65,8 @@ Activity means that there was no user input in the last 10 seconds."
   :type  '(choice (const :tag "All frames" t)
 		  (const :tag "All visible frames" visible)
 		  (const :tag "Only the selected frame" nil)
-		  (const :tag "Only the selected frame if it was active" active)))
+		  (const :tag "Only the selected frame if it was active"
+			 active)))
 
 (defcustom erc-track-exclude nil
   "A list targets (channel names or query targets) which should not be tracked."
@@ -173,14 +174,14 @@ Choices are:
 Any other value means add to the end of `global-mode-string'."
   :group 'erc-track
   :type '(choice (const :tag "Just before mode information" before-modes)
-                 (const :tag "Just after mode information" after-modes)
-                 (const :tag "After all other information" nil))
+		 (const :tag "Just after mode information" after-modes)
+		 (const :tag "After all other information" nil))
   :set (lambda (sym val)
-         (set sym val)
-         (when (and (boundp 'erc-track-mode)
-                    erc-track-mode)
-           (erc-track-remove-from-mode-line)
-           (erc-track-add-to-mode-line val))))
+	 (set sym val)
+	 (when (and (boundp 'erc-track-mode)
+		    erc-track-mode)
+	   (erc-track-remove-from-mode-line)
+	   (erc-track-add-to-mode-line val))))
 
 (defun erc-modified-channels-object (strings)
   "Generate a new `erc-modified-channels-object' based on STRINGS.
@@ -188,16 +189,16 @@ If STRINGS is nil, we initialize `erc-modified-channels-object' to
 an appropriate initial value for this flavor of Emacs."
   (if strings
       (if (featurep 'xemacs)
-          (let ((e-m-c-s '("[")))
-            (push (cons (extent-at 0 (car strings)) (car strings))
-                  e-m-c-s)
-            (dolist (string (cdr strings))
-              (push "," e-m-c-s)
-              (push (cons (extent-at 0 string) string)
-                    e-m-c-s))
-            (push "] " e-m-c-s)
-            (reverse e-m-c-s))
-        (concat (if (eq erc-track-position-in-mode-line 'after-modes)
+	  (let ((e-m-c-s '("[")))
+	    (push (cons (extent-at 0 (car strings)) (car strings))
+		  e-m-c-s)
+	    (dolist (string (cdr strings))
+	      (push "," e-m-c-s)
+	      (push (cons (extent-at 0 string) string)
+		    e-m-c-s))
+	    (push "] " e-m-c-s)
+	    (reverse e-m-c-s))
+	(concat (if (eq erc-track-position-in-mode-line 'after-modes)
 		    "[" " [")
 		(mapconcat 'identity (nreverse strings) ",")
 		(if (eq erc-track-position-in-mode-line 'before-modes)
@@ -225,9 +226,9 @@ while the buffer was not visible.")
   "Remove `erc-track-modified-channels' from the mode-line"
   (when (boundp 'mode-line-modes)
     (setq mode-line-modes
-          (remove '(t erc-modified-channels-object) mode-line-modes)))
+	  (remove '(t erc-modified-channels-object) mode-line-modes)))
   (setq global-mode-string
-        (delq 'erc-modified-channels-object global-mode-string)))
+	(delq 'erc-modified-channels-object global-mode-string)))
 
 (defun erc-track-add-to-mode-line (position)
   "Add `erc-track-modified-channels' to POSITION in the mode-line.
@@ -235,19 +236,19 @@ See `erc-track-position-in-mode-line' for possible values."
   ;; CVS Emacs has a new format string, and global-mode-string
   ;; is very far to the right.
   (cond ((and (eq position 'before-modes)
-              (boundp 'mode-line-modes))
-         (add-to-list 'mode-line-modes
-                      '(t erc-modified-channels-object)))
-        ((and (eq position 'after-modes)
-              (boundp 'mode-line-modes))
-         (add-to-list 'mode-line-modes
-                      '(t erc-modified-channels-object) t))
-        (t
-         (when (not global-mode-string)
-           (setq global-mode-string '(""))) ; Padding for mode-line wart
-         (add-to-list 'global-mode-string
-                      'erc-modified-channels-object
-                      t))))
+	      (boundp 'mode-line-modes))
+	 (add-to-list 'mode-line-modes
+		      '(t erc-modified-channels-object)))
+	((and (eq position 'after-modes)
+	      (boundp 'mode-line-modes))
+	 (add-to-list 'mode-line-modes
+		      '(t erc-modified-channels-object) t))
+	(t
+	 (when (not global-mode-string)
+	   (setq global-mode-string '(""))) ; Padding for mode-line wart
+	 (add-to-list 'global-mode-string
+		      'erc-modified-channels-object
+		      t))))
 
 ;;; Shortening of names
 
@@ -329,7 +330,7 @@ START is the minimum length of the name used."
      (let* ((others (delete str (copy-sequence strings)))
 	    (maxlen (length str))
 	    (i (min start
-                    (length str)))
+		    (length str)))
 	    candidate
 	    done)
        (if (and (functionp predicate) (not (funcall predicate str)))
@@ -369,25 +370,25 @@ START is the minimum length of the name used."
  (and
   ;; verify examples from the doc strings
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("#emacs" "#vi" "#electronica" "#folk")
-            '("#emacs" "#vi")))
-         '("#em" "#vi"))	 ; emacs is different from electronica
+	   (erc-unique-channel-names
+	    '("#emacs" "#vi" "#electronica" "#folk")
+	    '("#emacs" "#vi")))
+	 '("#em" "#vi"))	 ; emacs is different from electronica
   (equal (let ((erc-track-shorten-aggressively t))
-           (erc-unique-channel-names
-            '("#emacs" "#vi" "#electronica" "#folk")
-            '("#emacs" "#vi")))
-         '("#em" "#v"))                ; vi is shortened by one letter
+	   (erc-unique-channel-names
+	    '("#emacs" "#vi" "#electronica" "#folk")
+	    '("#emacs" "#vi")))
+	 '("#em" "#v"))		       ; vi is shortened by one letter
   (equal (let ((erc-track-shorten-aggressively 'max))
-           (erc-unique-channel-names
-            '("#emacs" "#vi" "#electronica" "#folk")
-            '("#emacs" "#vi")))
-         '("#e" "#v"))  ; emacs need not be different from electronica
+	   (erc-unique-channel-names
+	    '("#emacs" "#vi" "#electronica" "#folk")
+	    '("#emacs" "#vi")))
+	 '("#e" "#v"))  ; emacs need not be different from electronica
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("#linux-de" "#linux-fr")
-            '("#linux-de" "#linux-fr")))
-         '("#linux-de" "#linux-fr")) ; shortening by one letter is too aggressive
+	   (erc-unique-channel-names
+	    '("#linux-de" "#linux-fr")
+	    '("#linux-de" "#linux-fr")))
+	 '("#linux-de" "#linux-fr")) ; shortening by one letter is too aggressive
   (equal (let ((erc-track-shorten-aggressively t))
 	   (erc-unique-channel-names
 	    '("#linux-de" "#linux-fr")
@@ -395,66 +396,66 @@ START is the minimum length of the name used."
 	 '("#linux-d" "#linux-f")); now we want to be aggressive
   ;; specific problems
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("#dunnet" "#lisp" "#sawfish" "#fsf" "#guile"
-              "#testgnome" "#gnu" "#fsbot" "#hurd" "#hurd-bunny"
-              "#emacs")
-            '("#hurd-bunny" "#hurd" "#sawfish" "#lisp")))
-         '("#hurd-" "#hurd" "#s" "#l"))
+	   (erc-unique-channel-names
+	    '("#dunnet" "#lisp" "#sawfish" "#fsf" "#guile"
+	      "#testgnome" "#gnu" "#fsbot" "#hurd" "#hurd-bunny"
+	      "#emacs")
+	    '("#hurd-bunny" "#hurd" "#sawfish" "#lisp")))
+	 '("#hurd-" "#hurd" "#s" "#l"))
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-substrings
-            '("#emacs" "#vi" "#electronica" "#folk")))
-         '("#em" "#vi" "#el" "#f"))
+	   (erc-unique-substrings
+	    '("#emacs" "#vi" "#electronica" "#folk")))
+	 '("#em" "#vi" "#el" "#f"))
   (equal (let ((erc-track-shorten-aggressively t))
-           (erc-unique-substrings
-            '("#emacs" "#vi" "#electronica" "#folk")))
-         '("#em" "#v" "#el" "#f"))
+	   (erc-unique-substrings
+	    '("#emacs" "#vi" "#electronica" "#folk")))
+	 '("#em" "#v" "#el" "#f"))
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("#emacs" "#burse" "+linux.de" "#starwars"
-              "#bitlbee" "+burse" "#ratpoison")
-            '("+linux.de" "#starwars" "#burse")))
-         '("+l" "#s" "#bu"))
+	   (erc-unique-channel-names
+	    '("#emacs" "#burse" "+linux.de" "#starwars"
+	      "#bitlbee" "+burse" "#ratpoison")
+	    '("+linux.de" "#starwars" "#burse")))
+	 '("+l" "#s" "#bu"))
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("fsbot" "#emacs" "deego")
-            '("fsbot")))
-         '("fs"))
+	   (erc-unique-channel-names
+	    '("fsbot" "#emacs" "deego")
+	    '("fsbot")))
+	 '("fs"))
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("fsbot" "#emacs" "deego")
-            '("fsbot")
-            (lambda (s)
-              (> (length s) 4))
-            1))
-         '("f"))
+	   (erc-unique-channel-names
+	    '("fsbot" "#emacs" "deego")
+	    '("fsbot")
+	    (lambda (s)
+	      (> (length s) 4))
+	    1))
+	 '("f"))
   (equal (let ((erc-track-shorten-aggressively nil))
-           (erc-unique-channel-names
-            '("fsbot" "#emacs" "deego")
-            '("fsbot")
-            (lambda (s)
-              (> (length s) 4))
-            2))
-         '("fs"))
+	   (erc-unique-channel-names
+	    '("fsbot" "#emacs" "deego")
+	    '("fsbot")
+	    (lambda (s)
+	      (> (length s) 4))
+	    2))
+	 '("fs"))
   (let ((erc-track-shorten-aggressively nil))
     (equal (erc-unique-channel-names '("deego" "#hurd" "#hurd-bunny" "#emacs")
-                                     '("#hurd" "#hurd-bunny"))
-           '("#hurd" "#hurd-")))
+				     '("#hurd" "#hurd-bunny"))
+	   '("#hurd" "#hurd-")))
   ;; general examples
   (let ((erc-track-shorten-aggressively t))
     (and (equal (erc-unique-substring-1 "abc" '("ab" "abcd")) "abcd")
-         (not (erc-unique-substring-1 "a" '("xyz" "xab")))
-         (equal (erc-unique-substrings '("abc" "xyz" "xab")) 
-                '("ab" "xy" "xa"))
-         (equal (erc-unique-substrings '("abc" "abcdefg"))
-                '("abc" "abcd"))))
+	 (not (erc-unique-substring-1 "a" '("xyz" "xab")))
+	 (equal (erc-unique-substrings '("abc" "xyz" "xab"))
+		'("ab" "xy" "xa"))
+	 (equal (erc-unique-substrings '("abc" "abcdefg"))
+		'("abc" "abcd"))))
   (let ((erc-track-shorten-aggressively nil))
     (and (equal (erc-unique-substring-1 "abc" '("ab" "abcd")) "abcd")
-         (not (erc-unique-substring-1 "a" '("xyz" "xab")))
-         (equal (erc-unique-substrings '("abc" "xyz" "xab")) 
-                '("abc" "xyz" "xab"))
-         (equal (erc-unique-substrings '("abc" "abcdefg")) 
-                '("abc" "abcd"))))))
+	 (not (erc-unique-substring-1 "a" '("xyz" "xab")))
+	 (equal (erc-unique-substrings '("abc" "xyz" "xab"))
+		'("abc" "xyz" "xab"))
+	 (equal (erc-unique-substrings '("abc" "abcdefg"))
+		'("abc" "abcd"))))))
 
 ;;; Module
 
@@ -466,14 +467,15 @@ START is the minimum length of the name used."
    (erc-update-mode-line)
    (if (featurep 'xemacs)
        (defadvice switch-to-buffer (after erc-update (&rest args) activate)
-         (erc-modified-channels-update))
+	 (erc-modified-channels-update))
      (add-hook 'window-configuration-change-hook 'erc-modified-channels-update))
    (add-hook 'erc-insert-post-hook 'erc-track-modified-channels)
    (add-hook 'erc-disconnected-hook 'erc-modified-channels-update))
   ((erc-track-remove-from-mode-line)
    (if (featurep 'xemacs)
        (ad-disable-advice 'switch-to-buffer 'after 'erc-update)
-     (remove-hook 'window-configuration-change-hook 'erc-modified-channels-update))
+     (remove-hook 'window-configuration-change-hook
+		  'erc-modified-channels-update))
    (remove-hook 'erc-disconnected-hook 'erc-modified-channels-update)
    (remove-hook 'erc-insert-post-hook 'erc-track-modified-channels)))
 
@@ -483,7 +485,7 @@ START is the minimum length of the name used."
 if you are inactivity."
   ((if (featurep 'xemacs)
        (defadvice switch-to-buffer (after erc-update-when-inactive (&rest args) activate)
-         (erc-user-is-active))
+	 (erc-user-is-active))
      (add-hook 'window-configuration-change-hook 'erc-user-is-active))
    (add-hook 'erc-send-completed-hook 'erc-user-is-active)
    (add-hook 'erc-server-001-functions 'erc-user-is-active))
@@ -540,8 +542,8 @@ ARGS are ignored."
 		  (when (or (not (bufferp buffer))
 			    (not (buffer-live-p buffer))
 			    (erc-buffer-visible buffer)
-                            (not (with-current-buffer buffer
-                                   erc-connected)))
+			    (not (with-current-buffer buffer
+				   erc-server-connected)))
 		    (erc-modified-channels-remove-buffer buffer))))
 	      erc-modified-channels-alist)
       (erc-modified-channels-display)
@@ -621,9 +623,9 @@ Use `erc-make-mode-line-buffer-name' to create buttons."
 	      counts (cdr counts)
 	      faces (cdr faces)))
       (when (featurep 'xemacs)
-        (erc-modified-channels-object nil))
+	(erc-modified-channels-object nil))
       (setq erc-modified-channels-object
-            (erc-modified-channels-object strings)))))
+	    (erc-modified-channels-object strings)))))
 
 (defun erc-modified-channels-remove-buffer (buffer)
   "Remove BUFFER from `erc-modified-channels-alist'."
@@ -652,15 +654,16 @@ first in that list will be used."
 buffer should be added to the modeline as a hidden, modified
 channel.  Assumes it will only be called when current-buffer
 is in `erc-mode'."
-  (let ((this-channel (or (erc-default-target) (buffer-name (current-buffer)))))
+  (let ((this-channel (or (erc-default-target)
+			  (buffer-name (current-buffer)))))
     (if (and (not (erc-buffer-visible (current-buffer)))
 	     (not (member this-channel erc-track-exclude))
- 	     (not (and erc-track-exclude-server-buffer
-                       (string= this-channel
-                                (buffer-name (erc-server-buffer)))))
+	     (not (and erc-track-exclude-server-buffer
+		       (string= this-channel
+				(buffer-name (erc-server-buffer)))))
 	     (not (erc-message-type-member
 		   (or (erc-find-parsed-property)
-                       (point-min))
+		       (point-min))
 		   erc-track-exclude-types)))
 	;; If the active buffer is not visible (not shown in a
 	;; window), and not to be excluded, determine the kinds of
@@ -723,8 +726,8 @@ is in `erc-mode'."
 (assert
  (let ((str "is bold"))
    (put-text-property 3 (length str)
-                      'face '(bold erc-current-nick-face)
-                      str)
+		      'face '(bold erc-current-nick-face)
+		      str)
    (erc-faces-in str)))
 
 (defun erc-find-parsed-property ()
@@ -759,15 +762,16 @@ The default is a colon, resulting in \"#emacs:9\"."
 'newest finds the latest, 'leastactive finds buffer with least unseen messages,
 'mostactive - with most unseen messages."
   :group 'erc-track
-  :type '(choice (const oldest) (const newest) (const leastactive) (const mostactive)))
+  :type '(choice (const oldest) (const newest) (const leastactive)
+		 (const mostactive)))
 
 (defvar erc-track-last-non-erc-buffer nil
   "Stores the name of the last buffer you were in before activating
 `erc-track-switch-buffers'")
 
 (defun erc-track-sort-by-activest ()
-  "Sorts erc-modified-channels-alist by 'activeness'(count of not seen messages)
-+of channel"
+  "Sorts erc-modified-channels-alist by 'activeness'
+\(count of not seen messages) of channel"
   (setq erc-modified-channels-alist
 	(sort erc-modified-channels-alist
 	      (lambda (a b) (> (nth 1 a) (nth 1 b))))))
@@ -777,26 +781,26 @@ The default is a colon, resulting in \"#emacs:9\"."
 Negative arguments index in the opposite direction.  This direction is
 relative to `erc-track-switch-direction'"
   (let ((dir erc-track-switch-direction)
-        offset)
+	offset)
     (if (< arg 0)
-        (progn
-          (cond
-           ((eq 'oldest dir) (setq dir 'newest))
-           ((eq 'newest dir) (setq dir 'oldest))
-    	   ((eq 'mostactive dir) (setq dir 'leastactive))
-    	   ((eq 'leastactive dir) (setq dir 'mostacive)))
-          (setq arg (* -1 arg))))
+	(progn
+	  (cond
+	   ((eq 'oldest dir) (setq dir 'newest))
+	   ((eq 'newest dir) (setq dir 'oldest))
+	   ((eq 'mostactive dir) (setq dir 'leastactive))
+	   ((eq 'leastactive dir) (setq dir 'mostacive)))
+	  (setq arg (* -1 arg))))
     (setq arg (- arg 1))
     (setq offset (cond
-                  ((or (eq 'oldest dir) (eq 'leastactive dir))
-                   (- (- (length erc-modified-channels-alist) 1) arg))
-                  (t 0)))
+		  ((or (eq 'oldest dir) (eq 'leastactive dir))
+		   (- (- (length erc-modified-channels-alist) 1) arg))
+		  (t 0)))
     ;; normalise out of range user input
     (if (>= offset (length erc-modified-channels-alist))
-        (setq offset (- (length erc-modified-channels-alist) 1))
-    (if (< offset 0)
-        (setq offset 0))
-    (car (nth offset erc-modified-channels-alist)))))
+	(setq offset (- (length erc-modified-channels-alist) 1))
+      (if (< offset 0)
+	  (setq offset 0))
+      (car (nth offset erc-modified-channels-alist)))))
 
 (defun erc-track-switch-buffer (arg)
   "Switch to the next active ERC buffer, or if there are no active buffers,
@@ -827,3 +831,8 @@ switch back to the last non-ERC buffer visited.  Next is defined by
 (provide 'erc-track)
 
 ;;; erc-track.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

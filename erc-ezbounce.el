@@ -28,7 +28,7 @@
 
 (require 'erc)
 
-(defconst erc-ezb-version "$Revision: 1.10 $"
+(defconst erc-ezb-version "$Revision: 1.11 $"
   "ERC EZBouncer revision.")
 
 (defgroup erc-ezbounce nil
@@ -75,7 +75,7 @@ The alist's format is as follows:
 ;;;###autoload
 (defun erc-cmd-ezb (line &optional force)
   "Send EZB commands to the EZBouncer verbatim."
-  (erc-send-command (concat "EZB " line)))
+  (erc-server-send (concat "EZB " line)))
 (put 'erc-cmd-EZB 'do-not-parse-args t)
 
 ;;;###autoload
@@ -124,7 +124,7 @@ in the alist is `nil', prompt for the appropriate values."
     (unless (null login)
       (let ((username (car login))
 	    (pass (cdr login)))
-	(erc-send-command (concat "LOGIN " username " " pass))))))
+	(erc-server-send (concat "LOGIN " username " " pass))))))
 
 ;;;###autoload
 (defun erc-ezb-init-session-list (message)
@@ -158,7 +158,7 @@ in the alist is `nil', prompt for the appropriate values."
 	    (erc-string-to-port
 	     (read-from-minibuffer "IRC port: "
 				   (erc-port-to-string "6667")))))
-      (erc-send-command (format "CONN %s %s" server port)))))
+      (erc-server-send (format "CONN %s %s" server port)))))
     
 
 ;;;###autoload
@@ -168,7 +168,7 @@ in the alist is `nil', prompt for the appropriate values."
 			       erc-ezb-session-list)))
     (if (string= session "")
 	nil
-      (erc-send-command (format "REATTACH %s" session)))))
+      (erc-server-send (format "REATTACH %s" session)))))
 
 
 ;;;###autoload
