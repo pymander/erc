@@ -671,7 +671,9 @@ to will be used."
        (tgt
         (setcdr erc-server-last-peers tgt)
         (erc-server-send
-         (format "%s %s :%s" message-command tgt s)) force)
+         (format "%s %s :%s" message-command tgt
+                 (erc-encode-string-for-target s tgt))
+         force))
        (t
         (erc-display-message nil 'error (current-buffer) 'no-target))))
     t)
@@ -690,7 +692,10 @@ See also `erc-server-send'."
     (cond
      (tgt
       (erc-log (format "erc-send-CTCP-message: [%s] %s" tgt l))
-      (erc-server-send (format "PRIVMSG %s :\C-a%s\C-a" tgt l) force)))))
+      (erc-server-send
+       (format "PRIVMSG %s :\C-a%s\C-a" tgt
+               (erc-encode-string-for-target l tgt))
+       force)))))
 
 (defun erc-send-ctcp-notice (tgt l &optional force)
   "Send CTCP notice L to TGT.
@@ -703,7 +708,10 @@ See also `erc-server-send'."
     (cond
      (tgt
       (erc-log (format "erc-send-CTCP-notice: [%s] %s" tgt l))
-      (erc-server-send (format "NOTICE %s :\C-a%s\C-a" tgt l) force)))))
+      (erc-server-send
+       (format "NOTICE %s :\C-a%s\C-a" tgt
+               (erc-encode-string-for-target l tgt))
+       force)))))
 
 ;;;; Handling responses
 

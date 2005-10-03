@@ -2678,13 +2678,17 @@ LINE has the format: \"#CHANNEL NICK REASON\" or \"NICK REASON\"."
     (if (erc-channel-p target)
 	(let ((nick reason-or-nick))
 	  (erc-log (format "cmd: KICK: %s/%s: %s" nick target reasonstring))
-	  (erc-server-send (format "KICK %s %s :%s" target nick reasonstring))
+	  (erc-server-send (format "KICK %s %s :%s" target nick
+				   (erc-encode-string-for-target
+				    reasonstring target)))
 	  t)
       (when target
 	(let ((ch (erc-default-target)))
-	  (setq reasonstring (concat
-			      (if reason-or-nick (concat reason-or-nick " "))
-			      reasonstring))
+	  (setq reasonstring (erc-encode-string-for-target
+			      (concat
+			       (if reason-or-nick (concat reason-or-nick " "))
+			       reasonstring)
+			      ch))
 	  (if ch
 	      (progn
 		(erc-log
@@ -2931,7 +2935,8 @@ Otherwise leave the channel indicated by LINE."
       (erc-server-send
        (if (string= reason "")
 	   (format "PART %s" ch)
-	 (format "PART %s :%s" ch reason))))
+	 (format "PART %s :%s" ch (erc-encode-string-for-target
+				   reason ch)))))
     t)
    ((string-match "^\\s-*\\(.*\\)$" line)
     (let* ((ch (erc-default-target))
@@ -2943,7 +2948,8 @@ Otherwise leave the channel indicated by LINE."
 	    (erc-server-send
 	     (if (string= reason "")
 		 (format "PART %s" ch)
-	       (format "PART %s :%s" ch reason))))
+	       (format "PART %s :%s" ch (erc-encode-string-for-target
+					 reason ch)))))
 	(erc-display-message nil 'error (current-buffer) 'no-target)))
     t)
    (t nil)))
@@ -3052,7 +3058,8 @@ the message given by REASON."
 			     (current-buffer))
 	(erc-log (format "cmd: QUIT: %s" reason))
 	(setq erc-server-quitting t)
-	(erc-server-send (format "QUIT :%s" reason)))
+	(erc-server-send (format "QUIT :%s" (erc-encode-string-for-target
+					     reason (erc-default-target)))))
       (run-hook-with-args 'erc-quit-hook erc-server-process)
       (when erc-kill-queries-on-quit
 	(erc-kill-query-buffers erc-server-process)))
@@ -3170,8 +3177,9 @@ be displayed."
   (cond
    ;; /topic #channel TOPIC
    ((string-match "^\\s-*\\([&#+!]\\S-+\\)\\s-\\(.*\\)$" topic)
-    (let ((ch (match-string 1 topic))
-	  (topic (match-string 2 topic)))
+    (let* ((ch (match-string 1 topic))
+	   (topic (erc-encode-string-for-target
+		   (match-string 2 topic) ch)))
       (erc-log (format "cmd: TOPIC [%s]: %s" ch topic))
       (erc-server-send (format "TOPIC %s :%s" ch topic)))
     t)
@@ -3187,8 +3195,9 @@ be displayed."
       t))
    ;; /topic TOPIC
    ((string-match "^\\s-*\\(.*\\)$" topic)
-    (let ((ch (erc-default-target))
-	  (topic (match-string 1 topic)))
+    (let* ((ch (erc-default-target))
+	   (topic (erc-encode-string-for-target
+		   (match-string 1 topic) ch)))
       (if (and ch (erc-channel-p ch))
 	  (progn
 	    (erc-log (format "cmd: TOPIC [%s]: %s" ch topic))
@@ -6099,16 +6108,20 @@ or `erc-kill-buffer-hook' if any other buffer."
 This function should be on `erc-kill-server-hook'."
   (when (erc-process-alive)
     (setq erc-server-quitting t)
-    (erc-server-send (format "QUIT :%s" (funcall erc-quit-reason nil)))))
+    (erc-server-send (format "QUIT :%s" (erc-encode-string-for-target
+					 (funcall erc-quit-reason nil)
+					 (erc-default-target))))))
 
 (defun erc-kill-channel ()
   "Sends a PART command to the server when the channel buffer is killed.
 This function should be on `erc-kill-channel-hook'."
   (when (erc-process-alive)
-    (erc-server-send
-     (format "PART %s :%s"
-	     (erc-default-target)
-	     (funcall erc-part-reason nil)))))
+    (let ((tgt (erc-default-target)))
+      (erc-server-send
+       (format "PART %s :%s" tgt
+	       (erc-encode-string-for-target
+		(funcall erc-part-reason nil)
+		tgt))))))
 
 (provide 'erc)
 

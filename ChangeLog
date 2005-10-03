@@ -1,3 +1,11 @@
+2005-10-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-message, erc-send-ctcp-message)
+	(erc-send-ctcp-notice): Encode string for target before sending.
+
+	* erc.el (erc-cmd-KICK, erc-cmd-PART, erc-cmd-QUIT, erc-cmd-TOPIC)
+	(erc-kill-server, erc-kill-channel): Ditto.
+
 2005-09-05  Johan Bockgård  <bojohan@users.sourceforge.net>
 
 	* erc-page.el (erc-ctcp-query-PAGE): (message text) -> (message
