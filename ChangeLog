@@ -1,3 +1,8 @@
+2005-10-05  Edward O'Connor  <ted@oconnor.cx>
+	* erc-backend.el (erc-encode-string-for-target): If str is nil,
+	pass the empty string to erc-encode-coding-string instead, which
+	allows one to /part and /quit without providing a reason again.
+	
 2005-10-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-message, erc-send-ctcp-message)

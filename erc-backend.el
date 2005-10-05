@@ -103,7 +103,7 @@
 
 ;;;; Variables and options
 
-(defconst erc-backend-version "$Revision: 1.29 $")
+(defconst erc-backend-version "$Revision: 1.31 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -571,7 +571,7 @@ This is indicated by `erc-encoding-coding-alist', defaulting to the value of
   (let ((coding (erc-coding-system-for-target target)))
     (when (consp coding)
       (setq coding (car coding)))
-    (erc-encode-coding-string str coding)))
+    (erc-encode-coding-string (or str "") coding)))
 
 (defun erc-decode-string-from-target (str target)
   "Decode STR as appropriate for TARGET.
