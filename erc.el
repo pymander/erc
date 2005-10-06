@@ -64,7 +64,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.773 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.774 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -2318,8 +2318,8 @@ See also `erc-server-send'."
 		     ;; send it - i.e. an empty pasted line.
 		     (if (string= line "\n")
 			 " \n"
-		       (erc-encode-string-for-target line target))))
-  (erc-server-send line force))
+		       line)))
+  (erc-server-send line force target))
 
 ;; if we're in emacs21 CVS, we use help-function-arglist which is more
 ;; sophisticated and can handle subrs, etc
@@ -2678,23 +2678,20 @@ LINE has the format: \"#CHANNEL NICK REASON\" or \"NICK REASON\"."
     (if (erc-channel-p target)
 	(let ((nick reason-or-nick))
 	  (erc-log (format "cmd: KICK: %s/%s: %s" nick target reasonstring))
-	  (erc-server-send (format "KICK %s %s :%s" target nick
-				   (erc-encode-string-for-target
-				    reasonstring target)))
+	  (erc-server-send (format "KICK %s %s :%s" target nick reasonstring)
+			   nil target)
 	  t)
       (when target
 	(let ((ch (erc-default-target)))
-	  (setq reasonstring (erc-encode-string-for-target
-			      (concat
-			       (if reason-or-nick (concat reason-or-nick " "))
-			       reasonstring)
-			      ch))
+	  (setq reasonstring (concat
+			      (if reason-or-nick (concat reason-or-nick " "))
+			      reasonstring))
 	  (if ch
 	      (progn
 		(erc-log
 		 (format "cmd: KICK: %s/%s: %s" target ch reasonstring))
 		(erc-server-send
-		 (format "KICK %s %s :%s" ch target reasonstring)))
+		 (format "KICK %s %s :%s" ch target reasonstring) nil ch))
 	    (erc-display-message nil 'error (current-buffer)
 				 'no-default-channel))
 	  t)))))
@@ -2932,11 +2929,10 @@ Otherwise leave the channel indicated by LINE."
 	   (msg (match-string 2 line))
 	   (reason (funcall erc-part-reason (if (equal msg "") nil msg))))
       (erc-log (format "cmd: PART: %s: %s" ch reason))
-      (erc-server-send
-       (if (string= reason "")
-	   (format "PART %s" ch)
-	 (format "PART %s :%s" ch (erc-encode-string-for-target
-				   reason ch)))))
+      (erc-server-send (if (string= reason "")
+			   (format "PART %s" ch)
+			 (format "PART %s :%s" ch reason))
+		       nil ch))
     t)
    ((string-match "^\\s-*\\(.*\\)$" line)
     (let* ((ch (erc-default-target))
@@ -2945,11 +2941,10 @@ Otherwise leave the channel indicated by LINE."
       (if (and ch (erc-channel-p ch))
 	  (progn
 	    (erc-log (format "cmd: PART: %s: %s" ch reason))
-	    (erc-server-send
-	     (if (string= reason "")
-		 (format "PART %s" ch)
-	       (format "PART %s :%s" ch (erc-encode-string-for-target
-					 reason ch)))))
+	    (erc-server-send (if (string= reason "")
+				 (format "PART %s" ch)
+			       (format "PART %s :%s" ch reason))
+			     nil ch))
 	(erc-display-message nil 'error (current-buffer) 'no-target)))
     t)
    (t nil)))
@@ -3058,8 +3053,7 @@ the message given by REASON."
 			     (current-buffer))
 	(erc-log (format "cmd: QUIT: %s" reason))
 	(setq erc-server-quitting t)
-	(erc-server-send (format "QUIT :%s" (erc-encode-string-for-target
-					     reason (erc-default-target)))))
+	(erc-server-send (format "QUIT :%s" reason)))
       (run-hook-with-args 'erc-quit-hook erc-server-process)
       (when erc-kill-queries-on-quit
 	(erc-kill-query-buffers erc-server-process)))
@@ -3177,31 +3171,29 @@ be displayed."
   (cond
    ;; /topic #channel TOPIC
    ((string-match "^\\s-*\\([&#+!]\\S-+\\)\\s-\\(.*\\)$" topic)
-    (let* ((ch (match-string 1 topic))
-	   (topic (erc-encode-string-for-target
-		   (match-string 2 topic) ch)))
+    (let ((ch (match-string 1 topic))
+	  (topic (match-string 2 topic)))
       (erc-log (format "cmd: TOPIC [%s]: %s" ch topic))
-      (erc-server-send (format "TOPIC %s :%s" ch topic)))
+      (erc-server-send (format "TOPIC %s :%s" ch topic) nil ch))
     t)
    ;; /topic #channel
    ((string-match "^\\s-*\\([&#+!]\\S-+\\)" topic)
     (let ((ch (match-string 1 topic)))
-      (erc-server-send (format "TOPIC %s" ch))
+      (erc-server-send (format "TOPIC %s" ch) nil ch)
       t))
    ;; /topic
    ((string-match "^\\s-*$" topic)
     (let ((ch (erc-default-target)))
-      (erc-server-send (format "TOPIC %s" ch))
+      (erc-server-send (format "TOPIC %s" ch) nil ch)
       t))
    ;; /topic TOPIC
    ((string-match "^\\s-*\\(.*\\)$" topic)
-    (let* ((ch (erc-default-target))
-	   (topic (erc-encode-string-for-target
-		   (match-string 1 topic) ch)))
+    (let ((ch (erc-default-target))
+	  (topic (match-string 1 topic)))
       (if (and ch (erc-channel-p ch))
 	  (progn
 	    (erc-log (format "cmd: TOPIC [%s]: %s" ch topic))
-	    (erc-server-send (format "TOPIC %s :%s" ch topic)))
+	    (erc-server-send (format "TOPIC %s :%s" ch topic) nil ch))
 	(erc-display-message nil 'error (current-buffer) 'no-target)))
     t)
    (t nil)))
@@ -6108,20 +6100,16 @@ or `erc-kill-buffer-hook' if any other buffer."
 This function should be on `erc-kill-server-hook'."
   (when (erc-process-alive)
     (setq erc-server-quitting t)
-    (erc-server-send (format "QUIT :%s" (erc-encode-string-for-target
-					 (funcall erc-quit-reason nil)
-					 (erc-default-target))))))
+    (erc-server-send (format "QUIT :%s" (funcall erc-quit-reason nil)))))
 
 (defun erc-kill-channel ()
   "Sends a PART command to the server when the channel buffer is killed.
 This function should be on `erc-kill-channel-hook'."
   (when (erc-process-alive)
     (let ((tgt (erc-default-target)))
-      (erc-server-send
-       (format "PART %s :%s" tgt
-	       (erc-encode-string-for-target
-		(funcall erc-part-reason nil)
-		tgt))))))
+      (erc-server-send (format "PART %s :%s" tgt
+			       (funcall erc-part-reason nil))
+		       nil tgt))))
 
 (provide 'erc)
 

@@ -103,7 +103,7 @@
 
 ;;;; Variables and options
 
-(defconst erc-backend-version "$Revision: 1.33 $")
+(defconst erc-backend-version "$Revision: 1.34 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -440,7 +440,7 @@ We will store server variables in the current buffer."
   (set-process-filter erc-server-process 'erc-server-filter-function)
   ;; we do our own encoding and decoding
   (when (fboundp 'set-process-coding-system)
-    (set-process-coding-system erc-server-process 'raw-text 'raw-text))
+    (set-process-coding-system erc-server-process 'raw-text))
   (set-marker (process-mark erc-server-process) (point))
   (erc-log "\n\n\n********************************************\n")
   (message (erc-format-message 'login ?n (erc-current-nick)))
@@ -564,18 +564,6 @@ This is determined via `erc-encoding-coding-alist' or
            (funcall erc-server-coding-system))
       erc-server-coding-system))
 
-(defun erc-encode-string-for-target (str target)
-  "Encode STR as appropriate for TARGET.
-This is indicated by `erc-encoding-coding-alist', defaulting to the value of
-`erc-server-coding-system'."
-  (let ((coding (erc-coding-system-for-target target)))
-    (if (or (not str)
-            (string= str ""))
-        ""
-      (when (consp coding)
-        (setq coding (car coding)))
-      (erc-encode-coding-string str coding))))
-
 (defun erc-decode-string-from-target (str target)
   "Decode STR as appropriate for TARGET.
 This is indicated by `erc-encoding-coding-alist', defaulting to the value of
@@ -595,17 +583,25 @@ Use DISPLAY-FN to show the results."
         (erc-split-line text)))
 
 ;; From Circe, with modifications
-(defun erc-server-send (string &optional forcep)
+(defun erc-server-send (string &optional forcep target)
   "Send STRING to the current server.
 If FORCEP is non-nil, no flood protection is done - the string is
 sent directly. This might cause the messages to arrive in a wrong
 order.
 
+If TARGET is specified, look up encoding information for that
+channel in `erc-encoding-coding-alist' or
+`erc-server-coding-system'.
+
 See `erc-server-flood-margin' for an explanation of the flood
 protection algorithm."
   (erc-log (concat "erc-server-send: " string "(" (buffer-name) ")"))
   (setq erc-server-last-sent-time (erc-current-time))
-  (let ((buf (erc-server-buffer)))
+  (let ((buf (erc-server-buffer))
+        (encoding (erc-coding-system-for-target
+                   (or target (erc-default-target)))))
+    (when (consp encoding)
+      (setq encoding (car encoding)))
     (if buf
         (with-current-buffer buf
           (let ((str (concat string "\r\n")))
@@ -615,9 +611,13 @@ protection algorithm."
                         (+ erc-server-flood-penalty
                            erc-server-flood-last-message))
                   (erc-log-irc-protocol str 'outbound)
+                  ;; Set encoding just before sending the string
+                  (set-process-coding-system erc-server-process
+                                             'raw-text encoding)
                   (process-send-string erc-server-process str))
-              (setq erc-server-flood-queue (append erc-server-flood-queue
-                                                   (list str)))
+              (setq erc-server-flood-queue
+                    (append erc-server-flood-queue
+                            (list (cons str encoding))))
               (erc-server-send-queue (current-buffer))))
           t)
       (message "ERC: No process running")
@@ -639,12 +639,18 @@ protection algorithm."
       (while (and erc-server-flood-queue
                   (< erc-server-flood-last-message
                      (+ now erc-server-flood-margin)))
-        (let ((msg (car erc-server-flood-queue)))
+        (let ((msg (caar erc-server-flood-queue))
+              (encoding (cdar erc-server-flood-queue)))
           (setq erc-server-flood-queue (cdr erc-server-flood-queue)
                 erc-server-flood-last-message
                 (+ erc-server-flood-last-message
                    erc-server-flood-penalty))
           (erc-log-irc-protocol msg 'outbound)
+          (erc-log (concat "erc-server-send-queue: "
+                           msg "(" (buffer-name buffer) ")"))
+          ;; Set encoding just before sending the string
+          (set-process-coding-system erc-server-process
+                                     'raw-text encoding)
           (process-send-string erc-server-process msg)))
       (when erc-server-flood-queue
         (setq erc-server-flood-timer
@@ -673,10 +679,8 @@ to will be used."
       (cond
        (tgt
         (setcdr erc-server-last-peers tgt)
-        (erc-server-send
-         (format "%s %s :%s" message-command tgt
-                 (erc-encode-string-for-target s (erc-default-target)))
-         force))
+        (erc-server-send (format "%s %s :%s" message-command tgt s)
+                         force))
        (t
         (erc-display-message nil 'error (current-buffer) 'no-target))))
     t)
@@ -695,10 +699,8 @@ See also `erc-server-send'."
     (cond
      (tgt
       (erc-log (format "erc-send-CTCP-message: [%s] %s" tgt l))
-      (erc-server-send
-       (format "PRIVMSG %s :\C-a%s\C-a" tgt
-               (erc-encode-string-for-target l (erc-default-target)))
-       force)))))
+      (erc-server-send (format "PRIVMSG %s :\C-a%s\C-a" tgt l)
+                       force)))))
 
 (defun erc-send-ctcp-notice (tgt l &optional force)
   "Send CTCP notice L to TGT.
@@ -711,10 +713,8 @@ See also `erc-server-send'."
     (cond
      (tgt
       (erc-log (format "erc-send-CTCP-notice: [%s] %s" tgt l))
-      (erc-server-send
-       (format "NOTICE %s :\C-a%s\C-a" tgt
-               (erc-encode-string-for-target l (erc-default-target)))
-       force)))))
+      (erc-server-send (format "NOTICE %s :\C-a%s\C-a" tgt l)
+                       force)))))
 
 ;;;; Handling responses
 

@@ -1,3 +1,21 @@
+2005-10-06  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-send-input-line, erc-cmd-KICK, erc-cmd-PART)
+	(erc-cmd-QUIT, erc-cmd-TOPIC, erc-kill-server, erc-kill-channel):
+	Adapt to new TARGET parameter of erc-server-send.
+
+	* erc-backend.el (erc-server-connect): Don't specify encoding for
+	erc-server-process, since we set this each time we send a line to
+	the server.
+	(erc-encode-string-for-target): Remove.
+	(erc-server-send): Allow TARGET to be specified.  This was how it
+	used to be before my more-backend work.  Set encoding of server
+	process just before sending text to it.  Associate encoding with
+	text if we are using the queue.
+	(erc-server-send-queue): Pull encoding from queue.
+	(erc-message, erc-send-ctcp-message, erc-send-ctcp-notice): Adapt
+	to new TARGET parameter of erc-server-send.
+
 2005-10-05  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-toggle-debug-irc-protocol): Use erc-view-mode-enter
