@@ -103,7 +103,7 @@
 
 ;;;; Variables and options
 
-(defconst erc-backend-version "$Revision: 1.34 $")
+(defconst erc-backend-version "$Revision: 1.35 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -612,8 +612,9 @@ protection algorithm."
                            erc-server-flood-last-message))
                   (erc-log-irc-protocol str 'outbound)
                   ;; Set encoding just before sending the string
-                  (set-process-coding-system erc-server-process
-                                             'raw-text encoding)
+                  (when (fboundp 'set-process-coding-system)
+                    (set-process-coding-system erc-server-process
+                                               'raw-text encoding))
                   (process-send-string erc-server-process str))
               (setq erc-server-flood-queue
                     (append erc-server-flood-queue
@@ -649,8 +650,9 @@ protection algorithm."
           (erc-log (concat "erc-server-send-queue: "
                            msg "(" (buffer-name buffer) ")"))
           ;; Set encoding just before sending the string
-          (set-process-coding-system erc-server-process
-                                     'raw-text encoding)
+          (when (fboundp 'set-process-coding-system)
+            (set-process-coding-system erc-server-process
+                                       'raw-text encoding))
           (process-send-string erc-server-process msg)))
       (when erc-server-flood-queue
         (setq erc-server-flood-timer
