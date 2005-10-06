@@ -1,7 +1,18 @@
 2005-10-05  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-toggle-debug-irc-protocol): Use erc-view-mode-enter
+	rather than view-mode.
+
 	* erc-backend.el (erc-encode-string-for-target): If given a nil or
 	empty string, return "".
+	(erc-server-send-queue): XEmacs fix: Use erc-cancel-timer rather
+	than cancel-timer.
+
+	* erc-compat.el (erc-view-mode-enter): New function that is
+	aliased to the correct way of entering view-mode.
+
+	* erc-match.el (erc-log-matches-make-buffer): Use
+	erc-view-mode-enter rather than view-mode-enter.
 
 2005-10-05  Edward O'Connor  <ted@oconnor.cx>
 

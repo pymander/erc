@@ -631,7 +631,7 @@ protection algorithm."
   (with-current-buffer buffer
     (let ((now (erc-current-time)))
       (when erc-server-flood-timer
-        (cancel-timer erc-server-flood-timer)
+        (erc-cancel-timer erc-server-flood-timer)
         (setq erc-server-flood-timer nil))
       (when (< erc-server-flood-last-message
                now)

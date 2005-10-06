@@ -2101,7 +2101,7 @@ If ARG is non-nil, show the *erc-protocol* buffer."
   (interactive "P")
   (let* ((buf (get-buffer-create "*erc-protocol*")))
     (with-current-buffer buf
-      (view-mode 1)
+      (erc-view-mode-enter 1)
       (when (null (current-local-map))
 	(let ((inhibit-read-only t))
 	  (insert (erc-make-notice "This buffer displays all IRC protocol traffic exchanged with each server.\n"))

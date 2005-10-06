@@ -570,9 +570,9 @@ deactivate/activate match logging in the latter. See
     (with-current-buffer buffer
       (unless buffer-already
 	(insert " == Type \"q\" to dismiss messages ==\n")
-	(view-mode-enter nil (lambda (buffer)
-			       (when (y-or-n-p "Discard messages?")
-				 (kill-buffer buffer)))))
+	(erc-view-mode-enter nil (lambda (buffer)
+				   (when (y-or-n-p "Discard messages?")
+				     (kill-buffer buffer)))))
       buffer)))
 
 (defun erc-log-matches-come-back (proc parsed)

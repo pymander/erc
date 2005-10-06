@@ -168,9 +168,11 @@ See `erc-encoding-coding-alist'."
 
 ;; But note Emacs view-mode: (view-mode &optional ARG)
 
-(when (and (fboundp 'view-mode)
+(defalias 'erc-view-mode-enter
+  (if (and (fboundp 'view-mode)
 	   (not (fboundp 'view-mode-enter)))
-  (defalias 'view-mode-enter 'view-mode))
+      'view-mode
+    'view-mode-enter))
 
 ;;; XEmacs has `replace-in-string', Emacs has `replace-regexp-in-string':
 
