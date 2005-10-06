@@ -38,7 +38,7 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.44 $"
+(defconst erc-match-version "$Revision: 1.45 $"
   "ERC match mode revision.")
 
 (defgroup erc-match nil

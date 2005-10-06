@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.22 $"
+(defconst erc-compat-version "$Revision: 1.23 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
