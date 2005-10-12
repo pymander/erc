@@ -1364,12 +1364,12 @@
 
 	* debian/rules 1.10: Use $(wildcard *.el) instead of a hardcoded list
 
-2002-07-03  Diane Murray  <dsm@muenster.de>
+2002-07-03  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.292:
 	erc-iswitchb now works correctly if erc-modified-channels-alist is non-nil
 
-2002-07-01  Diane Murray  <dsm@muenster.de>
+2002-07-01  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-menu.el 1.8:
 	* changed how we check if we should activate "Track hidden channels" and
@@ -1413,7 +1413,7 @@
 	Make /set anonymous-lign set erc-anonymous-login, also report
 	which var was set to which val.
 
-2002-06-28  Diane Murray  <dsm@muenster.de>
+2002-06-28  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-menu.el 1.6: added "Customize ERC"
 
@@ -1425,7 +1425,7 @@
 	  (by rw)
 	Delete (erc-display-prompt) from reconnect to avoid clutter
 
-2002-06-23  Diane Murray  <dsm@muenster.de>
+2002-06-23  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.288:
 	erc-get-channel-mode-from-keypress is now bound to C-c C-m
@@ -1436,13 +1436,13 @@
 	* erc-track.el 1.15:
 	Fixed bug where buffer-names suddenly had text-properties.
 
-2002-06-19  Diane Murray  <dsm@muenster.de>
+2002-06-19  Diane Murray  <disumu@x3y2z1.net>
 
 	* Makefile 1.5: changed erc-auto.el to $(SPECIAL) in make fullclean
 
 	* Makefile 1.4: remove erc-auto.el on make fullclean
 
-2002-06-18  Diane Murray  <dsm@muenster.de>
+2002-06-18  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-match.el 1.10: fixed spelling error
 
@@ -1454,14 +1454,14 @@
 	* erc-track.el:
 	  added support for erc-current-nick-face
 
-2002-06-17  Diane Murray  <dsm@muenster.de>
+2002-06-17  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.287: * added beginning suport for 005 numerics:
 	  - added buffer local variable erc-server-parameters
 	  - added erc-server-005, which sets erc-server-parameters if the server has
 	    used this code to show its parameters
 
-2002-06-16  Diane Murray  <dsm@muenster.de>
+2002-06-16  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.286:
 	* bugfix: when pasting lines with blank lines in between, remove the blank lines
@@ -1481,7 +1481,7 @@
 	* erc-nickserv.el 1.4 (erc-networks): Added doc string.
 	(erc-nickserv-alist): Added doc string.
 
-2002-06-14  Diane Murray  <dsm@muenster.de>
+2002-06-14  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-ring.el 1.4:
 	fixed bug so that the prompt and command always get put at the end of the buffer
@@ -1492,7 +1492,7 @@
 	Added :type for erc-nickserv-passwords custom.
 	Fixed hook usage.
 
-2002-06-07  Diane Murray  <dsm@muenster.de>
+2002-06-07  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-nickserv.el 1.2: * added GalaxyNet
 
@@ -1518,7 +1518,7 @@
 
 	* erc.el 1.284: Added /squery command
 
-2002-06-06  Diane Murray  <dsm@muenster.de>
+2002-06-06  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-menu.el 1.5: * made group Channel modes
 	  - moved change mode and invite only mode to here
@@ -1557,7 +1557,7 @@
 	* erc-match.el: Fixed a stupid mistake where
 	                "*** Your new nick is <foo>" would trigger an error.
 
-2002-06-04  Diane Murray  <dsm@muenster.de>
+2002-06-04  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-nickserv.el 1.1, erc.el 1.282: * added erc-nickserv.el
 	* moved nickserv identification variables and functions to the new file
@@ -1615,14 +1615,14 @@
 
 	* fixed bug where nil was shown if no reason was given by users on /PART
 
-2002-06-03  Diane Murray  <dsm@muenster.de>
+2002-06-03  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-match.el 1.7:
 	* fixed bug where erc-log-matches produced an error when the value of
 	  (erc-default-target) was not a channel
 	* use erc-format-timestamp, if it's non-nil, for %t in erc-log-match-format
 
-2002-06-01  Diane Murray  <dsm@muenster.de>
+2002-06-01  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-button.el 1.18:
 	* made action case insensitive in erc-nick-popup and added a more descriptive
@@ -1655,7 +1655,7 @@
 	erc-track.el: erc-track-exclude-types: New variable. Defaults to ("JOIN" "PART") right now for testing, it should eventually set to nil soon again.
 	(erc-track-modified-channels): Use above fun and var to optionally exclude certain message types from channel tracking.
 
-2002-05-28  Diane Murray  <dsm@muenster.de>
+2002-05-28  Diane Murray  <disumu@x3y2z1.net>
 
 	* CREDITS 1.5: added myself, vain as it sounds ;)
 
@@ -1709,7 +1709,7 @@
 	* erc-nets.el 1.3: Added some old code I once worked on.
 	Added autoload cookie
 
-2002-05-24  Diane Murray  <dsm@muenster.de>
+2002-05-24  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-fill.el 1.10:
 	removed reference in documentation to old variable, changed it to the new one
@@ -1732,11 +1732,11 @@
 	  - new function erc-set-initial-user-mode gets called from
 	    erc-connection-established
 
-2002-05-22  Diane Murray  <dsm@muenster.de>
+2002-05-22  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.270: fixed bug where prompt was missing after reconnect
 
-2002-05-21  Diane Murray  <dsm@muenster.de>
+2002-05-21  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.269:
 	in erc-nickserv-identify: if network is unknown, just use "Nickserv"
@@ -1769,7 +1769,7 @@
 	  require NickServ@services.dal.net
 	  now sends to all NickServ with nick@server where possible
 
-2002-05-17  Diane Murray  <dsm@muenster.de>
+2002-05-17  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-fill.el 1.9:
 	* filling with erc-fill-variable now works with custom defined fill width:
@@ -1788,7 +1788,7 @@
 
 	* erc.el 1.264: whitespace fix
 
-2002-05-15  Diane Murray  <dsm@muenster.de>
+2002-05-15  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.263:
 	* added explanation of empty string working in erc-quit-reason-various-alist
@@ -1798,7 +1798,7 @@
 	  "/ctcp nick time" and not just "/ctcp nick TIME"
 	* timestamp in front of server notices now shown in the timestamp face
 
-2002-05-13  Diane Murray  <dsm@muenster.de>
+2002-05-13  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el 1.262:
 	- in erc-format-privmessage: `erc-format-timestamp' added to message after

@@ -1,3 +1,8 @@
+2005-10-08  Diane Murray  <disumu@x3y2z1.net>
+
+	* AUTHORS, CREDITS, ChangeLog, ChangeLog.2002, ChangeLog.2004:
+	Updated my email address.
+
 2005-10-06  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-send-input-line, erc-cmd-KICK, erc-cmd-PART)
@@ -706,14 +711,14 @@
 	refused. This error is reported differently when using
 	open-network-stream-nowait.
 
-2005-01-26  Diane Murray  <dsm@muenster.de>
+2005-01-26  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-cmd-APPENDTOPIC, erc-set-topic): The control
 	character in `channel-topic' was changed to \C-o - replaced \C-c
 	with \C-o so that these functions work as expected again.
 	(erc-get-channel-mode-from-keypress): Doc fix.
 
-2005-01-25  Diane Murray  <dsm@muenster.de>
+2005-01-25  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el, erc-button.el, erc-compat.el, erc-goodies.el,
 	erc-match.el, erc-nets.el, ChangeLog, NEWS: Merged bug fixes made
@@ -758,7 +763,7 @@
 	to t when calling `write-region' to ensure that further log
 	entries start on fresh lines.
 	
-2005-01-21  Diane Murray  <dsm@muenster.de>
+2005-01-21  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-button.el (erc-button-add-face): Reverted my change to the
 	order faces since it had the unwanted effect of putting the button
@@ -769,7 +774,7 @@
 
 	* NEWS: Added the latest fixes.
 
-2005-01-20  Diane Murray  <dsm@muenster.de>
+2005-01-20  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-button.el, erc-match.el:
 	(erc-button-syntax-table, erc-match-syntax-table): Added \ as a
@@ -801,7 +806,7 @@
 	(erc-button-press-button): Silenced a byte-compiler warning about
 	too few arguments in a call to `error'.
 
-2005-01-19  Diane Murray  <dsm@muenster.de>
+2005-01-19  Diane Murray  <disumu@x3y2z1.net>
 
 	* NEWS: Added list of 5.0.1 fixes.
 
@@ -815,7 +820,7 @@
 
 	* Makefile: Change version to correspond with our new scheme.
 
-2005-01-18  Diane Murray  <dsm@muenster.de>
+2005-01-18  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-list.el (erc-chanlist-channel-line-regexp): Now matches
 	private channels, the channels `#' and `&', and channels with
@@ -845,7 +850,7 @@
 	copyright notices.  If anyone has signed papers for Emacs in
 	general, merge them with the FSF's entry.
 
-2005-01-16  Diane Murray  <dsm@muenster.de>
+2005-01-16  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc): `erc-set-active-buffer' was being called before
 	`erc-process' was set, so that channels weren't being marked
@@ -856,7 +861,7 @@
 	* erc-backend.el (def-edebug-spec): This macro caused problems (in
 	XEmacs). Use its expansion directly.
 
-2005-01-15  Diane Murray  <dsm@muenster.de>
+2005-01-15  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-button.el (erc-button-add-button): Reverted previous change
 	since `:suppress-face' doesn't seem to be checked for a certain
@@ -865,7 +870,7 @@
 	This should fix the problem of faces being "covered" by
 	`erc-button-face'.
 
-2005-01-14  Diane Murray  <dsm@muenster.de>
+2005-01-14  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el, erc-backend.el (erc-cmd-OPS, erc-cmd-COUNTRY,
 	erc-cmd-NICK, erc-process-ctcp-query, ERROR, PONG, 311, 312, 313,
@@ -889,7 +894,7 @@
 
 	* erc-button.el: Improved docstring for variable erc-button-face.
 
-2005-01-13  Diane Murray  <dsm@muenster.de>
+2005-01-13  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-menu.el (erc-menu-definition): "Topic set by channel
 	operator": Small word change.  "Identify to NickServ...": Check
@@ -905,7 +910,7 @@
 	`erc-insert-marker' or error if does not exist.
 	(erc-send-current-line): Widen before trying to send anything.
 
-2005-01-13  Diane Murray  <dsm@muenster.de>
+2005-01-13  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el, erc-backend.el, erc-list.el:
 	(erc-update-mode-line-buffer): Strip controls characters from
@@ -936,7 +941,7 @@
 	`erc-track-priority-faces-only', `erc-track-exclude', and
 	`erc-track-exclude-types' now work with server buffers.
 
-2005-01-12  Diane Murray  <dsm@muenster.de>
+2005-01-12  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-backend.el (475): Prompt for the channel's key if
 	`erc-prompt-for-channel-key' is non-nil.  Send a new JOIN message
@@ -962,7 +967,7 @@
 	XEmacs). The new function `erc-modified-channels-object' is used
 	to generate updated values for the same-named variable.
 
-2005-01-08  Diane Murray <dsm@muenster.de>
+2005-01-08  Diane Murray <disumu@x3y2z1.net>
 
 	* ChangeLog.2002: Changed instances of my sourceforge username and
 	email address to real name and email.
@@ -1036,7 +1041,7 @@
 	* NEWS: Use 3rd level heading instead of bullets for lists that
 	contain descriptions.
 
-2005-01-07  Diane Murray <dsm@muenster.de>
+2005-01-07  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-list.el: Require 'sort.
 	(erc-chanlist): Disable undo in the channel list buffer.
@@ -1092,7 +1097,7 @@
 	policy toward ChangeLog entries, which is that they should be
 	manually updated whenever a change is committed.
 
-2005-01-04  Diane Murray <dsm@muenster.de>
+2005-01-04  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-connection-established, erc-login): Update the
 	mode-line.
@@ -1105,7 +1110,7 @@
 
 	* AUTHORS: Update list of authors.
 
-2005-01-02  Diane Murray <dsm@muenster.de>
+2005-01-02  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-goodies.el (erc-control-characters): New customization
 	group.

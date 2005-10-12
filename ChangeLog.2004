@@ -85,7 +85,7 @@
 	(smiley): Module moved from erc.el to erc-goodies.el.
 	(scrolltobottom, readonly, noncommands, unmorse): New modules.
 
-2004-12-20  Diane Murray <dsm@muenster.de>
+2004-12-20  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: (erc-format-away-status): Use `a', not `away' - that's
 	why it's there.
@@ -121,19 +121,19 @@
 	and not the entire message. Revision 1.707 had broken /me.
 	Shouting is bad! :)
 
-2004-12-14  Diane Murray <dsm@muenster.de>
+2004-12-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nets.el (erc-networks-alist): Change undernet to Undernet as
 	is used in `erc-server-alist', so that completion works when using
 	`erc-server-select'.  This should fix Debian bug #282003 (erc:
 	cannot connect to Undernet).
 
-2004-12-14  Diane Murray <dsm@muenster.de>
+2004-12-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-backend.el: (def-edebug-spec): Only run this if 'edebug is
 	available.
 
-2004-12-14  Diane Murray <dsm@muenster.de>
+2004-12-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: The last change to `erc-mode-line-format' introduced a
 	bug in Xemacs - it can't handle the #(" "...) strings at all.  The
@@ -154,13 +154,13 @@
 	(if it is bound) to the formatted `erc-header-line-format', then
 	do a `force-mode-line-update'.
 
-2004-12-12  Diane Murray <dsm@muenster.de>
+2004-12-12  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-modules): Disable modules removed with `customize'.
 	(erc-update-modules): Try to give a more descriptive error
 	message.
 
-2004-12-12  Diane Murray <dsm@muenster.de>
+2004-12-12  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-complete.el, erc.el, erc-list.el, erc-nets.el,
 	erc-nicklist.el, erc-pcomplete.el, erc-replace.el, erc-speak.el,
@@ -227,12 +227,12 @@
 	invocation, so erc-iswitchb can be substituted directly for
 	iswitchb in code.
 
-2004-12-11  Diane Murray <dsm@muenster.de>
+2004-12-11  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-track.el (erc-track-position-in-mode-line): Allow for the
 	fact that `erc-track-mode' isn't bound when file is loaded.
 
-2004-12-11  Diane Murray <dsm@muenster.de>
+2004-12-11  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-track.el (erc-track-position-in-mode-line): New customizable
 	variable.  (erc-track-remove-from-mode-line): New function.
@@ -275,7 +275,7 @@
 
 	* Makefile, debian/changelog: debian release 20041118-1
 
-2004-11-03  Diane Murray <dsm@muenster.de>
+2004-11-03  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-button.el (erc-button-buttonize-nicks): Set default value to
 	`t'.  Updated documentation and customization `:type' to reflect
@@ -285,7 +285,7 @@
 
 	* AUTHORS: Added self.
 
-2004-10-17  Diane Murray <dsm@muenster.de>
+2004-10-17  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-list.el: Added local variables for this file.
 	(erc-list-version): New.
@@ -294,7 +294,7 @@
 	(erc-prettify-channel-list, erc-chanlist-toggle-sort-state): Use
 	`unless' instead of when not.
 
-2004-10-17  Diane Murray <dsm@muenster.de>
+2004-10-17  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-backend.el (erc-handle-unknown-server-response): Fixed so
 	that the contents are only shown once. (MOTD): Display lines in
@@ -309,7 +309,7 @@
 	documentation.  Use `multiple-value-bind' to set variables in 367.
 	(391): Fixed so that the server name is shown correctly.
 
-2004-10-17  Diane Murray <dsm@muenster.de>
+2004-10-17  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-process-sentinel): Use CPROC instead of
 	`erc-process' in debug message.  Should fix a bug where an error
@@ -789,7 +789,7 @@
 	* HACKING: Add comment that C-c C-a can be useful if you write
 	ChangeLog entries using Emacs' standard functions.
 
-2004-05-17  Diane Murray <dsm@muenster.de>
+2004-05-17  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-speedbar.el: Ignore errors when attempting to require dframe
 	(there are a couple implementations of speedbar, one of which uses
@@ -798,7 +798,7 @@
 	(erc-speedbar-goto-buffer): Use dframe functions if dframe is
 	available.
 
-2004-05-17  Diane Murray <dsm@muenster.de>
+2004-05-17  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-autojoin.el: Added local variables for this file.
 	(erc-autojoin-add): The channel name is in `erc-response.contents'.
@@ -814,7 +814,7 @@
 	`erc-parse-line-from-server' version, since new version breaks for
 	a number of edge cases.
 
-2004-05-14  Diane Murray <dsm@muenster.de>
+2004-05-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-backend.el (erc-handle-unknown-server-response): New
 	function.  Added to `erc-default-server-functions'.  Display
@@ -828,7 +828,7 @@
 	(431, 445, 446, 451, 462, 463, 464, 465, 481, 483, 485, 491, 501,
 	502): All error responsess with no arguments grouped together.
 
-2004-05-14  Diane Murray <dsm@muenster.de>
+2004-05-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-message-type-member): Use `erc-response.command'.
 	`erc-track-exclude-types' should be respected again.
@@ -854,7 +854,7 @@
 	it.
 	(461): Command with invalid arguments is `second', not `third'.
 
-2004-05-14  Diane Murray <dsm@muenster.de>
+2004-05-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-notify.el (erc-notify-NICK): Use `erc-response.contents' to
 	get nickname.
@@ -1027,7 +1027,7 @@
 	(483, 491, 502, 005, KILL): Move from erc.el and rework using
 	`define-erc-response-handler' and erc-response struct.
 
-2004-05-12  Diane Murray <dsm@muenster.de>
+2004-05-12  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: A few bug fixes to avoid errors after disconnect,
 	including the "Selecting deleted buffer" bug.
@@ -1042,7 +1042,7 @@
 	(erc-send-current-line): If there is no server buffer, let the
 	user know.
 
-2004-05-12  Diane Murray <dsm@muenster.de>
+2004-05-12  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el, erc-log.el: C-c C-l keybinding now defined in
 	erc-log.el.
@@ -1050,19 +1050,19 @@
 	(erc-cmd-JOIN): Fix applied for bug where /join -invite causes
 	errors when there's no `invitation'.
 
-2004-05-11  Diane Murray <dsm@muenster.de>
+2004-05-11  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: (erc-cmd-JOIN): Make sure `chnl' is non-nil before trying
 	to join anything (chnl is not set if /join -invite is used but
 	there's no `invitation').
 
-2004-05-10  Diane Murray <dsm@muenster.de>
+2004-05-10  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-log.el: Define C-c C-l keybinding outside of `erc-log-mode',
 	making it available all the time; autoload definition.
 	(erc-log-version): New.
 
-2004-05-09  Diane Murray <dsm@muenster.de>
+2004-05-09  Diane Murray <disumu@x3y2z1.net>
 
 	* AUTHORS, CREDITS, Makefile, erc-autoaway.el, erc-autojoin.el,
 	erc-button.el, erc-chess.el, erc-dcc.el, erc-ezbounce.el,
@@ -1074,7 +1074,7 @@
 	erc-xdcc.el, erc.el: Applied all relevant bug fixes and code
 	cleanup made between the time of the ERC_4_0_RELEASE tag until now.
 
-2004-05-09  Diane Murray <dsm@muenster.de>
+2004-05-09  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-menu.el: Updated copyright years.
 
@@ -1105,7 +1105,7 @@
 	reference to erc-save-queries-on-quit.
 	(erc-conditional-save-queries): Ditto.
 
-2004-05-06  Diane Murray <dsm@muenster.de>
+2004-05-06  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-speedbar.el: Updated copyright years.  Added local variables
 	for this file; fixed indenting.
@@ -1121,7 +1121,7 @@
 	(erc-speedbar-goto-buffer): Don't use dframe functions, as dframe
 	isn't available with the default speedbar.
 
-2004-05-06  Diane Murray <dsm@muenster.de>
+2004-05-06  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: (erc-sort-channel-users-alphabetically): New function.
 	(erc-server-412, erc-server-432, erc-server-475): New functions.
@@ -1133,7 +1133,7 @@
 	(erc-define-catalog): Added s401, s403, s405, s412, s421, s432,
 	s474, s475, and s481.
 
-2004-05-06  Diane Murray <dsm@muenster.de>
+2004-05-06  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nickserv.el: Added documentation to Commentary, Usage.
 	Removed `outline-mode' from file local variables.
@@ -1151,7 +1151,7 @@
 	(erc-nickserv-identify): PASSWORD is not optional.  Autoload
 	function.
 
-2004-05-05  Diane Murray <dsm@muenster.de>
+2004-05-05  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-join-hook, erc-quit-hook, erc-part-hook,
 	erc-kick-hook, erc-connect-pre-hook): Now customizable.
@@ -1171,7 +1171,7 @@
 	* erc.el (erc-wash-quit-reason): Quote regexp special characters
 	in NICK, LOGIN and HOST.
 
-2004-05-04  Diane Murray <dsm@muenster.de>
+2004-05-04  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-server-parameters): Typo fix in docstring.
 	(erc-input-line-position): `:type' is now a choice between integer
@@ -1183,7 +1183,7 @@
 
 	* erc-nicklist.el: Initial version.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-menu.el: Added local variables for file, fixed indenting.
 	(erc-menu-version): New variable.
@@ -1194,13 +1194,13 @@
 	down.  "Track hidden channel buffers": Removed.  "Enable/Disable
 	ERC Modules": New.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-mode-map): Removed binding for
 	`erc-save-buffer-in-logs' (moved to erc-log.el).
 	(erc-cmd-QUERY, erc-cmd-OPS): Now interactive.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-log.el: Added local variables for this file.
 	(erc-log-channels-directory): Added directory as a choice in
@@ -1208,13 +1208,13 @@
 	(define-erc-module): Define and undefine key binding (C-c
 	C-l) for `erc-save-buffer-in-logs' here.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nets.el: Added local variables for this file.
 	(erc-networks-alist): Fixed `:type' to work better in
 	customization.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-match.el: Added local variables for file.  (erc-keywords):
 	Use `list' instead of `cons' in `:type'.  Fixes bug where mismatch
@@ -1222,14 +1222,14 @@
 	Escape parentheses in docstring.  Added keyword, nick-or-keyword as
 	options in `:type'.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-stamp.el: Added local variables for file.
 	(erc-away-timestamp-format): Allow nil as a choice in `:type'.
 	(erc-timestamp-intangible): Changed `:type' to boolean.
 	(erc-timestamp-right-column): Added `:group' and `:type'.
 
-2004-04-28  Diane Murray <dsm@muenster.de>
+2004-04-28  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-modules): Added bbdb, log, match, sound, and stamp
 	as `:type' options; changed documentation for autojoin, fill,
@@ -1248,7 +1248,7 @@
 	(erc-log-matches-types-alist): Added `current-nick' to valid
 	choices.
 
-2004-04-20  Diane Murray <dsm@muenster.de>
+2004-04-20  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-page.el, erc-ezbounce.el, erc-speak.el, erc-match.el,
 	erc-track.el (erc-ezbounce, erc-page, erc-speak): Groups defined.
@@ -1270,7 +1270,7 @@
 	and erc-insert-timestamp-function set to
 	'erc-insert-timestamp-left, but otherwise it works now.
 
-2004-04-20  Diane Murray <dsm@muenster.de>
+2004-04-20  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: (erc-cmd-SV): Show features gtk, mac-carbon, multi-tty.
 	Fixed so that arguments fit the format (build date was not being
@@ -1283,7 +1283,7 @@
 	(erc-update-mode-line-buffer): Escape %-signs in `channel-topic'
 	here.
 
-2004-04-19  Diane Murray <dsm@muenster.de>
+2004-04-19  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: (erc-send-action, erc-ctcp-query-ACTION,
 	erc-ctcp-reply-ECHO-hook): Let `erc-display-message-highlight'
@@ -1303,7 +1303,7 @@
 	(erc-server-477-hook): Use `erc-server-477'.
 	(erc-define-catalog): Added `no-invitation'.
 
-2004-04-14  Diane Murray <dsm@muenster.de>
+2004-04-14  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nickserv.el: Local variables for file added.
 	(erc-nickserv-passwords): Customization: Network symbols updated
@@ -1311,12 +1311,12 @@
 	symbol.
 	(erc-nickserv-alist): Now customizable variable.
 
-2004-04-09  Diane Murray <dsm@muenster.de>
+2004-04-09  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-autoaway.el (erc-autoaway-reset-idletime): Make sure `line'
 	is a string to avoid errors upon startup.
 
-2004-04-06  Diane Murray <dsm@muenster.de>
+2004-04-06  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-autoaway.el (erc-autoaway-version): New variable.
 	(erc-auto-discard-away): Updated docstring.
@@ -1325,12 +1325,12 @@
 	which allows for aliases to "/away" and any other text that the
 	user wants to ignore when `erc-auto-discard-away' is non-nil.
 
-2004-04-06  Diane Murray <dsm@muenster.de>
+2004-04-06  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-autoaway.el (erc-autoaway-reset-idletime): Forgot /gaway in
 	regexp.
 
-2004-04-06  Diane Murray <dsm@muenster.de>
+2004-04-06  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-autoaway.el (erc-autoaway-reset-idletime): If the user sends
 	an "/away" command, don't call `erc-autoaway-set-back', fixes bug
@@ -1339,13 +1339,13 @@
 	(erc-autoaway-set-back): Changed `l' to `line' for better
 	understanding.
 
-2004-04-05  Diane Murray <dsm@muenster.de>
+2004-04-05  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-set-channel-key): Now able to remove key.
 	(erc-set-channel-limit): Now able to remove limit.
 	(erc-get-channel-mode-from-keypress): Fixed docstring.
 
-2004-04-04  Diane Murray <dsm@muenster.de>
+2004-04-04  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-join-channel): Allow for optional channel key.
 	(erc-set-modes): Need to set `channel-key' to nil in case of mode
@@ -1354,7 +1354,7 @@
 	(erc-prepare-mode-line-format): Only show key if
 	`erc-show-channel-key-p' is non-nil.
 
-2004-04-04  Diane Murray <dsm@muenster.de>
+2004-04-04  Diane Murray <disumu@x3y2z1.net>
 
  	* erc.el (channel-key): New variable.
 	(erc-update-channel-key): New function.
@@ -1405,12 +1405,12 @@
 	default behavior, is for `erc-echo-notice-always-hook' to be set to
 	`(erc-echo-notice-in-default-buffer).
 
-2004-03-21  Diane Murray <dsm@muenster.de>
+2004-03-21  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-track.el: (erc-modified-channels-display): Added a space
 	before opening bracket.
 
-2004-03-21  Diane Murray <dsm@muenster.de>
+2004-03-21  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: (erc-format-query-as-channel-p): New variable.
 	(erc-server-PRIVMSG-or-NOTICE): If `erc-format-query-as-channel-p'
@@ -1435,14 +1435,14 @@
 	(erc-server-001, erc-server-004, erc-server-005): Fixed
 	documentation.
 
-2004-03-20  Diane Murray <dsm@muenster.de>
+2004-03-20  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-stamp.el: Commentary: Changed `erc-stamp-mode' to
 	`erc-timestamp-mode'.
 	(erc-insert-timestamp-left): Use `erc-timestamp-face' on filler
 	spaces as well.
 
-2004-03-19  Diane Murray <dsm@muenster.de>
+2004-03-19  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-send-action): Use `erc-input-face'.
 	(erc-display-message-highlight): If the requested highlighting
@@ -1522,7 +1522,7 @@
 	(erc-put-text-property): Ditto.
 	(erc-add-default-channel): Ditto.
 
-2004-03-17  Diane Murray <dsm@muenster.de>
+2004-03-17  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-process-sentinel): Cancel ping timer upon
 	disconnect.
@@ -1533,7 +1533,7 @@
 	(erc-part-reason-zippy, erc-part-reason-zippy): Removed FIXME
 	comments.  I see no problem allowing typed in reasons.
 
-2004-03-16  Diane Murray <dsm@muenster.de>
+2004-03-16  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-stamp.el: (erc-insert-timestamp-left): Added support for
 	`erc-timestamp-only-if-changed-flag' and added docstring.
@@ -1563,7 +1563,7 @@
 	* erc-nets.el: From Adrian Aichner (adrian /at/ xemacs /dot/ org)
 	* erc-nets.el: XEmacs make-obsolete only takes two arguments.
 
-2004-03-10  Diane Murray <dsm@muenster.de>
+2004-03-10  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nets.el (erc-determine-network): Use `erc-session-server' if
 	`erc-announced-server' is nil to avoid error if server does not
@@ -1603,18 +1603,18 @@
 	(erc-ports-list): Add docstring.  Rework function body to use
 	`nconc'.
 
-2004-03-09  Diane Murray <dsm@muenster.de>
+2004-03-09  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-list.el, erc-notify.el: (require 'erc-nets): added
 
-2004-03-08  Diane Murray <dsm@muenster.de>
+2004-03-08  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el (erc-network-name): Function definition moved to
 	erc-nets.el.  The functions `erc-determine-network' and
 	`èrc-network' in erc-nets.el do what this did before.  Deprecated.
 	Use (erc-network) instead.
 
-2004-03-08  Diane Murray <dsm@muenster.de>
+2004-03-08  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nickserv.el: Changed copyright notice.  Now require
 	erc-nets.  erc-nets.el now takes care of network-related functions
@@ -1631,7 +1631,7 @@
 	erc-nets.el do what this did before.  Deprecated.  Use
 	(erc-network) instead.
 
-2004-03-08  Diane Murray <dsm@muenster.de>
+2004-03-08  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-nets.el: Added commentary, `erc-nets-version'.
 	(erc-server-alist): Changed Brasnet to BRASnet.
@@ -1656,7 +1656,7 @@
 	`erc-disconnected-hook'.
 	(erc-server-select): Small documentation word change.
 
-2004-03-07  Diane Murray <dsm@muenster.de>
+2004-03-07  Diane Murray <disumu@x3y2z1.net>
 
 	* AUTHORS, CREDITS: disumu info updated
 
@@ -1708,7 +1708,7 @@
 	we'll probably have to do the iteration ourselves instead of using
 	assoc.
 
-2004-03-05  Diane Murray <dsm@muenster.de>
+2004-03-05  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el: Added erc-server-001 which runs when the server sends
 	its welcome message.  It sets the current-nick to reflect the
@@ -1740,26 +1740,26 @@
 
 	* HACKING: Initial commit.  Some thoughts on coding standards.
 
-2004-03-03  Diane Murray <dsm@muenster.de>
+2004-03-03  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-track.el: added the variable erc-track-priority-faces-only
 	which adds the option to ignore changes in a channel unless there
 	are faces from the erc-track-faces-priority-list in the message
 	options are nil, 'all, or a list of channel name strings
 
-2004-03-01  Diane Murray <dsm@muenster.de>
+2004-03-01  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el, erc-ibuffer.el, erc-menu.el: Changed erc-is-channel-op
 	and erc-is-channel-voice to erc-channel-user-op-p and
 	erc-channel-user-voice-p to better match erc-channel-user
 	structure (and emacs lisp usage)
 
-2004-03-01  Diane Murray <dsm@muenster.de>
+2004-03-01  Diane Murray <disumu@x3y2z1.net>
 
 	* erc.el, erc-ibuffer.el, erc-menu.el:
 	erc-track-modified-channels-mode is now erc-track-mode
 
-2004-02-29  Diane Murray <dsm@muenster.de>
+2004-02-29  Diane Murray <disumu@x3y2z1.net>
 
 	* erc-match.el: Added 'keyword option to
 	erc-current-nick-highlight-type highlights all instances of
