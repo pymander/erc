@@ -64,7 +64,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.774 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.775 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -1206,6 +1206,8 @@ With arg, turn ERC %S mode on if and only if arg is positive.
 			(downcase (symbol-name alias)))))
 	     (quote
 	      ,mode))))))
+
+(put 'define-erc-module 'doc-string-elt 3)
 
 (defun erc-once-with-server-event (event &rest forms)
   "Execute FORMS the next time EVENT occurs in the `current-buffer'.

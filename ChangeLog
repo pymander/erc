@@ -1,3 +1,7 @@
+2005-10-18  Edward O'Connor  <ted@oconnor.cx>
+	* erc.el: Tell emacs-lisp-mode how to font-lock define-erc-module
+	docstrings.
+	
 2005-10-08  Diane Murray  <disumu@x3y2z1.net>
 
 	* AUTHORS, CREDITS, ChangeLog, ChangeLog.2002, ChangeLog.2004:
