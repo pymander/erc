@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.24 $"
+(defconst erc-compat-version "$Revision: 1.25 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
@@ -265,9 +265,9 @@ The warning will say that NEW-NAME should be used instead.
 WHEN should be a string indicating when the function was
 first made obsolete, either the file's revision number or an
 ERC release version number."
-  (cond ((featurep 'xemacs)
-	 (make-obsolete old-name new-name))
-	(t (make-obsolete old-name new-name when))))
+  (condition-case nil
+      (make-obsolete old-name new-name when)
+    (wrong-number-of-arguments (make-obsolete old-name new-name))))
 
 (defun erc-make-obsolete-variable (old-name new-name when)
   "Make the byte-compiler warn that OLD-NAME is obsolete.
@@ -275,9 +275,9 @@ The warning will say that NEW-NAME should be used instead.
 WHEN should be a string indicating when the variable was
 first made obsolete, either the file's revision number or an
 ERC release version number."
-  (cond ((featurep 'xemacs)
-	 (make-obsolete-variable old-name new-name))
-	(t (make-obsolete-variable old-name new-name when))))
+  (condition-case nil
+      (make-obsolete-variable old-name new-name when)
+    (wrong-number-of-arguments (make-obsolete-variable old-name new-name))))
 
 (provide 'erc-compat)
 
