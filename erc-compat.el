@@ -1,6 +1,6 @@
 ;;; erc-compat.el --- ERC compatibility code for XEmacs
 
-;; Copyright (C) 2002,2003 Free Software Foundation, Inc.
+;; Copyright (C) 2002,2003,2005 Free Software Foundation, Inc.
 
 ;; Author: Alex Schroeder <alex@gnu.org>
 ;; URL: http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient
@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.23 $"
+(defconst erc-compat-version "$Revision: 1.24 $"
   "ERC compat revision.")
 
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
@@ -256,6 +256,28 @@ starting with a character."
 	 (delete-itimer timer))
 	(t
 	 (error "Cannot find `cancel-timer' variant"))))
+
+;; Emacs accepts three arguments to `make-obsolete', `make-obsolete-variable'
+;; XEmacs only takes two arguments
+(defun erc-make-obsolete (old-name new-name when)
+  "Make the byte-compiler warn that OLD-NAME is obsolete.
+The warning will say that NEW-NAME should be used instead.
+WHEN should be a string indicating when the function was
+first made obsolete, either the file's revision number or an
+ERC release version number."
+  (cond ((featurep 'xemacs)
+	 (make-obsolete old-name new-name))
+	(t (make-obsolete old-name new-name when))))
+
+(defun erc-make-obsolete-variable (old-name new-name when)
+  "Make the byte-compiler warn that OLD-NAME is obsolete.
+The warning will say that NEW-NAME should be used instead.
+WHEN should be a string indicating when the variable was
+first made obsolete, either the file's revision number or an
+ERC release version number."
+  (cond ((featurep 'xemacs)
+	 (make-obsolete-variable old-name new-name))
+	(t (make-obsolete-variable old-name new-name when))))
 
 (provide 'erc-compat)
 

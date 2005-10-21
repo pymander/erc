@@ -64,7 +64,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.775 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.776 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -123,21 +123,21 @@
 (if (fboundp 'defvaralias)
     (progn
       (defvaralias 'erc-announced-server-name 'erc-server-announced-name)
-      (make-obsolete-variable 'erc-announced-server-name
-			      'erc-server-announced-name
-			      "ERC 5.1")
+      (erc-make-obsolete-variable 'erc-announced-server-name
+				  'erc-server-announced-name
+				  "ERC 5.1")
       (defvaralias 'erc-process 'erc-server-process)
-      (make-obsolete-variable 'erc-process 'erc-server-process "ERC 5.1")
+      (erc-make-obsolete-variable 'erc-process 'erc-server-process "ERC 5.1")
       (defvaralias 'erc-default-coding-system 'erc-server-coding-system)
-      (make-obsolete-variable 'erc-default-coding-system
-			      'erc-server-coding-system
-			      "ERC 5.1"))
+      (erc-make-obsolete-variable 'erc-default-coding-system
+				  'erc-server-coding-system
+				  "ERC 5.1"))
   (message (concat "ERC: You're using an old version of Emacs; "
 		   "this might break backward-compatibility attempts "
 		   "for old versions of ERC.")))
 
 (defalias 'erc-send-command 'erc-server-send)
-(make-obsolete 'erc-send-command 'erc-server-send "ERC 5.1")
+(erc-make-obsolete 'erc-send-command 'erc-server-send "ERC 5.1")
 
 ;; tunable connection and authentication parameters
 

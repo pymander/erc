@@ -1,6 +1,6 @@
 ;;; erc-nets.el --- IRC networks
 
-;; Copyright (C) 2002,2004 Free Software Foundation, Inc.
+;; Copyright (C) 2002,2004,2005 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@lexx.delysid.org>
 ;; Keywords: comm
@@ -27,7 +27,7 @@
 
 (require 'erc)
 
-(defconst erc-nets-version "$Revision: 1.20 $"
+(defconst erc-nets-version "$Revision: 1.21 $"
   "ERC networks revision.")
 
 ;; Variables
@@ -726,11 +726,8 @@ network as a symbol."
   (with-current-buffer (erc-server-buffer)
     (intern (downcase (symbol-name erc-network)))))
 
-(condition-case nil
-    (make-obsolete 'erc-current-network 'erc-network
+(erc-make-obsolete 'erc-current-network 'erc-network
 		   "Obsolete since erc-nets 1.5")
-  (wrong-number-of-arguments (make-obsolete 'erc-current-network
-					    'erc-network)))
 
 (defun erc-network-name ()
   "Returns the name of the current network as a string."
