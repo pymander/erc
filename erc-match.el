@@ -1,6 +1,6 @@
 ;;; erc-match.el --- Highlight messages matching certain regexps
 
-;; Copyright (C) 2002,2003,2004 Free Software Foundation, Inc.
+;; Copyright (C) 2002,2003,2004,2005 Free Software Foundation, Inc.
 ;; Copyright (C) 2004 Jeremy Bertram Maitin-Shepard
 
 ;; Author: Andreas Fuchs <asf@void.at>
@@ -38,7 +38,7 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.45 $"
+(defconst erc-match-version "$Revision: 1.46 $"
   "ERC match mode revision.")
 
 (defgroup erc-match nil
@@ -85,7 +85,7 @@ Useful to mark nicks from dangerous hosts."
   :group 'erc-match
   :type '(repeat regexp))
 
-(defcustom erc-current-nick-highlight-type nil
+(defcustom erc-current-nick-highlight-type 'keyword
   "*Determines how to highlight text in which your current nickname appears
 \(does not apply to text sent by you\).
 
@@ -213,12 +213,25 @@ be formatted. The various format specs are:
   :group 'erc-match
   :type 'string)
 
+(defcustom erc-beep-match-types '(current-nick)
+  "Types of matches to beep for when a match occurs.
+The function `erc-beep-on-match' needs to be added to `erc-text-matched-hook'
+for beeping to work."
+  :group 'erc-match
+  :type '(choice (repeat :tag "Beep on match" (choice
+					       (const current-nick)
+					       (const keyword)
+					       (const pal)
+					       (const dangerous-host)
+					       (const fool)))
+		 (const :tag "Don't beep" nil)))
+
 (defcustom erc-text-matched-hook '(erc-log-matches)
   "Hook run when text matches a given match-type.
 Functions in this hook are passed as arguments:
 \(match-type nick!user@host message) where MATCH-TYPE is a symbol of:
-keyword, pal, dangerous-host, fool"
-  :options '(erc-log-matches erc-hide-fools)
+current-nick, keyword, pal, dangerous-host, fool"
+  :options '(erc-log-matches erc-hide-fools erc-beep-on-match)
   :group 'erc-match
   :type 'hook)
 
@@ -625,6 +638,12 @@ This function should be called from `erc-text-matched-hook'."
    (erc-put-text-properties (point-min) (point-max)
 			    '(invisible intangible)
 			    (current-buffer))))
+
+(defun erc-beep-on-match (match-type nickuserhost message)
+  "Beep when text matches.
+This function is meant to be called from `erc-text-matched-hook'."
+  (when (member match-type erc-beep-match-types)
+    (beep)))
 
 (provide 'erc-match)
 

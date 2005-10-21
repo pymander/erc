@@ -1,3 +1,13 @@
+2005-10-20  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-match.el (erc-current-nick-highlight-type): Set to `keyword'
+	as default.
+	(erc-beep-match-types): New variable.
+	(erc-text-matched-hook): Doc fix.  Added `erc-beep-on-match' to
+	customization options.
+	(erc-beep-on-match): New function.  If the MATCH-TYPE is found in
+	`erc-beep-match-types', beep.
+
 2005-10-18  Edward O'Connor  <ted@oconnor.cx>
 	* erc.el: Tell emacs-lisp-mode how to font-lock define-erc-module
 	docstrings.
