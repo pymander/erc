@@ -16,6 +16,11 @@
 	* erc.el, erc-nets.el: Use `erc-make-obsolete' and
 	`erc-make-obsolete-variable'.
 
+	* erc-compat.el (erc-make-obsolete, erc-make-obsolete-variable):
+	Handle `wrong-number-of-arguments' error instead of checking for
+	xemacs feature as future versions of XEmacs might accept three
+	arguments.
+
 2005-10-18  Edward O'Connor  <ted@oconnor.cx>
 	
 	* erc.el: Tell emacs-lisp-mode how to font-lock define-erc-module
