@@ -1,5 +1,23 @@
 ERC NEWS                                                       -*- outline -*-
 
+* Changes since ERC 5.0.x
+
+** Now ERC doesn't use global variable space.
+Renamed all variables that didn't start with erc-.
+
+*** Highlighting (erc-match.el)
+
+**** Highlight current nickname by default.
+
+**** Added the option of beeping when certain matches occur.
+Add `erc-beep-on-match' to `erc-text-matched-hook' to enable
+beeping.  Set the new variable `erc-beep-match-types' which match
+types make beeps.
+
+*** Viper compatibility (erc-viper.el)
+
+**** New module which helps ERC work correctly in viper-mode.
+
 * Fixes since ERC 5.0.3
 
 ** Fix a problem with undo in channels.

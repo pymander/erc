@@ -4,6 +4,8 @@
 	`erc-server-version'.  It doesn't hurt to set, and it could be
 	used in modules or users' settings.
 
+	* NEWS: Added descriptions of some new features.
+
 2005-10-20  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-match.el (erc-current-nick-highlight-type): Set to `keyword'
