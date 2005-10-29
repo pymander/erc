@@ -1,9 +1,9 @@
 ERC NEWS                                                       -*- outline -*-
 
-* Changes since ERC 5.0.x
+* Changes since ERC 5.0.4
 
 ** Now ERC doesn't use global variable space.
-Renamed all variables that didn't start with erc-.
+Renamed all variables that didn't start with "erc-".
 
 *** Highlighting (erc-match.el)
 

@@ -13,7 +13,19 @@ TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MISC	= AUTHORS CREDITS HISTORY NEWS README Makefile ChangeLog \
 		ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 \
 		ChangeLog.2001 servers.pl erc-auto.in
-EMACS   = emacs
+
+EMACS       = emacs
+SITEFLAG    = --no-site-file
+
+# XEmacs users will probably want the following settings.
+#EMACS    = xemacs
+#SITEFLAG = -no-site-file
+
+INSTALLINFO = install-info --info-dir=$(INFODIR)
+
+# If you're using Debian, uncomment the following line and comment out
+#the above line.
+#INSTALLINFO = install-info --section "Emacs" "emacs" --info-dir=$(INFODIR)
 
 all: $(TARGET)
 
@@ -22,13 +34,13 @@ autoloads: erc-auto.el
 erc-auto.el: erc-auto.in $(SOURCE)
 	cp erc-auto.in erc-auto.el
 	rm -f erc-auto.elc
-	$(EMACS) --no-init-file --no-site-file -batch \
+	$(EMACS) -q $(SITEFLAG) -batch \
 		-l $(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-auto \
 		-f generate-autoloads \
 		$(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-auto.el .
 
 %.elc: %.el
-	$(EMACS) --no-init-file --no-site-file -batch \
+	$(EMACS) -q $(SITEFLAG) -batch \
 		-l $(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-maint \
 		-f batch-byte-compile $<
 

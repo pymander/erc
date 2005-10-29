@@ -1,3 +1,19 @@
+2005-10-29  Michael Olson  <mwolson@gnu.org>
+
+	* FOR-RELEASE: Add stuff that needs to be done before the 5.1
+	release.  Longer-term items can be added to the 5.2 section.
+
+	* Makefile (SITEFLAG): New variable that indicates what variant of
+	"--site-flag" to use.  XEmacs needs "-site-flag".
+	(INSTALLINFO): New variable indicating how we should call
+	install-info when installing documentation.
+	(erc-auto.el, .elc.el): Use $(SITEFLAG).
+
+	* NEWS: Note that last release was 5.0.4.
+
+	* erc.texi: Initial and incomplete draft of ERC documentation.
+	Commence collaborate-documentation-hack-mode :^) .
+
 2005-10-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-input-marker): New variable that indicates the

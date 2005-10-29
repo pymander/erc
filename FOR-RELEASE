@@ -1,19 +1,64 @@
 Tasks that need to be accomplished in order for a release to happen.
 
-* Stability
+* 5.1 release
 
+** Documentation
 
-* Debian
+*** ERC's manual needs collaborative effort.
+Some conditions follow.
 
-** Copyright
+Manual text can be based off of pages from EmacsWiki.org, but must be
+rewritten.  As long as they're not too close to being word-for-word,
+you should be okay.
 
-Which authors should be included in `debian/copyright' as upstream
-authors?  Which should be given copyright notices?
+Contributors to the documentation must have assigned future copyright
+for ERC or Emacs.  No separate manual assignment is needed in this
+case.  If you haven't assigned future changes and would like to work
+on the manual, contact mwolson@gnu.org.
 
-** News
+*** Search for "@c PRE5_1" to see what needs to be done before the
+5.1 release.
 
-What are the most important user-visible changes since 2004-09-13?
-These should be added to `debian/README.debian'.
+Please add your name in brackets after "PRE5_1" in the comment if you
+wish to work an item in the short term.
+
+** Makefile
+
+*** install target needed.
+This could look at the following new variables.  ELISPDIR determines
+where to install ERC.  INFODIR is where manual will be installed.
+
+PREFIX   = /usr/local
+ELISPDIR = $(PREFIX)/share/emacs/site-lisp/erc
+INFODIR  = $(PREFIX)/info
+
+*** install-info target needed.
+Something like the following would work.
+
+%.info: %.texi
+	makeinfo $<
+
+install-info: muse.info
+	[ -d $(INFODIR) ] || install -d $(INFODIR)
+	install -m 0644 muse.info $(INFODIR)/muse
+	$(INSTALLINFO) $(INFODIR)/muse
+
+** NEWS: Update for changes since 5.0.4.
+
+* 5.2 release (future)
+
+** Documentation
+
+*** Items with "@c PRE5_2" won't block the 5.1 release, but may block
+the release of 5.2.
+
+** Source
+
+*** Make erc-backend not need to (require) any other part of ERC.
+This will hopefully increase the chance that it will be useful for
+other IRC clients, like Circe.
+
+*** Add binding for S-TAB (backtab) that moves backwards by link.
 
 
 Local variables:
