@@ -1,3 +1,9 @@
+2005-10-25  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-backend.el (erc-server-version, 004): Re-added setting of
+	`erc-server-version'.  It doesn't hurt to set, and it could be
+	used in modules or users' settings.
+
 2005-10-20  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-match.el (erc-current-nick-highlight-type): Set to `keyword'

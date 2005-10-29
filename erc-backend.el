@@ -103,7 +103,7 @@
 
 ;;;; Variables and options
 
-(defconst erc-backend-version "$Revision: 1.35 $")
+(defconst erc-backend-version "$Revision: 1.36 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -139,6 +139,10 @@ Use `erc-current-nick' to access this.")
 (defvar erc-server-announced-name nil
   "The name the server announced to use.")
 (make-variable-buffer-local 'erc-server-announced-name)
+
+(defvar erc-server-version nil
+  "The name and version of the server's ircd.")
+(make-variable-buffer-local 'erc-server-version)
 
 (defvar erc-server-parameters nil
   "Alist listing the supported server parameters.
@@ -1306,6 +1310,7 @@ add things to `%s' instead."
   nil nil
   (multiple-value-bind (server-name server-version)
       (cdr (erc-response.command-args parsed))
+    (setq erc-server-version server-version)
     (setq erc-server-announced-name server-name)
     (erc-update-mode-line-buffer (process-buffer proc))
     (erc-display-message
