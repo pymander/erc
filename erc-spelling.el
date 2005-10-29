@@ -70,6 +70,7 @@ name here."
                   (with-current-buffer server
                     ispell-local-dictionary)
                 nil)))))
+  (setq flyspell-generic-check-word-p 'erc-spelling-flyspell-verify)
   (flyspell-mode 1))
 
 (put 'erc-mode
@@ -79,9 +80,7 @@ name here."
 (defun erc-spelling-flyspell-verify ()
   "Flyspell only the input line, nothing else."
   (> (point)
-     (save-excursion
-       (goto-char (erc-beg-of-input-line))
-       (erc-bol))))
+     erc-input-marker))
 
 (provide 'erc-spelling)
 

@@ -248,7 +248,7 @@ the most recent speakers are listed first."
   "Returns a list of parsed whitespace-separated arguments.
 These are the words from the beginning of the line after the prompt
 up to where point is right now."
-  (let* ((start (save-excursion (erc-bol) (point)))
+  (let* ((start erc-input-marker)
          (end (point))
          args beginnings)
     (save-excursion

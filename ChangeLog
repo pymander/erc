@@ -1,3 +1,25 @@
+2005-10-28  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-input-marker): New variable that indicates the
+	position where text from the user begins, after the prompt.
+	(erc-mode-map): Bind <HOME> to erc-bol, just like C-a.
+	(erc): Initialize erc-input-marker.
+	(erc-display-prompt): Even in case where no prompt is desired by
+	the user, clear the undo buffer and set the input marker.
+	(erc-bol, erc-user-input): Simplify by using erc-input-marker.
+
+	* erc-pcomplete.el (pcomplete-parse-erc-arguments): Use
+	erc-insert-marker.
+
+	* erc-ring.el (erc-previous-command)
+	(erc-replace-current-command): Use erc-insert-marker.
+
+	* erc-spelling.el (erc-spelling-init): Make sure that even Emacs21
+	obeys erc-spelling-flyspell-verify.
+	(erc-spelling-flyspell-verify): Use erc-input-marker.  This should
+	make it considerably faster when switching to a buffer that has
+	seen a lot of activity since last viewed.
+
 2005-10-25  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-backend.el (erc-server-version, 004): Re-added setting of
@@ -20,7 +42,7 @@
 	New functions to deal with the difference in the number of
 	arguments accepted by `make-obsolete' and `make-obsolete-variable'
 	in Emacs and XEmacs.
-	
+
 	* erc.el, erc-nets.el: Use `erc-make-obsolete' and
 	`erc-make-obsolete-variable'.
 
@@ -30,10 +52,10 @@
 	arguments.
 
 2005-10-18  Edward O'Connor  <ted@oconnor.cx>
-	
+
 	* erc.el: Tell emacs-lisp-mode how to font-lock define-erc-module
 	docstrings.
-	
+
 2005-10-08  Diane Murray  <disumu@x3y2z1.net>
 
 	* AUTHORS, CREDITS, ChangeLog, ChangeLog.2002, ChangeLog.2004:

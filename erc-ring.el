@@ -80,7 +80,7 @@ You might use this for security purposes if you have typed a command
 containing a password."
   (interactive)
   (setq erc-input-ring (make-ring comint-input-ring-size)
-	erc-input-ring-index nil)
+        erc-input-ring-index nil)
   (garbage-collect)
   (message "ERC input ring cleared."))
 
@@ -96,20 +96,22 @@ containing a password."
           (erc-replace-current-command "")
           (setq erc-input-ring-index nil))
 
-      ;; If we are not viewing old input and there's text in the input area, push
-      ;; it on the history ring before moving back through the input history, so it
-      ;; will be there when we return to the front.
+      ;; If we are not viewing old input and there's text in the input
+      ;; area, push it on the history ring before moving back through
+      ;; the input history, so it will be there when we return to the
+      ;; front.
       (if (null erc-input-ring-index)
-          (let ((start-of-input (save-excursion (goto-char erc-insert-marker) (erc-bol))))
-            (when (> (point-max) start-of-input)
-              (erc-add-to-input-ring (buffer-substring start-of-input (point-max)))
-              (setq erc-input-ring-index 0))))
+          (when (> (point-max) erc-input-marker)
+            (erc-add-to-input-ring (buffer-substring erc-input-marker
+                                                     (point-max)))
+            (setq erc-input-ring-index 0)))
 
       (setq erc-input-ring-index (if erc-input-ring-index
                                      (ring-plus1 erc-input-ring-index
                                                  (ring-length erc-input-ring))
                                    0))
-      (erc-replace-current-command (ring-ref erc-input-ring erc-input-ring-index)))))
+      (erc-replace-current-command (ring-ref erc-input-ring
+                                             erc-input-ring-index)))))
 
 (defun erc-next-command ()
   "Replace current command with the next one from the history."
@@ -132,11 +134,13 @@ containing a password."
   "Replace current command with string S."
   ;; delete line
   (let ((inhibit-read-only t))
-    (delete-region
-     (progn (goto-char erc-insert-marker) (erc-bol))
-     (goto-char (point-max)))
+    (delete-region erc-insert-marker
+                   (goto-char (point-max)))
     (insert s)))
 
 (provide 'erc-ring)
 
 ;;; erc-ring.el ends here
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:

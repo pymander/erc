@@ -585,6 +585,10 @@ E.g. '(\"i\" \"m\" \"s\" \"b Quake!*@*\")
   "The place where insertion of new text in erc buffers should happen.")
 (make-variable-buffer-local 'erc-insert-marker)
 
+(defvar erc-input-marker nil
+  "The marker where input should be inserted.")
+(make-variable-buffer-local 'erc-input-marker)
+
 (defun erc-string-no-properties (string)
   "Return a copy of STRING will all text-properties removed."
   (let ((newstring (copy-sequence string)))
@@ -1057,6 +1061,7 @@ which the local user typed."
   (let ((map (make-sparse-keymap)))
     (define-key map "\C-m" 'erc-send-current-line)
     (define-key map "\C-a" 'erc-bol)
+    (define-key map [home] 'erc-bol)
     (define-key map "\C-c\C-a" 'erc-bol)
     (define-key map "\C-c\C-b" 'erc-iswitchb)
     (define-key map "\C-c\C-c" 'erc-toggle-interpret-controls)
@@ -1829,6 +1834,7 @@ Returns the buffer for the given server or channel."
     ;; connection parameters
     (setq erc-server-process process)
     (setq erc-insert-marker (make-marker))
+    (setq erc-input-marker (make-marker))
     (set-marker erc-insert-marker (point))
     ;; stack of default recipients
     (setq erc-default-recipients tgt-list)
@@ -3391,17 +3397,17 @@ If FACE is non-nil, it will be used to propertize the prompt.  If it is nil,
   (let* ((prompt (or prompt (erc-prompt)))
 	 (l (length prompt))
 	 (ob (current-buffer)))
-    (when (> l 0)
-      ;; We cannot use save-excursion because we move point, therefore
-      ;; we resort to the ol' ob trick to restore this.
-      (when (and buffer (bufferp buffer))
-	(set-buffer buffer))
+    ;; We cannot use save-excursion because we move point, therefore
+    ;; we resort to the ol' ob trick to restore this.
+    (when (and buffer (bufferp buffer))
+      (set-buffer buffer))
 
-      ;; now save excursion again to store where point and mark are
-      ;; in the current buffer
-      (save-excursion
-	(setq pos (or pos (point)))
-	(goto-char pos)
+    ;; now save excursion again to store where point and mark are
+    ;; in the current buffer
+    (save-excursion
+      (setq pos (or pos (point)))
+      (goto-char pos)
+      (when (> l 0)
 	;; Do not extend the text properties when typing at the end
 	;; of the prompt, but stuff typed in front of the prompt
 	;; shall remain part of the prompt.
@@ -3415,16 +3421,18 @@ If FACE is non-nil, it will be used to propertize the prompt.  If it is nil,
 			       'face (or face 'erc-prompt-face)
 			       prompt)
 	(insert prompt))
+      ;; Set the input marker
+      (set-marker erc-input-marker (point)))
 
-      ;; Now we are back at the old position.  If the prompt was
-      ;; inserted here or before us, advance point by the length of
-      ;; the prompt.
-      (when (or (not pos) (<= (point) pos))
-	(forward-char l))
-      ;; Clear the undo buffer now, so the user can undo his stuff,
-      ;; but not the stuff we did. Sneaky!
-      (setq buffer-undo-list nil)
-      (set-buffer ob))))
+    ;; Now we are back at the old position.  If the prompt was
+    ;; inserted here or before us, advance point by the length of
+    ;; the prompt.
+    (when (or (not pos) (<= (point) pos))
+      (forward-char l))
+    ;; Clear the undo buffer now, so the user can undo his stuff,
+    ;; but not the stuff we did. Sneaky!
+    (setq buffer-undo-list nil)
+    (set-buffer ob)))
 
 ;; interactive operations
 
@@ -3527,8 +3535,7 @@ This places `point' just after the prompt, or at the beginning of the line."
   (interactive)
   (forward-line 0)
   (when (get-text-property (point) 'erc-prompt)
-    (goto-char (or (next-single-property-change (point) 'erc-prompt)
-		   (point-at-eol))))
+    (goto-char erc-input-marker))
   (point))
 
 (defun erc-kill-input ()
@@ -4788,11 +4795,8 @@ Specifically, return the position of `erc-insert-marker'."
 
 (defun erc-user-input ()
   "Return the input of the user in the current buffer."
-  ;; We use erc-bol to ignore the prompt.
   (buffer-substring
-   (progn
-     (goto-char (erc-beg-of-input-line))
-     (erc-bol))
+   erc-input-marker
    (erc-end-of-input-line)))
 
 (defun erc-send-input (input)
