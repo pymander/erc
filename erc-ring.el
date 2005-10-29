@@ -37,7 +37,7 @@
 (require 'comint)
 (require 'ring)
 
-(defvar erc-ring-version "$Revision: 1.18 $"
+(defvar erc-ring-version "$Revision: 1.20 $"
   "ERC ring revision")
 
 ;;;###autoload (autoload 'erc-ring-mode "erc-ring" nil t)
@@ -134,8 +134,9 @@ containing a password."
   "Replace current command with string S."
   ;; delete line
   (let ((inhibit-read-only t))
-    (delete-region erc-insert-marker
-                   (goto-char (point-max)))
+    (delete-region
+     (progn (goto-char erc-insert-marker) (erc-bol))
+     (goto-char (point-max)))
     (insert s)))
 
 (provide 'erc-ring)

@@ -64,7 +64,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.776 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.777 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)

@@ -14,6 +14,12 @@
 	* erc.texi: Initial and incomplete draft of ERC documentation.
 	Commence collaborate-documentation-hack-mode :^) .
 
+2005-10-29  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-ring.el (erc-replace-current-command): Revert last change
+	since it made the prompt disappear when using `erc-next-command'
+	and `erc-previous-command'.
+
 2005-10-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-input-marker): New variable that indicates the
