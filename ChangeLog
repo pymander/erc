@@ -1,3 +1,7 @@
+2005-11-23  Johan Bockgård  <bojohan@users.sourceforge.net>
+
+	* erc.el (erc-cmd-SAY): Strip leading space in input line.
+
 2005-10-29  Michael Olson  <mwolson@gnu.org>
 
 	* FOR-RELEASE: Add stuff that needs to be done before the 5.1

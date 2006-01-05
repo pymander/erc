@@ -64,7 +64,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.777 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.778 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (require 'cl)
@@ -2418,7 +2418,8 @@ that since multi-line messages are never a command, you don't
 need this when pasting multiple lines of text."
   (if (string-match "^\\s-*$" line)
       nil
-    (erc-process-input-line line nil t)))
+    (string-match "^ ?\\(.*\\)" line)
+    (erc-process-input-line (match-string 1 line) nil t)))
 (put 'erc-cmd-SAY 'do-not-parse-args t)
 
 (defun erc-cmd-SET (line)
