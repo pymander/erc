@@ -5,3 +5,6 @@
 	comes in at the same time a /quit is requested.
 	(erc-process-sentinel): Use string-match rather than string= to do
 	these comparisons.  Matching literal newlines makes me nervous.
+
+	* erc-track.el (erc-track-remove-from-mode-line): Handle case
+	where global-mode-string is not a list.  Emacs22 permits this.
