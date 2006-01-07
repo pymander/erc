@@ -511,9 +511,10 @@ action."
     (setq erc-server-last-sent-time 0)
     (setq erc-server-lines-sent 0)
     (if (and erc-server-auto-reconnect
-             (not (string= event "deleted\n"))
+             (not (string-match "^deleted" event))
              ;; open-network-stream-nowait error for connection refused
-             (not (string= event "failed with code 111\n")))
+             (not (string-match "^failed with code 111" event))
+             (not (string-match "sigpipe" event)))
         ;; Yuck, this should perhaps funcall
         ;; erc-server-reconnect-function with no args
         (erc erc-session-server erc-session-port erc-server-current-nick
@@ -532,7 +533,7 @@ action."
     (erc-log (format
               "SENTINEL: proc: %S	 status: %S  event: %S (quitting: %S)"
               cproc (process-status cproc) event erc-server-quitting))
-    (if (equal event "open\n")
+    (if (string-match "^open" event)
         ;; newly opened connection (no wait)
         (erc-login)
       ;; assume event is 'failed

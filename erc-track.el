@@ -227,8 +227,9 @@ while the buffer was not visible.")
   (when (boundp 'mode-line-modes)
     (setq mode-line-modes
 	  (remove '(t erc-modified-channels-object) mode-line-modes)))
-  (setq global-mode-string
-	(delq 'erc-modified-channels-object global-mode-string)))
+  (when (consp global-mode-string)
+    (setq global-mode-string
+	  (delq 'erc-modified-channels-object global-mode-string))))
 
 (defun erc-track-add-to-mode-line (position)
   "Add `erc-track-modified-channels' to POSITION in the mode-line.
