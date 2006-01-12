@@ -39,7 +39,7 @@
 
 ;;; Code:
 
-(defconst erc-track-version "$Revision: 1.79 $"
+(defconst erc-track-version "$Revision: 1.81 $"
   "ERC track mode revision")
 
 (defgroup erc-track nil
@@ -130,8 +130,7 @@ If nil instead of a function, shortening is disabled."
 		 function))
 
 (defcustom erc-track-use-faces t
-  "*If non-nil, use faces to indicate current nick/pal/fool/keyword/dangerous
-host activities in the mode-line.
+  "*Use faces in the mode-line.
 The faces used are the same as used for text in the buffers.
 \(e.g. `erc-pal-face' is used if a pal sent a message to that channel.)"
   :group 'erc-track
@@ -139,7 +138,7 @@ The faces used are the same as used for text in the buffers.
 
 (defcustom erc-track-faces-priority-list
   '(erc-error-face erc-current-nick-face erc-keyword-face erc-pal-face
-    erc-nick-msg-face erc-direct-msg-face erc-dangerous-host-face
+    erc-nick-msg-face erc-direct-msg-face erc-button erc-dangerous-host-face
     erc-default-face erc-action-face erc-nick-default-face erc-fool-face
     erc-notice-face erc-input-face erc-prompt-face)
   "A list of faces used to highlight active buffer names in the modeline.
@@ -149,13 +148,14 @@ be highlighted using that face.  The first matching face is used."
   :type '(repeat face))
 
 (defcustom erc-track-priority-faces-only nil
-  "If you would like to ignore changes in certain channels where there
-are no faces corresponding to your erc-track-faces-priority-list, set
+  "Only track text highlighted with a priority face.
+If you would like to ignore changes in certain channels where there
+are no faces corresponding to your `erc-track-faces-priority-list', set
 this variable.  You can set a list of channel name strings, so those
 will be ignored while all other channels will be tracked as normal.
 Other options are 'all, to apply this to all channels or nil, to disable
 this feature.
-Note: If you have a lot of faces listed in erc-track-faces-priority-list,
+Note: If you have a lot of faces listed in `erc-track-faces-priority-list',
 setting this variable might not be very useful."
   :group 'erc-track
   :type '(choice (const nil)

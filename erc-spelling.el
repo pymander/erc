@@ -1,6 +1,6 @@
 ;;; erc-spelling.el --- use flyspell in ERC
 
-;; Copyright (C) 2005  Free Software Foundation, Inc.
+;; Copyright (C) 2005,2006  Free Software Foundation, Inc.
 
 ;; Author: Jorgen Schaefer <forcer@forcix.cx>
 ;; Keywords: irc
@@ -32,7 +32,7 @@
 (require 'erc)
 (require 'flyspell)
 
-(defconst erc-spelling-version "$Revision: 1.5 $"
+(defconst erc-spelling-version "$Revision: 1.6 $"
   "ERC spelling revision.")
 
 ;;;###autoload (autoload 'erc-spelling-mode "erc-spelling" nil t)
@@ -40,8 +40,14 @@
   "Enable flyspell mode in ERC buffers."
   ;; Use erc-connect-pre-hook instead of erc-mode-hook as pre-hook is
   ;; called AFTER the server buffer is initialized.
-  ((add-hook 'erc-connect-pre-hook 'erc-spelling-init))
-  ((remove-hook 'erc-connect-pre-hook 'erc-spelling-init)))
+  ((add-hook 'erc-connect-pre-hook 'erc-spelling-init)
+   (mapc (lambda (buffer)
+           (with-current-buffer buffer (erc-spelling-init)))
+         (erc-buffer-list)))
+  ((remove-hook 'erc-connect-pre-hook 'erc-spelling-init)
+   (mapc (lambda (buffer)
+           (with-current-buffer buffer (flyspell-mode 0)))
+         (erc-buffer-list))))
 
 (defcustom erc-spelling-dictionaries nil
   "An alist mapping buffer names to dictionaries.
@@ -51,7 +57,7 @@ The dictionary is inherited from server buffers, so if you want a
 default dictionary for some server, you can use a server buffer
 name here."
   :type '(choice (const nil)
-                 (repeat (cons (string :tag "Buffer")
+                 (repeat (cons (string :tag "Buffer name")
                                (string :tag "Dictionary"))))
   :group 'erc-spelling)
 

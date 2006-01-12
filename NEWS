@@ -5,6 +5,20 @@ ERC NEWS                                                       -*- outline -*-
 ** Now ERC doesn't use global variable space.
 Renamed all variables that didn't start with "erc-".
 
+  o `away' is now `erc-away'
+
+** Changes and additions to modules
+
+*** Backend (erc-backend.el)
+
+**** Renamed some server-specific variables
+
+  o `erc-announced-server-name' is now `erc-server-announced-name'
+
+  o `erc-process' is now `erc-server-process'
+
+  o `erc-default-coding-system' is now `erc-server-coding-system'
+
 *** Highlighting (erc-match.el)
 
 **** Highlight current nickname by default.
