@@ -1,3 +1,8 @@
+2006-01-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-process-sentinel-1): Remove attempt to
+	detect SIGPIPE, since it doesn't work.
+
 2006-01-10  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-spelling.el: Updated copyright years.

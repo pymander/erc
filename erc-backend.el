@@ -513,8 +513,7 @@ action."
     (if (and erc-server-auto-reconnect
              (not (string-match "^deleted" event))
              ;; open-network-stream-nowait error for connection refused
-             (not (string-match "^failed with code 111" event))
-             (not (string-match "sigpipe" event)))
+             (not (string-match "^failed with code 111" event)))
         ;; Yuck, this should perhaps funcall
         ;; erc-server-reconnect-function with no args
         (erc erc-session-server erc-session-port erc-server-current-nick
