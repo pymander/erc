@@ -178,7 +178,7 @@ This is configured using `erc-nicklist-use-icons' and
 		 (insert-image (cdr (assoc 'irc
 					   erc-nicklist-images-alist))))
 	     (insert "IRC"))))
-    (insert " "))
+    (insert " ")))
 
 (defun erc-nicklist-search-for-nick (finger-host)
   "Return the bitlbee-nick field for this contact given FINGER-HOST.
