@@ -1,23 +1,103 @@
 ERC NEWS                                                       -*- outline -*-
 
+Progress: 2005-08-14  Michael Olson  <mwolson@gnu.org>
+
 * Changes since ERC 5.0.4
 
-** Now ERC doesn't use global variable space.
+** Improve XEmacs compatibility.
+
+** Namespace changes
+
+*** Now ERC doesn't use global variable space.
 Renamed all variables that didn't start with "erc-".
 
   o `away' is now `erc-away'
 
-** Changes and additions to modules
+  o `current-nick' is now `erc-server-current-nick'
 
-*** Backend (erc-backend.el)
+  o `last-sent-time' is now `erc-server-last-sent-time'
 
-**** Renamed some server-specific variables
+  o `last-ping-time' is now `erc-server-last-ping-time'
+
+  o `lines-sent' is now `erc-server-lines-sent'
+
+  o `quitting' is now `erc-server-quitting'
+
+*** Remove the `with-erc-channel-buffer' function.
+
+** Bugfixes
+
+*** Don't inadvertently destroy face properties.
+
+*** Load erc scripts in a safer way.
+
+** Backend changes
+
+*** Renamed some server-specific variables
 
   o `erc-announced-server-name' is now `erc-server-announced-name'
 
   o `erc-process' is now `erc-server-process'
 
   o `erc-default-coding-system' is now `erc-server-coding-system'
+
+  o `erc-previous-read' is now `erc-server-filter-data'
+
+  o `erc-connect-function' is now `erc-server-connect-function'
+
+  o `erc-auto-reconnect' is now `erc-server-auto-reconnect'
+
+*** Renamed some functions
+
+  o `erc-split-command is now `erc-split-line'
+
+  o `erc-process-filter' is now `erc-server-filter-function'
+
+  o `erc-send-command' is now `erc-server-send'
+
+  o `erc-connect' is now `erc-server-connect'
+
+  o `erc-send-single-line' is now `erc-send-input'
+
+*** New options
+
+  o erc-split-line-length: The maximum line length of a single
+    message.
+
+  o erc-server-flood-margin, erc-server-flood-penalty: New options
+    that allow tweaking of flood control.
+
+*** New variables
+
+  o erc-server-processing-p: Indicate when we're currently processing
+    a message.
+
+  o erc-server-flood-last-message, erc-server-flood-queue,
+    erc-server-flood-timer: Flood control.
+
+** Remove the unused `erc-kill-queries-on-quit' option.
+
+** Changes and additions to modules
+
+*** Auto-join (erc-autojoin.el)
+
+**** Recognize the Azzurra server.
+
+*** BBDB (erc-bbdb.el)
+
+**** When the user types /WHOIS, ask for a record to merge to.
+
+**** Store the displayed name of a BiltBee contact.
+The new `erc-bbdb-bilbee-name-field' option specifies the field to use
+to store this information.
+
+**** Don't prompt for a name on /JOIN or /NICK.
+
+*** Channel tracking (erc-track.el)
+
+**** Remove channels from the modified channels list if not currently
+connected.  This should remove residue from the mode line after
+quitting ERC.
 
 *** Highlighting (erc-match.el)
 
@@ -28,9 +108,39 @@ Add `erc-beep-on-match' to `erc-text-matched-hook' to enable
 beeping.  Set the new variable `erc-beep-match-types' which match
 types make beeps.
 
+*** Nicklist (erc-nicklist.el)
+
+**** Fix a couple of errors.
+
+**** Make sure a stray mouse click doesn't trigger an error.
+
+**** Insert icons from the /images directory next to nicks.
+This indicates their awawy status.  The location is customizable via
+the new `erc-nicklist-icons-directory' option.
+
+If you do not want these icons, set `erc-nicklist-use-icons' to nil.
+
+*** Nickserv identification (erc-nickserv.el)
+
+**** Recognize Azzurra and OFTC networks.
+
+*** Old completion (erc-complete.el)
+
+**** Disable by default.
+
+*** Programmable completion (erc-pcomplete.el)
+
+**** Enable by default.
+
+** New modules
+
+*** Spell-checking (erc-spelling.el)
+
+**** Use flyspell in ERC.
+
 *** Viper compatibility (erc-viper.el)
 
-**** New module which helps ERC work correctly in viper-mode.
+**** Helps ERC work correctly in viper-mode.
 
 * Fixes since ERC 5.0.3
 
