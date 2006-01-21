@@ -97,7 +97,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(eval-when-compile (require 'cl))
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 (autoload 'erc-log "erc" nil nil 'macro)
 

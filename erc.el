@@ -67,7 +67,7 @@
 (defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.780 $"
   "ERC version.  This is used by function `erc-version'.")
 
-(require 'cl)
+(eval-when-compile (require 'cl))
 (require 'font-lock)
 (require 'pp)
 (require 'thingatpt)
