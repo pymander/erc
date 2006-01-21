@@ -1,8 +1,7 @@
 ;; erc.el --- An Emacs Internet Relay Chat client
 
-;; Copyright (C) 1997,1998,1999,2000,2001,2002,2003,2004,2005
-;;     Free Software Foundation, Inc.
-;; Copyright (C) 2004 Jeremy Bertram Maitin-Shepard
+;; Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+;;   2006 Free Software Foundation, Inc.
 ;; Copyright (C) 2004 Brian Palmer
 
 ;; Author: Alexander L. Belikoff (alexander@belikoff.net)
@@ -1531,9 +1530,11 @@ SPEC should have the form
 
  (TARGET [PROCESS])
 
-If TARGET is a buffer, use this one. Otherwise, use the buffer
-matching TARGET in the process specified by PROCESS or, if PROCESS is
-nil, the current `erc-server-process' (see `erc-get-buffer').
+If TARGET is a buffer, use it.  Otherwise, use the buffer
+matching TARGET in the process specified by PROCESS.
+
+If PROCESS is nil, use the current `erc-server-process'
+See `erc-get-buffer' for details.
 
 See also `with-current-buffer'.
 

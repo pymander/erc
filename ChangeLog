@@ -2,13 +2,23 @@
 
 	* FOR-RELEASE (Source): Mark "Remove cl dependency" as DONE.
 
-	* erc.el: Use eval-when-compile for 'cl.
+	* erc.el: Use eval-when-compile for 'cl.  Update copyright notice.
+	(erc-with-buffer): Docfix.
 
 	* erc-backend.el: Use eval-when-compile for 'cl.
 	(erc-decode-parsed-server-response): Docfix.
 
+	* erc-bbdb.el: Update copyright years.
+	(erc-bbdb-whois): Remove overexuberant comment.
+
 	* erc-nicklist.el: Update copyright notice.  Don't require 'cl.
 	(erc-nicklist-menu): Change use of caadr to (car (cadr ...)).
+	(erc-nicklist-bitlbee-connected-p): Remove.
+	(erc-nicklist-insert-medium-name-or-icon): Accept channel
+	argument.  Use it to determine whether we are on bitlbee.  Now
+	that bitlbee names its channel "&bitlbee", this is trivial.
+	(erc-nicklist-insert-contents): Pass channel as specified above.
+	Don't try to determine whether we are on bitlbee here.
 
 2006-01-19  Michael Olson  <mwolson@gnu.org>
 

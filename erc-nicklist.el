@@ -1,6 +1,6 @@
 ;;; erc-nicklist.el --- Display channel nicknames in a side buffer.
 
-;; Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+;; Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
 
 ;; Filename: erc-nicklist.el
 ;; Author: Lawrence Mitchell <wence@gmx.li>
@@ -122,9 +122,6 @@ channel window, and vice versa."
   :type 'float)
 
 
-(defvar erc-nicklist-bitlbee-connected-p nil
-  "Are we connected to bitlbee?")
-
 (defun erc-nicklist-buffer-name (&optional buffer)
   "Return the buffer name for a nicklist associated with BUFFER.
 
@@ -148,36 +145,40 @@ See also `erc-nicklist-window-size'."
 (defvar erc-nicklist-images-alist '()
   "Alist that maps a connection type to an icon.")
 
-(defun erc-nicklist-insert-medium-name-or-icon (host is-away)
+(defun erc-nicklist-insert-medium-name-or-icon (host channel is-away)
   "Inserts an icon or a string identifying the current host type.
 This is configured using `erc-nicklist-use-icons' and
 `erc-nicklist-icons-directory'."
-      (cond ((and erc-nicklist-bitlbee-connected-p
-		  (string= "login.icq.com" host))
-	     (if erc-nicklist-use-icons
-		 (if is-away
-		     (insert-image (cdr (assoc 'icq-away
-					       erc-nicklist-images-alist)))
-		     (insert-image (cdr (assoc 'icq
-					       erc-nicklist-images-alist))))
-		 (insert "ICQ")))
-	    (erc-nicklist-bitlbee-connected-p
-	     (if erc-nicklist-use-icons
-		 (if is-away
-		     (insert-image (cdr (assoc 'msn-away
-					       erc-nicklist-images-alist)))
-		     (insert-image (cdr (assoc 'msn
-					       erc-nicklist-images-alist))))
-		 (insert "MSN")))
-	    (t
-	     (if erc-nicklist-use-icons
-		 (if is-away
-		     (insert-image (cdr (assoc 'irc-away
-					       erc-nicklist-images-alist)))
-		     (insert-image (cdr (assoc 'irc
-					       erc-nicklist-images-alist))))
-		 (insert "IRC"))))
-      (insert " "))
+  ;; identify the network (for bitlebee usage):
+  (let ((bitlbee-p (save-match-data
+		     (string-match "\\`&bitlbee\\b"
+				   (buffer-name channel)))))
+    (cond ((and bitlbee-p
+		(string= "login.icq.com" host))
+	   (if erc-nicklist-use-icons
+	       (if is-away
+		   (insert-image (cdr (assoc 'icq-away
+					     erc-nicklist-images-alist)))
+		 (insert-image (cdr (assoc 'icq
+					   erc-nicklist-images-alist))))
+	     (insert "ICQ")))
+	  (bitlbee-p
+	   (if erc-nicklist-use-icons
+	       (if is-away
+		   (insert-image (cdr (assoc 'msn-away
+					     erc-nicklist-images-alist)))
+		 (insert-image (cdr (assoc 'msn
+					   erc-nicklist-images-alist))))
+	     (insert "MSN")))
+	  (t
+	   (if erc-nicklist-use-icons
+	       (if is-away
+		   (insert-image (cdr (assoc 'irc-away
+					     erc-nicklist-images-alist)))
+		 (insert-image (cdr (assoc 'irc
+					   erc-nicklist-images-alist))))
+	     (insert "IRC"))))
+    (insert " "))
 
 (defun erc-nicklist-search-for-nick (finger-host)
   "Return the bitlbee-nick field for this contact given FINGER-HOST.
@@ -196,44 +197,37 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 
 (defun erc-nicklist-insert-contents (channel)
   "Insert the nicklist contents, with text properties and the optional images."
-  (let ((erc-nicklist-bitlbee-connected-p
-	 (and (string-match "^#bitlbee\\b" (buffer-name channel))
-	      (not (string-match "oftc\\.net" (or erc-server-announced-name
-						  erc-session-server
-						  ""))))))
-    (setq buffer-read-only nil)
-    (erase-buffer)
-    (dolist (u (erc-nicklist-channel-users-info channel))
-      (let* ((server-user (car u))
-	     (channel-user (cdr u))
-	     (nick     (erc-server-user-nickname server-user))
-	     (host     (erc-server-user-host server-user))
-	     (login    (erc-server-user-login server-user))
-	     (full-name(erc-server-user-full-name server-user))
-	     (info     (erc-server-user-info server-user))
-	     (channels (erc-server-user-buffers server-user))
-	     (op       (erc-channel-user-op channel-user))
-	     (voice    (erc-channel-user-voice channel-user))
-	     (bbdb-nick (erc-nicklist-search-for-nick (concat login "@" host)))
-	     (away-status (if voice "" "\n(Away)"))
-	     (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick)
-						 "" "\n")
-				   "Login: " login "@" host
-				   away-status)))
-	;; identify the network (for bitlebee usage):
-	;; TODO: find out some proper way of doing this
-	(erc-nicklist-insert-medium-name-or-icon host (not voice))
-	(unless (or voice erc-nicklist-use-icons)
-	  (setq nick (concat "(" nick ")")))
-	(when op
-	  (setq nick (concat nick " (OP)")))
-	(insert (erc-propertize nick
-				'erc-nicklist-nick nick
-				'mouse-face 'highlight
-				'erc-nicklist-channel channel
-				'help-echo balloon-text)
-		"\n")))
-    (erc-nicklist-mode)))
+  (setq buffer-read-only nil)
+  (erase-buffer)
+  (dolist (u (erc-nicklist-channel-users-info channel))
+    (let* ((server-user (car u))
+	   (channel-user (cdr u))
+	   (nick     (erc-server-user-nickname server-user))
+	   (host     (erc-server-user-host server-user))
+	   (login    (erc-server-user-login server-user))
+	   (full-name(erc-server-user-full-name server-user))
+	   (info     (erc-server-user-info server-user))
+	   (channels (erc-server-user-buffers server-user))
+	   (op       (erc-channel-user-op channel-user))
+	   (voice    (erc-channel-user-voice channel-user))
+	   (bbdb-nick (erc-nicklist-search-for-nick (concat login "@" host)))
+	   (away-status (if voice "" "\n(Away)"))
+	   (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick)
+					       "" "\n")
+				 "Login: " login "@" host
+				 away-status)))
+      (erc-nicklist-insert-medium-name-or-icon host channel (not voice))
+      (unless (or voice erc-nicklist-use-icons)
+	(setq nick (concat "(" nick ")")))
+      (when op
+	(setq nick (concat nick " (OP)")))
+      (insert (erc-propertize nick
+			      'erc-nicklist-nick nick
+			      'mouse-face 'highlight
+			      'erc-nicklist-channel channel
+			      'help-echo balloon-text)
+	      "\n")))
+  (erc-nicklist-mode))
 
 
 (defun erc-nicklist ()

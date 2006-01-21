@@ -1,15 +1,9 @@
 ;;; erc-bbdb.el --- Integrating the BBDB into ERC
 
-;; Copyright (C) 2001,2002,2004 Free Software Foundation, Inc.
+;; Copyright (C) 2001,2002,2004,2005 Free Software Foundation, Inc.
 
 ;; Author: Andreas Fuchs <asf@void.at>
 ;; Maintainer: Mario Lang <mlang@delysid.org>
-;; Changes by Edgar Gonçalves <edgar.goncalves@inesc-id.pt>
-;; May 31 2005:
-;;     - new variable: erc-bbdb-bitlbee-name-field - the field name for the
-;;       msn/icq/etc nick
-;;     - nick doesn't go the the name. now it asks for an existing record to
-;;       merge with. If none, then create a new one with the nick as name.
 
 ;; This is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -38,6 +32,13 @@
 
 ;; Andreas Fuchs <asf@void.at> wrote zenirc-bbdb-whois.el, which was
 ;; adapted for ERC by Mario Lang <mlang@delysid.org>.
+
+;; Changes by Edgar Gonçalves <edgar.goncalves@inesc-id.pt>
+;; May 31 2005:
+;;     - new variable: erc-bbdb-bitlbee-name-field - the field name for the
+;;       msn/icq/etc nick
+;;     - nick doesn't go the the name. now it asks for an existing record to
+;;       merge with. If none, then create a new one with the nick as name.
 
 ;;; Code:
 
@@ -157,7 +158,7 @@ their \"displayed name\"."
 (defun erc-bbdb-whois (proc parsed)
   (let (; We could use server name too, probably
 	(nick (second (erc-response.command-args parsed)))
-	(name (erc-response.contents parsed)) ;; msn nick!
+	(name (erc-response.contents parsed))
 	(finger-host (concat (third (erc-response.command-args parsed))
 			     "@"
 			     (fourth (erc-response.command-args parsed)))))
