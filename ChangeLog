@@ -1,3 +1,10 @@
+2006-01-21  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-decode-parsed-server-response): Docfix.
+
+	* erc-nicklist.el: Update copyright notice.  Don't require 'cl.
+	(erc-nicklist-menu): Change use of caadr to (car (cadr ...)).
+
 2006-01-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-process-sentinel-1): Remove attempt to

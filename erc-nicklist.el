@@ -1,6 +1,6 @@
 ;;; erc-nicklist.el --- Display channel nicknames in a side buffer.
 
-;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 
 ;; Filename: erc-nicklist.el
 ;; Author: Lawrence Mitchell <wence@gmx.li>
@@ -81,7 +81,6 @@
 (condition-case nil
     (require 'erc-bbdb)
   (error nil))
-(require 'cl)
 
 (defconst erc-nicklist-version "$Revision: 1.8 $"
   "ERC Nicklist version.")
@@ -373,7 +372,7 @@ Deletes WINDOW and stops updating the nicklist buffer."
 ARG is a parametrized event (see `interactive')."
   (interactive "e")
   (let* ((point (nth 1 (cadr arg)))
-	 (window (caadr arg))
+	 (window (car (cadr arg)))
 	 (buffer (window-buffer window)))
     (with-current-buffer buffer
       (erc-nicklist-call-erc-command

@@ -773,7 +773,7 @@ PROCs `process-buffer' is `current-buffer' when this function is called."
   "Decode a pre-parsed PARSED-RESPONSE before it can be handled.
 
 If there is a channel name in `erc-response.command-args', decode
-`erc-response' acroding this channel name and
+`erc-response' according to this channel name and
 `erc-encoding-coding-alist', or use `erc-server-coding-system'
 for decoding."
   (let ((args (erc-response.command-args parsed-response))
