@@ -45,9 +45,9 @@ install-info: muse.info
 
 ** NEWS: Update for changes since 5.0.4.
 
-** [DONE] Source
+** Source
 
-*** [DONE] Remove dependency on cl package.
+*** Remove dependency on cl package.
 (eval-when-compile (require 'cl)) is acceptable.
 
 * 5.2 release (future)
