@@ -326,6 +326,25 @@ omitted, a default message listing FORM itself is used."
 			(erc-list* 'list (list 'quote form) sargs))))
 	  nil)))
 
+;; Provide a simpler replacement for `remove-if-not'
+(defun erc-remove-if-not (predicate seq)
+  "Remove all items not satisfying PREDICATE in SEQ.
+This is a non-destructive function; it makes a copy of SEQ to
+avoid corrupting the original SEQ."
+  (let (newseq)
+    (dolist (el seq)
+      (when (funcall predicate el)
+	(setq newseq (cons el newseq))))
+    (nreverse newseq)))
+
+;; Provide a simpler replacement for `gensym'.
+(defvar *erc-sym-counter* 0)
+(defun erc-gensym ()
+  "Generate a new uninterned symbol."
+  (let ((num (prog1 *erc-sym-counter*
+	       (setq *erc-sym-counter* (1+ *erc-sym-counter*)))))
+    (make-symbol (format "*erc-sym-%d*" num))))
+
 (provide 'erc-compat)
 
 ;;; erc-compat.el ends here

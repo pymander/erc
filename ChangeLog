@@ -10,6 +10,9 @@
 
 	* erc.el: Update copyright notice.
 	(erc-with-buffer): Docfix.
+	(erc-once-with-server-event, erc-once-with-server-event-global)
+	(erc-with-buffer, erc-with-all-buffers-of-server): Use erc-gensym
+	instead of gensym.
 
 	* erc-backend.el (erc-decode-parsed-server-response): Docfix.
 
@@ -18,9 +21,15 @@
 
 	* erc-compat.el (erc-const-expr-p, erc-list*, erc-assert): New
 	functions, the latter of which provides an `assert' equivalent.
+	(erc-remove-if-not): New function that provides a simple
+	implementation of `remove-if-not'.
+	(erc-gensym): New function that provides a simple implementation
+	of `gensym'.
 
 	* erc-dcc.el (erc-unpack-int, erc-dcc-send-filter)
-	(erc-dcc-get-filter): Use erc-assert.
+	(erc-dcc-get-filter): Use erc-assert instead of assert.
+	(pcomplete/erc-mode/DCC): Use erc-remove-if-not instead of
+	remove-if-not.
 
 	* erc-nicklist.el: Update copyright notice.
 	(erc-nicklist-menu): Change use of caadr to (car (cadr ...)).
@@ -30,6 +39,8 @@
 	that bitlbee names its channel "&bitlbee", this is trivial.
 	(erc-nicklist-insert-contents): Pass channel as specified above.
 	Don't try to determine whether we are on bitlbee here.
+	(erc-nicklist-channel-users-info): Use erc-remove-if-not instead
+	of remove-if-not.
 
 	* erc-track.el: Use erc-assert.
 

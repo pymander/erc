@@ -1240,7 +1240,7 @@ capabilities."
   (unless (erc-server-buffer-p)
     (error
      "You should only run `erc-once-with-server-event' in a server buffer"))
-  (let ((fun (gensym))
+  (let ((fun (erc-gensym))
 	(hook (erc-get-hook event)))
      (put fun 'erc-original-buffer (current-buffer))
      (fset fun `(lambda (proc parsed)
@@ -1263,7 +1263,7 @@ not be run.
 
 When FORMS execute, the current buffer is the server buffer associated with the
 connection over which the data was received that triggered EVENT."
-  (let ((fun (gensym))
+  (let ((fun (erc-gensym))
 	(hook (erc-get-hook event)))
      (fset fun `(lambda (proc parsed)
 		  (remove-hook ',hook ',fun)
@@ -1539,10 +1539,10 @@ See `erc-get-buffer' for details.
 See also `with-current-buffer'.
 
 \(fn (TARGET [PROCESS]) BODY...)"
-  (let ((buf (gensym))
-	(proc (gensym))
-	(target (gensym))
-	(process (gensym)))
+  (let ((buf (erc-gensym))
+	(proc (erc-gensym))
+	(target (erc-gensym))
+	(process (erc-gensym)))
     `(let* ((,target ,(car spec))
 	    (,process ,(cadr spec))
 	    (,buf (if (bufferp ,target)
@@ -1606,8 +1606,8 @@ FORMS will be evaluated in all buffers having the process PROCESS and
 where PRED matches or in all buffers of the server process if PRED is
 nil."
   ;; Make the evaluation have the correct order
-  (let ((pre (gensym))
-	(pro (gensym)))
+  (let ((pre (erc-gensym))
+	(pro (erc-gensym)))
     `(let ((,pro ,process)
 	   (,pre ,pred))
        (mapcar (lambda (buffer)

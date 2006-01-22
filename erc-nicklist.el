@@ -386,13 +386,15 @@ list has all the voiced users according to
   (let* ((nicks (erc-sort-channel-users-alphabetically
 		 (with-current-buffer channel (erc-get-channel-user-list)))))
     (if erc-nicklist-voiced-position
-	(let ((voiced-nicks (remove-if #'(lambda (x)
-					   (erc-channel-user-voice (cdr x)))
-				       nicks))
-	      (devoiced-nicks (remove-if-not #'(lambda (x)
-						 (erc-channel-user-voice
-						  (cdr x)))
-					     nicks)))
+	(let ((voiced-nicks (erc-remove-if-not
+			     #'(lambda (x)
+				 (null (erc-channel-user-voice (cdr x))))
+			     nicks))
+	      (devoiced-nicks (erc-remove-if-not
+			       #'(lambda (x)
+				   (erc-channel-user-voice
+				    (cdr x)))
+			       nicks)))
 	  (cond ((eq erc-nicklist-voiced-position 'top)
 		 (append devoiced-nicks voiced-nicks))
 		((eq erc-nicklist-voiced-position 'bottom)

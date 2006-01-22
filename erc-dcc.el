@@ -373,32 +373,34 @@ where FOO is one of CLOSE, GET, SEND, LIST, CHAT, etc."
   (pcomplete-here
    (case (intern (downcase (pcomplete-arg 1)))
      (chat (mapcar (lambda (elt) (plist-get elt :nick))
-                   (remove-if-not
-                      (lambda (elt)
-                        (eq (plist-get elt :type) 'CHAT)) erc-dcc-list)))
+                   (erc-remove-if-not
+                    #'(lambda (elt)
+                        (eq (plist-get elt :type) 'CHAT))
+                    erc-dcc-list)))
      (close (remove-duplicates
              (mapcar (lambda (elt) (symbol-name (plist-get elt :type)))
                      erc-dcc-list) :test 'string=))
      (get (mapcar #'erc-dcc-nick
-                  (remove-if-not
-                   (lambda (elt)
-                     (eq (plist-get elt :type) 'GET)) erc-dcc-list)))
+                  (erc-remove-if-not
+                   #'(lambda (elt)
+                       (eq (plist-get elt :type) 'GET))
+                   erc-dcc-list)))
      (send (pcomplete-erc-all-nicks))))
   (pcomplete-here
    (case (intern (downcase (pcomplete-arg 2)))
      (get (mapcar (lambda (elt) (plist-get elt :file))
-                  (remove-if-not
-                   (lambda (elt)
-                     (and (eq (plist-get elt :type) 'GET)
-                          (erc-nick-equal-p (erc-extract-nick
-                                             (plist-get elt :nick))
-                                            (pcomplete-arg 1))))
+                  (erc-remove-if-not
+                   #'(lambda (elt)
+                       (and (eq (plist-get elt :type) 'GET)
+                            (erc-nick-equal-p (erc-extract-nick
+                                               (plist-get elt :nick))
+                                              (pcomplete-arg 1))))
                    erc-dcc-list)))
      (close (mapcar #'erc-dcc-nick
-                    (remove-if-not
-                     (lambda (elt)
-                       (eq (plist-get elt :type)
-                           (intern (upcase (pcomplete-arg 1)))))
+                    (erc-remove-if-not
+                     #'(lambda (elt)
+                         (eq (plist-get elt :type)
+                             (intern (upcase (pcomplete-arg 1)))))
                      erc-dcc-list)))
      (send (pcomplete-entries)))))
 
