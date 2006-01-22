@@ -36,7 +36,7 @@ erc-auto.el: erc-auto.in $(SOURCE)
 	rm -f erc-auto.elc
 	$(EMACS) -q $(SITEFLAG) -batch \
 		-l $(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-auto \
-		-f generate-autoloads \
+		-f erc-generate-autoloads \
 		$(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-auto.el .
 
 %.elc: %.el

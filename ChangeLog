@@ -1,8 +1,14 @@
 2006-01-21  Michael Olson  <mwolson@gnu.org>
 
+	* Makefile (erc-auto.el): Call erc-generate-autoloads rather than
+	generate-autoloads.
+
 	* NEWS: Add items from 2005-01-01 to 2005-08-13.
 
 	* debian/copyright (Copyright): Update.
+
+	* erc-auto.in (erc-generate-autoloads): Rename from
+	generate-autoloads.
 
 	* erc.el, erc-backend.el, erc-match.el, erc-netsplit.el,
 	erc-nicklist.el, erc-nickserv.el, erc-notify.el, erc-pcomplete.el:
@@ -13,6 +19,7 @@
 	(erc-once-with-server-event, erc-once-with-server-event-global)
 	(erc-with-buffer, erc-with-all-buffers-of-server): Use erc-gensym
 	instead of gensym.
+	(erc-banlist-update): Use erc-delete-if instead of delete-if.
 
 	* erc-backend.el (erc-decode-parsed-server-response): Docfix.
 
@@ -25,6 +32,8 @@
 	implementation of `remove-if-not'.
 	(erc-gensym): New function that provides a simple implementation
 	of `gensym'.
+	(erc-delete-if): New function that provides a simple
+	implementation of `delete-if'.
 
 	* erc-dcc.el (erc-unpack-int, erc-dcc-send-filter)
 	(erc-dcc-get-filter): Use erc-assert instead of assert.

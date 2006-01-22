@@ -326,6 +326,26 @@ omitted, a default message listing FORM itself is used."
 			(erc-list* 'list (list 'quote form) sargs))))
 	  nil)))
 
+;; Provide a simpler replacement for `delete-if'
+(defun erc-delete-if (predicate seq)
+  "Remove all items satisfying PREDICATE in SEQ.
+This is a destructive function: it reuses the storage of SEQ
+whenever possible."
+  ;; remove from car
+  (while (when (funcall predicate (car seq))
+	   (setq seq (cdr seq))))
+  ;; remove from cdr
+  (let ((ptr seq)
+	(next (cdr seq)))
+    (while next
+      (when (funcall predicate (car next))
+	(setcdr ptr (if (consp next)
+			(cdr next)
+		      nil)))
+      (setq ptr (cdr ptr))
+      (setq next (cdr ptr))))
+  seq)
+
 ;; Provide a simpler replacement for `remove-if-not'
 (defun erc-remove-if-not (predicate seq)
   "Remove all items not satisfying PREDICATE in SEQ.

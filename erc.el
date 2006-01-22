@@ -3960,7 +3960,7 @@ See also: `erc-echo-notice-in-user-buffers',
 		((string-match "^-" mode)
 		 ;; Remove the unbanned masks from the ban list
 		 (setq erc-channel-banlist
-		       (delete-if
+		       (erc-delete-if
 			(lambda (y)
 			  (member (upcase (cdr y))
 				  (mapcar #'upcase (cdr (split-string mode)))))
