@@ -30,6 +30,7 @@
 (require 'erc)
 (require 'erc-nets)
 (eval-when-compile
+ (require 'cl)
  (require 'pcomplete))
 
 ;;;; Customizable variables

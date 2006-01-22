@@ -30,6 +30,7 @@
 ;;; Code:
 
 (require 'erc)
+(eval-when-compile (require 'cl))
 
 (defconst erc-netsplit-version "$Revision: 1.14 $"
   "ERC netsplit version.")

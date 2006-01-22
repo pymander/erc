@@ -4,16 +4,25 @@
 
 	* debian/copyright (Copyright): Update.
 
-	* erc.el: Use eval-when-compile for 'cl.  Update copyright notice.
+	* erc.el, erc-backend.el, erc-match.el, erc-netsplit.el,
+	erc-nicklist.el, erc-nickserv.el, erc-notify.el, erc-pcomplete.el:
+	Use (eval-when-compile 'cl), so that compilation doesn't fail.
+
+	* erc.el: Update copyright notice.
 	(erc-with-buffer): Docfix.
 
-	* erc-backend.el: Use eval-when-compile for 'cl.
-	(erc-decode-parsed-server-response): Docfix.
+	* erc-backend.el (erc-decode-parsed-server-response): Docfix.
 
 	* erc-bbdb.el: Update copyright years.
 	(erc-bbdb-whois): Remove overexuberant comment.
 
-	* erc-nicklist.el: Update copyright notice.  Don't require 'cl.
+	* erc-compat.el (erc-const-expr-p, erc-list*, erc-assert): New
+	functions, the latter of which provides an `assert' equivalent.
+
+	* erc-dcc.el (erc-unpack-int, erc-dcc-send-filter)
+	(erc-dcc-get-filter): Use erc-assert.
+
+	* erc-nicklist.el: Update copyright notice.
 	(erc-nicklist-menu): Change use of caadr to (car (cadr ...)).
 	(erc-nicklist-bitlbee-connected-p): Remove.
 	(erc-nicklist-insert-medium-name-or-icon): Accept channel
@@ -21,6 +30,8 @@
 	that bitlbee names its channel "&bitlbee", this is trivial.
 	(erc-nicklist-insert-contents): Pass channel as specified above.
 	Don't try to determine whether we are on bitlbee here.
+
+	* erc-track.el: Use erc-assert.
 
 2006-01-19  Michael Olson  <mwolson@gnu.org>
 

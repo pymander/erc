@@ -204,7 +204,7 @@ compared with `erc-nick-equal-p' which is IRC case-insensitive."
   (let ((len (length str))
         (num 0)
         (count 0))
-    (assert (<= len 4)) ;; this isn't going to fit in elisp bounds
+    (erc-assert (<= len 4)) ;; this isn't going to fit in elisp bounds
     (while (< count len)
       (setq num (+ num (lsh (aref str (- len count 1)) (* 8 count))))
       (setq count (1+ count)))
@@ -707,7 +707,7 @@ bytes sent."
         (length string)))))
 
 (defun erc-dcc-send-filter (proc string)
-  (assert (= (% (length string) 4) 0))
+  (erc-assert (= (% (length string) 4) 0))
   (let* ((size (erc-unpack-int (substring string (- (length string) 4))))
          (elt (erc-dcc-member :peer proc))
          (parent (plist-get elt :parent))
@@ -862,7 +862,7 @@ rather than every 1024 byte block, but nobody seems to care."
     (insert (string-make-unibyte str))
 
     (setq erc-dcc-byte-count (+ (length str) erc-dcc-byte-count))
-    (assert (= erc-dcc-byte-count (1- (point-max))))
+    (erc-assert (= erc-dcc-byte-count (1- (point-max))))
     (and erc-verbose-dcc
          (erc-display-message
           nil 'notice erc-server-process

@@ -43,6 +43,7 @@
 (require 'erc)
 (require 'erc-compat)
 (require 'time-date)
+(eval-when-compile (require 'cl))
 
 (defconst erc-pcomplete-version "$Revision: 1.31 $"
   "ERC pcomplete mode revision")

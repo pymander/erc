@@ -81,6 +81,7 @@
 (condition-case nil
     (require 'erc-bbdb)
   (error nil))
+(eval-when-compile (require 'cl))
 
 (defconst erc-nicklist-version "$Revision: 1.8 $"
   "ERC Nicklist version.")
