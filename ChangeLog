@@ -2,8 +2,6 @@
 
 	* NEWS: Add items from 2005-01-01 to 2005-08-13.
 
-	* FOR-RELEASE (Source): Mark "Remove cl dependency" as DONE.
-
 	* debian/copyright (Copyright): Update.
 
 	* erc.el: Use eval-when-compile for 'cl.  Update copyright notice.
