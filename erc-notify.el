@@ -180,11 +180,10 @@ nick from `erc-last-ison' to prevent any further notifications."
   (let ((nick (erc-extract-nick (erc-response.sender parsed))))
     (when (and (erc-member-ignore-case nick erc-notify-list)
 	       (erc-member-ignore-case nick erc-last-ison))
-      (setq erc-last-ison (delete (find nick erc-last-ison
-					:test #'(lambda (x y)
-						  (string= (erc-downcase x)
-							   (erc-downcase y))))
-				  erc-last-ison))
+      (setq erc-last-ison (erc-delete-if `(lambda (el)
+					    (string= ,(erc-downcase nick)
+						     (erc-downcase el)))
+					 erc-last-ison))
       (run-hook-with-args 'erc-notify-signoff-hook
 			  (or erc-server-announced-name erc-session-server)
 			  nick)

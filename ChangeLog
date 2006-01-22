@@ -1,5 +1,7 @@
 2006-01-21  Michael Olson  <mwolson@gnu.org>
 
+	* FOR-RELEASE (Source): Mark cl task as done.
+
 	* Makefile (erc-auto.el): Call erc-generate-autoloads rather than
 	generate-autoloads.
 
@@ -14,9 +16,11 @@
 	erc-server-process-alive instead of erc-process-alive.
 
 	* erc.el, erc-backend.el, erc-ezbounce.el, erc-list.el,
-	erc-match.el, erc-netsplit.el, erc-nicklist.el, erc-nickserv.el,
-	erc-notify.el, erc-pcomplete.el: Use (eval-when-compile 'cl), so
-	that compilation doesn't fail.
+	erc-log.el, erc-match.el, erc-nets.el, erc-netsplit.el,
+	erc-nicklist.el, erc-nickserv.el, erc-notify.el, erc-pcomplete.el:
+	Use (eval-when-compile 'cl), so that compilation doesn't fail.
+
+	* erc-fill.el, erc-truncate.el: Whitespace munging.
 
 	* erc.el: Update copyright notice.  Remove eval-after-load code.
 	(erc-with-buffer): Docfix.
@@ -37,6 +41,9 @@
 	* erc-bbdb.el: Update copyright years.
 	(erc-bbdb-whois): Remove overexuberant comment.
 
+	* erc-button.el: Require erc-fill, since we make liberal use of
+	`erc-fill-column'.
+
 	* erc-compat.el (erc-const-expr-p, erc-list*, erc-assert): New
 	functions, the latter of which provides an `assert' equivalent.
 	(erc-remove-if-not): New function that provides a simple
@@ -47,11 +54,21 @@
 	implementation of `delete-if'.
 	(erc-member-if): New function that provides a simple
 	implementation of `member-if'.
+	(field-end): Remove this, since it is unused, and later versions
+	of XEmacs have this function already.
+	(erc-function-arglist): Moved here from erc.el.
+	(erc-delete-dups): New compatibility function for dealing with
+	XEmacs.
+	(erc-subseq): New function copied from cl-extra.el.
 
-	* erc-dcc.el (erc-unpack-int, erc-dcc-send-filter)
+	* erc-dcc.el: Require pcomplete during compilation to avoid
+	compiler warnings.
+	(erc-unpack-int, erc-dcc-send-filter)
 	(erc-dcc-get-filter): Use erc-assert instead of assert.
 	(pcomplete/erc-mode/DCC): Use erc-remove-if-not instead of
 	remove-if-not.
+
+	* erc-match.el (erc-log-matches): Fix compiler warning.
 
 	* erc-nicklist.el: Update copyright notice.
 	(erc-nicklist-menu): Change use of caadr to (car (cadr ...)).
@@ -66,8 +83,14 @@
 	(erc-nicklist-search-for-nick): Use erc-member-if instead of
 	member-if.
 
+	* erc-notify.el (erc-notify-QUIT): Use erc-delete-if with a
+	partially-evaluated lambda expression instead of `delete' and
+	`find'.
+
 	* erc-track.el: Use erc-assert.
 	(erc-track-modified-channels): Remove use of `return'.
+	(erc-track-modified-channels): Use `cadr' instead of `second',
+	since otherwise we would need yet another eval-when-compile line.
 
 2006-01-19  Michael Olson  <mwolson@gnu.org>
 

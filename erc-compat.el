@@ -136,17 +136,6 @@ See `erc-encoding-coding-alist'."
 	"Return S unchanged."
 	s)))))
 
-;;; fields: XEmacs seems to lack them completely
-(if (not (fboundp 'field-end))
-    (defun field-end (pos &optional ignored)
-      (save-excursion
-	(let ((field (get-text-property pos 'field)))
-	  (goto-char pos)
-	  (while (and field
-		      (eq field (get-text-property (point) 'field)))
-	    (forward-char))
-	  (point)))))
-
 (if (not (fboundp 'propertize))
     (defun erc-propertize (string &rest props)
       (let ((string (copy-sequence string)))
@@ -173,6 +162,37 @@ See `erc-encoding-coding-alist'."
 	   (not (fboundp 'view-mode-enter)))
       'view-mode
     'view-mode-enter))
+
+;; if we're in emacs21 CVS, we use help-function-arglist which is more
+;; sophisticated and can handle subrs, etc
+(if (fboundp 'help-function-arglist)
+    (defalias 'erc-function-arglist 'help-function-arglist)
+  (defun erc-function-arglist (fun)
+    "Returns the arglist signature of FUN"
+    (let ((def (symbol-function fun)))
+      (ignore-errors
+	;; load an autoloaded function first
+	(when (equal 'autoload (car-safe def))
+	  (load (second def))
+	  (setq def (symbol-function fun)))
+	(if (listp def)
+	    (second def)
+	  (format "[Arglist not available, try %s instead]"
+		  (substitute-command-keys "\\[describe-function]")))))))
+
+;; XEmacs doesn't have `delete-dups'.  Taken from subr.el.
+(if (fboundp 'delete-dups)
+    (defalias 'erc-delete-dups 'delete-dups)
+  (defun erc-delete-dups (list)
+    "Destructively remove `equal' duplicates from LIST.
+Store the result in LIST and return it.  LIST must be a proper list.
+Of several `equal' occurrences of an element in LIST, the first
+one is kept."
+    (let ((tail list))
+      (while tail
+	(setcdr tail (delete (car tail) (cdr tail)))
+	(setq tail (cdr tail))))
+    list))
 
 ;;; XEmacs has `replace-in-string', Emacs has `replace-regexp-in-string':
 
@@ -375,6 +395,32 @@ avoid corrupting the original SEQ."
   (let ((num (prog1 *erc-sym-counter*
 	       (setq *erc-sym-counter* (1+ *erc-sym-counter*)))))
     (make-symbol (format "*erc-sym-%d*" num))))
+
+;; Copied from cl-extra.el
+(defun erc-subseq (seq start &optional end)
+  "Return the subsequence of SEQ from START to END.
+If END is omitted, it defaults to the length of the sequence.
+If START or END is negative, it counts from the end."
+  (if (stringp seq) (substring seq start end)
+    (let (len)
+      (and end (< end 0) (setq end (+ end (setq len (length seq)))))
+      (if (< start 0) (setq start (+ start (or len (setq len (length seq))))))
+      (cond ((listp seq)
+	     (if (> start 0) (setq seq (nthcdr start seq)))
+	     (if end
+		 (let ((res nil))
+		   (while (>= (setq end (1- end)) start)
+		     (push (pop seq) res))
+		   (nreverse res))
+	       (copy-sequence seq)))
+	    (t
+	     (or end (setq end (or len (length seq))))
+	     (let ((res (make-vector (max (- end start) 0) nil))
+		   (i 0))
+	       (while (< start end)
+		 (aset res i (aref seq start))
+		 (setq i (1+ i) start (1+ start)))
+	       res))))))
 
 (provide 'erc-compat)
 

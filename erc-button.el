@@ -41,6 +41,7 @@
 
 (require 'erc)
 (require 'wid-edit)
+(require 'erc-fill)
 
 ;;; Minor Mode
 
@@ -354,7 +355,7 @@ REGEXP is the regular expression which matched for this button."
           (list 'rear-nonsticky t)
           (and data (list 'erc-data data))))
   (widget-convert-button 'link from to :action 'erc-button-press-button
-			 :suppress-face t
+                         :suppress-face t
                          ;; Make XEmacs use our faces.
                          :button-face (if nick-p
                                           erc-button-nickname-face
@@ -498,3 +499,6 @@ and `apropos' for other symbols."
 (provide 'erc-button)
 
 ;;; erc-button.el ends here
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:

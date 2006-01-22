@@ -36,7 +36,8 @@
   :group 'erc)
 
 (defcustom erc-max-buffer-size 30000
-  "*Maximum size in chars of each ERC buffer.  Used only when auto-truncation is enabled.
+  "*Maximum size in chars of each ERC buffer.
+Used only when auto-truncation is enabled.
 \(see `erc-truncate-buffer' and `erc-insert-post-hook')."
   :group 'erc-truncate
   :type 'integer)
@@ -78,22 +79,22 @@ region is logged if `erc-logging-enabled' returns non-nil."
 	  (goto-char end)
 	  (beginning-of-line)
 	  (setq end (point))
- 	  ;; try to save the current buffer using
- 	  ;; `erc-save-buffer-in-logs'.  We use this, in case the
- 	  ;; user has both `erc-save-buffer-in-logs' and
- 	  ;; `erc-truncate-buffer' in `erc-insert-post-hook'.  If
- 	  ;; this is the case, only the non-saved part of the current
- 	  ;; buffer should be saved.  Rather than appending the
- 	  ;; deleted part of the buffer to the log file.
- 	  ;;
- 	  ;; Alternatively this could be made conditional on:
- 	  ;; (not (memq 'erc-save-buffer-in-logs
- 	  ;;             erc-insert-post-hook))
- 	  ;; Comments?
-          (when (and (boundp 'erc-enable-logging)
-                     erc-enable-logging
-                     (erc-logging-enabled buffer))
-            (erc-save-buffer-in-logs))
+	  ;; try to save the current buffer using
+	  ;; `erc-save-buffer-in-logs'.  We use this, in case the
+	  ;; user has both `erc-save-buffer-in-logs' and
+	  ;; `erc-truncate-buffer' in `erc-insert-post-hook'.  If
+	  ;; this is the case, only the non-saved part of the current
+	  ;; buffer should be saved.  Rather than appending the
+	  ;; deleted part of the buffer to the log file.
+	  ;;
+	  ;; Alternatively this could be made conditional on:
+	  ;; (not (memq 'erc-save-buffer-in-logs
+	  ;;             erc-insert-post-hook))
+	  ;; Comments?
+	  (when (and (boundp 'erc-enable-logging)
+		     erc-enable-logging
+		     (erc-logging-enabled buffer))
+	    (erc-save-buffer-in-logs))
 	  ;; disable undoing for the truncating
 	  (buffer-disable-undo)
 	  (let ((inhibit-read-only t))
@@ -109,3 +110,8 @@ Meant to be used in hooks, like `erc-insert-post-hook'."
 
 (provide 'erc-truncate)
 ;;; erc-truncate.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:

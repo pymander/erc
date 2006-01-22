@@ -99,8 +99,8 @@ function.  Narrowing to the region in question is in effect while your
 function is called."
   :group 'erc-fill
   :type '(choice (const :tag "Variable Filling" erc-fill-variable)
-		 (const :tag "Static Filling" erc-fill-static)
-		 function))
+                 (const :tag "Static Filling" erc-fill-static)
+                 function))
 
 (defcustom erc-fill-static-center 27
   "Column around which all statically filled messages will be
@@ -137,7 +137,9 @@ You can put this on `erc-insert-modify-hook' and/or `erc-send-modify-hook'."
     (let ((nick (match-string 1)))
         (let ((fill-column (- erc-fill-column (erc-timestamp-offset)))
               (fill-prefix (make-string erc-fill-static-center 32)))
-          (insert (make-string (max 0 (- erc-fill-static-center (length nick) 1)) 32))
+          (insert (make-string (max 0 (- erc-fill-static-center
+                                         (length nick) 1))
+                               32))
           (erc-fill-regarding-timestamp))
         (erc-restore-text-properties))))
 
@@ -184,7 +186,8 @@ You can put this on `erc-insert-modify-hook' and/or `erc-send-modify-hook'."
 
 (defun erc-restore-text-properties ()
   "Restore the property 'erc-parsed for the region."
-  (let* ((parsed-posn (text-property-not-all (point-min) (point-max) 'erc-parsed nil))
+  (let* ((parsed-posn (text-property-not-all (point-min) (point-max)
+                                             'erc-parsed nil))
          (parsed-prop (when parsed-posn
                         (get-text-property parsed-posn 'erc-parsed))))
     (put-text-property (point-min) (point-max) 'erc-parsed parsed-prop)))
@@ -192,3 +195,6 @@ You can put this on `erc-insert-modify-hook' and/or `erc-send-modify-hook'."
 (provide 'erc-fill)
 
 ;;; erc-fill.el ends here
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:

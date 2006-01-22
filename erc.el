@@ -1628,7 +1628,8 @@ If `erc-track-mode' is in enabled, put the last element of
 Due to some yet unresolved reason, global function `iswitchb-mode'
 needs to be active for this function to work."
   (interactive "P")
-  (require 'iswitchb)
+  (eval-when-compile
+    (require 'iswitchb))
   (let ((iswitchb-make-buflist-hook
 	 (lambda ()
 	   (setq iswitchb-temp-buflist
@@ -1640,7 +1641,9 @@ needs to be active for this function to work."
     (switch-to-buffer
      (iswitchb-read-buffer
       "Switch-to: "
-      (buffer-name (caar (last erc-modified-channels-alist)))
+      (if (boundp 'erc-modified-channels-alist)
+	  (buffer-name (caar (last erc-modified-channels-alist)))
+	nil)
       t))))
 
 (defun erc-channel-list (proc)
@@ -2330,23 +2333,6 @@ See also `erc-server-send'."
 			 " \n"
 		       line)))
   (erc-server-send line force target))
-
-;; if we're in emacs21 CVS, we use help-function-arglist which is more
-;; sophisticated and can handle subrs, etc
-(if (fboundp 'help-function-arglist)
-    (defalias 'erc-function-arglist 'help-function-arglist)
-  (defun erc-function-arglist (fun)
-    "Returns the arglist signature of FUN"
-    (let ((def (symbol-function fun)))
-      (ignore-errors
-	;; load an autoloaded function first
-	(when (equal 'autoload (car-safe def))
-	  (load (second def))
-	  (setq def (symbol-function fun)))
-	(if (listp def)
-	    (second def)
-	  (format "[Arglist not available, try %s instead]"
-		  (substitute-command-keys "\\[describe-function]")))))))
 
 (defun erc-get-arglist (fun)
   "Return the argument list of a function without the parens."
@@ -3974,7 +3960,7 @@ See also: `erc-echo-notice-in-user-buffers',
   "Group LIST into sublists of length N."
   (cond ((null list) nil)
 	((null (nthcdr n list)) (list list))
-	(t (cons (subseq list 0 n) (erc-group-list (nthcdr n list) n)))))
+	(t (cons (erc-subseq list 0 n) (erc-group-list (nthcdr n list) n)))))
 
 
 ;;; MOTD numreplies

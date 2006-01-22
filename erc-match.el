@@ -565,8 +565,10 @@ deactivate/activate match logging in the latter. See
       (let ((line (format-spec erc-log-match-format
 		   (format-spec-make
 		    ?n nick
-		    ?t (format-time-string (or erc-timestamp-format
-					       "[%Y-%m-%d %H:%M] "))
+		    ?t (format-time-string
+			(or (and (boundp 'erc-timestamp-format)
+				 erc-timestamp-format)
+			    "[%Y-%m-%d %H:%M] "))
 		    ?c (or (erc-default-target) "")
 		    ?m message
 		    ?u nickuserhost))))

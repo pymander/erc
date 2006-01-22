@@ -700,7 +700,7 @@ is in `erc-mode'."
 				  (if old-face
 				      (cons old-face faces)
 				    faces))))
-		  (setcdr cell (cons (1+ (second cell)) new-face)))))
+		  (setcdr cell (cons (1+ (cadr cell)) new-face)))))
 	    ;; And display it
 	    (erc-modified-channels-display)))
       ;; Else if the active buffer is the current buffer, remove it

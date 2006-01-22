@@ -26,6 +26,7 @@
 ;;; Code:
 
 (require 'erc)
+(eval-when-compile (require 'cl))
 
 (defconst erc-nets-version "$Revision: 1.21 $"
   "ERC networks revision.")
@@ -777,11 +778,10 @@ As an example:
   (let* ((completion-ignore-case t)
 	 (net (intern
 	       (completing-read "Network: "
-				(remove-duplicates
+				(erc-delete-dups
 				 (mapcar (lambda (x)
 					   (list (symbol-name (nth 1 x))))
-					 erc-server-alist)
-				 :test #'equal))))
+					 erc-server-alist)))))
 	 (srv (assoc
 	       (completing-read "Server: "
 				(delq nil

@@ -52,6 +52,8 @@
 ;;; Code:
 
 (require 'erc)
+(eval-when-compile
+ (require 'pcomplete))
 
 (defconst erc-dcc-version "$Revision: 1.90 $"
   "ERC DCC revision")
