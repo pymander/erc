@@ -55,7 +55,7 @@
 (eval-when-compile
  (require 'pcomplete))
 
-(defconst erc-dcc-version "$Revision: 1.90 $"
+(defconst erc-dcc-version "$Revision: 1.93 $"
   "ERC DCC revision")
 
 (defgroup erc-dcc nil

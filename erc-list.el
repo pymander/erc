@@ -36,7 +36,7 @@
   (require 'overlay))
 (eval-when-compile (require 'cl))
 
-(defconst erc-list-version "$Revision: 1.44 $"
+(defconst erc-list-version "$Revision: 1.45 $"
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -94,7 +94,7 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-log-version "$Revision: 1.26 $"
+(defconst erc-log-version "$Revision: 1.27 $"
   "ERC log mode revision")
 
 (defgroup erc-log nil

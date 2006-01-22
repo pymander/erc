@@ -29,7 +29,7 @@
 
 (require 'erc)
 
-(defconst erc-autoaway-version "$Revision: 1.24 $"
+(defconst erc-autoaway-version "$Revision: 1.25 $"
   "ERC Autoaway revision.")
 
 (defgroup erc-autoaway nil
