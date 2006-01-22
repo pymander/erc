@@ -1,3 +1,9 @@
+2006-01-22  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-update-modules): Use `require' instead of `load',
+	but prevent it from causing errors, in order to preserve the
+	previous behavior.
+
 2006-01-21  Michael Olson  <mwolson@gnu.org>
 
 	* FOR-RELEASE (Source): Mark cl task as done.

@@ -1778,7 +1778,9 @@ removed from the list will be disabled."
        ((string= req "erc-services")
 	(setq req "erc-nickserv")
 	(setq mod 'services)))
-      (load req t)
+      (condition-case nil
+	  (require (intern req))
+	(error nil))
       (funcall (or (intern-soft (concat "erc-" (symbol-name mod) "-mode"))
 		   (error "`%s' is not a known ERC module" mod))
 	       1))))
