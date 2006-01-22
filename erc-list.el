@@ -34,6 +34,7 @@
 (require 'sort)
 (unless (fboundp 'make-overlay)
   (require 'overlay))
+(eval-when-compile (require 'cl))
 
 (defconst erc-list-version "$Revision: 1.44 $"
   "ERC channel list revision number")

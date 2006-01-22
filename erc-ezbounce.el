@@ -27,6 +27,7 @@
 ;;; Code:
 
 (require 'erc)
+(eval-when-compile (require 'cl))
 
 (defconst erc-ezb-version "$Revision: 1.11 $"
   "ERC EZBouncer revision.")

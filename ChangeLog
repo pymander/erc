@@ -10,16 +10,18 @@
 	* erc-auto.in (erc-generate-autoloads): Rename from
 	generate-autoloads.
 
-	* erc.el, erc-backend.el, erc-match.el, erc-netsplit.el,
-	erc-nicklist.el, erc-nickserv.el, erc-notify.el, erc-pcomplete.el:
-	Use (eval-when-compile 'cl), so that compilation doesn't fail.
+	* erc.el, erc-backend.el, erc-ezbounce.el, erc-list.el,
+	erc-match.el, erc-netsplit.el, erc-nicklist.el, erc-nickserv.el,
+	erc-notify.el, erc-pcomplete.el: Use (eval-when-compile 'cl), so
+	that compilation doesn't fail.
 
-	* erc.el: Update copyright notice.
+	* erc.el: Update copyright notice.  Remove eval-after-load code.
 	(erc-with-buffer): Docfix.
 	(erc-once-with-server-event, erc-once-with-server-event-global)
 	(erc-with-buffer, erc-with-all-buffers-of-server): Use erc-gensym
 	instead of gensym.
 	(erc-banlist-update): Use erc-delete-if instead of delete-if.
+	(erc): Call `erc-update-modules' here.
 
 	* erc-backend.el (erc-decode-parsed-server-response): Docfix.
 

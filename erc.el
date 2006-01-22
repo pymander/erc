@@ -1762,14 +1762,6 @@ removed from the list will be disabled."
 	      (repeat :tag "Others" :inline t symbol))
   :group 'erc)
 
-;; We use eval-after-load here to ensure recursive dependencies don't
-;; break things. E.g. we might want to require erc-foo.el which uses
-;; erc.el, so it should be loaded after this file is loaded.
-(eval-after-load "erc" '(and
-			 ;; Make sure we finished loading erc.
-			 (featurep 'erc)
-			 (erc-update-modules)))
-
 (defun erc-update-modules ()
   "Run this to enable erc-foo-mode for all modules in `erc-modules'."
   (let (req)
@@ -1887,6 +1879,7 @@ Returns the buffer for the given server or channel."
 	  (when erc-log-p
 	    (get-buffer-create (concat "*ERC-DEBUG: " server "*"))))
     (erc-determine-parameters server port nick full-name)
+    (erc-update-modules)
 
     ;; Saving log file on exit
     (run-hooks 'erc-connect-pre-hook)
