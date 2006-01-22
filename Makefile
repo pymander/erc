@@ -34,13 +34,13 @@ autoloads: erc-auto.el
 erc-auto.el: erc-auto.in $(SOURCE)
 	cp erc-auto.in erc-auto.el
 	rm -f erc-auto.elc
-	$(EMACS) -q $(SITEFLAG) -batch \
+	@$(EMACS) -q $(SITEFLAG) -batch \
 		-l $(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-auto \
 		-f erc-generate-autoloads \
 		$(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-auto.el .
 
 %.elc: %.el
-	$(EMACS) -q $(SITEFLAG) -batch \
+	@$(EMACS) -q $(SITEFLAG) -batch \
 		-l $(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-maint \
 		-f batch-byte-compile $<
 
