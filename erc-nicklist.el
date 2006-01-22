@@ -186,12 +186,12 @@ This is configured using `erc-nicklist-use-icons' and
 Seach for the BBDB record of this contact.  If not found, return nil."
   (when (boundp 'erc-bbdb-bitlbee-name-field)
     (let ((record (car
-		   (member-if
-		    (lambda (r)
-		      (let ((fingers (bbdb-record-finger-host r)))
-			(when fingers
-			  (string-match finger-host
-					(car (bbdb-record-finger-host r))))))
+		   (erc-member-if
+		    #'(lambda (r)
+			(let ((fingers (bbdb-record-finger-host r)))
+			  (when fingers
+			    (string-match finger-host
+					  (car (bbdb-record-finger-host r))))))
 		    (bbdb-records)))))
       (when record
 	(bbdb-get-field record erc-bbdb-bitlbee-name-field)))))

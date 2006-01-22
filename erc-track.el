@@ -681,9 +681,10 @@ is in `erc-mode'."
 	  (unless (and
 		   (or (eq erc-track-priority-faces-only 'all)
 		       (member this-channel erc-track-priority-faces-only))
-		   (not (dolist (f faces)
-			  (when (member f erc-track-faces-priority-list)
-			    (return t)))))
+		   (not (catch 'found
+			  (dolist (f faces)
+			    (when (member f erc-track-faces-priority-list)
+			      (throw 'found t))))))
 	    (if (not (assq (current-buffer) erc-modified-channels-alist))
 		;; Add buffer, faces and counts
 		(setq erc-modified-channels-alist

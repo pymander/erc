@@ -36,6 +36,8 @@
 	of `gensym'.
 	(erc-delete-if): New function that provides a simple
 	implementation of `delete-if'.
+	(erc-member-if): New function that provides a simple
+	implementation of `member-if'.
 
 	* erc-dcc.el (erc-unpack-int, erc-dcc-send-filter)
 	(erc-dcc-get-filter): Use erc-assert instead of assert.
@@ -52,8 +54,11 @@
 	Don't try to determine whether we are on bitlbee here.
 	(erc-nicklist-channel-users-info): Use erc-remove-if-not instead
 	of remove-if-not.
+	(erc-nicklist-search-for-nick): Use erc-member-if instead of
+	member-if.
 
 	* erc-track.el: Use erc-assert.
+	(erc-track-modified-channels): Remove use of `return'.
 
 2006-01-19  Michael Olson  <mwolson@gnu.org>
 

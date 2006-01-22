@@ -1,6 +1,6 @@
 ;;; erc-compat.el --- ERC compatibility code for XEmacs
 
-;; Copyright (C) 2002,2003,2005 Free Software Foundation, Inc.
+;; Copyright (C) 2002,2003,2005,2006 Free Software Foundation, Inc.
 
 ;; Author: Alex Schroeder <alex@gnu.org>
 ;; URL: http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient
@@ -325,6 +325,17 @@ omitted, a default message listing FORM itself is used."
 		  (list 'signal '(quote erc-assertion-failed)
 			(erc-list* 'list (list 'quote form) sargs))))
 	  nil)))
+
+;; Provide a simpler replacement for `member-if'
+(defun erc-member-if (predicate list)
+  "Find the first item satisfying PREDICATE in LIST.
+Return the sublist of LIST whose car matches."
+  (let ((ptr list))
+    (catch 'found
+      (while ptr
+	(when (funcall predicate (car ptr))
+	  (throw 'found ptr))
+	(setq ptr (cdr ptr))))))
 
 ;; Provide a simpler replacement for `delete-if'
 (defun erc-delete-if (predicate seq)
