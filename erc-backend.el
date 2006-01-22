@@ -1,6 +1,6 @@
 ;;; erc-backend.el --- Backend network communication for ERC
 
-;; Copyright (C) 2004,2005 Free Software Foundation, Inc.
+;; Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
 
 ;; Filename: erc-backend.el
 ;; Author: Lawrence Mitchell <wence@gmx.li>
@@ -97,6 +97,7 @@
 
 ;;; Code:
 
+(require 'erc-compat)
 (eval-when-compile (require 'cl))
 (autoload 'erc-with-buffer "erc" nil nil 'macro)
 (autoload 'erc-log "erc" nil nil 'macro)
@@ -420,6 +421,12 @@ Currently this is called by `erc-send-input'."
                           (erc-current-time))))))
            (current-buffer)))))
 
+(defun erc-server-process-alive ()
+  "Return non-nil when `erc-server-process' is open or running."
+  (and (boundp 'erc-server-process)
+       (processp erc-server-process)
+       (memq (process-status erc-server-process) '(run open))))
+
 ;;;; Connecting to a server
 
 (defun erc-server-connect (server port)
@@ -606,7 +613,8 @@ protection algorithm."
                    (or target (erc-default-target)))))
     (when (consp encoding)
       (setq encoding (car encoding)))
-    (if buf
+    (if (and buf
+             (erc-server-process-alive))
         (with-current-buffer buf
           (let ((str (concat string "\r\n")))
             (if forcep
@@ -653,11 +661,12 @@ protection algorithm."
           (erc-log-irc-protocol msg 'outbound)
           (erc-log (concat "erc-server-send-queue: "
                            msg "(" (buffer-name buffer) ")"))
-          ;; Set encoding just before sending the string
-          (when (fboundp 'set-process-coding-system)
-            (set-process-coding-system erc-server-process
-                                       'raw-text encoding))
-          (process-send-string erc-server-process msg)))
+          (when (erc-server-process-alive)
+            ;; Set encoding just before sending the string
+            (when (fboundp 'set-process-coding-system)
+              (set-process-coding-system erc-server-process
+                                         'raw-text encoding))
+            (process-send-string erc-server-process msg))))
       (when erc-server-flood-queue
         (setq erc-server-flood-timer
               (run-at-time 2 nil #'erc-server-send-queue buffer))))))

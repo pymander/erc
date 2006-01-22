@@ -450,7 +450,7 @@ See also: `erc-remove-server-user' and
 Removes all users in the current channel.  This is called by
 `erc-server-PART' and `erc-server-QUIT'."
   (when (and erc-server-connected
-	     (erc-process-alive)
+	     (erc-server-process-alive)
 	     (hash-table-p erc-channel-users))
     (maphash (lambda (nick cdata)
 	       (erc-remove-channel-user nick))
@@ -489,7 +489,7 @@ See also: `erc-sort-channel-users-by-activity'"
 
 (defun erc-get-server-nickname-list ()
   "Returns a list of known nicknames on the current server."
-    (if (erc-process-alive)
+    (if (erc-server-process-alive)
 	(with-current-buffer (erc-server-buffer)
 	  (let (nicks)
 	    (when (hash-table-p erc-server-users)
@@ -513,7 +513,7 @@ See also: `erc-sort-channel-users-by-activity'"
 
 (defun erc-get-server-nickname-alist ()
   "Returns an alist of known nicknames on the current server."
-    (if (erc-process-alive)
+    (if (erc-server-process-alive)
 	(with-current-buffer (erc-server-buffer)
 	  (let (nicks)
 	    (when (hash-table-p erc-server-users)
@@ -1926,7 +1926,7 @@ whether the connection is still alive.
 If no buffer matches, return nil."
   (erc-buffer-list
    (lambda ()
-     (and (erc-process-alive)
+     (and (erc-server-process-alive)
 	  (string= erc-session-server server)
 	  (erc-port-equal erc-session-port port)
 	  (erc-current-nick-p nick)))))
@@ -3080,7 +3080,7 @@ the message given by REASON."
   "Disconnect from all servers at once with the same quit REASON."
   (erc-with-all-buffers-of-server nil #'(lambda ()
 					  (and (erc-server-buffer-p)
-					       (erc-process-alive)))
+					       (erc-server-process-alive)))
 				  (erc-cmd-QUIT reason)))
 
 (defalias 'erc-cmd-GQ 'erc-cmd-GQUIT)
@@ -3954,9 +3954,10 @@ See also: `erc-echo-notice-in-user-buffers',
 		 ;; Remove the unbanned masks from the ban list
 		 (setq erc-channel-banlist
 		       (erc-delete-if
-			(lambda (y)
-			  (member (upcase (cdr y))
-				  (mapcar #'upcase (cdr (split-string mode)))))
+			#'(lambda (y)
+			    (member (upcase (cdr y))
+				    (mapcar #'upcase
+					    (cdr (split-string mode)))))
 			erc-channel-banlist)))
 		((string-match "^+" mode)
 		 ;; Add the banned mask(s) to the ban list
@@ -5698,10 +5699,10 @@ if `erc-away' is non-nil."
 		 ?p (erc-port-to-string erc-session-port)
 		 ?s (erc-format-target-and/or-server)
 		 ?t (erc-format-target)))
-	  (process-status (cond ((and (erc-process-alive)
+	  (process-status (cond ((and (erc-server-process-alive)
 				      (not erc-server-connected))
 				 ":connecting")
-				((erc-process-alive)
+				((erc-server-process-alive)
 				 "")
 				(t
 				 ": CLOSED"))))
@@ -6102,23 +6103,17 @@ or `erc-kill-buffer-hook' if any other buffer."
      (t
       (run-hooks 'erc-kill-buffer-hook)))))
 
-(defun erc-process-alive ()
-  "Return non-nil when `erc-server-process' is open or running."
-  (and (boundp 'erc-server-process)
-       (processp erc-server-process)
-       (memq (process-status erc-server-process) '(run open))))
-
 (defun erc-kill-server ()
   "Sends a QUIT command to the server when the server buffer is killed.
 This function should be on `erc-kill-server-hook'."
-  (when (erc-process-alive)
+  (when (erc-server-process-alive)
     (setq erc-server-quitting t)
     (erc-server-send (format "QUIT :%s" (funcall erc-quit-reason nil)))))
 
 (defun erc-kill-channel ()
   "Sends a PART command to the server when the channel buffer is killed.
 This function should be on `erc-kill-channel-hook'."
-  (when (erc-process-alive)
+  (when (erc-server-process-alive)
     (let ((tgt (erc-default-target)))
       (erc-server-send (format "PART %s :%s" tgt
 			       (funcall erc-part-reason nil))

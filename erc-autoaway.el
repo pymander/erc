@@ -173,8 +173,8 @@ on another net too."
 (defun erc-autoaway-possibly-set-away (current-time)
   "Set autoaway when `erc-auto-set-away' is true and the idletime is
 exceeds `erc-autoaway-idle-seconds'."
-  ;; A test for (erc-process-alive) is not necessary, because this
-  ;; function is called from `erc-timer-hook', which is called
+  ;; A test for (erc-server-process-alive) is not necessary, because
+  ;; this function is called from `erc-timer-hook', which is called
   ;; whenever the server sends something to the client.
   (when (and erc-auto-set-away
 	     (not (erc-away-p)))
@@ -192,7 +192,7 @@ exceeds `erc-autoaway-idle-seconds'."
   ;; Note that the idle timer runs, even when Emacs is inactive.  In
   ;; order to prevent flooding when we connect, we test for an
   ;; existing process.
-  (when (and (erc-process-alive)
+  (when (and (erc-server-process-alive)
 	     (not (erc-away-p)))
     (erc-cmd-GAWAY (format erc-autoaway-message idle-time))))
 
