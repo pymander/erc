@@ -222,6 +222,36 @@ and `erc-track-showcount'.
 Entries in this list should only happen for buffers where activity occurred
 while the buffer was not visible.")
 
+(defcustom erc-track-showcount nil
+  "If non-nil, count of unseen messages will be shown for each channel."
+  :type 'boolean
+  :group 'erc-track)
+
+(defcustom erc-track-showcount-string ":"
+  "The string to display between buffer name and the count in the mode line.
+The default is a colon, resulting in \"#emacs:9\"."
+  :type 'string
+  :group 'erc-track)
+
+(defcustom erc-track-switch-from-erc t
+  "If non-nil, `erc-track-switch-buffer' will return to the last non-erc buffer
+when there are no more active channels."
+  :type 'boolean
+  :group 'erc-track)
+
+(defcustom erc-track-switch-direction 'oldest
+  "Direction `erc-track-switch-buffer' should switch.
+
+  oldest      -  find oldest active buffer
+  newest      -  find newest active buffer
+  leastactive -  find buffer with least unseen messages
+  mostactive  -  find buffer with most unseen messages."
+  :group 'erc-track
+  :type '(choice (const oldest)
+		 (const newest)
+		 (const leastactive)
+		 (const mostactive)))
+
 
 (defun erc-track-remove-from-mode-line ()
   "Remove `erc-track-modified-channels' from the mode-line"
@@ -739,36 +769,6 @@ is in `erc-mode'."
 
 ;;; Buffer switching
 
-(defcustom erc-track-switch-from-erc t
-  "If non-nil, `erc-track-switch-buffer' will return to the last non-erc buffer
-when there are no more active channels."
-  :type 'boolean
-  :group 'erc-track)
-
-(defcustom erc-track-showcount nil
-  "If non-nil, count of unseen messages will be shown for each channel."
-  :type 'boolean
-  :group 'erc-track)
-
-(defcustom erc-track-showcount-string ":"
-  "The string to display between buffer name and the count in the mode line.
-The default is a colon, resulting in \"#emacs:9\"."
-  :type 'string
-  :group 'erc-track)
-
-(defcustom erc-track-switch-direction 'oldest
-  "Direction `erc-track-switch-buffer' should switch.
-
-  oldest      -  find oldest active buffer
-  newest      -  find newest active buffer
-  leastactive -  find buffer with least unseen messages
-  mostactive  -  find buffer with most unseen messages."
-  :group 'erc-track
-  :type '(choice (const oldest)
-		 (const newest)
-		 (const leastactive)
-		 (const mostactive)))
-
 (defvar erc-track-last-non-erc-buffer nil
   "Stores the name of the last buffer you were in before activating
 `erc-track-switch-buffers'")
@@ -785,7 +785,7 @@ That means the number of unseen messages in a channel."
 Negative arguments index in the opposite direction.  This direction is
 relative to `erc-track-switch-direction'"
   (let ((dir erc-track-switch-direction)
-        offset)
+	offset)
     (when (< arg 0)
       (setq dir (case dir
 		  (oldest      'newest)

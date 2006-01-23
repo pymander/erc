@@ -1,3 +1,8 @@
+2006-01-23  Michael Olson  <mwolson@gnu.org>
+
+	* erc-stamp.el, erc-track.el: Move some functions and options in
+	order to get rid of a few compiler warnings.
+
 2006-01-22  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-decode-string-from-target): Make sure that

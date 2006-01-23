@@ -157,17 +157,6 @@ or `erc-send-modify-hook'."
       (add-text-properties (point-min) (point-max)
 			   (list 'point-entered 'erc-echo-timestamp)))))
 
-(defun erc-insert-timestamp-left (string)
-  "Insert timestamps at the beginning of the line."
-  (goto-char (point-min))
-  (let* ((ignore-p (and erc-timestamp-only-if-changed-flag
-			(string-equal string erc-timestamp-last-inserted)))
-	 (len (length string))
-	 (s (if ignore-p (make-string len ? ) string)))
-    (unless ignore-p (setq erc-timestamp-last-inserted string))
-    (erc-put-text-property 0 len 'field 'erc-timestamp s)
-    (insert s)))
-
 (defvar erc-timestamp-last-inserted nil
   "Last timestamp inserted into the buffer.")
 (make-variable-buffer-local 'erc-timestamp-last-inserted)
@@ -191,6 +180,17 @@ the correct column."
   :type '(choice
 	  (integer :tag "Column number")
 	  (const :tag "Unspecified" nil)))
+
+(defun erc-insert-timestamp-left (string)
+  "Insert timestamps at the beginning of the line."
+  (goto-char (point-min))
+  (let* ((ignore-p (and erc-timestamp-only-if-changed-flag
+			(string-equal string erc-timestamp-last-inserted)))
+	 (len (length string))
+	 (s (if ignore-p (make-string len ? ) string)))
+    (unless ignore-p (setq erc-timestamp-last-inserted string))
+    (erc-put-text-property 0 len 'field 'erc-timestamp s)
+    (insert s)))
 
 (defun erc-insert-timestamp-right (string)
   "Insert timestamp on the right side of the screen.
