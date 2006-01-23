@@ -64,7 +64,8 @@ system."
 				  :buffer (generate-new-buffer "identd")
 				  :service port :server t :noquery t
 				  :filter 'erc-identd-filter))
-    (error "Your Emacs is too old; cannot start ident server")))
+    (open-network-stream-server "identd" (generate-new-buffer "identd")
+				port nil 'erc-identd-filter)))
 
 (defun erc-identd-stop (&rest ignore)
   (interactive)

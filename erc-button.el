@@ -1,7 +1,7 @@
 ;; erc-button.el --- A way of buttonizing certain things in ERC buffers
 
-;; Copyright (C) 1996,1997,1998,1999,2000,2001,2002,2003,2004,2006
-;;        Free Software Foundation, Inc.
+;; Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
+;;   2006 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@delysid.org>
 ;; Keywords: irc, button, url, regexp
@@ -325,21 +325,21 @@ REGEXP is the regular expression which matched for this button."
   ;; This could be a lot cleaner, but it works for me -- lawrence.
   (let (fill-column)
     (when (and erc-button-wrap-long-urls
-	       (string= regexp erc-button-url-regexp)
-	       (> (- to from)
-		  (setq fill-column (- (if (numberp erc-button-wrap-long-urls)
-					   erc-button-wrap-long-urls
-					 erc-fill-column)
-				       (length erc-fill-prefix)))))
+               (string= regexp erc-button-url-regexp)
+               (> (- to from)
+                  (setq fill-column (- (if (numberp erc-button-wrap-long-urls)
+                                           erc-button-wrap-long-urls
+                                         erc-fill-column)
+                                       (length erc-fill-prefix)))))
       (setq to (prog1 (point-marker) (insert ">"))
-	    from (prog2 (goto-char from) (point-marker) (insert "<URL: ")))
+            from (prog2 (goto-char from) (point-marker) (insert "<URL: ")))
       (let ((pos (copy-marker from)))
-	(while (> (- to pos) fill-column)
-	  (goto-char (+ pos fill-column))
-	  (insert "\n" erc-fill-prefix)	; This ought to figure out
+        (while (> (- to pos) fill-column)
+          (goto-char (+ pos fill-column))
+          (insert "\n" erc-fill-prefix) ; This ought to figure out
                                         ; what type of filling we're
                                         ; doing, and indent accordingly.
-	  (move-marker pos (point))))))
+          (move-marker pos (point))))))
   (if nick-p
       (when erc-button-nickname-face
         (erc-button-add-face from to erc-button-nickname-face))

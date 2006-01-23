@@ -43,7 +43,7 @@ install-info: muse.info
 	install -m 0644 muse.info $(INFODIR)/muse
 	$(INSTALLINFO) $(INFODIR)/muse
 
-** NEWS: Update for changes since 5.0.4.
+** [DONE] NEWS: Update for changes since 5.0.4.
 
 ** [DONE] Source
 

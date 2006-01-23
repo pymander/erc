@@ -1,7 +1,5 @@
 ERC NEWS                                                       -*- outline -*-
 
-Progress: 2005-08-14  Michael Olson  <mwolson@gnu.org>
-
 * Changes since ERC 5.0.4
 
 ** Improve XEmacs compatibility.
@@ -15,9 +13,11 @@ Renamed all variables that didn't start with "erc-".
 
   o `current-nick' is now `erc-server-current-nick'
 
-  o `last-sent-time' is now `erc-server-last-sent-time'
+  o `last-peers' is now `erc-server-last-peers'
 
   o `last-ping-time' is now `erc-server-last-ping-time'
+
+  o `last-sent-time' is now `erc-server-last-sent-time'
 
   o `lines-sent' is now `erc-server-lines-sent'
 
@@ -31,51 +31,86 @@ Renamed all variables that didn't start with "erc-".
 
 *** Load erc scripts in a safer way.
 
+*** Don't insert a timestemp if text at point is invisible.
+
+*** Don't hide messages from those in `erc-fools' by default.
+Color their nicks instead.
+
+*** Use a more foolproof method of encoding and decoding strings
+before sending to a channel.
+
 ** Backend changes
 
 *** Renamed some server-specific variables
 
   o `erc-announced-server-name' is now `erc-server-announced-name'
 
-  o `erc-process' is now `erc-server-process'
-
-  o `erc-default-coding-system' is now `erc-server-coding-system'
-
-  o `erc-previous-read' is now `erc-server-filter-data'
+  o `erc-auto-reconnect' is now `erc-server-auto-reconnect'
 
   o `erc-connect-function' is now `erc-server-connect-function'
 
-  o `erc-auto-reconnect' is now `erc-server-auto-reconnect'
+  o `erc-default-coding-system' is now `erc-server-coding-system'
+
+  o `erc-duplicate-timeout' is now `erc-server-duplicate-timeout'
+
+  o `erc-duplicates' is now `erc-server-duplicates'
+
+  o `erc-lag' is now `erc-server-lag'
+
+  o `erc-prevent-duplicates' is now `erc-server-prevent-duplicates'
+
+  o `erc-previous-read' is now `erc-server-filter-data'
+
+  o `erc-process' is now `erc-server-process'
+
+  o `erc-ping-handler' is now `erc-server-send-ping-handler'
+
+  o `erc-ping-interval' is now `erc-server-send-ping-interval'
 
 *** Renamed some functions
 
-  o `erc-split-command is now `erc-split-line'
+  o `erc-connect' is now `erc-server-connect'
 
   o `erc-process-filter' is now `erc-server-filter-function'
 
   o `erc-send-command' is now `erc-server-send'
 
-  o `erc-connect' is now `erc-server-connect'
-
   o `erc-send-single-line' is now `erc-send-input'
 
-*** New options
+  o `erc-setup-periodical-server-ping' is now
+    `erc-server-setup-periodical-server-ping'
 
-  o erc-split-line-length: The maximum line length of a single
-    message.
+  o `erc-split-command is now `erc-split-line'
+
+*** New options
 
   o erc-server-flood-margin, erc-server-flood-penalty: New options
     that allow tweaking of flood control.
 
-*** New variables
+  o erc-split-line-length: The maximum line length of a single
+    message.
 
-  o erc-server-processing-p: Indicate when we're currently processing
-    a message.
+*** New variables
 
   o erc-server-flood-last-message, erc-server-flood-queue,
     erc-server-flood-timer: Flood control.
 
-** Remove the unused `erc-kill-queries-on-quit' option.
+  o erc-server-processing-p: Indicate when we're currently processing
+    a message.
+
+*** Remove some options
+
+  o `erc-flood-limit'
+  o `erc-flood-limit2'
+
+** New customization group `erc-server' for dealing with IRC servers.
+
+** ERC can now be installed by doing `make install' from the commandline.
+
+** ERC no longer depends on cl.el.
+Only the macros in cl-macs.el are used.
+
+** Fix an edge case when quitting as new messages come in.
 
 ** Changes and additions to modules
 
@@ -93,11 +128,20 @@ to store this information.
 
 **** Don't prompt for a name on /JOIN or /NICK.
 
+*** Button (erc-button.el)
+
+**** Fix customization of `erc-button-alist'
+
+**** New option `erc-button-nickname-face' determines the face to use
+when coloring ERC nicknames.
+
 *** Channel tracking (erc-track.el)
 
 **** Remove channels from the modified channels list if not currently
 connected.  This should remove residue from the mode line after
 quitting ERC.
+
+**** Recognize buttonized text
 
 *** Highlighting (erc-match.el)
 
@@ -106,7 +150,7 @@ quitting ERC.
 **** Added the option of beeping when certain matches occur.
 Add `erc-beep-on-match' to `erc-text-matched-hook' to enable
 beeping.  Set the new variable `erc-beep-match-types' which match
-types make beeps.
+types that make beeps.
 
 *** Nicklist (erc-nicklist.el)
 

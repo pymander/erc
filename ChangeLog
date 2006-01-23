@@ -1,6 +1,9 @@
 2006-01-23  Michael Olson  <mwolson@gnu.org>
 
+	* ChangeLog.2005: Remove erroneous line.
+
 	* FOR-RELEASE: Make that the Makefile tweaking is complete.
+	(NEWS): Mark as done.
 
 	* Makefile (MANUAL): New option indicating the name of the manual.
 	(PREFIX, ELISPDIR, INFODIR): New options that specify the
@@ -16,8 +19,15 @@
 	(install-bin): Install compiled and source Lisp files.
 	(todo): Remove, since it seems pointless.
 
+	* NEWS: Update.
+
 	* erc-stamp.el, erc-track.el: Move some functions and options in
 	order to get rid of a few compiler warnings.
+
+	* erc-button.el: Munge whitespace.
+
+	* erc-identd.el (erc-identd-start): Instead of throwing an error,
+	just try to use the obsolete function.
 
 2006-01-22  Michael Olson  <mwolson@gnu.org>
 

@@ -318,7 +318,6 @@
 
 	* erc.el (erc-version-string): Changed to indicate we are running
 	the `more-backend' branch.
-	(erc-kill-queries-on-quit): Removed, since this is unused.
 	(erc-send-single-line): Implement flood control using
 	erc-split-line.
 	(erc-send-input): Move functionality of erc-send-single-line in
