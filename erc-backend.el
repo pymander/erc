@@ -579,6 +579,8 @@ This is determined via `erc-encoding-coding-alist' or
   "Decode STR as appropriate for TARGET.
 This is indicated by `erc-encoding-coding-alist', defaulting to the value of
 `erc-server-coding-system'."
+  (unless (stringp str)
+    (setq str ""))
   (let ((coding (erc-coding-system-for-target target)))
     (when (consp coding)
       (setq coding (cdr coding)))

@@ -1,3 +1,10 @@
+2006-01-22  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-decode-string-from-target): Make sure that
+	we have a string as an argument.  If not, coerce it to the empty
+	string.  Hopefully, this will work painlessly around an edge case
+	related to quitting ERC around the same time a message comes in.
+
 2006-01-22  Johan Bockgård  <bojohan@users.sourceforge.net>
 
 	* erc-track.el: Use `(eval-when-compile (require 'cl))' (for
