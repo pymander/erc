@@ -104,7 +104,7 @@
 
 ;;;; Variables and options
 
-(defconst erc-backend-version "$Revision: 1.41 $")
+(defconst erc-backend-version "$Revision: 1.42 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
@@ -868,12 +868,12 @@ Finds hooks by looking in the `erc-server-responses' hashtable."
                                         &optional extra-fn-doc extra-var-doc
                                         &rest fn-body)
   "Define an ERC handler hook/function pair.
-NAME is the reponse name as sent by the server (see the IRC RFC for
+NAME is the response name as sent by the server (see the IRC RFC for
 meanings).
 
 This creates:
- o a hook variable `erc-server-NAME-functions' initialised to 'erc-server-NAME.
- o a function `erc-server-NAME' with body FN-BODY.
+ - a hook variable `erc-server-NAME-functions' initialised to `erc-server-NAME'.
+ - a function `erc-server-NAME' with body FN-BODY.
 
 If ALIASES is non-nil, each alias in ALIASES is `defalias'ed to
 `erc-server-NAME'.

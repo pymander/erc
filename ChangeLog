@@ -1,3 +1,24 @@
+2006-01-22  Johan Bockgård  <bojohan@users.sourceforge.net>
+
+	* erc-track.el: Use `(eval-when-compile (require 'cl))' (for
+	`case'). Doc fixes.
+	(erc-find-parsed-property): Simplify.
+	(erc-track-get-active-buffer): Fix logic. Simplify.
+	(erc-track-switch-buffer): Remove unused variable `dir'. Simplify.
+
+	* erc-speak.el: Doc fixes.
+	(erc-speak-region): `propertize' --> `erc-propertize'.
+
+	* erc-dcc.el (erc-dcc-chat-parse-output): `propertize' -->
+	`erc-propertize'.
+
+	* erc-button.el (erc-button-add-button): Take erc-fill-prefix into
+	account when wrapping URLs.
+
+	* erc-bbdb.el (erc-bbdb-elide-display): Doc fix.
+
+	* erc-backend.el (define-erc-response-handler): Doc fix.
+
 2006-01-22  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-update-modules): Use `require' instead of `load',

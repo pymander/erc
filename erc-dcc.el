@@ -55,7 +55,7 @@
 (eval-when-compile
  (require 'pcomplete))
 
-(defconst erc-dcc-version "$Revision: 1.93 $"
+(defconst erc-dcc-version "$Revision: 1.94 $"
   "ERC DCC revision")
 
 (defgroup erc-dcc nil
@@ -1076,8 +1076,8 @@ other client."
         (setq posn (match-end 0))
         (erc-display-message
          nil nil proc
-         'dcc-chat-privmsg ?n (propertize erc-dcc-from 'face
-                                          'erc-nick-default-face) ?m line))
+         'dcc-chat-privmsg ?n (erc-propertize erc-dcc-from 'face
+                                              'erc-nick-default-face) ?m line))
       (setq erc-dcc-unprocessed-output (substring str posn)))))
 
 (defun erc-dcc-chat-buffer-killed ()

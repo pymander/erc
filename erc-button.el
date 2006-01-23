@@ -66,7 +66,7 @@
 
 ;;; Variables
 
-(defconst erc-button-version "$Revision: 1.69 $"
+(defconst erc-button-version "$Revision: 1.70 $"
   "ERC button mode revision.")
 
 (defface erc-button '((t (:bold t)))
@@ -323,24 +323,23 @@ REGEXP is the regular expression which matched for this button."
   ;; Really nasty hack to <URL: > ise urls, and line-wrap them if
   ;; they're going to be wider than `erc-fill-column'.
   ;; This could be a lot cleaner, but it works for me -- lawrence.
-  (when (and erc-button-wrap-long-urls
-             (string= regexp erc-button-url-regexp)
-             (> (- to from) (if (numberp erc-button-wrap-long-urls)
-                                erc-button-wrap-long-urls
-                              erc-fill-column)))
-    (let ((erc-fill-column (if (numberp erc-button-wrap-long-urls)
-                               erc-button-wrap-long-urls
-                             erc-fill-column))
-          pos)
+  (let (fill-column)
+    (when (and erc-button-wrap-long-urls
+	       (string= regexp erc-button-url-regexp)
+	       (> (- to from)
+		  (setq fill-column (- (if (numberp erc-button-wrap-long-urls)
+					   erc-button-wrap-long-urls
+					 erc-fill-column)
+				       (length erc-fill-prefix)))))
       (setq to (prog1 (point-marker) (insert ">"))
-            from   (prog2 (goto-char from) (point-marker) (insert "<URL: "))
-            pos (copy-marker from))
-      (while (> (- to pos) erc-fill-column)
-        (goto-char (+ pos erc-fill-column))
-        (insert "\n      ")             ; This ought to figure out
+	    from (prog2 (goto-char from) (point-marker) (insert "<URL: ")))
+      (let ((pos (copy-marker from)))
+	(while (> (- to pos) fill-column)
+	  (goto-char (+ pos fill-column))
+	  (insert "\n" erc-fill-prefix)	; This ought to figure out
                                         ; what type of filling we're
                                         ; doing, and indent accordingly.
-        (move-marker pos (point)))))
+	  (move-marker pos (point))))))
   (if nick-p
       (when erc-button-nickname-face
         (erc-button-add-face from to erc-button-nickname-face))

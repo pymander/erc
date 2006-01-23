@@ -48,7 +48,7 @@
 (require 'bbdb-gui)
 (require 'bbdb-hooks)
 
-(defconst erc-bbdb-version "$Revision: 1.30 $"
+(defconst erc-bbdb-version "$Revision: 1.31 $"
   "ERC BBDB revision.")
 
 (defgroup erc-bbdb nil
@@ -107,7 +107,7 @@ their \"displayed name\"."
   :type 'symbol)
 
 (defcustom erc-bbdb-elide-display nil
-  "*If t, show BBDB popup buffer elided"
+  "*If t, show BBDB popup buffer elided."
   :group 'erc-bbdb
   :type 'boolean)
 

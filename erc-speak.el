@@ -68,6 +68,7 @@
 
 (add-hook 'erc-mode-hook (lambda () (setq voice-lock-mode t)))
 
+;; Override the definition in erc.el
 (defun erc-put-text-property (start end property value &optional object)
   "This function sets the appropriate personality on the specified
 region in addition to setting the requested face."
@@ -104,7 +105,7 @@ Note, your erc-timestamp-format variable needs to start with a [ and end with ].
   :type '(repeat sexp))
 
 (defun erc-speak-acronym-replace (string)
-  "Replaces acronyms in the current buffer."
+  "Replace acronyms in the current buffer."
   (let ((case-fold-search nil))
     (dolist (ac erc-speak-acronyms string)
       (while (string-match (car ac) string)
@@ -125,7 +126,7 @@ Note, your erc-timestamp-format variable needs to start with a [ and end with ].
   :type 'symbol)
 
 (defun erc-speak-smiley-replace (string)
-  "Replaces smileys with textual description."
+  "Replace smileys with textual description."
   (let ((case-fold-search nil))
     (dolist (smiley erc-speak-smileys string)
       (while (string-match (car smiley) string)
@@ -139,10 +140,11 @@ Note, your erc-timestamp-format variable needs to start with a [ and end with ].
   :type 'symbol)
 
 (defun erc-speak-region ()
-  "This function speaks a region containing one IRC message to the user
-using Emacspeak. It tries to translate common IRC forms into intelligent speech."
+  "Speak a region containing one IRC message using Emacspeak.
+This function tries to translate common IRC forms into
+intelligent speech."
   (let ((target (if (erc-channel-p (erc-default-target))
-		    (propertize
+		    (erc-propertize
 		     (erc-default-target)
 		     'personality erc-speak-channel-personality)
 		  ""))
@@ -164,7 +166,7 @@ using Emacspeak. It tries to translate common IRC forms into intelligent speech.
 		   (text (buffer-substring (match-end 2) (point-max))))
 	       (tts-with-punctuations
 		"some"
-		(dtk-speak (concat (propertize
+		(dtk-speak (concat (erc-propertize
 				    (concat target " " from " to " to)
 				    'personality erc-speak-channel-personality)
 				   (erc-speak-smiley-replace

@@ -33,13 +33,14 @@
 ;; * Add extensibility so that custom functions can track
 ;;   custom modification types.
 
+(eval-when-compile (require 'cl))
 (require 'erc)
 (require 'erc-compat)
 (require 'erc-match)
 
 ;;; Code:
 
-(defconst erc-track-version "$Revision: 1.84 $"
+(defconst erc-track-version "$Revision: 1.85 $"
   "ERC track mode revision")
 
 (defgroup erc-track nil
@@ -734,10 +735,7 @@ is in `erc-mode'."
 
 (defun erc-find-parsed-property ()
   "Find the next occurrence of the `erc-parsed' text property."
-  (let ((pos (point-min)))
-    (while (and pos (not (get-text-property pos 'erc-parsed)))
-      (setq pos (next-single-property-change pos 'erc-parsed)))
-    pos))
+  (text-property-not-all (point-min) (point-max) 'erc-parsed nil))
 
 ;;; Buffer switching
 
@@ -760,11 +758,15 @@ The default is a colon, resulting in \"#emacs:9\"."
 
 (defcustom erc-track-switch-direction 'oldest
   "Direction `erc-track-switch-buffer' should switch.
-'oldest will find the oldest active buffer.
-'newest finds the latest, 'leastactive finds buffer with least unseen messages,
-'mostactive - with most unseen messages."
+
+  oldest      -  find oldest active buffer
+  newest      -  find newest active buffer
+  leastactive -  find buffer with least unseen messages
+  mostactive  -  find buffer with most unseen messages."
   :group 'erc-track
-  :type '(choice (const oldest) (const newest) (const leastactive)
+  :type '(choice (const oldest)
+		 (const newest)
+		 (const leastactive)
 		 (const mostactive)))
 
 (defvar erc-track-last-non-erc-buffer nil
@@ -772,8 +774,8 @@ The default is a colon, resulting in \"#emacs:9\"."
 `erc-track-switch-buffers'")
 
 (defun erc-track-sort-by-activest ()
-  "Sorts erc-modified-channels-alist by 'activeness'
-\(count of not seen messages) of channel"
+  "Sort erc-modified-channels-alist by activity.
+That means the number of unseen messages in a channel."
   (setq erc-modified-channels-alist
 	(sort erc-modified-channels-alist
 	      (lambda (a b) (> (nth 1 a) (nth 1 b))))))
@@ -783,26 +785,24 @@ The default is a colon, resulting in \"#emacs:9\"."
 Negative arguments index in the opposite direction.  This direction is
 relative to `erc-track-switch-direction'"
   (let ((dir erc-track-switch-direction)
-	offset)
-    (if (< arg 0)
-	(progn
-	  (cond
-	   ((eq 'oldest dir) (setq dir 'newest))
-	   ((eq 'newest dir) (setq dir 'oldest))
-	   ((eq 'mostactive dir) (setq dir 'leastactive))
-	   ((eq 'leastactive dir) (setq dir 'mostacive)))
-	  (setq arg (* -1 arg))))
-    (setq arg (- arg 1))
-    (setq offset (cond
-		  ((or (eq 'oldest dir) (eq 'leastactive dir))
-		   (- (- (length erc-modified-channels-alist) 1) arg))
-		  (t 0)))
+        offset)
+    (when (< arg 0)
+      (setq dir (case dir
+		  (oldest      'newest)
+		  (newest      'oldest)
+		  (mostactive  'leastactive)
+		  (leastactive 'mostactive)))
+      (setq arg (- arg)))
+    (setq offset (case dir
+		   ((oldest leastactive)
+		    (- (length erc-modified-channels-alist) arg))
+		   (t (1- arg))))
     ;; normalise out of range user input
-    (if (>= offset (length erc-modified-channels-alist))
-	(setq offset (- (length erc-modified-channels-alist) 1))
-      (if (< offset 0)
-	  (setq offset 0))
-      (car (nth offset erc-modified-channels-alist)))))
+    (cond ((>= offset (length erc-modified-channels-alist))
+	   (setq offset (1- (length erc-modified-channels-alist))))
+	  ((< offset 0)
+	   (setq offset 0)))
+    (car (nth offset erc-modified-channels-alist))))
 
 (defun erc-track-switch-buffer (arg)
   "Switch to the next active ERC buffer, or if there are no active buffers,
@@ -810,19 +810,17 @@ switch back to the last non-ERC buffer visited.  Next is defined by
 `erc-track-switch-direction', a negative argument will reverse this."
   (interactive "p")
   (when erc-track-mode
-    (let ((dir erc-track-switch-direction))
-      (if erc-modified-channels-alist
-	  (progn
-	    ;; if we're not in erc-mode, set this buffer to return to
-	    (unless (eq major-mode 'erc-mode)
-	      (setq erc-track-last-non-erc-buffer (current-buffer)))
-	    ;; and jump to the next active channel
-	    (switch-to-buffer (erc-track-get-active-buffer arg)))
-	;; if no active channels, switch back to what we were doing before
-	(when (and erc-track-last-non-erc-buffer
-		   erc-track-switch-from-erc
-		   (buffer-live-p erc-track-last-non-erc-buffer))
-	  (switch-to-buffer erc-track-last-non-erc-buffer))))))
+    (cond (erc-modified-channels-alist
+	   ;; if we're not in erc-mode, set this buffer to return to
+	   (unless (eq major-mode 'erc-mode)
+	     (setq erc-track-last-non-erc-buffer (current-buffer)))
+	   ;; and jump to the next active channel
+	   (switch-to-buffer (erc-track-get-active-buffer arg)))
+	  ;; if no active channels, switch back to what we were doing before
+	  ((and erc-track-last-non-erc-buffer
+		erc-track-switch-from-erc
+		(buffer-live-p erc-track-last-non-erc-buffer))
+	   (switch-to-buffer erc-track-last-non-erc-buffer)))))
 
 ;; These bindings are global, because they pop us from any other
 ;; buffer to an active ERC buffer!
