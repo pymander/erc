@@ -1,5 +1,21 @@
 2006-01-23  Michael Olson  <mwolson@gnu.org>
 
+	* FOR-RELEASE: Make that the Makefile tweaking is complete.
+
+	* Makefile (MANUAL): New option indicating the name of the manual.
+	(PREFIX, ELISPDIR, INFODIR): New options that specify the
+	directories to install lisp code and info manuals to.  PREFIX is
+	used only by ELISPDIR and INFODIR.
+	(all): Call `lisp' and create the manual.
+	(lisp): Compile lisp code.
+	(%.info, %.html): New rules that make Info files and HTML files,
+	respectively, from a TexInfo source.
+	(doc): Create both the Info and HTML versions of the manual.  This
+	is for the user -- we never call it automatically.
+	(install-info): Install Info files.
+	(install-bin): Install compiled and source Lisp files.
+	(todo): Remove, since it seems pointless.
+
 	* erc-stamp.el, erc-track.el: Move some functions and options in
 	order to get rid of a few compiler warnings.
 

@@ -10,12 +10,17 @@ TESTING = erc-members.el erc-macs.el
 ALLSOURCE = $(wildcard *.el)
 SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) $(TESTING),$(ALLSOURCE))
 TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
+MANUAL  = erc
 MISC	= AUTHORS CREDITS HISTORY NEWS README Makefile ChangeLog \
 		ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 \
 		ChangeLog.2001 servers.pl erc-auto.in
 
 EMACS       = emacs
 SITEFLAG    = --no-site-file
+
+PREFIX   = /usr/local
+ELISPDIR = $(PREFIX)/share/emacs/site-lisp/erc
+INFODIR  = $(PREFIX)/info
 
 # XEmacs users will probably want the following settings.
 #EMACS    = xemacs
@@ -27,7 +32,9 @@ INSTALLINFO = install-info --info-dir=$(INFODIR)
 #the above line.
 #INSTALLINFO = install-info --section "Emacs" "emacs" --info-dir=$(INFODIR)
 
-all: $(TARGET)
+all: lisp $(MANUAL).info
+
+lisp: $(TARGET) 
 
 autoloads: erc-auto.el
 
@@ -44,11 +51,30 @@ erc-auto.el: erc-auto.in $(SOURCE)
 		-l $(shell pwd | sed -e 's|^/cygdrive/\([a-z]\)|\1:|')/erc-maint \
 		-f batch-byte-compile $<
 
+%.info: %.texi
+	makeinfo $<
+
+%.html: %.texi
+	makeinfo --html --no-split $<
+
+doc: $(MANUAL).info $(MANUAL).html
+
 clean:
 	-rm -f *~ *.elc
 
 realclean: clean
 	-rm -f $(TARGET) $(SPECIAL)
+
+install-info: $(MANUAL).info
+	[ -d $(INFODIR) ] || install -d $(INFODIR)
+	install -m 0644 $(MANUAL).info $(INFODIR)/$(MANUAL)
+	$(INSTALLINFO) $(INFODIR)/$(MANUAL)
+
+install-bin: lisp
+	install -d $(ELISPDIR)
+	install -m 0644 $(ALLSOURCE) $(TARGET) $(ELISPDIR)
+
+install: install-bin install-info
 
 distclean:
 	-rm -f $(TARGET)
@@ -86,8 +112,6 @@ release: autoloads distclean
 	cp $(SPECIAL) $(UNCOMPILED) $(SOURCE) $(MISC) ../erc-$(VERSION)
 	(cd .. && tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*; \
 	  zip -r erc-$(VERSION).zip erc-$(VERSION))
-
-todo:	erc.elc
 
 upload:
 	(cd .. && echo open ftp://upload.sourceforge.net > upload.lftp ; \
