@@ -1710,8 +1710,8 @@ all channel buffers on all servers."
   "Used to keep track of how many times an attempt at changing nick is made.")
 (make-variable-buffer-local 'erc-nick-change-attempt-count)
 
-(defcustom erc-modules '(netsplit fill match track pcomplete ring button
-				  autojoin noncommands irccontrols)
+(defcustom erc-modules '(netsplit fill match track pcomplete readonly ring
+				  button autojoin noncommands irccontrols)
   "A list of modules which erc should enable.
 If you set the value of this without using `customize' remember to call
 \(erc-update-modules) after you change it.  When using `customize', modules
