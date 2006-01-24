@@ -24,6 +24,11 @@
 	* erc-stamp.el, erc-track.el: Move some functions and options in
 	order to get rid of a few compiler warnings.
 
+	* erc.el (erc-modules): Enable readonly by default.  This will
+	prevent new users from accidentally removing old messages, which
+	could be disconcerting.  Also enable stamp by default, since
+	timestamps are a fairly standard feature among IRC clients.
+
 	* erc-button.el: Munge whitespace.
 
 	* erc-identd.el (erc-identd-start): Instead of throwing an error,
