@@ -21,6 +21,10 @@
 
 	* NEWS: Update.
 
+	* README: Add Installation instructions.  Tweak layout.
+
+	* erc.texi: Work on some pre-5.1 items.
+
 	* erc-stamp.el, erc-track.el: Move some functions and options in
 	order to get rid of a few compiler warnings.
 

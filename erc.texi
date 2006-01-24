@@ -14,7 +14,7 @@
 @copying
 This manual is for Emacs IRC Client version 5.1.
 
-Copyright (C) 2005 Free Software Foundation, Inc.
+Copyright (C) 2005, 2006 Free Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -80,10 +80,33 @@ Obtaining ERC
 @comment  node-name,  next,  previous,  up
 @chapter Introduction
 
-@c PRE5_1: Describe ERC as full-featured Emacs IRC Client
-@c - Cool modules
-@c - Extensible
-@c - A touch of history
+ERC is a powerful, modular, and extensible IRC client for Emacs.
+
+It comes with the following capabilities enabled by default.
+
+@itemize @bullet
+@item autojoin
+Join channels automatically
+@item button
+Buttonize URLs, nicknames, and other text
+@item fill
+Wrap long lines
+@item irccontrols
+Highlight or remove IRC control characters
+@item netsplit
+Detect netsplits
+@item noncommands
+Don't display non-IRC commands after evaluation
+@item pcomplete
+Complete nicknames and commands (programmable)
+@item readonly
+Make displayed lines read-only
+@item ring
+Enable an input history
+@item track
+Track channel activity in the mode-line
+
+@end itemize
 
 @node Obtaining ERC, Installation, Introduction, Top
 @comment  node-name,  next,  previous,  up
@@ -100,10 +123,8 @@ Obtaining ERC
 
 Choose to install a release if you want to minimize risk.
 
-@c PRE5_1: Fill in email address for ERC mailing list.
-
 Errors are corrected in development first.  User-visible changes will be
-announced on the @email{FILL ME IN} mailing list.
+announced on the @email{erc-help@@lists.sourceforge.net} mailing list.
 @pxref{Getting Help and Reporting Bugs}.
 
 @cindex releases, Debian package
@@ -111,11 +132,9 @@ announced on the @email{FILL ME IN} mailing list.
 Debian users can get ERC via apt-get.  The @file{erc} package is
 available in the official Debian repository.
 
-@c PRE5_1: Fill in place to download ERC releases (sf.net).
-
 @cindex releases, from source
 Alternatively, you can download the latest release from
-@uref{http://FILL ME IN} .
+@uref{http://sourceforge.net/project/showfiles.php?group_id=30118}.
 
 @node Development,  , Releases, Obtaining ERC
 @comment  node-name,  next,  previous,  up
@@ -128,9 +147,22 @@ of ERC development or try out new features before release.
 @subsection Using CVS
 @cindex CVS, using
 
-@c PRE5_1: Fill out CVS instructions
-@c - Getting CVS (can be very brief)
-@c - Getting a checkout of ERC using CVS
+ERC is primarily developed using a CVS repository on sourceforge.net.
+To check out a copy of the latest changes, do the following.
+
+@example
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/erc login
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/erc co -P erc
+@end example
+
+@cindex CVS snapshot
+Alternatively, the latest CVS snapshot may be downloaded in the
+following forms.
+
+@itemize @bullet
+@item http://mwolson.org/static/dist/erc-latest.tar.gz
+@item http://mwolson.org/static/dist/erc-latest.zip
+@end itemize
 
 @subsection Using the GNU Arch Revision Control System
 @cindex arch revision control system, using
@@ -153,18 +185,18 @@ steps.
 
 @itemize @bullet
 @item Debian: @kbd{apt-get install tla}.
-@item Other distributions: see @uref{http://regexps.srparish.net/www/}.
+@item Other distributions: see @uref{ftp://ftp.gnu.org/gnu/gnu-arch/}.
 @end itemize
 
 @item Register the archive.
 @example
-tla register-archive -f http://www.mwolson.org/archives/2005
+tla register-archive -f http://www.mwolson.org/archives/2006
 @end example
 
 @item Download the ERC source code.
 @example
 # Download ERC into the @file{erc} directory.
-tla get mwolson@@gnu.org--2005/erc--cvs-head--0 erc
+tla get mwolson@@gnu.org--2006/erc--cvs--0 erc
 @end example
 
 @item List upstream changes that are missing from your local copy.
