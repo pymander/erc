@@ -63,7 +63,7 @@ clean:
 	-rm -f *~ *.elc
 
 realclean: clean
-	-rm -f $(TARGET) $(SPECIAL)
+	-rm -f $(MANUAL).info $(MANUAL).html $(TARGET) $(SPECIAL)
 
 install-info: $(MANUAL).info
 	[ -d $(INFODIR) ] || install -d $(INFODIR)
@@ -77,7 +77,7 @@ install-bin: lisp
 install: install-bin install-info
 
 distclean:
-	-rm -f $(TARGET)
+	-rm -f $(MANUAL).info $(MANUAL).html $(TARGET)
 	-rm -Rf ../$(SNAPDIR)
 
 debrelease: $(ALLSOURCE) $(SPECIAL) distclean

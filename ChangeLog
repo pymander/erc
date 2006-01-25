@@ -10,10 +10,9 @@
 
 	* FOR-RELEASE: Mark last release requirement as done.
 
-	* erc.texi: Take care of all pre-5.1 items.
+	* Makefile (realclean, distclean): Remove docs.
 
-	* erc-match.el (erc-match-message): Try to order the faces
-	properly.  Thanks to hober for the report.
+	* erc.texi: Take care of all pre-5.1 items.
 
 	* erc-stamp.el (erc-insert-timestamp-right): Try to deal with
 	variable-width characters in the timestamp and on the same line.
