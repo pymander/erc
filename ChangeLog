@@ -1,5 +1,9 @@
 2006-01-25  Michael Olson  <mwolson@gnu.org>
 
+	* FOR-RELEASE: Mark last release requirement as done.
+
+	* erc.texi: Take care of all pre-5.1 items.
+
 	* erc-stamp.el (erc-insert-timestamp-right): Try to deal with
 	variable-width characters in the timestamp and on the same line.
 	The latter is a kludge, but it seems to work with most of the

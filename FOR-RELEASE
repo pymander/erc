@@ -2,7 +2,7 @@ Tasks that need to be accomplished in order for a release to happen.
 
 * 5.1 release
 
-** Documentation
+** [DONE] Documentation
 
 *** ERC's manual needs collaborative effort.
 Some conditions follow.
@@ -24,7 +24,7 @@ wish to work an item in the short term.
 
 ** [DONE] Makefile
 
-*** [DONE] install target needed.
+*** install target needed.
 This could look at the following new variables.  ELISPDIR determines
 where to install ERC.  INFODIR is where manual will be installed.
 
@@ -32,7 +32,7 @@ PREFIX   = /usr/local
 ELISPDIR = $(PREFIX)/share/emacs/site-lisp/erc
 INFODIR  = $(PREFIX)/info
 
-*** [DONE] install-info target needed.
+*** install-info target needed.
 Something like the following would work.
 
 %.info: %.texi
@@ -47,7 +47,7 @@ install-info: muse.info
 
 ** [DONE] Source
 
-*** [DONE] Remove dependency on cl package.
+*** Remove dependency on cl package.
 (eval-when-compile (require 'cl)) is acceptable.
 
 * 5.2 release (future)

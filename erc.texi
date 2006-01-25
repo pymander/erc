@@ -12,9 +12,9 @@
 @syncodeindex fn cp
 
 @copying
-This manual is for Emacs IRC Client version 5.1.
+This manual is for ERC version 5.1.
 
-Copyright (C) 2005, 2006 Free Software Foundation, Inc.
+Copyright @copyright{} 2005, 2006 Free Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -40,7 +40,7 @@ Invariant Sections, Front-Cover texts, or Back-Cover Texts.
 @contents
 
 @ifnottex
-@node Top, Preface, (dir), (dir)
+@node Top, Introduction, (dir), (dir)
 @comment  node-name,  next,  previous,  up
 @top ERC
 
@@ -85,26 +85,18 @@ ERC is a powerful, modular, and extensible IRC client for Emacs.
 It comes with the following capabilities enabled by default.
 
 @itemize @bullet
-@item autojoin
-Join channels automatically
-@item button
-Buttonize URLs, nicknames, and other text
-@item fill
-Wrap long lines
-@item irccontrols
-Highlight or remove IRC control characters
-@item netsplit
-Detect netsplits
-@item noncommands
-Don't display non-IRC commands after evaluation
-@item pcomplete
-Complete nicknames and commands (programmable)
-@item readonly
-Make displayed lines read-only
-@item ring
-Enable an input history
-@item track
-Track channel activity in the mode-line
+@item Flood control
+@item Timestamps
+@item Join channels automatically
+@item Buttonize URLs, nicknames, and other text
+@item Wrap long lines
+@item Highlight or remove IRC control characters
+@item Highlight pals, fools, and other keywords
+@item Detect netsplits
+@item Complete nicknames and commands in a programmable fashion
+@item Make displayed lines read-only
+@item Input history
+@item Track channel activity in the mode-line
 
 @end itemize
 
@@ -151,8 +143,8 @@ ERC is primarily developed using a CVS repository on sourceforge.net.
 To check out a copy of the latest changes, do the following.
 
 @example
-cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/erc login
-cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/erc co -P erc
+cvs -d:pserver:anonymous@@cvs.sourceforge.net:/cvsroot/erc login
+cvs -z3 -d:pserver:anonymous@@cvs.sourceforge.net:/cvsroot/erc co -P erc
 @end example
 
 @cindex CVS snapshot
@@ -172,7 +164,7 @@ versions and select specific features and bug fixes.
 Michael Olson maintains an official Arch branch for ERC which stays
 current with the CVS repository for ERC.  If you would like to
 contribute to ERC development, and would prefer to use a modern Revision
-Control System, this is a good way to go.
+Control System, feel free to make your own branch.
 
 If you are new to Arch, you might find this tutorial helpful:
 @uref{http://www.mwolson.org/projects/ArchTutorial.html}.
@@ -318,15 +310,79 @@ prompt for the server to connect to.
 
 This is a summary of keystrokes available in every ERC buffer.
 
-@c PRE5_1: Complete the keystroke table.
-
 @table @kbd
 
-@item C-a (`erc-bol')
+@item C-a or <home> (`erc-bol')
 Go to beginning of line or end of prompt.
 
-@item TAB
-Move to the next link.
+@item RET (`erc-send-current-line')
+Send the current line
+
+@item TAB (`erc-complete-word')
+If at prompt, complete the current word.
+Otherwise, move to the next link or button.
+
+@item M-TAB (`ispell-complete-word')
+Complete the given word, using ispell.
+
+@item C-c C-a (`erc-bol')
+Go to beginning of line or end of prompt.
+
+@item C-c C-b (`erc-iswitchb')
+Use `iswitchb-read-buffer' to prompt for a ERC buffer to switch to.
+
+@item C-c C-c (`erc-toggle-interpret-controls')
+Toggle interpretation of control sequences in messages.
+
+@item C-c C-d (`erc-input-action')
+Interactively input a user action and send it to IRC.
+
+@item C-c C-e (`erc-toggle-ctcp-autoresponse')
+Toggle automatic CTCP replies (like VERSION and PING).
+
+@item C-c C-f (`erc-toggle-flood-control')
+Toggle use of flood control on sent messages.
+
+@item C-c TAB (`erc-invite-only-mode')
+Turn on the invite only mode (+i) for the current channel.
+
+@item C-c C-j (`erc-join-channel')
+Join channel.  If point is at the beginning of a channel name, use that
+as default.
+
+@item C-c C-k (`erc-go-to-log-matches-buffer')
+Interactively open an erc-log-matches buffer
+
+@item C-c C-l (`erc-save-buffer-in-logs')
+Append buffer contents to the log file, if logging is enabled.
+
+@item C-c C-n (`erc-channel-names')
+Run "/names #channel" in the current channel.
+
+@item C-c C-o (`erc-get-channel-mode-from-keypress')
+Read a key sequence and call the corresponding channel mode function.
+After doing C-c C-o type in a channel mode letter.
+
+C-g means quit.
+RET let's you type more than one mode at a time.
+If "l" is pressed, `erc-set-channel-limit' gets called.
+If "k" is pressed, `erc-set-channel-key' gets called.
+Anything else will be sent to `erc-toggle-channel-mode'.
+
+@item C-c C-p (`erc-part-from-channel')
+Part from the current channel and prompt for a reason.
+
+@item C-c C-q (`erc-quit-server')
+Disconnect from current server after prompting for reason.
+
+@item C-c C-r (`erc-remove-text-properties-region')
+Clears the region (start,end) in object from all colors, etc.
+
+@item C-c C-t (`erc-set-topic')
+Prompt for a topic for the current channel.
+
+@item C-c C-u (`erc-kill-input')
+Kill current input line using `erc-bol' followed by `kill-line'.
 
 @end table
 
@@ -336,15 +392,112 @@ Move to the next link.
 @chapter Modules
 @cindex modules
 
-@c PRE5_1: Document all modules briefly in one table.  Example follows.
+One way to add functionality to ERC is to customize which of its many
+modules are loaded.
+
+There is a spiffy customize interface, which may be reached by typing
+@kbd{M-x customize-option erc-modules RET}.  Alternatively, set
+@code{erc-modules} manually and then call @code{erc-update-modules}.
+
+The following is a list of available modules.
 
 @table @code
 
+@cindex modules, autoaway
 @item autoaway
 Set away status automatically.
 
-@item another-module
-Description goes here.
+@cindex modules, autojoin
+@item autojoin
+Join channels automatically
+
+@cindex modules, bbdb
+@item bbdb
+Integrate with the Big Brother Database
+
+@cindex modules, button
+@item button
+Buttonize URLs, nicknames, and other text
+
+@cindex modules, fill
+@item fill
+Wrap long lines
+
+@cindex modules, irccontrols
+@item irccontrols
+Highlight or remove IRC control characters
+
+@cindex modules, log
+@item log
+Save buffers in logs
+
+@cindex modules, match
+@item match
+Highlight pals, fools, and other keywords
+
+@cindex modules, netsplit
+@item netsplit
+Detect netsplits
+
+@cindex modules, noncommands
+@item noncommands
+Don't display non-IRC commands after evaluation
+
+@cindex modules, notify
+@item notify
+Notify when the online status of certain users changes
+
+@cindex modules, pcomplete
+@item pcomplete
+Complete nicknames and commands (programmable)
+
+@cindex modules, readonly
+@item readonly
+Make displayed lines read-only
+
+@cindex modules, replace
+@item replace
+Replace text in messages
+
+@cindex modules, ring
+@item ring
+Enable an input history
+
+@cindex modules, scrolltobottom
+@item scrolltobottom
+Scroll to the bottom of the buffer
+
+@cindex modules, services
+@item services
+Identify to Nickserv (IRC Services) automatically
+
+@cindex modules, smiley
+@item smiley
+Convert smileys to pretty icons
+
+@cindex modules, sound
+@item sound
+Play sounds when you receive CTCP SOUND requests
+
+@cindex modules, spell
+@item spell
+Check spelling
+
+@cindex modules, stamp
+@item stamp
+Add timestamps to messages
+
+@cindex modules, track
+@item track
+Track channel activity in the mode-line
+
+@cindex modules, truncate
+@item truncate
+Truncate buffers to a certain size
+
+@cindex modules, unmorse
+@item unmorse
+Translate morse code in messages
 
 @end table
 
@@ -378,18 +531,18 @@ or if you have bugs to report, there are several places you can go.
 
 @item
 @uref{http://www.emacswiki.org/cgi-bin/wiki/EmacsIRCClient} is the
-emacswiki.org page for ERC, and anyone may add tips, hints, or bug
+emacswiki.org page for ERC.  Anyone may add tips, hints, or bug
 descriptions to it.
 
-@c PRE5_1: Fill in URLs.
 @item
-You can join the mailing list at @email{FILL ME IN} using the
-subscription form at @uref{FILL ME IN}.
+You can join the mailing list at @email{erc-help@@lists.sourceforge.net}
+using the subscription form at
+@uref{http://lists.sourceforge.net/lists/listinfo/erc-help}.
 
-@c PRE5_1: Basic Gmane directions go here.
-
-There are additional methods for accessing the mailing list, adding
-content to it, and searching it.
+This mailing list is also available via Gmane
+(@url{http://gmane.org/}). The group is called
+@samp{gmane.emacs.erc.general}.  This provides additional methods for
+accessing the mailing list, adding content to it, and searching it.
 
 @item
 You can visit the IRC Freenode channel @samp{#emacs}. Many of the
@@ -404,19 +557,58 @@ questions.
 @chapter History
 @cindex history, of ERC
 
-@c PRE5_1: Very brief history goes here.
+ERC was originally written by Alexander L. Belikoff
+@email{abel@@bfr.co.il} and Sergey Berezin
+@email{sergey.berezin@@cs.cmu.edu}.  They stopped development around
+december 1999. Their last released version was ERC 2.0.
 
-@c PRE5_2: More interesting version to be created.
+P.S.: If one of the original developers of ERC reads this, we'd like to
+receive additional information for this file and hear comments in
+general.
 
 @itemize
+@item 2001
+
+In June 2001, Mario Lang @email{mlang@@delysid.org} and Alex Schroeder
+@email{alex@@gnu.org} took over development and created a ERC Project at
+sourceforge.net.
+
+In reaction to a mail about the new erc development, Sergey Berezin
+said, "First of all, I'm glad that my version of ERC is being used out
+there. The thing is, I do not have free time and enough incentive
+anymore to work on ERC, so I would be happy if you guys take over the
+project entirely."
+
+So we happily hacked away on ERC, and soon after (september 2001)
+released the next "stable" version, 2.1.
+
+Most of the development of the new ERC happend on #emacs on
+irc.openprojects.net. Over time, many people contributed code, ideas,
+bugfixes. And not to forget alot of alpha/beta/gamma testing.
+
+See the @file{CREDITS} file for a list of contributors.
+
+@item 2003
+
+ERC 3.0 is released.
+
 @item 2004
-Blah
+
+ERC 4.0 is released.
 
 @item 2005
-Blah
+
+ERC 5.0 is released.  Michael Olson @email{mwolson@@gnu.org} becomes
+the release manager and eventually the maintainer.
+
+After some discussion between him and the Emacs developers, it is
+decided to include ERC in Emacs.
+
+@item 2006
+
+ERC 5.1 is being prepared.
 
 @end itemize
-
 
 @node Copying, GNU Free Documentation License, History, Top
 @comment  node-name,  next,  previous,  up
