@@ -39,7 +39,7 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.49 $"
+(defconst erc-match-version "$Revision: 1.50 $"
   "ERC match mode revision.")
 
 (defgroup erc-match nil
@@ -56,7 +56,7 @@ they are hidden or highlighted.  This is controlled via the variables
 `erc-current-nick-highlight-type'.  For all these highlighting types,
 you can decide whether the entire message or only the sending nick is
 highlighted."
-  ((add-hook 'erc-insert-modify-hook 'erc-match-message))
+  ((add-hook 'erc-insert-modify-hook 'erc-match-message 'append))
   ((remove-hook 'erc-insert-modify-hook 'erc-match-message)))
 
 ;; Remaining customizations

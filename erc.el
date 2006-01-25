@@ -63,7 +63,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.792 $"
+(defconst erc-version-string "Version 5.0 (CVS) $Revision: 1.793 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -1713,8 +1713,8 @@ all channel buffers on all servers."
   "Used to keep track of how many times an attempt at changing nick is made.")
 (make-variable-buffer-local 'erc-nick-change-attempt-count)
 
-(defcustom erc-modules '(netsplit fill match track pcomplete readonly ring
-				  button autojoin noncommands irccontrols
+(defcustom erc-modules '(netsplit fill button match track pcomplete readonly
+				  ring autojoin noncommands irccontrols
 				  stamp)
   "A list of modules which erc should enable.
 If you set the value of this without using `customize' remember to call

@@ -1,3 +1,11 @@
+2006-01-25  Edward O'Connor  <ted@oconnor.cx>
+
+	* erc.el (erc-modules): Ensure that `erc-button-mode' gets enabled
+	before `erc-match-mode'.
+
+	* erc-match.el (match): Append `erc-match-message' to
+	`erc-insert-modify-hook'.
+
 2006-01-25  Michael Olson  <mwolson@gnu.org>
 
 	* FOR-RELEASE: Mark last release requirement as done.
