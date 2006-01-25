@@ -5064,7 +5064,7 @@ If ARG is non-nil and not positive, turns CTCP replies off."
   (message "ERC CTCP replies are %s" (if erc-disable-ctcp-replies "OFF" "ON")))
 
 (defun erc-toggle-flood-control (&optional arg)
-  "Toggle between strict, normal and no flood control.
+  "Toggle use of flood control on sent messages.
 
 If ARG is non-nil, use flood control.
 If ARG is nil, do not use flood control.
