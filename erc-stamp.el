@@ -230,15 +230,24 @@ be printed just before the window-width."
 		 (t
 		  (- (window-width)
 		     1))))
-	   (from (point)))
-	(setq pos (- pos (length string)))
-	(if (= pos (indent-to pos))
-	    (insert string)
-	  (newline)
-	  (indent-to pos)
-	  (insert string))
-	(erc-put-text-property from (1+ (point)) 'field 'erc-timestamp)
-	(erc-put-text-property from (1+ (point)) 'rear-nonsticky t))))
+	   (from (point))
+	   (col (current-column))
+	   indent)
+      ;; deal with variable-width characters
+      (setq pos (- pos (string-width string))
+	    ;; the following is a kludge that works with most
+	    ;; international input
+	    col (+ col (ceiling (/ (- col (- (point) (point-at-bol))) 1.6))))
+      (if (< col pos)
+	  (insert (make-string (- pos col) ? ) string)
+	(newline)
+	(setq from (point))
+	(indent-to pos)
+	(insert string))
+      (erc-put-text-property from (1+ (point)) 'field 'erc-timestamp)
+      (erc-put-text-property from (1+ (point)) 'rear-nonsticky t)
+      (when erc-timestamp-intangible
+	(erc-put-text-property from (1+ (point)) 'intangible t)))))
 
 ;; for testing: (setq erc-timestamp-only-if-changed-flag nil)
 

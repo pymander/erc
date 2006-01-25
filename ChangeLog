@@ -1,5 +1,14 @@
 2006-01-25  Michael Olson  <mwolson@gnu.org>
 
+	* erc-stamp.el (erc-insert-timestamp-right): Try to deal with
+	variable-width characters in the timestamp and on the same line.
+	The latter is a kludge, but it seems to work with most of the
+	input I've thrown at it so far.  It's certainly better than going
+	past the end of line consistently when we have variable-width
+	characters on the same line.  When `erc-timestamp-intangible' is
+	non-nil, add intangible properties to the whitespace as well, so
+	that hitting <end> does what you'd expect.
+
 	* erc.el (erc-flood-protect, erc-toggle-flood-control): Update
 	this to only use boolean values for `erc-flood-protect'.  Update
 	documentation.
