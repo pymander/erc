@@ -4,6 +4,9 @@
 
 	* erc.texi: Take care of all pre-5.1 items.
 
+	* erc-match.el (erc-match-message): Try to order the faces
+	properly.  Thanks to hober for the report.
+
 	* erc-stamp.el (erc-insert-timestamp-right): Try to deal with
 	variable-width characters in the timestamp and on the same line.
 	The latter is a kludge, but it seems to work with most of the

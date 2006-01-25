@@ -544,7 +544,7 @@ Use this defun with `erc-insert-modify-hook'."
 		  (concat "Server:" (erc-get-parsed-vector-type vector)))
 	      message))))
        (if nickuserhost
-	   (append to-match-nick-dep to-match-nick-indep)
+	   (append to-match-nick-indep to-match-nick-dep)
 	 to-match-nick-indep)))))
 
 (defun erc-log-matches (match-type nickuserhost message)
