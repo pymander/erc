@@ -1,3 +1,11 @@
+2006-01-25  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-flood-protect, erc-toggle-flood-control): Update
+	this to only use boolean values for `erc-flood-protect'.  Update
+	documentation.
+	(erc-cmd-QUIT): Set the active buffer to be the server buffer, so
+	that any QUIT-related messages go there.
+
 2006-01-23  Michael Olson  <mwolson@gnu.org>
 
 	* ChangeLog.2005: Remove erroneous line.

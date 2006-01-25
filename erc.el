@@ -795,10 +795,13 @@ people. You can update the ERC internal info using /WHO *."
   :group 'erc-ignore
   :type '(repeat regexp))
 
-(defvar erc-flood-protect 'normal
+(defvar erc-flood-protect t
   "*If non-nil, flood protection is enabled.
-Flooding is sending too much information to the server in too short time,
-which may result in loosing connection.")
+Flooding is sending too much information to the server in too
+short of an interval, which may cause the server to terminate the
+connection.
+
+See `erc-server-flood-margin' for other flood-related parameters.")
 
 ;; Script parameters
 
@@ -3053,6 +3056,7 @@ the message given by REASON."
 			     (current-buffer))
 	(erc-log (format "cmd: QUIT: %s" reason))
 	(setq erc-server-quitting t)
+	(erc-set-active-buffer (erc-server-buffer))
 	(erc-server-send (format "QUIT :%s" reason)))
       (run-hook-with-args 'erc-quit-hook erc-server-process)
       (when erc-kill-queries-on-quit
@@ -5062,15 +5066,15 @@ If ARG is non-nil and not positive, turns CTCP replies off."
 (defun erc-toggle-flood-control (&optional arg)
   "Toggle between strict, normal and no flood control.
 
-If ARG is positive, select strict control.
-If ARG is non-nil and not positive, select normal control.
-If ARG is nil, and `erc-flood-protect' is normal, select no control."
+If ARG is non-nil, use flood control.
+If ARG is nil, do not use flood control.
+
+See `erc-server-flood-margin' for an explanation of the available
+flood control parameters."
   (interactive "P")
-  (cond (arg (setq erc-flood-protect 'normal))
-	(erc-flood-protect (setq erc-flood-protect nil))
-	(t (setq erc-flood-protect 'normal)))
+  (setq erc-flood-protect arg)
   (message "ERC flood control is %s"
-	   (cond (erc-flood-protect "NORMAL")
+	   (cond (erc-flood-protect "ON")
 		 (t "OFF"))))
 
 ;; Some useful channel and nick commands for fast key bindings
