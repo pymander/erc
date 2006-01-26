@@ -1832,19 +1832,28 @@ Returns the buffer for the given server or channel."
 				 erc-server-announced-name))
 	(connected-p (unless connect erc-server-connected))
 	(buffer (erc-get-buffer-create server port channel))
-	(old-buffer (current-buffer)))
+	(old-buffer (current-buffer))
+	continued-session)
     (set-buffer buffer)
     (erc-mode)
     (setq erc-server-announced-name server-announced-name)
     (setq erc-server-connected connected-p)
-    ;; go to the end of the buffer and open a new line
-    ;; (the buffer may have existed)
-    (goto-char (point-max))
-    (insert "\n")
     ;; connection parameters
     (setq erc-server-process process)
     (setq erc-insert-marker (make-marker))
     (setq erc-input-marker (make-marker))
+    ;; go to the end of the buffer and open a new line
+    ;; (the buffer may have existed)
+    (goto-char (point-max))
+    (forward-line 0)
+    (when (get-text-property (point) 'erc-prompt)
+      (setq continued-session t)
+      (set-marker erc-input-marker
+		  (or (next-single-property-change (point) 'erc-prompt)
+		      (point-max))))
+    (unless continued-session
+      (goto-char (point-max))
+      (insert "\n"))
     (set-marker erc-insert-marker (point))
     ;; stack of default recipients
     (setq erc-default-recipients tgt-list)
@@ -1897,12 +1906,14 @@ Returns the buffer for the given server or channel."
       (erc-server-connect erc-session-server erc-session-port))
     (erc-update-mode-line)
     (set-marker erc-insert-marker (point))
-    (goto-char (point-max))
-    (insert "\n")
+    (unless continued-session
+      (goto-char (point-max))
+      (insert "\n"))
     (set-marker (process-mark erc-server-process) (point))
-    (set-marker erc-insert-marker (point))
-    (erc-display-prompt)
-    (goto-char (point-max))
+    (unless continued-session
+      (set-marker erc-insert-marker (point))
+      (erc-display-prompt)
+      (goto-char (point-max)))
 
     ;; Now display the buffer in a window as per user wishes.
     (unless (eq buffer old-buffer)
