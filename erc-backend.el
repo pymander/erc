@@ -625,11 +625,16 @@ protection algorithm."
                         (+ erc-server-flood-penalty
                            erc-server-flood-last-message))
                   (erc-log-irc-protocol str 'outbound)
-                  ;; Set encoding just before sending the string
-                  (when (fboundp 'set-process-coding-system)
-                    (set-process-coding-system erc-server-process
-                                               'raw-text encoding))
-                  (process-send-string erc-server-process str))
+                  (condition-case err
+                      (progn
+                        ;; Set encoding just before sending the string
+                        (when (fboundp 'set-process-coding-system)
+                          (set-process-coding-system erc-server-process
+                                                     'raw-text encoding))
+                        (process-send-string erc-server-process str))
+                    ;; See `erc-server-send-queue' for full
+                    ;; explanation of why we need this condition-case
+                    (error nil)))
               (setq erc-server-flood-queue
                     (append erc-server-flood-queue
                             (list (cons str encoding))))
@@ -664,11 +669,17 @@ protection algorithm."
           (erc-log (concat "erc-server-send-queue: "
                            msg "(" (buffer-name buffer) ")"))
           (when (erc-server-process-alive)
-            ;; Set encoding just before sending the string
-            (when (fboundp 'set-process-coding-system)
-              (set-process-coding-system erc-server-process
-                                         'raw-text encoding))
-            (process-send-string erc-server-process msg))))
+            (condition-case err
+                ;; Set encoding just before sending the string
+                (progn
+                  (when (fboundp 'set-process-coding-system)
+                    (set-process-coding-system erc-server-process
+                                               'raw-text encoding))
+                  (process-send-string erc-server-process msg))
+              ;; Sometimes the send can occur while the process is
+              ;; being killed, which results in a weird SIGPIPE error.
+              ;; Catch this and ignore it.
+              (error nil)))))
       (when erc-server-flood-queue
         (setq erc-server-flood-timer
               (run-at-time 2 nil #'erc-server-send-queue buffer))))))
