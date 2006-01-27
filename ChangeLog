@@ -1,3 +1,8 @@
+2006-01-27  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc): Move call to erc-update-modules before the call to
+	erc-mode.  This should fix a timestamp display issue.
+
 2006-01-26  Michael Olson  <mwolson@gnu.org>
 
 	* erc-stamp.el (erc-insert-aligned): New function that inserts

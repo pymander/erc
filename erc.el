@@ -1834,6 +1834,7 @@ Returns the buffer for the given server or channel."
 	(buffer (erc-get-buffer-create server port channel))
 	(old-buffer (current-buffer))
 	continued-session)
+    (erc-update-modules)
     (set-buffer buffer)
     (erc-mode)
     (setq erc-server-announced-name server-announced-name)
@@ -1897,7 +1898,6 @@ Returns the buffer for the given server or channel."
 	  (when erc-log-p
 	    (get-buffer-create (concat "*ERC-DEBUG: " server "*"))))
     (erc-determine-parameters server port nick full-name)
-    (erc-update-modules)
 
     ;; Saving log file on exit
     (run-hooks 'erc-connect-pre-hook)
