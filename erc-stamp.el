@@ -192,6 +192,22 @@ the correct column."
     (erc-put-text-property 0 len 'field 'erc-timestamp s)
     (insert s)))
 
+(defun erc-right-margin-insert (string pos &optional fallback)
+  "Insert STRING a fraction of the way from the right margin.
+Fraction is roughly (/ POS (window-width)).
+
+If the current version of Emacs doesn't support this, use
+\(- POS FALLBACK) to determine how many spaces to insert."
+  (if (or (featurep 'xemacs)
+	  (< emacs-major-version 22))
+      (insert (make-string (- pos fallback) ? ) string)
+    (insert " ")
+    (let ((offset (floor (* (/ (1- pos) (window-width) 1.0)
+			    (nth 2 (window-inside-pixel-edges))))))
+      (put-text-property (1- (point)) (point) 'display
+			 `(space :align-to (,offset))))
+    (insert string)))
+
 (defun erc-insert-timestamp-right (string)
   "Insert timestamp on the right side of the screen.
 STRING is the timestamp to insert.  The function is a possible value
@@ -239,7 +255,7 @@ be printed just before the window-width."
 	    ;; international input
 	    col (+ col (ceiling (/ (- col (- (point) (point-at-bol))) 1.6))))
       (if (< col pos)
-	  (insert (make-string (- pos col) ? ) string)
+	  (erc-right-margin-insert string pos col)
 	(newline)
 	(setq from (point))
 	(indent-to pos)
