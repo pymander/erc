@@ -192,8 +192,8 @@ the correct column."
     (erc-put-text-property 0 len 'field 'erc-timestamp s)
     (insert s)))
 
-(defun erc-right-margin-insert (string pos &optional fallback)
-  "Insert STRING a fraction of the way from the right margin.
+(defun erc-insert-aligned (string pos &optional fallback)
+  "Insert STRING based on a fraction of the width of the buffer.
 Fraction is roughly (/ POS (window-width)).
 
 If the current version of Emacs doesn't support this, use
@@ -255,7 +255,7 @@ be printed just before the window-width."
 	    ;; international input
 	    col (+ col (ceiling (/ (- col (- (point) (point-at-bol))) 1.6))))
       (if (< col pos)
-	  (erc-right-margin-insert string pos col)
+	  (erc-insert-aligned string pos col)
 	(newline)
 	(setq from (point))
 	(indent-to pos)

@@ -1,9 +1,9 @@
 2006-01-26  Michael Olson  <mwolson@gnu.org>
 
-	* erc-stamp.el (erc-right-margin-insert): New function that
-	inserts text in an perfectly-aligned way relative to the right
-	margin.  It only works well with Emacs22.  A sane fallback is
-	provided for other versions of Emacs.
+	* erc-stamp.el (erc-insert-aligned): New function that inserts
+	text in an perfectly-aligned way relative to the right margin.  It
+	only works well with Emacs22.  A sane fallback is provided for
+	other versions of Emacs.
 	(erc-insert-timestamp-right): Use the new function.
 
 2006-01-25  Edward O'Connor  <ted@oconnor.cx>
