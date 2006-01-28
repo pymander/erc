@@ -393,3 +393,5 @@ Private channels, which are shown as asterisks (*), are ignored."
 ;; indent-tabs-mode: t
 ;; tab-width: 8
 ;; End:
+
+;; arch-tag: 4a13196a-a61b-465a-9926-044dfbc7e5ff

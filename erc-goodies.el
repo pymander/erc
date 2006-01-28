@@ -514,4 +514,6 @@ servers.  If called from a program, PROC specifies the server process."
     (error "`multi-occur' is not defined as a function")))
 
 (provide 'erc-goodies)
+
+;; arch-tag: d987ae26-9e28-4c72-9596-e617309fb582
 ;;; erc-goodies.el ends here

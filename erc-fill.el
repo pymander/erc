@@ -198,3 +198,5 @@ You can put this on `erc-insert-modify-hook' and/or `erc-send-modify-hook'."
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
+
+;; arch-tag: 89224581-c2c2-4e26-92e5-e3a390dc516a

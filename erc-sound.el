@@ -143,4 +143,5 @@ with a command `erc-play-command'."
 
 (provide 'erc-sound)
 
+;; arch-tag: 53657d1d-007f-4a20-91c1-588e71cf0cee
 ;;; erc-sound.el ends here

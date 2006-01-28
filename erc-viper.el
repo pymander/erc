@@ -67,4 +67,6 @@
       (erc-buffer-list))
 
 (provide 'erc-viper)
+
+;; arch-tag: 659fa645-e9ad-428c-ad53-8304d9f900f6
 ;;; erc-viper.el ends here

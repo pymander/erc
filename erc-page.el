@@ -102,4 +102,5 @@ receive pages if `erc-page-mode' is on."
 
 (provide 'erc-page)
 
+;; arch-tag: 82fd2e0e-6060-4dd2-9788-8c1411e844de
 ;;; erc-page.el ends here

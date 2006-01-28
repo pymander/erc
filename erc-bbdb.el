@@ -246,3 +246,5 @@ counterparts `erc-pals', `erc-dangerous-hosts' and `erc-fools'."
 ;; indent-tabs-mode: t
 ;; tab-width: 8
 ;; End:
+
+;; arch-tag: 1edf3729-cd49-47dc-aced-70fcfc28c815

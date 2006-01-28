@@ -201,3 +201,5 @@ intelligent speech."
 				      (erc-speak-acronym-replace msg)))))))))))
 
 (provide 'erc-speak)
+
+;; arch-tag: 4499cd13-2829-43b8-83de-d313481531c4

@@ -209,4 +209,5 @@ Normungsinstitut (ON), Postfach 130, A-1021 Vienna, Austria.")
 
 (provide 'erc-lang)
 
+;; arch-tag: 8ffb1563-cc03-4517-b067-16309d4ff97b
 ;;; erc-lang.el ends here

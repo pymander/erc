@@ -203,4 +203,5 @@ join from that split has been detected or not.")
 
 (provide 'erc-netsplit)
 
+;; arch-tag: 61a85cb0-7e7b-4312-a4f6-313c7a25a6e8
 ;;; erc-netsplit.el ends here

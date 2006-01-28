@@ -90,4 +90,5 @@ name here."
 
 (provide 'erc-spelling)
 
+;; arch-tag: 04ae1c46-0fd1-4e1a-8b80-55bfa471c945
 ;;; erc-spelling.el ends here

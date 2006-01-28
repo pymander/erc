@@ -501,3 +501,5 @@ and `apropos' for other symbols."
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
+
+;; arch-tag: 7d23bed4-2f30-4273-a03f-d7a274c605c4

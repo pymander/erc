@@ -123,4 +123,6 @@ being evaluated and should return stings."
      (t (erc-dcc-send-file nick (nth (1- n) erc-xdcc-files) proc)))))
 
 (provide 'erc-xdcc)
+
+;; arch-tag: a13b62fe-2399-4562-af4e-f18a8dd4b9c8
 ;;; erc-xdcc.el ends here

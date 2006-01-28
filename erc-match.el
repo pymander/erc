@@ -656,3 +656,5 @@ This function is meant to be called from `erc-text-matched-hook'."
 ;; indent-tabs-mode: t
 ;; tab-width: 8
 ;; End:
+
+;; arch-tag: 1f1f595e-abcc-4b0b-83db-598a1d3f0f82

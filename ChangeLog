@@ -1,5 +1,7 @@
 2006-01-28  Michael Olson  <mwolson@gnu.org>
 
+	* erc-*.el, erc.texi: Add Arch taglines as per Emacs guidelines.
+
 	* erc-stamp.el (erc-insert-aligned): If using a text terminal,
 	insert spaces instead of using special text property.
 

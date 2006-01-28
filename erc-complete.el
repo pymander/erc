@@ -220,3 +220,5 @@ Window configurations are stored in
 ;; indent-tabs-mode: t
 ;; tab-width: 8
 ;; End:
+
+;; arch-tag: 3be13ee8-8fdb-41ab-83c2-6582c757b91e

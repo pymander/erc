@@ -115,3 +115,5 @@ Meant to be used in hooks, like `erc-insert-post-hook'."
 ;; indent-tabs-mode: t
 ;; tab-width: 8
 ;; End:
+
+;; arch-tag: 22a2ea78-871f-4870-8f1e-efe534170311

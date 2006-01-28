@@ -180,3 +180,5 @@ NICK should be the first and only arg to /chess"
 ;; indent-tabs-mode: t
 ;; tab-width: 8
 ;; End:
+
+;; arch-tag: beb148d1-db16-48da-8145-9f3a7ff27b7b
