@@ -1,24 +1,26 @@
-;;; erc-speedbar.el --- Speedbar support for the Emacs IRC Client
+;;; erc-speedbar.el --- Speedbar support for ERC
 
-;; Copyright (C) 2001,2002,2003,2004 Free Software Foundation, Inc.
+;; Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@delysid.org>
 ;; Contributor: Eric M. Ludlam <eric@siege-engine.com>
 
-;; This file is free software; you can redistribute it and/or modify
+;; This file is part of GNU Emacs.
+
+;; GNU Emacs is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
 ;; any later version.
 
-;; This file is distributed in the hope that it will be useful,
+;; GNU Emacs is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING. If not, write to the
-;; Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
-;; Boston, MA 02110-1301 USA
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
 
@@ -29,7 +31,8 @@
 ;; * Write intelligent update function:
 ;;   update-channel, update-nick, remove-nick-from-channel, ...
 ;; * Use indicator-strings for op/voice
-;; * Extract/convert face notes field from bbdb if available and show it using sb-image.el
+;; * Extract/convert face notes field from bbdb if available and show
+;;   it using sb-image.el
 ;;
 ;;; Code:
 
@@ -185,55 +188,60 @@ This will add a speedbar major display mode."
 (defun erc-speedbar-expand-channel (text channel indent)
   "For the line matching TEXT, in CHANNEL, expand or contract a line.
 INDENT is the current indentation level."
-  (cond ((string-match "+" text)
-	 (speedbar-change-expand-button-char ?-)
-	 (speedbar-with-writable
-	   (save-excursion
-	     (end-of-line) (forward-char 1)
-	     (let ((modes (with-current-buffer channel
-			    (concat (apply 'concat
-					   erc-channel-modes)
-				    (cond ((and erc-channel-user-limit erc-channel-key)
-					   (if erc-show-channel-key-p
-					       (format "lk %.0f %s" erc-channel-user-limit erc-channel-key)
-					     (format "kl %.0f" erc-channel-user-limit)))
-					  (erc-channel-user-limit
-					   ;; Emacs has no bignums
-					   (format "l %.0f" erc-channel-user-limit))
-					  (erc-channel-key
-					   (if erc-show-channel-key-p
-					       (format "k %s" erc-channel-key)
-					     "k"))
-					  (t "")))))
-		   (topic (erc-controls-interpret
-			   (with-current-buffer channel erc-channel-topic))))
-	       (speedbar-make-tag-line
-		'angle ?i nil nil
-		(concat "Modes: +" modes) nil nil nil
-		(1+ indent))
-	       (unless (string= topic "")
-		 (speedbar-make-tag-line
-		  'angle ?i nil nil
-		  (concat "Topic: " topic) nil nil nil
-		  (1+ indent)))
-	       (let ((names (cond ((eq erc-speedbar-sort-users-type 'alphabetical)
-				   (erc-sort-channel-users-alphabetically
-				    (with-current-buffer channel
-				      (erc-get-channel-user-list))))
-				  ((eq erc-speedbar-sort-users-type 'activity)
-				   (erc-sort-channel-users-by-activity
-				    (with-current-buffer channel
-				      (erc-get-channel-user-list))))
-				  (t (with-current-buffer channel
-				       (erc-get-channel-user-list))))))
-		 (when names
-		   (speedbar-with-writable
-		     (dolist (entry names)
-		       (erc-speedbar-insert-user entry ?+ (1+ indent))))))))))
-	((string-match "-" text)
-	 (speedbar-change-expand-button-char ?+)
-	 (speedbar-delete-subblock indent))
-	(t (error "Ooops... not sure what to do")))
+  (cond
+   ((string-match "+" text)
+    (speedbar-change-expand-button-char ?-)
+    (speedbar-with-writable
+     (save-excursion
+       (end-of-line) (forward-char 1)
+       (let ((modes (with-current-buffer channel
+		      (concat (apply 'concat
+				     erc-channel-modes)
+			      (cond
+			       ((and erc-channel-user-limit
+				     erc-channel-key)
+				(if erc-show-channel-key-p
+				    (format "lk %.0f %s"
+					    erc-channel-user-limit
+					    erc-channel-key)
+				  (format "kl %.0f" erc-channel-user-limit)))
+			       (erc-channel-user-limit
+				;; Emacs has no bignums
+				(format "l %.0f" erc-channel-user-limit))
+			       (erc-channel-key
+				(if erc-show-channel-key-p
+				    (format "k %s" erc-channel-key)
+				  "k"))
+			       (t "")))))
+	     (topic (erc-controls-interpret
+		     (with-current-buffer channel erc-channel-topic))))
+	 (speedbar-make-tag-line
+	  'angle ?i nil nil
+	  (concat "Modes: +" modes) nil nil nil
+	  (1+ indent))
+	 (unless (string= topic "")
+	   (speedbar-make-tag-line
+	    'angle ?i nil nil
+	    (concat "Topic: " topic) nil nil nil
+	    (1+ indent)))
+	 (let ((names (cond ((eq erc-speedbar-sort-users-type 'alphabetical)
+			     (erc-sort-channel-users-alphabetically
+			      (with-current-buffer channel
+				(erc-get-channel-user-list))))
+			    ((eq erc-speedbar-sort-users-type 'activity)
+			     (erc-sort-channel-users-by-activity
+			      (with-current-buffer channel
+				(erc-get-channel-user-list))))
+			    (t (with-current-buffer channel
+				 (erc-get-channel-user-list))))))
+	   (when names
+	     (speedbar-with-writable
+	      (dolist (entry names)
+		(erc-speedbar-insert-user entry ?+ (1+ indent))))))))))
+   ((string-match "-" text)
+    (speedbar-change-expand-button-char ?+)
+    (speedbar-delete-subblock indent))
+   (t (error "Ooops... not sure what to do")))
   (speedbar-center-buffer-smartly))
 
 (defun erc-speedbar-insert-user (entry exp-char indent)
@@ -241,16 +249,16 @@ INDENT is the current indentation level."
 EXP-CHAR is the expansion character to use.
 INDENT is the current indentation level."
   (let* ((user (car entry))
-         (cuser (cdr entry))
-         (nick (erc-server-user-nickname user))
-         (host (erc-server-user-host user))
-         (info (erc-server-user-info user))
-         (login (erc-server-user-login user))
-         (name (erc-server-user-full-name user))
-         (voice (and cuser (erc-channel-user-voice cuser)))
-         (op (and cuser (erc-channel-user-op cuser)))
+	 (cuser (cdr entry))
+	 (nick (erc-server-user-nickname user))
+	 (host (erc-server-user-host user))
+	 (info (erc-server-user-info user))
+	 (login (erc-server-user-login user))
+	 (name (erc-server-user-full-name user))
+	 (voice (and cuser (erc-channel-user-voice cuser)))
+	 (op (and cuser (erc-channel-user-op cuser)))
 	 (nick-str (concat (if op "@" "") (if voice "+" "") nick))
-         (finger (concat login (when (or login host) "@") host))
+	 (finger (concat login (when (or login host) "@") host))
 	 (sbtoken (list finger name info)))
     (if (or login host name info) ; we want to be expandable
 	(speedbar-make-tag-line
@@ -322,7 +330,8 @@ The INDENT level is ignored."
 		(select-window bwin)
 		(raise-frame (window-frame bwin)))
 	    (if dframe-power-click
-		(let ((pop-up-frames t)) (select-window (display-buffer buffer)))
+		(let ((pop-up-frames t))
+		  (select-window (display-buffer buffer)))
 	      (dframe-select-attached-frame speedbar-frame)
 	      (switch-to-buffer buffer)))))
     (let ((bwin (get-buffer-window buffer 0)))

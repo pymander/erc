@@ -7,42 +7,22 @@
 ;; Created: 2004-04-30
 ;; Keywords: IRC chat client Internet
 
-;; Changes by Edgar Gonçalves <edgar.goncalves@inesc-id.pt>
-;; Jun 25 2005:
-;;     - images are changed to a standard set of names.
-;;     - /images now contain gaim's status icons.
-;; May 31 2005:
-;;     - tooltips are improved. they try to access bbdb for a nice nick!
-;; Apr 26 2005:
-;;     - erc-nicklist-channel-users-info was fixed (sorting bug)
-;;     - Away names don't need parenthesis when using icons
-;; Apr 26 2005:
-;;     - nicks can display icons of their connection type (msn, icq, for now)
-;; Mar 15 2005:
-;;     - nicks now are different for unvoiced and op users
-;;     - nicks now have tooltips displaying more info
-;; Mar 18 2005:
-;;     - queries now work ok, both on menu and keyb shortcut RET.
-;;     - nicklist is now sorted ignoring the case. Voiced nicks will
-;;       appear according to `erc-nicklist-voiced-position'.
+;; This file is part of GNU Emacs.
 
+;; GNU Emacs is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
 
-;; COPYRIGHT NOTICE
+;; GNU Emacs is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 
-;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2 of the
-;; License, or (at your option) any later version.
-;;
-;; This program is distributed in the hope that it will be useful, but
-;; WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-;; General Public License for more
-;; details. http://www.gnu.org/copyleft/gpl.html
-;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs. If you did not, write to the Free Software
-;; Foundation, Inc., 675 Mass Ave., Cambridge, MA 02139, USA.
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
 ;;
@@ -74,6 +54,25 @@
 
 ;;; History:
 ;;
+
+;; Changes by Edgar Gonçalves <edgar.goncalves@inesc-id.pt>
+;; Jun 25 2005:
+;;     - images are changed to a standard set of names.
+;;     - /images now contain gaim's status icons.
+;; May 31 2005:
+;;     - tooltips are improved. they try to access bbdb for a nice nick!
+;; Apr 26 2005:
+;;     - erc-nicklist-channel-users-info was fixed (sorting bug)
+;;     - Away names don't need parenthesis when using icons
+;; Apr 26 2005:
+;;     - nicks can display icons of their connection type (msn, icq, for now)
+;; Mar 15 2005:
+;;     - nicks now are different for unvoiced and op users
+;;     - nicks now have tooltips displaying more info
+;; Mar 18 2005:
+;;     - queries now work ok, both on menu and keyb shortcut RET.
+;;     - nicklist is now sorted ignoring the case. Voiced nicks will
+;;       appear according to `erc-nicklist-voiced-position'.
 
 ;;; Code:
 

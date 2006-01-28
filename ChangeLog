@@ -1,6 +1,9 @@
 2006-01-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc-*.el, erc.texi: Add Arch taglines as per Emacs guidelines.
+	Space out copyright years like the rest of Emacs.  Use the Emacs
+	copyright statement.  Refer to ourselves as ERC rather than "Emacs
+	IRC Client", since there are now several IRC clients for Emacs.
 
 	* erc-stamp.el (erc-insert-aligned): If using a text terminal,
 	insert spaces instead of using special text property.

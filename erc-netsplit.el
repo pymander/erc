@@ -1,24 +1,26 @@
 ;;; erc-netsplit.el --- Reduce JOIN/QUIT messages on netsplits
 
-;; Copyright (C) 2002,2003,2004 Free Software Foundation, Inc.
+;; Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@delysid.org>
 ;; Keywords: comm
 
-;; This file is free software; you can redistribute it and/or modify
+;; This file is part of GNU Emacs.
+
+;; GNU Emacs is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
 ;; any later version.
 
-;; This file is distributed in the hope that it will be useful,
+;; GNU Emacs is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING. If not, write to the
-;; Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
-;; Boston, MA 02110-1301 USA
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
 
@@ -36,7 +38,7 @@
   "ERC netsplit version.")
 
 (defgroup erc-netsplit nil
-  "Netsplit detection tries to automatically figure when a 
+  "Netsplit detection tries to automatically figure when a
 netsplit happens, and filters the QUIT messages. It also keeps
 track of netsplits, so that it can filter the JOIN messages on a netjoin too."
   :group 'erc)
@@ -95,8 +97,8 @@ join from that split has been detected or not.")
 (defun erc-netsplit-install-message-catalogs ()
   (erc-define-catalog
    'english
-   '((netsplit         . "netsplit: %s")
-     (netjoin          . "netjoin: %s, %N were split")
+   '((netsplit	       . "netsplit: %s")
+     (netjoin	       . "netjoin: %s, %N were split")
      (netjoin-done     . "netjoin: All lost souls are back!")
      (netsplit-none    . "No netsplits in progress")
      (netsplit-wholeft . "split: %s missing: %n %t"))))
@@ -110,22 +112,22 @@ join from that split has been detected or not.")
 	  (progn
 	    (if (not (caddr elt))
 		(progn
-		  (erc-display-message 
+		  (erc-display-message
 		   parsed 'notice (process-buffer proc)
 		   'netjoin ?s (car elt) ?N (length (nthcdr 3 elt)))
 		  (setcar (nthcdr 2 elt) t)
 		  (run-hook-with-args 'erc-netjoin-hook proc (car elt))))
 	    ;; need to remove this nick, perhaps the whole entry here.
-            ;; Note that by removing the nick now, we can't tell if further
-            ;; join messages (for other channels) should also be
-            ;; suppressed.
+	    ;; Note that by removing the nick now, we can't tell if further
+	    ;; join messages (for other channels) should also be
+	    ;; suppressed.
 	    (if (null (nthcdr 4 elt))
 		(progn
 		  (erc-display-message
 		   parsed 'notice (process-buffer proc)
 		   'netjoin-done ?s (car elt))
 		  (setq erc-netsplit-list (delq elt erc-netsplit-list)))
-              (delete nick elt))
+	      (delete nick elt))
 	    (setq no-next-hook t))))
     no-next-hook))
 
@@ -134,7 +136,7 @@ join from that split has been detected or not.")
   ;; regexp matches things with a . in them, and no ! or @ in them.
   (when (string-match "^[^@!]+\\.[^@!]+$" (erc-response.sender parsed))
     (and erc-netsplit-debug
-	 (erc-display-message 
+	 (erc-display-message
 	  parsed 'notice (process-buffer proc)
 	  "[debug] server mode change."))
     (not erc-netsplit-show-server-mode-changes-flag)))
@@ -203,5 +205,11 @@ join from that split has been detected or not.")
 
 (provide 'erc-netsplit)
 
-;; arch-tag: 61a85cb0-7e7b-4312-a4f6-313c7a25a6e8
 ;;; erc-netsplit.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:
+
+;; arch-tag: 61a85cb0-7e7b-4312-a4f6-313c7a25a6e8
