@@ -42,7 +42,7 @@
 
 ;;; Code:
 
-(defconst erc-track-version "$Revision: 1.86 $"
+(defconst erc-track-version "$Revision: 1.88 $"
   "ERC track mode revision")
 
 (defgroup erc-track nil

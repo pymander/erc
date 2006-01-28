@@ -33,7 +33,7 @@
 
 (require 'ibuffer)
 
-(defconst erc-ibuffer-version "$Revision: 1.27 $"
+(defconst erc-ibuffer-version "$Revision: 1.29 $"
   "ERC ibuffer revision.")
 
 (defgroup erc-ibuffer nil

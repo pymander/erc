@@ -45,7 +45,7 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-nets-version "$Revision: 1.22 $"
+(defconst erc-nets-version "$Revision: 1.24 $"
   "ERC networks revision.")
 
 ;; Variables

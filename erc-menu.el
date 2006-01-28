@@ -31,7 +31,7 @@
 
 (require 'easymenu)
 
-(defconst erc-menu-version "$Revision: 1.22 $"
+(defconst erc-menu-version "$Revision: 1.24 $"
   "ERC menu revision")
 
 (defvar erc-menu-definition
