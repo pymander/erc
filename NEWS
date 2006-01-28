@@ -31,7 +31,7 @@ Renamed all variables that didn't start with "erc-".
 
 *** Load erc scripts in a safer way.
 
-*** Don't insert a timestemp if text at point is invisible.
+*** Don't insert a timestamp if text at point is invisible.
 
 *** Don't hide messages from those in `erc-fools' by default.
 Color their nicks instead.
@@ -105,12 +105,22 @@ before sending to a channel.
 
 ** New customization group `erc-server' for dealing with IRC servers.
 
-** ERC can now be installed by doing `make install' from the commandline.
+** ERC can now be installed by doing `make install' from the command line.
+
+** ERC now has a manual in erc.texi.
+Type `make doc' to generate HTML and Info versions of it.
 
 ** ERC no longer depends on cl.el.
 Only the macros in cl-macs.el are used.
 
 ** Fix an edge case when quitting as new messages come in.
+
+** Make flood protection toggle-able as on/off, removing the 'strict option.
+
+** If possible, re-use channel buffers when reconnecting to a server.
+
+** Text in ERC buffers is now read-only by default.
+To get the previous behavior, 
 
 ** Changes and additions to modules
 
@@ -122,8 +132,8 @@ Only the macros in cl-macs.el are used.
 
 **** When the user types /WHOIS, ask for a record to merge to.
 
-**** Store the displayed name of a BiltBee contact.
-The new `erc-bbdb-bilbee-name-field' option specifies the field to use
+**** Store the displayed name of a BitlBee contact.
+The new `erc-bbdb-bitlbee-name-field' option specifies the field to use
 to store this information.
 
 **** Don't prompt for a name on /JOIN or /NICK.
@@ -159,7 +169,7 @@ types that make beeps.
 **** Make sure a stray mouse click doesn't trigger an error.
 
 **** Insert icons from the /images directory next to nicks.
-This indicates their awawy status.  The location is customizable via
+This indicates their away status.  The location is customizable via
 the new `erc-nicklist-icons-directory' option.
 
 If you do not want these icons, set `erc-nicklist-use-icons' to nil.
@@ -175,6 +185,16 @@ If you do not want these icons, set `erc-nicklist-use-icons' to nil.
 *** Programmable completion (erc-pcomplete.el)
 
 **** Enable by default.
+
+*** Timestamps (erc-stamp.el)
+
+**** On Emacs22, align right timestamps perfectly, even if variable-width
+characters are used.  If we aren't using Emacs22, move text farther
+away from the right margin when variable-width characters are used.
+It is considered better to misalign the stamp by a bit than to go past
+the right margin.
+
+**** Enable by default
 
 ** New modules
 
@@ -293,7 +313,7 @@ removed.
 ** The way ERC deals with input from the server has changed.
 All server response code is now in a new file, erc-backend.el.  There
 should be no real user visible changes.  There are, however, a few
-major changes for implementors, and module writers:
+major changes for implementers, and module writers:
 
 *** The PARSED response that all handlers get called with is
     no longer a vector, but an `erc-response' struct.

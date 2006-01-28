@@ -1,7 +1,13 @@
 2006-01-27  Michael Olson  <mwolson@gnu.org>
 
+	* Makefile (MISC): Include ChangeLog.2005.
+	(debrelease, release): Copy images directory.
+
+	* NEWS: Spelling fixes.  Add items for recent changes.
+
 	* erc.el (erc): Move call to erc-update-modules before the call to
 	erc-mode.  This should fix a timestamp display issue.
+	(erc-version-string): Release ERC 5.1.
 
 2006-01-26  Michael Olson  <mwolson@gnu.org>
 

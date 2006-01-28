@@ -12,7 +12,7 @@ SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) $(TESTING),$(ALLSOURCE))
 TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MANUAL  = erc
 MISC	= AUTHORS CREDITS HISTORY NEWS README Makefile ChangeLog \
-		ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 \
+		ChangeLog.2005 ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 \
 		ChangeLog.2001 servers.pl erc-auto.in
 
 EMACS       = emacs
@@ -83,14 +83,17 @@ distclean:
 debrelease: $(ALLSOURCE) $(SPECIAL) distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
 	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
+	cp -r images ../erc-$(VERSION)
 	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
 	cp -R debian ../$(SNAPDIR)
 	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
 	  ../$(SNAPDIR)/debian/CVS \
+	  ../$(SNAPDIR)/debian/images/CVS \
 	  ../$(SNAPDIR)/debian/maint/CVS \
 	  ../$(SNAPDIR)/debian/scripts/CVS || :
 	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -R \
 	  ../$(SNAPDIR)/debian/.arch-ids \
+	  ../$(SNAPDIR)/debian/images/.arch-ids \
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	(cd ../$(SNAPDIR) && \
@@ -110,6 +113,11 @@ debrelease-mwolson:
 release: autoloads distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
 	cp $(SPECIAL) $(UNCOMPILED) $(SOURCE) $(MISC) ../erc-$(VERSION)
+	cp -r images ../erc-$(VERSION)
+	test -d ../$(SNAPDIR)/images/CVS && \
+	  rm -R ../$(SNAPDIR)/images/CVS || :
+	test -d ../$(SNAPDIR)/images/.arch-ids && \
+	  rm -R ../$(SNAPDIR)/images/.arch-ids || :
 	(cd .. && tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*; \
 	  zip -r erc-$(VERSION).zip erc-$(VERSION))
 
