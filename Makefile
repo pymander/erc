@@ -13,7 +13,7 @@ TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MANUAL  = erc
 MISC	= AUTHORS CREDITS HISTORY NEWS README Makefile ChangeLog \
 		ChangeLog.2005 ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 \
-		ChangeLog.2001 servers.pl erc-auto.in
+		ChangeLog.2001 servers.pl erc-auto.in erc.texi
 
 EMACS       = emacs
 SITEFLAG    = --no-site-file
