@@ -595,3 +595,5 @@ To activate completion on startup, put (erc-completion-mode 1) in your
 Same applies to timestamps.  You no longer need to (require
 'erc-stamp), you can customize the variable `erc-timestamp-mode', and
 the rest should be automatic.
+
+arch-tag: 2b21b387-6cdc-4192-889c-6743cfffdcb1

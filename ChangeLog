@@ -3,10 +3,13 @@
 	* erc-log.el (erc-log-setup-logging): Use write-file-functions if
 	it exists.
 
-	* erc-*.el, erc.texi: Add Arch taglines as per Emacs guidelines.
-	Space out copyright years like the rest of Emacs.  Use the Emacs
-	copyright statement.  Refer to ourselves as ERC rather than "Emacs
-	IRC Client", since there are now several IRC clients for Emacs.
+	* erc-*.el, erc.texi, NEWS: Add Arch taglines as per Emacs
+	guidelines.
+
+	* erc-*.el: Space out copyright years like the rest of Emacs.  Use
+	the Emacs copyright statement.  Refer to ourselves as ERC rather
+	than "Emacs IRC Client", since there are now several IRC clients
+	for Emacs.
 
 	* erc-stamp.el (erc-insert-aligned): Only use the special text
 	property when window-system is X.
