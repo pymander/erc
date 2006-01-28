@@ -1,3 +1,8 @@
+2006-01-28  Michael Olson  <mwolson@gnu.org>
+
+	* erc-stamp.el (erc-insert-aligned): If using a text terminal,
+	insert spaces instead of using special text property.
+
 2006-01-28  Johan Bockgård  <bojohan@users.sourceforge.net>
 
 	* erc.el (erc-format-message): More `cl' breakage; don't use

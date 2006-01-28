@@ -199,7 +199,8 @@ Fraction is roughly (/ POS (window-width)).
 If the current version of Emacs doesn't support this, use
 \(- POS FALLBACK) to determine how many spaces to insert."
   (if (or (featurep 'xemacs)
-	  (< emacs-major-version 22))
+	  (< emacs-major-version 22)
+	  (not window-system))
       (insert (make-string (- pos fallback) ? ) string)
     (insert " ")
     (let ((offset (floor (* (/ (1- pos) (window-width) 1.0)
