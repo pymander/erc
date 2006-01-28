@@ -2593,3 +2593,7 @@
 	* This module allows a way of buttonizing text in IRC buffers.
 	  Default it is used for URLs, but other things could be added.
 	  see if you can find another use, erc-button-alist
+
+    Copyright (C) 2002 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.

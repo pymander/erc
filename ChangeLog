@@ -308,3 +308,7 @@
 
 	* erc-track.el (erc-track-remove-from-mode-line): Handle case
 	where global-mode-string is not a list.  Emacs22 permits this.
+
+    Copyright (C) 2006 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.

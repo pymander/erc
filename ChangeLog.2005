@@ -1214,3 +1214,7 @@
 	highlighting; now respecting `erc-interpret-mirc-color'.  Fixed a
 	bug where emacs would get stuck in a loop when \C-g was in a
 	message and `erc-beep-p' was set to nil (default setting).
+
+    Copyright (C) 2005 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.

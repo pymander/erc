@@ -2137,3 +2137,7 @@
 	log file to a query from "User". Avoided adding an extra flag to control this
 	behavior - if you think this was the wrong decision, please correct it and
 	I'll remember it for next time.
+
+    Copyright (C) 2003 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.

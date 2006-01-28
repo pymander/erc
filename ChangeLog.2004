@@ -2066,3 +2066,7 @@
 2004-01-02  Francis Litterio <franl@users.sourceforge.net>
 
 	* erc-list.el: Added variable erc-chanlist-mode-hook.
+
+    Copyright (C) 2004 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.
