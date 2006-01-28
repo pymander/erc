@@ -63,7 +63,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1 (CVS) $Revision: 1.796 $"
+(defconst erc-version-string "Version 5.1 (CVS) $Revision: 1.797 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -6059,7 +6059,7 @@ english, catalog."
   "Format MSG according to ARGS.
 
 See also `format-spec'."
-  (when (oddp (length args))
+  (when (eq (logand (length args) 1) 1)	; oddp
     (error "Obscure usage of this function appeared"))
   (let ((entry (erc-retrieve-catalog-entry msg)))
     (when (not entry)
