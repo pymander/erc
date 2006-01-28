@@ -12,7 +12,7 @@ Suggests: speedbar, bbdb, emacspeak
 Recommends: emacs-chess
 Replaces: erc-speak
 Conflicts: erc-speak
-Description: an Emacs IRC client
- This package contains ERC, an advanced IRC client for Emacsen.
+Description: an IRC client for Emacs
+ ERC is a powerful, modular, and extensible IRC client for Emacs.
  It supports multiple channel-buffers, nick completion, keyword
- highlighting, and so on.
+ highlighting, and more.

@@ -1,3 +1,11 @@
+erc (5.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control (Description): Update.
+  * debian/rules (binary-erc): Concatenate ChangeLog for 2005.
+
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Fri, 27 Jan 2006 23:42:23 -0500
+
 erc (5.0.4-3) unstable; urgency=low
 
   * Attempt to ensure that the full set of changes is generated.

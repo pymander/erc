@@ -29,6 +29,7 @@ binary-erc: install
 # The changelog..
 	install -m 0644 debian/changelog ${PKGDIR}${DOCDIR}/changelog.Debian
 	install -m 0644 ChangeLog ${PKGDIR}${DOCDIR}/changelog
+	cat ChangeLog.2005 >> ${PKGDIR}${DOCDIR}/changelog
 	cat ChangeLog.2004 >> ${PKGDIR}${DOCDIR}/changelog
 	cat ChangeLog.2003 >> ${PKGDIR}${DOCDIR}/changelog
 	cat ChangeLog.2002 >> ${PKGDIR}${DOCDIR}/changelog

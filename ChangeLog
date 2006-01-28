@@ -1,5 +1,11 @@
 2006-01-27  Michael Olson  <mwolson@gnu.org>
 
+	* debian/changelog: Update for new release.
+
+	* debian/control (Description): Update.
+
+	* debian/rules: Concatenate ChangeLog for 2005.
+
 	* Makefile (MISC): Include ChangeLog.2005 and erc.texi.
 	(debrelease, release): Copy images directory.
 
