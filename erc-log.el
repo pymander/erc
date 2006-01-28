@@ -220,12 +220,14 @@ This function is destined to be run from `erc-connect-pre-hook'."
     (auto-save-mode -1)
     (setq buffer-offer-save t
 	  buffer-file-name "")
-    (if (boundp 'local-write-file-hooks)
-	(setq local-write-file-hooks
-	      '(erc-save-buffer-in-logs)) ;Emacs >=19
-      (make-local-variable 'write-file-hooks)
-      (setq write-file-hooks		  ;Emacs 18
-	    '(erc-save-buffer-in-logs)))
+    (cond ((boundp 'write-file-functions)
+	   (set (make-local-variable 'write-file-functions)
+		'(erc-save-buffer-in-logs)))
+	  ((boundp 'local-write-file-hooks)
+	   (setq local-write-file-hooks '(erc-save-buffer-in-logs)))
+	  (t
+	   (set (make-local-variable 'write-file-hooks)
+		'(erc-save-buffer-in-logs))))
     (when erc-log-insert-log-on-open
       (ignore-errors (insert-file-contents (erc-current-logfile))
 		     (move-marker erc-last-saved-position

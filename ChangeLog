@@ -1,5 +1,8 @@
 2006-01-28  Michael Olson  <mwolson@gnu.org>
 
+	* erc-log.el (erc-log-setup-logging): Use write-file-functions if
+	it exists.
+
 	* erc-*.el, erc.texi: Add Arch taglines as per Emacs guidelines.
 	Space out copyright years like the rest of Emacs.  Use the Emacs
 	copyright statement.  Refer to ourselves as ERC rather than "Emacs
