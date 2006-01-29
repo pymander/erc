@@ -206,10 +206,11 @@ one is kept."
 ;; XEmacs has a string representation of the build time.  It's
 ;; possible for date-to-time to throw an "invalid date" error, so
 ;; we'll just use a string instead of a time.
-(setq erc-emacs-build-time
-      (if (stringp emacs-build-time)
-	  emacs-build-time
-	(format-time-string "%Y-%m-%d" emacs-build-time)))
+(defvar erc-emacs-build-time
+  (if (stringp emacs-build-time)
+      emacs-build-time
+    (format-time-string "%Y-%m-%d" emacs-build-time))
+  "Time at which Emacs was dumped out.")
 
 ;; XEmacs' `replace-match' does not replace matching subexpressions in strings.
 (defun erc-replace-match-subexpression-in-string

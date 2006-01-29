@@ -32,6 +32,7 @@
 ;;; Code:
 
 (require 'ibuffer)
+(require 'erc)
 
 (defconst erc-ibuffer-version "$Revision: 1.29 $"
   "ERC ibuffer revision.")

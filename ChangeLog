@@ -1,8 +1,5 @@
 2006-01-28  Michael Olson  <mwolson@gnu.org>
 
-	* erc-log.el (erc-log-setup-logging): Use write-file-functions if
-	it exists.
-
 	* erc-*.el, erc.texi, NEWS: Add Arch taglines as per Emacs
 	guidelines.
 
@@ -10,6 +7,13 @@
 	the Emacs copyright statement.  Refer to ourselves as ERC rather
 	than "Emacs IRC Client", since there are now several IRC clients
 	for Emacs.
+
+	* erc-compat.el (erc-emacs-build-time): Define as a variable.
+
+	* erc-ibuffer.el: Require 'erc.
+
+	* erc-log.el (erc-log-setup-logging): Use write-file-functions if
+	it exists.
 
 	* erc-stamp.el (erc-insert-aligned): Only use the special text
 	property when window-system is X.
