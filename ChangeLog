@@ -1,5 +1,18 @@
 2006-01-29  Michael Olson  <mwolson@gnu.org>
 
+	* ChangeLog, ChangeLog.2005, ChangeLog.2004, ChangeLog.2003,
+	ChangeLog.2002, ChangeLog.2001: Add "See ChangeLog.NNNN" line for
+	earlier changes.  Use utf-8 encoding.  Fix some accent typos.
+
+	* erc-speedbar.el (erc-speedbar-buttons): Fix reference to free
+	variable.
+	(erc-speedbar-goto-buffer): Fix compiler warning.
+
+	* erc-ibuffer.el: Use `define-ibuffer-filter' instead of
+	`ibuffer-degine-limiter'.  Use `define-ibuffer-column' instead of
+	`ibuffer-define-column'.  Require 'ibuf-ext so that the macros
+	work without compiler warnings.
+
 	* man/erc.texi (Obtaining ERC, Installation): Note that these
 	sections may be skipped if using the version of ERC that comes
 	with Emacs.
@@ -188,7 +201,8 @@
 	* erc.el, erc-backend.el, erc-ezbounce.el, erc-list.el,
 	erc-log.el, erc-match.el, erc-nets.el, erc-netsplit.el,
 	erc-nicklist.el, erc-nickserv.el, erc-notify.el, erc-pcomplete.el:
-	Use (eval-when-compile 'cl), so that compilation doesn't fail.
+	Use (eval-when-compile (require 'cl)), so that compilation doesn't
+	fail.
 
 	* erc-fill.el, erc-truncate.el: Whitespace munging.
 
@@ -326,3 +340,11 @@
 
 	* erc-track.el (erc-track-remove-from-mode-line): Handle case
 	where global-mode-string is not a list.  Emacs22 permits this.
+
+See ChangeLog.2005 for earlier changes.
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
+
+;; arch-tag: 865a75f6-2bcb-46df-bf0c-b514dadf688a
