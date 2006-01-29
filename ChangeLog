@@ -1,3 +1,9 @@
+2006-01-29  Michael Olson  <mwolson@gnu.org>
+
+	* man/erc.texi (Obtaining ERC, Installation): Note that these
+	sections may be skipped if using the version of ERC that comes
+	with Emacs.
+
 2006-01-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc-*.el, erc.texi, NEWS: Add Arch taglines as per Emacs

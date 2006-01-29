@@ -109,6 +109,9 @@ It comes with the following capabilities enabled by default.
 * Development::                 Latest unreleased development changes.
 @end menu
 
+These sections may be skipped if you are using the version of ERC that
+comes with Emacs.
+
 @node Releases, Development, Obtaining ERC, Obtaining ERC
 @comment  node-name,  next,  previous,  up
 @section Releases
@@ -228,6 +231,9 @@ updated at the same time as the Arch repository.
 @chapter Installation
 
 ERC may be compiled and installed on your machine.
+
+This section may be skipped if you are using the version of ERC that
+comes with Emacs.
 
 @subsubheading Compilation
 
