@@ -18,6 +18,8 @@
 	* erc-stamp.el (erc-insert-aligned): Only use the special text
 	property when window-system is X.
 
+	* erc.texi (History): Note that ERC 5.1 is released.
+
 2006-01-28  Johan Bockgård  <bojohan@users.sourceforge.net>
 
 	* erc.el (erc-format-message): More `cl' breakage; don't use

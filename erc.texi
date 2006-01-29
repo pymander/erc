@@ -606,7 +606,7 @@ decided to include ERC in Emacs.
 
 @item 2006
 
-ERC 5.1 is being prepared.
+ERC 5.1 is released.
 
 @end itemize
 
