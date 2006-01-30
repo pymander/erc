@@ -40,14 +40,14 @@
 (require 'erc)
 
 ;; Fix RET in ERC buffers, by telling Viper to pass RET through to the
-;; normal keymap.
-
-(add-to-list 'viper-major-mode-modifier-list
-             '(erc-mode insert-state viper-comint-mode-modifier-map))
-(add-to-list 'viper-major-mode-modifier-list
-             '(erc-mode vi-state viper-comint-mode-modifier-map))
-
-(viper-apply-major-mode-modifiers)
+;; normal keymap. Do this conditionally, as this version of Viper may
+;; already do this for us.
+(unless (assoc 'erc-mode viper-major-mode-modifier-list)
+  (add-to-list 'viper-major-mode-modifier-list
+               '(erc-mode insert-state viper-comint-mode-modifier-map))
+  (add-to-list 'viper-major-mode-modifier-list
+               '(erc-mode vi-state viper-comint-mode-modifier-map))
+  (viper-apply-major-mode-modifiers))
 
 ;; Ensure that ERC buffers come up in insert state.
 (add-to-list 'viper-insert-state-mode-list 'erc-mode)
