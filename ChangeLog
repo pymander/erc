@@ -1,3 +1,7 @@
+2006-01-31  Michael Olson  <mwolson@gnu.org>
+
+	* erc-stamp.el: Update copyright years.
+
 2006-01-30  Michael Olson  <mwolson@gnu.org>
 
 	* erc-stamp.el (erc-timestamp-right-align-by-pixel): New option
