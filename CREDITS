@@ -121,6 +121,9 @@ John Paul Wallington (jpw AT pobox DOT com):
 Luigi Panzeri (matley AT muppetslab DOT org):
   * Provided an erc-nickserv-alist entry for Azzurra.
 
+Simon Josefsson  (jas AT extundo DOT com):
+  * Changed erc.el to use tls.el instead of ssl.el.
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
