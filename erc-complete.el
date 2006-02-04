@@ -37,7 +37,7 @@
 (require 'erc-match); for erc-pals
 (require 'hippie-exp); for the hippie expand stuff
 
-(defconst erc-complete-version "$Revision: 1.20 $"
+(defconst erc-complete-version "$Revision: 1.21 $"
   "ERC complete revision.")
 
 ;;;###autoload
