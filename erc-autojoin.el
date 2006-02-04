@@ -34,7 +34,7 @@
 ;;; Code:
 
 (require 'erc)
-;;; Minor Mode
+(eval-when-compile (require 'cl))
 
 (defconst erc-autojoin-version "$Revision: 1.17 $"
   "ERC autojoin revision.")
