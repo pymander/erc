@@ -96,9 +96,7 @@ The cadr is the beginning and the caddr is the end."
   (let ((word-data (and (boundp 'flyspell-word)
                         flyspell-word)))
     (when word-data
-      (cond ((< (point) (save-excursion
-                          (goto-char erc-input-marker)
-                          (erc-bol)))
+      (cond ((< (point) erc-input-marker)
              nil)
             ;; don't spell-check names of users
             ((and erc-channel-users
