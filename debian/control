@@ -8,8 +8,7 @@ Standards-Version: 3.6.2
 Package: erc
 Architecture: all
 Depends: make, emacs21 | xemacs21 | emacsen
-Suggests: speedbar, bbdb, emacspeak
-Recommends: emacs-chess
+Suggests: speedbar, bbdb, emacspeak, emacs-chess
 Replaces: erc-speak
 Conflicts: erc-speak
 Description: an IRC client for Emacs

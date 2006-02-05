@@ -1,4 +1,10 @@
 #! /bin/sh
 set -e
 
-/usr/lib/emacsen-common/emacs-package-remove erc
+if [ -x /usr/lib/emacsen-common/emacs-package-remove ] ; then
+    /usr/lib/emacsen-common/emacs-package-remove erc
+fi
+
+if [ "$1" = remove ] || [ "$1" = upgrade ]; then
+	install-info --quiet --remove /usr/share/info/erc.info
+fi

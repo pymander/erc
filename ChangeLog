@@ -1,5 +1,21 @@
 2006-02-05  Michael Olson  <mwolson@gnu.org>
 
+	* Makefile (debrelease): Remove images/.arch-ids or images/CVS
+	directory correctly.
+
+	* debian/changelog: Update for 5.1.1 release.
+
+	* debian/control (Suggests): Suggest emacs-chess instead of
+	Recommending it.  Thanks to Era Eriksson for the report.
+
+	* debian/maint/postinst: Install the Info documentation.
+
+	* debian/maint/prerm: Handle removing of Info documentation.
+
+	* debian/rules (configure, configure-stamp, build, build-stamp):
+	Generate HTML and Info documentation.
+	(binary-erc): Install HTML and Info documentation.
+
 	* erc-spelling.el (erc-spelling-init): If
 	`erc-spelling-dictionaries' is nil, do not set
 	ispell-local-dictionary.  Before, it was being set to nil, which

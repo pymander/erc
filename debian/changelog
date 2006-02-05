@@ -1,3 +1,25 @@
+erc (5.1.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * erc-spelling.el:
+    - Don't spell-check nicks or words that are prefixed with '/'.
+    - Remove flyspell properties from words we shouldn't spell-check.
+    - Fix an issue that caused the ispell process to reload every time we
+      switch to an ERC buffer.
+  * Bug fix: "erc: Recommends: emacs-chess", thanks to era eriksson
+    (Closes: #350994).
+  * Bug fix: "erc-fill-column should always be equal to the current window
+    width", thanks to Cyril Bouthors (Closes: #221223).  The desired
+    behavior can be obtained by setting both `erc-fill-column' and
+    `fill-column' to nil.
+  * debian/rules (configure, configure-stamp, build, build-stamp):
+    Generate HTML and Info documentation.
+    (binary-erc): Install HTML and Info documentation.
+  * debian/maint/postinst: Install the Info documentation.
+  * debian/maint/prerm: Handle removing of Info documentation.
+
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Sun,  5 Feb 2006 01:26:56 -0500
+
 erc (5.1-1) unstable; urgency=low
 
   * New upstream release.

@@ -83,17 +83,19 @@ distclean:
 debrelease: $(ALLSOURCE) $(SPECIAL) distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
 	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
-	cp -r images ../erc-$(VERSION)
+	cp -r images ../$(SNAPDIR)
+	test -d ../$(SNAPDIR)/images/.arch-ids && rm -R \
+	  ../$(SNAPDIR)/images/.arch-ids || :
+	test -d ../$(SNAPDIR)/images/CVS && rm -R \
+	  ../$(SNAPDIR)/images/.arch-ids || :
 	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
 	cp -R debian ../$(SNAPDIR)
 	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
 	  ../$(SNAPDIR)/debian/CVS \
-	  ../$(SNAPDIR)/debian/images/CVS \
 	  ../$(SNAPDIR)/debian/maint/CVS \
 	  ../$(SNAPDIR)/debian/scripts/CVS || :
 	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -R \
 	  ../$(SNAPDIR)/debian/.arch-ids \
-	  ../$(SNAPDIR)/debian/images/.arch-ids \
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	(cd ../$(SNAPDIR) && \

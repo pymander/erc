@@ -6,9 +6,18 @@ PACKAGE		= erc
 PKGDIR		= debian/${PACKAGE}
 SOURCES		= $(wildcard *.el)
 DOCDIR		= /usr/share/doc/${PACKAGE}
+INFODIR		= /usr/share/info
 LISPDIR		= /usr/share/emacs/site-lisp/erc
 
-build: ;
+configure: configure-stamp
+configure-stamp:
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	makeinfo erc.texi
+	texi2html erc.texi
+	touch build-stamp
 
 clean: 
 	test -e debian/control 
@@ -37,7 +46,9 @@ binary-erc: install
 # ..the copyright file..
 	install -m 0644 debian/copyright ${PKGDIR}${DOCDIR}/
 # ..some documentation
-	install -m 0644 CREDITS HISTORY NEWS ${PKGDIR}${DOCDIR}/
+	install -m 0644 CREDITS HISTORY NEWS erc.html ${PKGDIR}${DOCDIR}/
+	install -d ${PKGDIR}${INFODIR}
+	install -m 0644 erc.info ${PKGDIR}${INFODIR}/erc.info
 # the emacs-install scripts
 	install -m 0755 debian/scripts/install \
 		${PKGDIR}/usr/lib/emacsen-common/packages/install/${PACKAGE}
