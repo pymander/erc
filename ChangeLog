@@ -1,3 +1,9 @@
+2006-02-05  Diane Murray  <disumu@x3y2z1.net>
+
+	* FOR-RELEASE: Added two things to do before the next release of
+	Emacs:  1. using M-x erc instead of M-x erc-select and 2. changing
+	the `C-c C-SPC' and `C-c C-@' global keybindings.
+
 2006-02-05  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (debrelease): Remove images/.arch-ids or images/CVS
