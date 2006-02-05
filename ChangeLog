@@ -15,7 +15,6 @@
 
 	* NEWS: Update for ERC 5.1.1.  Use the same wording for headings
 	that Emacs does in its NEWS file.
-	(History): Note that ERC is now included with Emacs.
 
 	* erc-autojoin.el: Use (eval-when-compile (require 'cl)).
 
@@ -24,6 +23,11 @@
 	channel users.
 
 	* erc-goodies.el: Docfix.
+
+	* erc-stamp.el: Use new arch tagline, since the other one wasn't
+	being treated properly.
+
+	* erc.texi (History): Note that ERC is now included with Emacs.
 
 	* erc.el (erc-version-string): Release ERC 5.1.1
 
