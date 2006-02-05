@@ -1,3 +1,14 @@
+2006-02-05  Michael Olson  <mwolson@gnu.org>
+
+	* erc-spelling.el (erc-spelling-init): If
+	`erc-spelling-dictionaries' is nil, do not set
+	ispell-local-dictionary.  Before, it was being set to nil, which
+	was causing a long delay while the ispell process restarted.
+	(erc-spelling-unhighlight-word): New function that removes
+	flyspell properties from a spell-checked word.
+	(erc-spelling-flyspell-verify): Don't spell-check nicks or words
+	that have '/' before them.
+
 2006-02-04  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (VERSION): Update to 5.1.1.
