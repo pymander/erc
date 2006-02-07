@@ -18,6 +18,11 @@
 
 	* erc-services.el: Rename from erc-nickserv.el.
 
+	* erc.el (erc-migrate-modules): New function that eases migration
+	of module names.
+	(erc-modules): Call erc-migrate-modules in the :get accessor.
+	(erc-modules, erc-update-modules): Update for new modules names.
+
 2006-02-05  Diane Murray  <disumu@x3y2z1.net>
 
 	* FOR-RELEASE: Added two things to do before the next release of

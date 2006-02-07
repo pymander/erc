@@ -1719,7 +1719,7 @@ all channel buffers on all servers."
 (defun erc-migrate-modules (mods)
   "Migrate old names of ERC modules to new ones."
   ;; modify `transforms' to specify what needs to be changed
-  ;; each cell is in the format '(new .old)
+  ;; each item is in the format '(new .old)
   (let ((transforms '((pcomplete . completion)))
 	(modules (copy-alist mods)))
     (dolist (transform transforms)
@@ -1741,9 +1741,7 @@ If you set the value of this without using `customize' remember to call
 removed from the list will be disabled."
   :get (lambda (sym)
 	 ;; replace outdated names with their newer equivalents
-	 (let ((cur (symbol-value sym)))
-	   (setq cur (erc-migrate-modules cur))
-	   (erc-delete-dups cur)))
+	 (erc-migrate-modules (symbol-value sym)))
   :set (lambda (sym val)
 	 ;; disable modules which have just been removed
 	 (when (and (boundp 'erc-modules) erc-modules val)
