@@ -2594,7 +2594,7 @@
 	  Default it is used for URLs, but other things could be added.
 	  see if you can find another use, erc-button-alist
 
-See ChangeLog.2001 for earlier changes.
+See ChangeLog.01 for earlier changes.
 
 ;; Local Variables:
 ;; coding: utf-8

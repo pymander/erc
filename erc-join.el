@@ -1,4 +1,4 @@
-;;; erc-autojoin.el --- autojoin channels on connect and reconnects
+;;; erc-join.el --- autojoin channels on connect and reconnects
 
 ;; Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
 
@@ -36,14 +36,14 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-autojoin-version "$Revision: 1.18 $"
+(defconst erc-join-version "$Revision: 1.17 $"
   "ERC autojoin revision.")
 
 (defgroup erc-autojoin nil
   "Enable autojoining."
   :group 'erc)
 
-;;;###autoload (autoload 'erc-autojoin-mode "erc-autojoin" nil t)
+;;;###autoload (autoload 'erc-autojoin-mode "erc-join" nil t)
 (define-erc-module autojoin nil
   "Makes ERC autojoin on connects and reconnects."
   ((add-hook 'erc-after-connect 'erc-autojoin-channels)
@@ -130,9 +130,9 @@ servers, presumably in the same domain."
   ;; functions.
   nil)
 
-(provide 'erc-autojoin)
+(provide 'erc-join)
 
-;;; erc-autojoin.el ends here
+;;; erc-join.el ends here
 ;;
 ;; Local Variables:
 ;; indent-tabs-mode: t
