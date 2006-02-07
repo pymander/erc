@@ -63,7 +63,7 @@
 (require 'erc-networks)
 (eval-when-compile (require 'cl))
 
-(defconst erc-nickserv-version "$Revision: 1.29 $"
+(defconst erc-nickserv-version "$Revision: 1.1 $"
   "ERC NickServ revision.")
 
 ;; Customization:
