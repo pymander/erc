@@ -1,3 +1,58 @@
+2006-02-09  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-capab.el: New file.  Adds the new module
+	`erc-capab-identify', which allows flagging of unidentified users
+	on servers running an ircd based on dancer - irc.freenode.net, for
+	example.
+
+	* erc.el (erc-modules): Added `capab-identify' to options.
+	(erc-get-parsed-vector, erc-get-parsed-vector-nick)
+	(erc-get-parsed-vector-type): Moved here from erc-match.el.
+
+	* erc-match.el (erc-get-parsed-vector, erc-get-parsed-vector-nick)
+	(erc-get-parsed-vector-type): Moved these functions to erc.el
+	since they can be useful outside of the text matching module.
+
+	* CREDITS: Added erc-capab.el.  List both erc-nickserv.el and
+	erc-services.el since the file name has changed.
+
+	* NEWS: Added erc-capab.el.
+
+	* erc-dcc.el, erc-stamp.el, erc-xdcc.el: Changed "Emacs IRC Client"
+	to "ERC".
+
+2006-02-07  Michael Olson  <mwolson@gnu.org>
+
+	* ChangeLog.01, ChangeLog.02, ChangeLog.03, ChangeLog.04,
+	ChangeLog.05: Rename from ChangeLog.NNNN in order to disambiguate
+	the filenames in DOS.
+
+	* erc-goodies.el: Comment fix.
+
+	* erc-hecomplete.el: Rename from erc-complete.el.  Update
+	commentary.  Use define-erc-module so that it's possible to
+	actually use this.
+	(erc-hecomplete): Rename function from `erc-complete'.
+	(erc-hecomplete): Rename group from `erc-old-complete'.  Docfix.
+
+	* erc-join.el: Rename from erc-autojoin.el.
+
+	* erc-networks.el: Rename from erc-nets.el.
+
+	* erc-services.el: Rename from erc-nickserv.el.
+
+	* erc-stamp.el (erc-insert-aligned): Don't take 3rd argument.  Use
+	the simpler `indent-to' function when
+	`erc-timestamp-right-align-by-pixel' is nil.
+	(erc-insert-timestamp-right): If the timestamp goes on the
+	following line, don't add timestamp properties to the spaces in
+	front of it.
+
+	* erc.el (erc-migrate-modules): New function that eases migration
+	of module names.
+	(erc-modules): Call erc-migrate-modules in the :get accessor.
+	(erc-modules, erc-update-modules): Update for new modules names.
+
 2006-02-05  Diane Murray  <disumu@x3y2z1.net>
 
 	* FOR-RELEASE: Added two things to do before the next release of
@@ -417,7 +472,7 @@
 	* erc-track.el (erc-track-remove-from-mode-line): Handle case
 	where global-mode-string is not a list.  Emacs22 permits this.
 
-See ChangeLog.2005 for earlier changes.
+See ChangeLog.05 for earlier changes.
 
 ;; Local Variables:
 ;; coding: utf-8

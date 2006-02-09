@@ -32,13 +32,13 @@
 ;;; Code:
 
 (require 'erc)
-(require 'erc-nets)
+(require 'erc-networks)
 (require 'sort)
 (unless (fboundp 'make-overlay)
   (require 'overlay))
 (eval-when-compile (require 'cl))
 
-(defconst erc-list-version "$Revision: 1.47 $"
+(defconst erc-list-version "$Revision: 1.48 $"
   "ERC channel list revision number")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
