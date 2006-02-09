@@ -1,3 +1,26 @@
+2006-02-09  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-capab.el: New file.  Adds the new module
+	`erc-capab-identify', which allows flagging of unidentified users
+	on servers running an ircd based on dancer - irc.freenode.net, for
+	example.
+
+	* erc.el (erc-modules): Added `capab-identify' to options.
+	(erc-get-parsed-vector, erc-get-parsed-vector-nick)
+	(erc-get-parsed-vector-type): Moved here from erc-match.el.
+
+	* erc-match.el (erc-get-parsed-vector, erc-get-parsed-vector-nick)
+	(erc-get-parsed-vector-type): Moved these functions to erc.el
+	since they can be useful outside of the text matching module.
+
+	* CREDITS: Added erc-capab.el.  List both erc-nickserv.el and
+	erc-services.el since the file name has changed.
+
+	* NEWS: Added erc-capab.el.
+
+	* erc-dcc.el, erc-stamp.el, erc-xdcc.el: Changed "Emacs IRC Client"
+	to "ERC".
+
 2006-02-07  Michael Olson  <mwolson@gnu.org>
 
 	* ChangeLog.01, ChangeLog.02, ChangeLog.03, ChangeLog.04,

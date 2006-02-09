@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.1 (CVS) $Revision: 1.803 $"
+(defconst erc-version-string "Version 5.1.1 (CVS) $Revision: 1.804 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -1760,6 +1760,8 @@ removed from the list will be disabled."
 	      (const :tag "Join channels automatically" autojoin)
 	      (const :tag "Integrate with Big Brother Database" bbdb)
 	      (const :tag "Buttonize URLs, nicknames, and other text" button)
+	      (const :tag "Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG"
+		     capab-identify)
 	      (const :tag "Wrap long lines" fill)
 	      (const :tag "Highlight or remove IRC control characters"
 		     irccontrols)
@@ -6148,6 +6150,26 @@ This function should be on `erc-kill-channel-hook'."
       (erc-server-send (format "PART %s :%s" tgt
 			       (funcall erc-part-reason nil))
 		       nil tgt))))
+
+;;; Dealing with `erc-parsed'
+
+(defun erc-get-parsed-vector (point)
+  "Return the whole parsed vector on POINT."
+  (get-text-property point 'erc-parsed))
+
+(defun erc-get-parsed-vector-nick (vect)
+  "Return nickname in the parsed vector VECT."
+  (let* ((untreated-nick (and vect (erc-response.sender vect)))
+	 (maybe-nick (when untreated-nick
+		       (car (split-string untreated-nick "!")))))
+    (when (and (not (null maybe-nick))
+	       (erc-is-valid-nick-p maybe-nick))
+      untreated-nick)))
+
+(defun erc-get-parsed-vector-type (vect)
+  "Return message type in the parsed vector VECT."
+  (and vect
+       (erc-response.command vect)))
 
 (provide 'erc)
 

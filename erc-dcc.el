@@ -29,7 +29,7 @@
 
 ;;; Commentary:
 
-;; This file provides Direct Client-to-Client support for the Emacs IRC Client.
+;; This file provides Direct Client-to-Client support for ERC.
 ;;
 ;; The original code was taken from zenirc-dcc.el, heavily mangled and
 ;; rewritten to support the way how ERC operates.  Server socket support
@@ -57,7 +57,7 @@
 (eval-when-compile
  (require 'pcomplete))
 
-(defconst erc-dcc-version "$Revision: 1.96 $"
+(defconst erc-dcc-version "$Revision: 1.97 $"
   "ERC DCC revision")
 
 (defgroup erc-dcc nil
