@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.1 (CVS) $Revision: 1.804 $"
+(defconst erc-version-string "Version 5.1.1 $Revision: 1.796.2.2 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -1716,22 +1716,6 @@ all channel buffers on all servers."
   "Used to keep track of how many times an attempt at changing nick is made.")
 (make-variable-buffer-local 'erc-nick-change-attempt-count)
 
-(defun erc-migrate-modules (mods)
-  "Migrate old names of ERC modules to new ones."
-  ;; modify `transforms' to specify what needs to be changed
-  ;; each item is in the format '(new .old)
-  (let ((transforms '((pcomplete . completion)))
-	(modules (copy-alist mods)))
-    (dolist (transform transforms)
-      (let ((addp nil))
-	(setq modules (erc-delete-if `(lambda (val)
-					(and (eq val ',(car transform))
-					     (setq addition t)))
-				     modules))
-	(when addp
-	  (add-to-list 'modules (cdr transform)))))
-    (erc-delete-dups modules)))
-
 (defcustom erc-modules '(netsplit fill button match track pcomplete readonly
 				  ring autojoin noncommands irccontrols
 				  stamp)
@@ -1739,9 +1723,6 @@ all channel buffers on all servers."
 If you set the value of this without using `customize' remember to call
 \(erc-update-modules) after you change it.  When using `customize', modules
 removed from the list will be disabled."
-  :get (lambda (sym)
-	 ;; replace outdated names with their newer equivalents
-	 (erc-migrate-modules (symbol-value sym)))
   :set (lambda (sym val)
 	 ;; disable modules which have just been removed
 	 (when (and (boundp 'erc-modules) erc-modules val)
@@ -1751,7 +1732,7 @@ removed from the list will be disabled."
 		 (when (and (fboundp f) (boundp f) (symbol-value f))
 		   (message "Disabling `erc-%s'" module)
 		   (funcall f 0))))))
-	 (set sym val)
+	 (set-default sym val)
 	 ;; this test is for the case where erc hasn't been loaded yet
 	 (when (fboundp 'erc-update-modules)
 	   (erc-update-modules)))
@@ -1760,8 +1741,6 @@ removed from the list will be disabled."
 	      (const :tag "Join channels automatically" autojoin)
 	      (const :tag "Integrate with Big Brother Database" bbdb)
 	      (const :tag "Buttonize URLs, nicknames, and other text" button)
-	      (const :tag "Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG"
-		     capab-identify)
 	      (const :tag "Wrap long lines" fill)
 	      (const :tag "Highlight or remove IRC control characters"
 		     irccontrols)
@@ -1774,8 +1753,8 @@ removed from the list will be disabled."
 		     "Notify when the online status of certain users changes"
 		     notify)
 	      (const :tag "Complete nicknames and commands (programmable)"
-		     completion)
-	      (const :tag "Complete nicknames and commands (old)" hecomplete)
+		     pcomplete)
+	      (const :tag "Complete nicknames and commands (old)" completion)
 	      (const :tag "Make displayed lines read-only" readonly)
 	      (const :tag "Replace text in messages" replace)
 	      (const :tag "Enable an input history" ring)
@@ -1802,13 +1781,10 @@ removed from the list will be disabled."
        ;; yuck. perhaps we should bring the filenames into sync?
        ((string= req "erc-completion")
 	(setq req "erc-pcomplete")
-	(setq mod 'completion))
-       ((string= req "erc-pcomplete")
-	(setq req "erc-pcomplete")
-	(setq mod 'completion))
-       ((string= req "erc-autojoin")
-	(setq req "erc-join")
-	(setq mod 'autojoin)))
+	(setq mod 'pcomplete))
+       ((string= req "erc-services")
+	(setq req "erc-nickserv")
+	(setq mod 'services)))
       (condition-case nil
 	  (require (intern req))
 	(error nil))
@@ -2086,14 +2062,13 @@ Arguments are as to erc-select."
   "Open an SSL stream to an IRC server.
 The process will be given the name NAME, its target buffer will be
 BUFFER.	 HOST and PORT specify the connection target."
-  (when (require 'tls)
-    (let ((proc (open-tls-stream name buffer host port)))
+  (when (require 'ssl)
+    (let ((proc (open-ssl-stream name buffer host port)))
       ;; Ugly hack, but it works for now. Problem is it is
       ;; very hard to detect when ssl is established, because s_client
       ;; doesn't give any CONNECTIONESTABLISHED kind of message, and
       ;; most IRC servers send nothing and wait for you to identify.
-      ;; Disabled when switching to tls.el -- jas
-      ;(sit-for 5)
+      (sit-for 5)
       proc)))
 
 ;;; Debugging the protocol
@@ -6150,26 +6125,6 @@ This function should be on `erc-kill-channel-hook'."
       (erc-server-send (format "PART %s :%s" tgt
 			       (funcall erc-part-reason nil))
 		       nil tgt))))
-
-;;; Dealing with `erc-parsed'
-
-(defun erc-get-parsed-vector (point)
-  "Return the whole parsed vector on POINT."
-  (get-text-property point 'erc-parsed))
-
-(defun erc-get-parsed-vector-nick (vect)
-  "Return nickname in the parsed vector VECT."
-  (let* ((untreated-nick (and vect (erc-response.sender vect)))
-	 (maybe-nick (when untreated-nick
-		       (car (split-string untreated-nick "!")))))
-    (when (and (not (null maybe-nick))
-	       (erc-is-valid-nick-p maybe-nick))
-      untreated-nick)))
-
-(defun erc-get-parsed-vector-type (vect)
-  "Return message type in the parsed vector VECT."
-  (and vect
-       (erc-response.command vect)))
 
 (provide 'erc)
 

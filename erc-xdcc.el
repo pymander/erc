@@ -24,7 +24,7 @@
 
 ;;; Commentary:
 
-;; This file provides a very simple XDCC file server for ERC.
+;; This file provides a very simple XDCC file server for the Emacs IRC Client.
 
 ;;; Code:
 

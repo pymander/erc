@@ -23,7 +23,7 @@ Tijs van Bakel <smoke@wanadoo.nl>:
 
 Diane Murray <disumu@x3y2z1.net>:
   * Miscellaneous development, additions, bug fixes
-  * erc-capab.el, erc-nickserv.el/erc-services.el
+  * erc-nickserv.el
 
 Gergely Nagy <algernon@debian.org> (aka "mhp"):
   * Debian package maintainer

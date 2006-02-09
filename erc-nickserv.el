@@ -1,4 +1,4 @@
-;;; erc-services.el --- Identify to NickServ
+;;; erc-nickserv.el --- Identify to NickServ
 
 ;; Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
 
@@ -37,7 +37,7 @@
 ;;
 ;; Put into your .emacs:
 ;;
-;; (require 'erc-services)
+;; (require 'erc-nickserv)
 ;; (erc-services-mode 1)
 ;;
 ;; Add your nickname and NickServ password to `erc-nickserv-passwords'.
@@ -60,10 +60,10 @@
 ;;; Code:
 
 (require 'erc)
-(require 'erc-networks)
+(require 'erc-nets)
 (eval-when-compile (require 'cl))
 
-(defconst erc-nickserv-version "$Revision: 1.1 $"
+(defconst erc-nickserv-version "$Revision: 1.27.2.1 $"
   "ERC NickServ revision.")
 
 ;; Customization:
@@ -80,7 +80,7 @@ This group allows you to set variables to somewhat automate
 communication with those Services."
   :group 'erc)
 
-;;;###autoload (autoload 'erc-services-mode "erc-services" nil t)
+;;;###autoload (autoload 'erc-services-mode "erc-nickserv" nil t)
 (define-erc-module services nickserv
   "This mode automates communication with services."
   ((erc-nickserv-identify-mode erc-nickserv-identify-mode))
@@ -328,9 +328,9 @@ When called interactively, read the password using `read-passwd'."
       (erc-message msgtype
 		   (concat nickserv " " identify-word " " nick password)))))
 
-(provide 'erc-services)
+(provide 'erc-nickserv)
 
-;;; erc-services.el ends here
+;;; erc-nickserv.el ends here
 ;;
 ;; Local Variables:
 ;; indent-tabs-mode: t

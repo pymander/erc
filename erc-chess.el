@@ -36,7 +36,7 @@
 
 ;;;; Variables
 
-(defconst erc-chess-version "$Revision: 1.28 $"
+(defconst erc-chess-version "$Revision: 1.26.2.1 $"
   "ERC chess revision.")
 
 (defgroup erc-chess nil

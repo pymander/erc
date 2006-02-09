@@ -68,7 +68,7 @@
 
 ;;; Variables
 
-(defconst erc-button-version "$Revision: 1.73 $"
+(defconst erc-button-version "$Revision: 1.71.2.1 $"
   "ERC button mode revision.")
 
 (defface erc-button '((t (:bold t)))
