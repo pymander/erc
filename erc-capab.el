@@ -60,10 +60,13 @@
 
 ;; Somebody who knows about autoload cookies could please add them where
 ;; necessary.
+;; Make sure nickname regexp works with other format-nick functions.
 
 ;;; Code:
 
-(defconst erc-capab-version "$Revision: 1.2 $"
+(require 'erc)
+
+(defconst erc-capab-version "$Revision: 1.3 $"
   "ERC CAPAB revision number.")
 
 ;;; Customization:
@@ -125,8 +128,8 @@ PARSED is the current message, a response struct."
              ;; instead of looking for specific version names
 	     (assoc "CAPAB" erc-server-parameters))
     (erc-log "Sending CAPAB IDENTIFY-MSG and IDENTIFY-CTCP")
-    (erc-send-command "CAPAB IDENTIFY-MSG")
-    (erc-send-command "CAPAB IDENTIFY-CTCP")
+    (erc-server-send "CAPAB IDENTIFY-MSG")
+    (erc-server-send "CAPAB IDENTIFY-CTCP")
     (setq erc-capab-identify-sent t)))
 
 
@@ -154,7 +157,9 @@ PARSED is an `erc-parsed' response struct."
             (if erc-capab-identify-mode
                 (erc-propertize (match-string 2 msg)
                                 'erc-identified
-                                (string= (match-string 1 msg) "+"))
+                                (if (string= (match-string 1 msg) "+")
+                                    1
+                                  0))
               (match-string 2 msg)))
       nil)))
 
@@ -163,27 +168,41 @@ PARSED is an `erc-parsed' response struct."
   (when (and erc-capab-identify-prefix
              (with-current-buffer (erc-server-buffer)
                erc-capab-identify-activated))
+    (goto-char (point-min))
+    (goto-char (or (erc-capab-find-parsed) (point-min)))
     (let ((nickname (erc-capab-get-unidentified-nickname
-                     (erc-get-parsed-vector (- (point-max) 1)))))
+                     (erc-get-parsed-vector (point)))))
       (when (and nickname
                  (goto-char (point-min))
                  (re-search-forward
                   ;; matches nick in channel, msg, notice, and action messages
                   ;; this assumes the default action format is used
-                  (concat "\\(<\\|[^\\*]\\* ?\\|-\\)"
+                  (concat "\\(<\\|[^\\*]?\\* ?\\|-\\)"
                           "\\(" (regexp-quote nickname) "\\)")
                   nil t))
         (goto-char (match-beginning 2))
         (insert erc-capab-identify-prefix)))))
 
+(defun erc-capab-find-parsed ()
+  "Return the position of text found with the `erc-parsed' property."
+  (catch 'position
+    (while (< (point) (point-max))
+      (cond ((get-char-property (point) 'erc-parsed)
+             (throw 'position (point)))
+            (t
+             (goto-char (or (next-single-property-change
+                             (point) 'erc-parsed)
+                            (point-max))))))))
+
 (defun erc-capab-get-unidentified-nickname (parsed)
   "Return the nickname of the user if unidentified.
 PARSED is an `erc-parsed' response struct."
-  (and (erc-response-p parsed)
-       (eq nil (get-text-property 0 'erc-identified
-                                  (erc-response.contents parsed)))
-       (erc-get-parsed-vector-nick parsed)
-       (nth 0 (erc-parse-user (erc-get-parsed-vector-nick parsed)))))
+  (when (and (erc-response-p parsed)
+             (equal 0 (get-text-property 0 'erc-identified
+                                     (erc-response.contents parsed))))
+    (let ((nickuserhost (erc-get-parsed-vector-nick parsed)))
+      (when nickuserhost
+       (nth 0 (erc-parse-user nickuserhost))))))
 
 (provide 'erc-capab)
 

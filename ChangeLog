@@ -1,5 +1,18 @@
 2006-02-09  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-capab.el: Require erc.
+	(erc-capab-send-identify-messages): Use `erc-server-send'.
+	(erc-capab-identify-remove/set-identified-flag): Use 1 and 0 as
+	the flags so we can also check whether the `erc-identified' text
+	property is there at all.
+	(erc-capab-identify-add-prefix): Use `erc-capab-find-parsed'.
+	This fixes a bug where the prefix wasn't inserted when timestamps
+	are inserted on the right.  Tweaked nickname regexp.
+	(erc-capab-find-parsed): New function.
+	(erc-capab-get-unidentified-nickname): Updated to check for 0
+	flag.  Only get nickname if there's a nickuserhost associated with
+	this message.
+
 	* erc-capab.el: New file.  Adds the new module
 	`erc-capab-identify', which allows flagging of unidentified users
 	on servers running an ircd based on dancer - irc.freenode.net, for
