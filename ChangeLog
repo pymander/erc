@@ -1,3 +1,13 @@
+2006-02-10  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (debbuild): Split from debrelease.
+	(debrevision-mwolson): New rule that causes a Debian revision to
+	be built.
+
+	* erc.el (erc-migrate-modules): Use a better algorithm.  Thanks to
+	Johan Bockgård.
+	(erc-modules): Change use of 'pcomplete to 'completion.
+
 2006-02-09  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-capab.el: Require erc.

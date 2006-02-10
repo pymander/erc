@@ -1719,20 +1719,13 @@ all channel buffers on all servers."
 (defun erc-migrate-modules (mods)
   "Migrate old names of ERC modules to new ones."
   ;; modify `transforms' to specify what needs to be changed
-  ;; each item is in the format '(new .old)
-  (let ((transforms '((pcomplete . completion)))
-	(modules (copy-alist mods)))
-    (dolist (transform transforms)
-      (let ((addp nil))
-	(setq modules (erc-delete-if `(lambda (val)
-					(and (eq val ',(car transform))
-					     (setq addition t)))
-				     modules))
-	(when addp
-	  (add-to-list 'modules (cdr transform)))))
-    (erc-delete-dups modules)))
+  ;; each item is in the format '(old . new)
+  (let ((transforms '((pcomplete . completion))))
+    (erc-delete-dups
+     (mapcar (lambda (m) (or (cdr (assoc m transforms)) m))
+	     mods))))
 
-(defcustom erc-modules '(netsplit fill button match track pcomplete readonly
+(defcustom erc-modules '(netsplit fill button match track completion readonly
 				  ring autojoin noncommands irccontrols
 				  stamp)
   "A list of modules which erc should enable.
