@@ -63,9 +63,6 @@
 
 ;;; Todo:
 
-;; Somebody who knows about autoload cookies could please add them where
-;; necessary.
-
 ;;; Code:
 
 (require 'erc)
@@ -89,6 +86,7 @@
 (define-erc-response-handler (290)
   "Handle dancer-ircd CAPAB messages." nil nil)
 
+;;;###autoload (autoload 'erc-capab-identify-mode "erc-capab" nil t)
 (define-erc-module capab-identify nil
   "Handle dancer-ircd's CAPAB IDENTIFY-MSG and IDENTIFY-CTCP."
   ;; append so that `erc-server-parameters' is already set by `erc-server-005'
@@ -137,7 +135,7 @@ These arguments are sent to this function when called as a hook in
   (when (and (string-match "^\\(dancer-ircd\\|hyperion\\)" erc-server-version)
              ;; could possibly check for IRCD=dancer in `erc-server-parameters'
              ;; instead of looking for specific version names
-	     (assoc "CAPAB" erc-server-parameters))
+             (assoc "CAPAB" erc-server-parameters))
     (erc-log "Sending CAPAB IDENTIFY-MSG and IDENTIFY-CTCP")
     (erc-server-send "CAPAB IDENTIFY-MSG")
     (erc-server-send "CAPAB IDENTIFY-CTCP")
@@ -150,7 +148,7 @@ These arguments are sent to this function when called as a hook in
 PROC is the current server's process.
 PARSED is an `erc-parsed' response struct."
   (when (or (string= "IDENTIFY-MSG" (erc-response.contents parsed))
-	    (string= "IDENTIFY-CTCP" (erc-response.contents parsed)))
+            (string= "IDENTIFY-CTCP" (erc-response.contents parsed)))
     (setq erc-capab-identify-activated t)
     (erc-display-message
      parsed 'notice 'active (format "%s activated"

@@ -1,3 +1,13 @@
+2006-02-11  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-update-modules): Handle erc-capab-identify
+	correctly.  Make some requirements shorter, so that it's easier to
+	see why they are needed.
+
+	* erc-capab.el: Add autoload cookie for capab-identify.
+	(erc-capab-send-identify-messages, erc-capab-identify-activate):
+	Minor whitespace fix in code.
+
 2006-02-11  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-list.el: Define `list' module which sets the alias
