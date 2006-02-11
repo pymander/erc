@@ -1,3 +1,8 @@
+2006-02-11  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-spelling.el (define-erc-module): Make sure there's a buffer
+	before calling `with-current-buffer'.
+
 2006-02-08  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-version-string): Remove "(CVS)".
