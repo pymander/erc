@@ -50,23 +50,27 @@
 
 ;;; Usage:
 
-;; Enable the module `capab-identify' (see the documentation for
-;; `erc-modules').  `erc-capab-identify-prefix' will now be added to the
-;; beginning of unidentified users' nicknames.  The default is an
-;; asterisk.  If the value of this variable is nil, no prefix will be
-;; inserted, but the flag sent by the server will still be stripped.
+;; Put the following in your ~/.emacs file.
+
+;; (require 'erc-capab)
+;; (erc-capab-identify-mode 1)
+
+;; `erc-capab-identify-prefix' will now be added to the beginning of
+;; unidentified users' nicknames.  The default is an asterisk, "*".  If
+;; the value of this variable is nil or you disable this module (see
+;; `erc-capab-identify-disable'), no prefix will be inserted, but the
+;; flag sent by the server will still be stripped.
 
 ;;; Todo:
 
 ;; Somebody who knows about autoload cookies could please add them where
 ;; necessary.
-;; Make sure nickname regexp works with other format-nick functions.
 
 ;;; Code:
 
 (require 'erc)
 
-(defconst erc-capab-version "$Revision: 1.3 $"
+(defconst erc-capab-version "$Revision: 1.4 $"
   "ERC CAPAB revision number.")
 
 ;;; Customization:
@@ -94,7 +98,11 @@
              'erc-capab-identify-remove/set-identified-flag)
    (add-hook 'erc-server-NOTICE-functions
              'erc-capab-identify-remove/set-identified-flag)
-   (add-hook 'erc-insert-modify-hook 'erc-capab-identify-add-prefix t))
+   (add-hook 'erc-insert-modify-hook 'erc-capab-identify-add-prefix t)
+   (mapc (lambda (buffer)
+           (when buffer
+             (with-current-buffer buffer (erc-capab-identify-setup))))
+         (erc-buffer-list 'erc-server-buffer-p)))
   ((remove-hook 'erc-server-005-functions 'erc-capab-identify-setup)
    (remove-hook 'erc-server-290-functions 'erc-capab-identify-activate)
    ;; we don't remove the `erc-capab-identify-remove/set-identified-flag' hooks
@@ -113,11 +121,14 @@
 
 ;;; Functions:
 
-(defun erc-capab-identify-setup (proc parsed)
+(defun erc-capab-identify-setup (&optional proc parsed)
   "Set up CAPAB IDENTIFY on the current server.
 
-PROC is the current server's process.
-PARSED is the current message, a response struct."
+Optional argument PROC is the current server's process.
+Optional argument PARSED is the current message, a response struct.
+
+These arguments are sent to this function when called as a hook in
+`erc-server-005-functions'."
   (unless erc-capab-identify-sent
     (erc-capab-send-identify-messages)))
 
@@ -174,13 +185,9 @@ PARSED is an `erc-parsed' response struct."
                      (erc-get-parsed-vector (point)))))
       (when (and nickname
                  (goto-char (point-min))
-                 (re-search-forward
-                  ;; matches nick in channel, msg, notice, and action messages
-                  ;; this assumes the default action format is used
-                  (concat "\\(<\\|[^\\*]?\\* ?\\|-\\)"
-                          "\\(" (regexp-quote nickname) "\\)")
-                  nil t))
-        (goto-char (match-beginning 2))
+                 ;; assuming the first use of `nickname' is the sender's nick
+                 (re-search-forward (regexp-quote nickname) nil t))
+        (goto-char (match-beginning 0))
         (insert erc-capab-identify-prefix)))))
 
 (defun erc-capab-find-parsed ()

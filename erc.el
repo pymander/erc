@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.1 (CVS) $Revision: 1.805 $"
+(defconst erc-version-string "Version 5.1.1 (CVS) $Revision: 1.806 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -1727,7 +1727,7 @@ all channel buffers on all servers."
 
 (defcustom erc-modules '(netsplit fill button match track completion readonly
 				  ring autojoin noncommands irccontrols
-				  stamp)
+				  stamp list)
   "A list of modules which erc should enable.
 If you set the value of this without using `customize' remember to call
 \(erc-update-modules) after you change it.  When using `customize', modules
@@ -1748,42 +1748,47 @@ removed from the list will be disabled."
 	 ;; this test is for the case where erc hasn't been loaded yet
 	 (when (fboundp 'erc-update-modules)
 	   (erc-update-modules)))
-  :type '(set :greedy t
-	      (const :tag "Set away status automatically" autoaway)
-	      (const :tag "Join channels automatically" autojoin)
-	      (const :tag "Integrate with Big Brother Database" bbdb)
-	      (const :tag "Buttonize URLs, nicknames, and other text" button)
-	      (const :tag "Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG"
-		     capab-identify)
-	      (const :tag "Wrap long lines" fill)
-	      (const :tag "Highlight or remove IRC control characters"
-		     irccontrols)
-	      (const :tag "Save buffers in logs" log)
-	      (const :tag "Highlight pals, fools, and other keywords" match)
-	      (const :tag "Detect netsplits" netsplit)
-	      (const :tag "Don't display non-IRC commands after evaluation"
-		     noncommands)
-	      (const :tag
-		     "Notify when the online status of certain users changes"
-		     notify)
-	      (const :tag "Complete nicknames and commands (programmable)"
-		     completion)
-	      (const :tag "Complete nicknames and commands (old)" hecomplete)
-	      (const :tag "Make displayed lines read-only" readonly)
-	      (const :tag "Replace text in messages" replace)
-	      (const :tag "Enable an input history" ring)
-	      (const :tag "Scroll to the bottom of the buffer" scrolltobottom)
-	      (const :tag "Identify to Nickserv (IRC Services) automatically"
-		     services)
-	      (const :tag "Convert smileys to pretty icons" smiley)
-	      (const :tag "Play sounds when you receive CTCP SOUND requests"
-		     sound)
-	      (const :tag "Add timestamps to messages" stamp)
-	      (const :tag "Check spelling" spelling)
-	      (const :tag "Track channel activity in the mode-line" track)
-	      (const :tag "Truncate buffers to a certain size" truncate)
-	      (const :tag "Translate morse code in messages" unmorse)
-	      (repeat :tag "Others" :inline t symbol))
+  :type
+  '(set
+    :greedy t
+    (const :tag "Set away status automatically" autoaway)
+    (const :tag "Join channels automatically" autojoin)
+    (const :tag "Integrate with Big Brother Database" bbdb)
+    (const :tag "Buttonize URLs, nicknames, and other text" button)
+    (const
+     :tag
+     "Mark unidentified users on freenode and other servers supporting CAPAB"
+     capab-identify)
+    (const :tag "Wrap long lines" fill)
+    (const :tag "Highlight or remove IRC control characters"
+	   irccontrols)
+    (const :tag "List channels in a separate buffer" list)
+    (const :tag "Save buffers in logs" log)
+    (const :tag "Highlight pals, fools, and other keywords" match)
+    (const :tag "Detect netsplits" netsplit)
+    (const :tag "Don't display non-IRC commands after evaluation"
+	   noncommands)
+    (const :tag
+	   "Notify when the online status of certain users changes"
+	   notify)
+    (const :tag "Complete nicknames and commands (programmable)"
+	   completion)
+    (const :tag "Complete nicknames and commands (old)" hecomplete)
+    (const :tag "Make displayed lines read-only" readonly)
+    (const :tag "Replace text in messages" replace)
+    (const :tag "Enable an input history" ring)
+    (const :tag "Scroll to the bottom of the buffer" scrolltobottom)
+    (const :tag "Identify to Nickserv (IRC Services) automatically"
+	   services)
+    (const :tag "Convert smileys to pretty icons" smiley)
+    (const :tag "Play sounds when you receive CTCP SOUND requests"
+	   sound)
+    (const :tag "Add timestamps to messages" stamp)
+    (const :tag "Check spelling" spelling)
+    (const :tag "Track channel activity in the mode-line" track)
+    (const :tag "Truncate buffers to a certain size" truncate)
+    (const :tag "Translate morse code in messages" unmorse)
+    (repeat :tag "Others" :inline t symbol))
   :group 'erc)
 
 (defun erc-update-modules ()
