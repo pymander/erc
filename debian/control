@@ -3,6 +3,7 @@ Section: net
 Priority: optional
 Maintainer: Michael W. Olson (GNU address) <mwolson@gnu.org>
 Uploaders: Mario Lang <mlang@debian.org>, Romain Francoise <rfrancoise@debian.org>
+Build-Depends-Indep: texinfo, texi2html
 Standards-Version: 3.6.2
 
 Package: erc
