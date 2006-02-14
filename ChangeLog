@@ -1,3 +1,14 @@
+2006-02-14  Michael Olson  <mwolson@gnu.org>
+
+	* debian/changelog: Prepare a new Debian package.
+
+	* Makefile (debprepare): New rule that creates an ERC snapshot
+	directory for use in both new Debian releases and revisions for
+	Debian packages.
+	(debrelease, debrevision-mwolson): Use debprepare.
+
+	* NEWS: Bring up-to-date.
+
 2006-02-13  Michael Olson  <mwolson@gnu.org>
 
 	* erc-dcc.el: Use (eval-when-compile (require 'cl)).

@@ -1,12 +1,24 @@
 erc (5.1.1-3) unstable; urgency=low
 
+  * erc.el: Go back to using ssl.el, since connecting with
+    `open-tls-stream' only seems to work with the version of tls.el in
+    Emacs22.
+  * erc-autojoin.el, erc-dcc.el: Fix compiler warnings.
+  * erc-stamp.el:
+    - Fix a consistency issue with right timestamps.
+    - Rename option `erc-timestamp-right-align-by-pixel' to
+      `erc-timestamp-use-align-to'.
+    - Use a more fail-proof method of aligning right timestamps, if the
+      current version of Emacs supports it.  Previously, a bug was
+      triggered when erc-stamp.el was byte-compiled.  This has been
+      fixed, making this method safe to use.
   * debian/rules (configure, configure-stamp, build, build-stamp):
     Generate HTML and Info documentation.
     (binary-erc): Install HTML and Info documentation.
   * debian/maint/postinst: Install the Info documentation.
   * debian/maint/prerm: Handle removing of Info documentation.
 
- --
+ -- Michael W. Olson (GNU address) <mwolson@gnu.org>  Tue, 14 Feb 2006 00:55:54 -0500
 
 erc (5.1.1-2) unstable; urgency=low
 
