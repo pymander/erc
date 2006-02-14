@@ -1,5 +1,7 @@
 2006-02-14  Michael Olson  <mwolson@gnu.org>
 
+	* debian/changelog: Prepare a new Debian package.
+
 	* NEWS: Bring up-to-date.
 
 	* erc-stamp.el (erc-insert-timestamp-right): For now, put
