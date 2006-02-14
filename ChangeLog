@@ -1,3 +1,10 @@
+2006-02-14  Michael Olson  <mwolson@gnu.org>
+
+	* erc-stamp.el (erc-insert-timestamp-right): For now, put
+	timestamps before rather than after erc-fill-column when
+	erc-timestamp-right-column is nil.  This way we won't surprise
+	anyone unpleasantly, or so it is hoped.
+
 2006-02-11  Michael Olson  <mwolson@gnu.org>
 
 	* erc-stamp.el (erc-timestamp-use-align-to): Renamed from
