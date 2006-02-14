@@ -9,6 +9,10 @@
 	erc-timestamp-right-column is nil.  This way we won't surprise
 	anyone unpleasantly, or so it is hoped.
 
+2006-02-13  Michael Olson  <mwolson@gnu.org>
+
+	* erc-dcc.el: Use (eval-when-compile (require 'cl)).
+
 2006-02-11  Michael Olson  <mwolson@gnu.org>
 
 	* erc-stamp.el (erc-timestamp-use-align-to): Renamed from
@@ -29,6 +33,12 @@
 
 	* erc-spelling.el (define-erc-module): Make sure there's a buffer
 	before calling `with-current-buffer'.
+
+2006-02-10  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (debbuild): Split from debrelease.
+	(debrevision-mwolson): New rule that causes a Debian revision to
+	be built.
 
 2006-02-08  Diane Murray  <disumu@x3y2z1.net>
 

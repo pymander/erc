@@ -80,6 +80,15 @@ distclean:
 	-rm -f $(MANUAL).info $(MANUAL).html $(TARGET)
 	-rm -Rf ../$(SNAPDIR)
 
+debbuild: 
+	(cd ../$(SNAPDIR) && \
+	  dpkg-buildpackage -v$(LASTUPLOAD) $(BUILDOPTS) \
+	    -us -uc -rfakeroot && \
+	  echo "Running lintian ..." && \
+	  lintian -i ../erc_$(VERSION)*.deb || : && \
+	  echo "Done running lintian." && \
+	  debsign)
+
 debrelease: $(ALLSOURCE) $(SPECIAL) distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
 	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
@@ -98,13 +107,14 @@ debrelease: $(ALLSOURCE) $(SPECIAL) distclean
 	  ../$(SNAPDIR)/debian/.arch-ids \
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
-	(cd ../$(SNAPDIR) && \
-	  dpkg-buildpackage -v$(LASTUPLOAD) $(BUILDOPTS) \
-	    -us -uc -rfakeroot && \
-	  echo "Running lintian ..." && \
-	  lintian -i ../erc_$(VERSION)*.deb || : && \
-	  echo "Done running lintian." && \
-	  debsign)
+	$(MAKE) debbuild
+
+debrevision-mwolson:
+	-rm -f ../../dist/erc_*
+	-rm -f ../erc_$(VERSION)-*
+	-rm -fr ../erc-$(VERSION)
+	$(MAKE) debrelease
+	cp ../erc_$(VERSION)* ../../dist
 
 debrelease-mwolson:
 	-rm -f ../../dist/erc_*
