@@ -80,7 +80,16 @@ distclean:
 	-rm -f $(MANUAL).info $(MANUAL).html $(TARGET)
 	-rm -Rf ../$(SNAPDIR)
 
-debbuild: 
+debprepare: $(ALLSOURCE) $(SPECIAL) distclean
+	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
+	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
+	cp -r images ../$(SNAPDIR)
+	test -d ../$(SNAPDIR)/images/.arch-ids && rm -R \
+	  ../$(SNAPDIR)/images/.arch-ids || :
+	test -d ../$(SNAPDIR)/images/CVS && rm -R \
+	  ../$(SNAPDIR)/images/.arch-ids || :
+
+debbuild:
 	(cd ../$(SNAPDIR) && \
 	  dpkg-buildpackage -v$(LASTUPLOAD) $(BUILDOPTS) \
 	    -us -uc -rfakeroot && \
@@ -89,14 +98,7 @@ debbuild:
 	  echo "Done running lintian." && \
 	  debsign)
 
-debrelease: $(ALLSOURCE) $(SPECIAL) distclean
-	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
-	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
-	cp -r images ../$(SNAPDIR)
-	test -d ../$(SNAPDIR)/images/.arch-ids && rm -R \
-	  ../$(SNAPDIR)/images/.arch-ids || :
-	test -d ../$(SNAPDIR)/images/CVS && rm -R \
-	  ../$(SNAPDIR)/images/.arch-ids || :
+debrelease: debprepare
 	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
 	cp -R debian ../$(SNAPDIR)
 	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
@@ -113,7 +115,17 @@ debrevision-mwolson:
 	-rm -f ../../dist/erc_*
 	-rm -f ../erc_$(VERSION)-*
 	-rm -fr ../erc-$(VERSION)
-	$(MAKE) debrelease
+	$(MAKE) debprepare
+	cp -R debian ../$(SNAPDIR)
+	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
+	  ../$(SNAPDIR)/debian/CVS \
+	  ../$(SNAPDIR)/debian/maint/CVS \
+	  ../$(SNAPDIR)/debian/scripts/CVS || :
+	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -R \
+	  ../$(SNAPDIR)/debian/.arch-ids \
+	  ../$(SNAPDIR)/debian/maint/.arch-ids \
+	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
+	$(MAKE) debbuild
 	cp ../erc_$(VERSION)* ../../dist
 
 debrelease-mwolson:
