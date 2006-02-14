@@ -58,7 +58,7 @@
   (require 'cl)
   (require 'pcomplete))
 
-(defconst erc-dcc-version "$Revision: 1.94.2.1 $"
+(defconst erc-dcc-version "$Revision: 1.94.2.2 $"
   "ERC DCC revision")
 
 (defgroup erc-dcc nil
