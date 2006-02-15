@@ -1,3 +1,9 @@
+2006-02-15  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc): Move to the end of the buffer when a continued
+	session is detected.  Thanks to e1f and indio for the report and
+	testing a potential fix.
+
 2006-02-14  Michael Olson  <mwolson@gnu.org>
 
 	* debian/changelog: Prepare a new Debian package.
