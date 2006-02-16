@@ -12,6 +12,8 @@ ERC NEWS                                                       -*- outline -*-
 
 ** Fix compiler errors in erc-autojoin.el and erc-dcc.el.
 
+** Move to end of prompt when ERC reconnects to a server.
+
 ** Changes and additions to modules
 
 *** Spell-checking (erc-spelling.el)
