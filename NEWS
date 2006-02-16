@@ -1,12 +1,14 @@
 ERC NEWS                                                       -*- outline -*-
 
-* Changes since ERC 5.1.1
+* Changes in ERC 5.2 (unreleased)
 
 ** New modules
 
 *** Capab identify (erc-capab.el)
 
 **** Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG.
+
+* Changes in ERC 5.1.2 (unreleased)
 
 ** Fix compiler errors in erc-autojoin.el and erc-dcc.el.
 

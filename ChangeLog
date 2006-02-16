@@ -1,5 +1,7 @@
 2006-02-15  Michael Olson  <mwolson@gnu.org>
 
+	* NEWS: Add category for ERC 5.2.
+
 	* erc.el (erc): Move to the end of the buffer when a continued
 	session is detected.  Thanks to e1f and indio for the report and
 	testing a potential fix.
