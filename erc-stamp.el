@@ -38,7 +38,7 @@
 (require 'erc)
 (require 'erc-compat)
 
-(defconst erc-stamp-version "$Revision: 1.55 $"
+(defconst erc-stamp-version "$Revision: 1.56 $"
   "ERC stamp mode revision.")
 
 (defgroup erc-stamp nil
