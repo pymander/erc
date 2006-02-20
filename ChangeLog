@@ -1,3 +1,7 @@
+2006-02-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-version-string): Release ERC 5.1.2.
+
 2006-02-15  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc): Move to the end of the buffer when a continued
@@ -117,7 +121,7 @@
 
 	* erc.texi (History): Note that ERC is now included with Emacs.
 
-	* erc.el (erc-version-string): Release ERC 5.1.1
+	* erc.el (erc-version-string): Release ERC 5.1.1.
 
 2006-01-31  Michael Olson  <mwolson@gnu.org>
 
