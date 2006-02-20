@@ -8,7 +8,7 @@ ERC NEWS                                                       -*- outline -*-
 
 **** Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG.
 
-* Changes in ERC 5.1.2 (unreleased)
+* Changes in ERC 5.1.2
 
 ** Fix compiler errors in erc-autojoin.el and erc-dcc.el.
 

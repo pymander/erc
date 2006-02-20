@@ -4,6 +4,8 @@
 	parameters are strings before using them.  Thanks to Alejandro
 	Benitez for the report.
 
+	* erc.el (erc-version-string): Release ERC 5.1.2.
+
 2006-02-19  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-button.el (erc-button-keymap): Bind `erc-button-previous' to
@@ -219,7 +221,7 @@
 
 	* erc.texi (History): Note that ERC is now included with Emacs.
 
-	* erc.el (erc-version-string): Release ERC 5.1.1
+	* erc.el (erc-version-string): Release ERC 5.1.1.
 
 2006-01-31  Michael Olson  <mwolson@gnu.org>
 
