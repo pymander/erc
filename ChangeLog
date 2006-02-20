@@ -1,3 +1,9 @@
+2006-02-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc-capab.el (erc-capab-send-identify-messages): Make sure some
+	parameters are strings before using them.  Thanks to Alejandro
+	Benitez for the report.
+
 2006-02-19  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-button.el (erc-button-keymap): Bind `erc-button-previous' to

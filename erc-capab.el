@@ -132,9 +132,11 @@ These arguments are sent to this function when called as a hook in
 
 (defun erc-capab-send-identify-messages ()
   "Send CAPAB IDENTIFY messages if the server supports it."
-  (when (and (string-match "^\\(dancer-ircd\\|hyperion\\)" erc-server-version)
+  (when (and (stringp erc-server-version)
+             (string-match "^\\(dancer-ircd\\|hyperion\\)" erc-server-version)
              ;; could possibly check for IRCD=dancer in `erc-server-parameters'
              ;; instead of looking for specific version names
+             (stringp erc-server-parameters)
              (assoc "CAPAB" erc-server-parameters))
     (erc-log "Sending CAPAB IDENTIFY-MSG and IDENTIFY-CTCP")
     (erc-server-send "CAPAB IDENTIFY-MSG")
