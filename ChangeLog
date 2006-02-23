@@ -1,3 +1,9 @@
+2006-02-20  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-capab.el (erc-capab-send-identify-messages): Fixed comment
+	to explain thoughts better.  `erc-server-parameters' is an
+	associated list when it's set, not a string.
+
 2006-02-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc-capab.el (erc-capab-send-identify-messages): Make sure some

@@ -63,11 +63,17 @@
 
 ;;; Todo:
 
+;; DSM check in modify hook if we should mark, then mark appropriately
+;;     `erc-capab-identify-add-prefix'
+;;     and/or
+;;     `erc-capab-identify-apply-face'
+;; DSM CTCP has `erc-identified' but not `erc-parsed' so can't find out nickname?...
+
 ;;; Code:
 
 (require 'erc)
 
-(defconst erc-capab-version "$Revision: 1.6 $"
+(defconst erc-capab-version "$Revision: 1.7 $"
   "ERC CAPAB revision number.")
 
 ;;; Customization:
@@ -80,6 +86,10 @@
   "The prefix used for unidentified users."
   :group 'erc-capab
   :type '(choice string (const nil)))
+
+(defface erc-capab-unidentified
+  '((t :inherit highlight))
+  "Face for displaying users who haven't identified with NickServ.")
 
 ;;; Define module:
 
@@ -134,9 +144,9 @@ These arguments are sent to this function when called as a hook in
   "Send CAPAB IDENTIFY messages if the server supports it."
   (when (and (stringp erc-server-version)
              (string-match "^\\(dancer-ircd\\|hyperion\\)" erc-server-version)
-             ;; could possibly check for IRCD=dancer in `erc-server-parameters'
-             ;; instead of looking for specific version names
-             (stringp erc-server-parameters)
+             ;; could possibly check for '("IRCD" . "dancer") in
+             ;; `erc-server-parameters' instead of looking for a specific name
+             ;; in `erc-server-version'
              (assoc "CAPAB" erc-server-parameters))
     (erc-log "Sending CAPAB IDENTIFY-MSG and IDENTIFY-CTCP")
     (erc-server-send "CAPAB IDENTIFY-MSG")
