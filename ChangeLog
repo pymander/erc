@@ -1,7 +1,8 @@
 2006-02-26  Michael Olson  <mwolson@gnu.org>
 
-	* erc-capab.el (erc-capab-unidentified): Fix compiler warning by
-	specifying group.
+	* erc-capab.el: Use (eval-when-compile (require 'cl)).
+	(erc-capab-unidentified): Fix compiler warning by specifying
+	group.
 
 2006-02-20  Diane Murray  <disumu@x3y2z1.net>
 

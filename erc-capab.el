@@ -72,6 +72,7 @@
 ;;; Code:
 
 (require 'erc)
+(eval-when-compile (require 'cl))
 
 (defconst erc-capab-version "$Revision: 1.8 $"
   "ERC CAPAB revision number.")
