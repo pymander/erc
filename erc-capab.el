@@ -89,7 +89,8 @@
 
 (defface erc-capab-unidentified
   '((t :inherit highlight))
-  "Face for displaying users who haven't identified with NickServ.")
+  "Face for displaying users who haven't identified with NickServ."
+  :group 'erc-faces)
 
 ;;; Define module:
 
