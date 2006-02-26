@@ -73,7 +73,7 @@
 
 (require 'erc)
 
-(defconst erc-capab-version "$Revision: 1.7 $"
+(defconst erc-capab-version "$Revision: 1.8 $"
   "ERC CAPAB revision number.")
 
 ;;; Customization:
