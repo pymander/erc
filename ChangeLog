@@ -1,3 +1,9 @@
+2006-02-28  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-capab.el: Removed things that were accidentally committed on
+	2006-02-20.  Removed Todo section.
+	(erc-capab-unidentified): Removed.
+
 2006-02-26  Michael Olson  <mwolson@gnu.org>
 
 	* erc-capab.el: Use (eval-when-compile (require 'cl)).

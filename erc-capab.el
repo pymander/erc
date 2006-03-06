@@ -61,20 +61,12 @@
 ;; `erc-capab-identify-disable'), no prefix will be inserted, but the
 ;; flag sent by the server will still be stripped.
 
-;;; Todo:
-
-;; DSM check in modify hook if we should mark, then mark appropriately
-;;     `erc-capab-identify-add-prefix'
-;;     and/or
-;;     `erc-capab-identify-apply-face'
-;; DSM CTCP has `erc-identified' but not `erc-parsed' so can't find out nickname?...
-
 ;;; Code:
 
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-capab-version "$Revision: 1.9 $"
+(defconst erc-capab-version "$Revision: 1.10 $"
   "ERC CAPAB revision number.")
 
 ;;; Customization:
@@ -87,11 +79,6 @@
   "The prefix used for unidentified users."
   :group 'erc-capab
   :type '(choice string (const nil)))
-
-(defface erc-capab-unidentified
-  '((t :inherit highlight))
-  "Face for displaying users who haven't identified with NickServ."
-  :group 'erc-faces)
 
 ;;; Define module:
 
