@@ -1,3 +1,9 @@
+2006-03-09  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-button.el (erc-button-keymap): Use <backtab> rather than
+	<C-tab> for `erc-button-previous' as it is a more standard key
+	binding for this type of function.
+
 2006-02-28  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-capab.el: Removed things that were accidentally committed on
