@@ -1,6 +1,27 @@
+2006-03-21  Michael Olson  <mwolson@gnu.org>
+
+	* CREDITS: Add Nelson Ferreira.  Change contact address.
+
+	* erc-bbdb.el: Install patch from Nelson Ferreira.
+	(erc-bbdb-electric-p): New option that indicates whether to make
+	the BBDB buffer electric.  Defaults to "not electric".
+	(erc-bbdb-show-entry): Use `erc-bbdb-electric-p'.
+
+2006-03-09  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-button.el (erc-button-keymap): Use <backtab> rather than
+	<C-tab> for `erc-button-previous' as it is a more standard key
+	binding for this type of function.
+
 2006-02-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-version-string): Release ERC 5.1.2.
+
+2006-02-19  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-button.el (erc-button-keymap): Bind `erc-button-previous' to
+	<C-tab>.
+	(erc-button-previous): New function.
 
 2006-02-15  Michael Olson  <mwolson@gnu.org>
 
@@ -494,5 +515,3 @@ See ChangeLog.2005 for earlier changes.
 ;; End:
 
 ;; arch-tag: 865a75f6-2bcb-46df-bf0c-b514dadf688a
-
-;; arch-tag: cceaf370-9880-4031-842b-223ab2bb597d

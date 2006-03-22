@@ -113,6 +113,11 @@ their \"displayed name\"."
   :group 'erc-bbdb
   :type 'boolean)
 
+(defcustom erc-bbdb-electric-p nil
+  "*If t, BBDB popup buffer is electric."
+  :group 'erc-bbdb
+  :type 'boolean)
+
 (defun erc-bbdb-search-name-and-create (create-p name nick finger-host silent)
   (let* ((ircnick (cons erc-bbdb-irc-nick-field (concat "^"
 							(regexp-quote nick))))
@@ -133,7 +138,8 @@ their \"displayed name\"."
       record)))
 
 (defun erc-bbdb-show-entry (record channel proc)
-  (let ((bbdb-display-layout (bbdb-grovel-elide-arg erc-bbdb-elide-display)))
+  (let ((bbdb-display-layout (bbdb-grovel-elide-arg erc-bbdb-elide-display))
+	(bbdb-electric-p erc-bbdb-electric-p))
     (when (and record (or (eq erc-bbdb-popup-type t)
 			  (and (eq erc-bbdb-popup-type 'visible)
 			       (and channel
