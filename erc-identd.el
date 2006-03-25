@@ -1,6 +1,6 @@
 ;;; erc-identd.el --- RFC1413 (identd authentication protocol) server
 
-;; Copyright (C) 2003 Free Software Foundation, Inc.
+;; Copyright (C) 2003, 2006 Free Software Foundation, Inc.
 
 ;; Author: John Wiegley <johnw@gnu.org>
 ;; Keywords: comm, processes
@@ -46,6 +46,7 @@
 			     system-type (user-login-name)))
 	(process-send-eof erc-identd-process)))))
 
+;;;###autoload
 (defun erc-identd-start (&optional port)
   "Start an identd server listening to port 8113.
 Port 113 (auth) will need to be redirected to port 8113 on your
@@ -64,11 +65,13 @@ system."
 	(if (fboundp 'make-network-process)
 	    (make-network-process :name "identd"
 				  :buffer (generate-new-buffer "identd")
-				  :service port :server t :noquery t
-				  :filter 'erc-identd-filter))
-	(open-network-stream-server "identd" (generate-new-buffer "identd")
-				    port nil 'erc-identd-filter)))
+				  :host 'local :service port
+				  :server t :noquery t
+				  :filter 'erc-identd-filter)
+	  (open-network-stream-server "identd" (generate-new-buffer "identd")
+				      port nil 'erc-identd-filter))))
 
+;;;###autoload
 (defun erc-identd-stop (&rest ignore)
   (interactive)
   (when erc-identd-process

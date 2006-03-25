@@ -2,6 +2,9 @@
 
 	* erc-identd.el (erc-identd-start): Fix a bug by making sure that
 	erc-identd-process is set properly.
+	(erc-identd-start, erc-identd-stop): Add autoload cookies.
+	(erc-identd-start): Pass :host parameter so this works with Emacs
+	22.
 
 2006-03-21  Michael Olson  <mwolson@gnu.org>
 
