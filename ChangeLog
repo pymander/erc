@@ -1,7 +1,8 @@
 2006-03-25  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-cmd-QUOTE): Install patch from Aravind Gottipati
-	that fixes the case where there is no leading whitespace.
+	that fixes the case where there is no leading whitespace.  Only
+	remove the first space character, though.
 
 	* erc-identd.el (erc-identd-start): Fix a bug by making sure that
 	erc-identd-process is set properly.

@@ -3003,7 +3003,7 @@ Otherwise leave the channel indicated by LINE."
 All the text given as argument is sent to the sever as unmodified,
 just as you provided it.  Use this command with care!"
   (cond
-   ((string-match "^\\s-*\\(.+\\)$" line)
+   ((string-match "^ ?\\(.+\\)$" line)
     (erc-server-send (match-string 1 line)))
    (t nil)))
 (put 'erc-cmd-QUOTE 'do-not-parse-args t)
