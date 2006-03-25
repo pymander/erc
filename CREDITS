@@ -127,6 +127,10 @@ Simon Josefsson  (jas AT extundo DOT com):
 Nelson Ferreira <nelson.ferreira@ieee.org>:
   * Made BBDB buffers not electric by default (6 lines changed).
 
+Aravind Gottipati <aravind@freeshell.org>:
+  * Made /quote work with lines that don't have leading whitespace (1
+    line changed).
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
