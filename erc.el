@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.2 $Revision: 1.796.2.4 $"
+(defconst erc-version-string "Version 5.1.2 $Revision: 1.796.2.5 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
