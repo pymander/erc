@@ -1,3 +1,7 @@
+2006-03-27  Michael Olson  <mwolson@gnu.org>
+
+	* erc.texi: Update direntry.  Remove unneeded local variables.
+
 2006-03-26  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-header-line): New face that will be used to colorize
