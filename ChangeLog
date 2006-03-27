@@ -10,6 +10,8 @@
 	(erc-update-mode-line-buffer): Use the aforementioned option and
 	face to colorize the header-line text, if that is what the user
 	wants.
+	(erc-send-input): If flood control is not activated, don't split
+	the input line.
 
 2006-03-25  Michael Olson  <mwolson@gnu.org>
 

@@ -4870,7 +4870,8 @@ This returns non-nil only iff we actually send anything."
 		  (erc-display-msg line)
 		  (erc-process-input-line (concat line "\n")
 					  (null erc-flood-protect) t))
-		(erc-split-line line)))
+		(or (and erc-flood-protect (erc-split-line line))
+		    (list line))))
 	     (split-string str "\n"))
 	  ;; Insert the prompt along with the command.
 	  (erc-display-command str)
