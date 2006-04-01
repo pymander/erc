@@ -314,13 +314,7 @@ alist."
   :type '(repeat (cons (string :tag "Target")
                        coding-system)))
 
-(defcustom erc-server-connect-function
-  (if (and (fboundp 'open-network-stream-nowait)
-           ;; CVS Emacs claims to define open-network-stream-nowait on
-           ;; windows, however, it does, in fact, not work.
-           (not (memq system-type '(windows-nt cygwin ms-dos darwin))))
-      'open-network-stream-nowait
-    'open-network-stream)
+(defcustom erc-server-connect-function 'open-network-stream
   "Function used to initiate a connection.
 It should take same arguments as `open-network-stream' does."
   :group 'erc-server

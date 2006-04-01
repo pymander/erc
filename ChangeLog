@@ -1,3 +1,9 @@
+2006-04-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-server-connect-function): Don't try to
+	detect the existence of the `open-network-stream-nowait' function,
+	since I can't find it in Emacs21, XEmacs21, or Emacs22.
+
 2006-03-27  Michael Olson  <mwolson@gnu.org>
 
 	* erc.texi: Update direntry.  Remove unneeded local variables.
