@@ -1,3 +1,9 @@
+2006-04-02  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el, erc-ezbounce.el, erc-join.el, erc-netsplit.el,
+	erc.el: Make sure to include a newline inside of negated classes,
+	so that a newline is not matched.
+
 2006-04-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-server-connect-function): Don't try to

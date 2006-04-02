@@ -758,10 +758,10 @@ PROCs `process-buffer' is `current-buffer' when this function is called."
                 (substring string 1 posn)))
 
         (setf (erc-response.command msg)
-              (let* ((bposn (string-match "[^ ]" string posn))
+              (let* ((bposn (string-match "[^ \n]" string posn))
                      (eposn (string-match " " string bposn)))
                 (setq posn (and eposn
-                                (string-match "[^ ]" string eposn)))
+                                (string-match "[^ \n]" string eposn)))
                 (substring string bposn eposn)))
 
         (while (and posn
@@ -769,7 +769,7 @@ PROCs `process-buffer' is `current-buffer' when this function is called."
           (push (let* ((bposn posn)
                        (eposn (string-match " " string bposn)))
                   (setq posn (and eposn
-                                  (string-match "[^ ]" string eposn)))
+                                  (string-match "[^ \n]" string eposn)))
                   (substring string bposn eposn))
                 (erc-response.command-args msg)))
         (when posn
