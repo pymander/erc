@@ -66,7 +66,7 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-capab-version "$Revision: 1.10 $"
+(defconst erc-capab-version "$Revision: 1.11 $"
   "ERC CAPAB revision number.")
 
 ;;; Customization:
@@ -187,7 +187,9 @@ PARSED is an `erc-parsed' response struct."
                  ;; assuming the first use of `nickname' is the sender's nick
                  (re-search-forward (regexp-quote nickname) nil t))
         (goto-char (match-beginning 0))
-        (insert erc-capab-identify-prefix)))))
+        (insert (erc-propertize erc-capab-identify-prefix
+                                'face (get-char-property (- (point) 1)
+                                                         'face)))))))
 
 (defun erc-capab-find-parsed ()
   "Return the position of text found with the `erc-parsed' property."

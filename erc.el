@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.2 (CVS) $Revision: 1.813 $"
+(defconst erc-version-string "Version 5.1.2 (CVS) $Revision: 1.815 $"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -3139,7 +3139,7 @@ the message given by REASON."
 
 (defun erc-cmd-SV ()
   "Say the current ERC and Emacs version into channel."
-  (erc-send-message (format "I'm using ERC %s with %s %s (%s%s%s)!"
+  (erc-send-message (format "I'm using ERC %s with %s %s (%s%s) of %s."
 			    erc-version-string
 			    (if (featurep 'xemacs) "XEmacs" "GNU Emacs")
 			    emacs-version
@@ -3162,7 +3162,7 @@ the message given by REASON."
 						      x-toolkit-scroll-bars)))
 			       "")
 			     (if (featurep 'multi-tty) ", multi-tty" ""))
-			    (concat ", built " erc-emacs-build-time)))
+			    erc-emacs-build-time))
   t)
 
 (defun erc-cmd-SM ()

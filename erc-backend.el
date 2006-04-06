@@ -105,7 +105,7 @@
 
 ;;;; Variables and options
 
-(defconst erc-backend-version "$Revision: 1.46 $")
+(defconst erc-backend-version "$Revision: 1.48 $")
 
 (defvar erc-server-responses (make-hash-table :test #'equal)
   "Hashtable mapping server responses to their handler hooks.")
