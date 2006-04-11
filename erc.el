@@ -3117,7 +3117,7 @@ the message given by REASON."
 
 (defun erc-cmd-SV ()
   "Say the current ERC and Emacs version into channel."
-  (erc-send-message (format "I'm using ERC %s with %s %s (%s%s%s)!"
+  (erc-send-message (format "I'm using ERC %s with %s %s (%s%s) of %s."
 			    erc-version-string
 			    (if (featurep 'xemacs) "XEmacs" "GNU Emacs")
 			    emacs-version
@@ -3140,7 +3140,7 @@ the message given by REASON."
 						      x-toolkit-scroll-bars)))
 			       "")
 			     (if (featurep 'multi-tty) ", multi-tty" ""))
-			    (concat ", built " erc-emacs-build-time)))
+			    erc-emacs-build-time))
   t)
 
 (defun erc-cmd-SM ()
@@ -3481,7 +3481,7 @@ If FACE is non-nil, it will be used to propertize the prompt.  If it is nil,
 If `point' is at the beginning of a channel name, use that as default."
   (interactive
    (list
-    (let ((chnl (if (looking-at "\\([&#+!][^ ]+\\)") (match-string 1) ""))
+    (let ((chnl (if (looking-at "\\([&#+!][^ \n]+\\)") (match-string 1) ""))
 	  (table (when (erc-server-buffer-live-p)
 		   (set-buffer (process-buffer erc-server-process))
 		   erc-channel-list)))
@@ -4725,12 +4725,12 @@ EmacsSpeak support."
 
 Return a list of the three separate tokens."
   (cond
-   ((string-match "^\\([^!]*\\)!\\([^@]*\\)@\\(.*\\)$" string)
+   ((string-match "^\\([^!\n]*\\)!\\([^@\n]*\\)@\\(.*\\)$" string)
     (list (match-string 1 string)
 	  (match-string 2 string)
 	  (match-string 3 string)))
    ;; Some bogus bouncers send Nick!(null), try to live with that.
-   ((string-match "^\\([^!]*\\)!\\(.*\\)$" string)
+   ((string-match "^\\([^!\n]*\\)!\\(.*\\)$" string)
     (list (match-string 1 string)
 	  ""
 	  (match-string 2 string)))
@@ -5044,7 +5044,7 @@ user matches any regexp in `erc-ignore-reply-list'."
   "Return the addressed target in MSG.
 
 The addressed target is the string before the first colon in MSG."
-  (if (string-match "^\\([^: ]*\\):" msg)
+  (if (string-match "^\\([^: \n]*\\):" msg)
       (match-string 1 msg)
     nil))
 
