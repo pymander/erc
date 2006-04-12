@@ -36,7 +36,7 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-autojoin-version "$Revision: 1.15.2.1 $"
+(defconst erc-autojoin-version "$Revision: 1.15.2.2 $"
   "ERC autojoin revision.")
 
 (defgroup erc-autojoin nil
