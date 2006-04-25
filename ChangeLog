@@ -1,3 +1,11 @@
+2006-04-18  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-pcomplete.el (pcomplete-erc-nicks): Added new optional
+	argument IGNORE-SELF.  If this is non-nil, don't return the user's
+	current nickname.  Doc fix.
+	(pcomplete/erc-mode/complete-command): Don't complete the current
+	nickname.
+
 2006-04-05  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-cmd-SV): Removed the exclamation point.  Show the
