@@ -1,3 +1,8 @@
+2006-05-01  Edward O'Connor  <ted@oconnor.cx>
+
+	* erc-goodies.el: (erc-handle-irc-url): New function, suitable as
+	a value for `url-irc-function'.
+
 2006-04-18  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-pcomplete.el (pcomplete-erc-nicks): Added new optional

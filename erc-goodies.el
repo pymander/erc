@@ -516,6 +516,28 @@ servers.  If called from a program, PROC specifies the server process."
       (multi-occur (erc-buffer-list nil proc) string)
     (error "`multi-occur' is not defined as a function")))
 
+;; Teach url.el how to open irc:// URLs with ERC.
+;; To activate, customize `url-irc-function'.
+
+(defun erc-handle-irc-url (host port channel user password)
+  "Use ERC to IRC on HOST:PORT in CHANNEL as USER with PASSWORD.
+If ERC is already connected to HOST:PORT, simly /join CHANNEL.
+Otherwise, connect to HOST:PORT as USER and /join CHANNEL."
+  (let ((server-buffer
+         (car (erc-buffer-filter
+               (lambda ()
+                 (and (string-equal erc-session-server host)
+                      (= erc-session-port port)
+                      erc-server-connected
+                      (eq (erc-server-buffer) (current-buffer))))))))
+    (with-current-buffer (or server-buffer (current-buffer))
+      (if (and server-buffer channel)
+          (erc-cmd-JOIN channel)
+        (erc host port (or user (erc-compute-nick)) (erc-compute-full-name)
+             (not server-buffer) password nil channel
+             (when server-buffer
+               (get-buffer-process server-buffer)))))))
+
 (provide 'erc-goodies)
 
 ;; arch-tag: d987ae26-9e28-4c72-9596-e617309fb582
