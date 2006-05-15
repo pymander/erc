@@ -43,3 +43,15 @@ Additional documentation is kept on the Emacs Wiki, and may be added
 to by anyone.
 
 * http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient
+
+License information
+-------------------
+
+ERC is available under the terms of the GNU General Public License.
+See the file `COPYING' for details.
+
+The following copyright notice applies to each of the images contained
+in the `images' directory.
+
+Copyright (C) 2006 Free Software Foundation.
+This image may be used, distributed, and modified without restriction.
