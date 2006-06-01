@@ -1595,12 +1595,13 @@ server connection, or nil which means all open connections."
     (delq
      nil
      (mapcar (lambda (buf)
-	       (with-current-buffer buf
-		 (and (eq major-mode 'erc-mode)
-		      (or (not proc)
-			  (eq proc erc-server-process))
-		      (funcall predicate)
-		      buf)))
+	       (when (buffer-live-p buf)
+		 (with-current-buffer buf
+		   (and (eq major-mode 'erc-mode)
+			(or (not proc)
+			    (eq proc erc-server-process))
+			(funcall predicate)
+			buf))))
 	     (buffer-list)))))
 
 (defun erc-buffer-list (&optional predicate proc)
