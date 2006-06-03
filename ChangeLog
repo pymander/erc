@@ -14,8 +14,13 @@
 	(erc-autoaway-reestablish-idletimer, erc-autoaway-message):
 	Docfix.
 	(erc-autoaway-idle-seconds): Use erc-autoaway-idle-method.
-	(erc-autoaway-reset-idletime): Make the first argument optional so
-	that we can safely add this to post-command-hook.
+	(erc-autoaway-reset-idle-irc): Renamed from
+	`erc-autoaway-reset-idle'.  Don't pass line to
+	`erc-autoaway-set-away', since it is not used.
+	(erc-autoaway-reset-idle-user): New function that resets the idle
+	state for user idle time.
+	(erc-autoaway-set-back): Remove line argument, since it is not
+	used.
 
 	* Makefile (upload): Make this work for Savannah uploads.
 

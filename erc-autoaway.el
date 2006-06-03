@@ -87,19 +87,19 @@ set you no longer away.
 Related variables: `erc-public-away-p' and `erc-away-nickname'."
   ;; Enable:
   ((cond ((eq erc-autoaway-idle-method 'irc)
-	  (add-hook 'erc-send-completed-hook 'erc-autoaway-reset-idletime)
-	  (add-hook 'erc-server-001-functions 'erc-autoaway-reset-idletime))
+	  (add-hook 'erc-send-completed-hook 'erc-autoaway-reset-idle-irc)
+	  (add-hook 'erc-server-001-functions 'erc-autoaway-reset-idle-irc))
 	 ((eq erc-autoaway-idle-method 'user)
-	  (add-hook 'post-command-hook 'erc-autoaway-reset-idletime))
+	  (add-hook 'post-command-hook 'erc-autoaway-reset-idle-user))
 	 ((eq erc-autoaway-idle-method 'emacs)
 	  (erc-autoaway-reestablish-idletimer)))
    (add-hook 'erc-timer-hook 'erc-autoaway-possibly-set-away))
   ;; Disable:
   ((cond ((eq erc-autoaway-idle-method 'irc)
-	  (remove-hook 'erc-send-completed-hook 'erc-autoaway-reset-idletime)
-	  (remove-hook 'erc-server-001-functions 'erc-autoaway-reset-idletime))
+	  (remove-hook 'erc-send-completed-hook 'erc-autoaway-reset-idle-irc)
+	  (remove-hook 'erc-server-001-functions 'erc-autoaway-reset-idle-irc))
 	 ((eq erc-autoaway-idle-method 'user)
-	  (remove-hook 'post-command-hook 'erc-autoaway-reset-idletime))
+	  (remove-hook 'post-command-hook 'erc-autoaway-reset-idle-user))
 	 ((eq erc-autoaway-idle-method 'emacs)
 	  (erc-cancel-timer erc-autoaway-idletimer)
 	  (setq erc-autoaway-idletimer nil)))
@@ -167,17 +167,25 @@ in seconds."
 (defvar erc-autoaway-last-sent-time (erc-current-time)
   "The last time the user sent something.")
 
-(defun erc-autoaway-reset-idletime (&optional line &rest stuff)
-  "Reset the stored idletime for the user.
-This is one global variable since a user talking on one net can talk
-on another net too."
+(defun erc-autoaway-reset-idle-user (&rest stuff)
+  "Reset the stored user idle time.
+This is one global variable since a user talking on one net can
+talk on another net too."
+  (when erc-auto-discard-away
+    (erc-autoaway-set-back))
+  (setq erc-autoaway-last-sent-time (erc-current-time)))
+
+(defun erc-autoaway-reset-idle-irc (line &rest stuff)
+  "Reset the stored IRC idle time.
+This is one global variable since a user talking on one net can
+talk on another net too."
   (when (and erc-auto-discard-away
 	     (stringp line)
 	     (not (string-match erc-autoaway-no-auto-discard-regexp line)))
-    (erc-autoaway-set-back line))
+    (erc-autoaway-set-back))
   (setq erc-autoaway-last-sent-time (erc-current-time)))
 
-(defun erc-autoaway-set-back (line)
+(defun erc-autoaway-set-back ()
   "Discard the away state globally."
   (when (erc-away-p)
     (setq erc-autoaway-last-sent-time (erc-current-time))
