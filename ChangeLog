@@ -1,3 +1,8 @@
+2006-06-03  Michael Olson  <mwolson@gnu.org>
+
+	* AUTHORS: Update for Savannah move.  No old entries have been
+	removed, in case people have not registered yet on Savannah.
+
 2006-06-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-buffer-filter): Make sure all buffers returned from
