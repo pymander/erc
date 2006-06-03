@@ -1,5 +1,22 @@
 2006-06-03  Michael Olson  <mwolson@gnu.org>
 
+	* erc-autoaway.el: Thanks to Mark Plaksin for the ideas and patch.
+	(erc-autoaway-idle-method): Renamed from
+	`erc-autoaway-use-emacs-idle'.  We have more than two choices for
+	how to do this, so it's best to make this take symbol values.
+	Improve documentation.  Remove warning against Emacs idle-time;
+	the point is moot now that we get user idle time via a different
+	method.  Make sure we disable and re-enable the module when
+	changing this value.
+	(autoaway): Conditionalize on the above option.  If using the idle
+	timer or user idle methods, don't add anything to the
+	send-completed or server-001 hooks, since it is unnecessary.
+	(erc-autoaway-reestablish-idletimer, erc-autoaway-message):
+	Docfix.
+	(erc-autoaway-idle-seconds): Use erc-autoaway-idle-method.
+	(erc-autoaway-reset-idletime): Make the first argument optional so
+	that we can safely add this to post-command-hook.
+
 	* Makefile (upload): Make this work for Savannah uploads.
 
 	* AUTHORS: Update for Savannah move.  No old entries have been
