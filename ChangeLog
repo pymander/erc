@@ -1,5 +1,7 @@
 2006-06-03  Michael Olson  <mwolson@gnu.org>
 
+	* Makefile (upload): Make this work for Savannah uploads.
+
 	* AUTHORS: Update for Savannah move.  No old entries have been
 	removed, in case people have not registered yet on Savannah.
 
