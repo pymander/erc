@@ -1,3 +1,10 @@
+2006-06-04  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el (erc-autoaway-idle-method): Move after the
+	definition of the autoaway module.
+	(autoaway): Don't do anything if erc-autoaway-idle-method is
+	unbound.  This prevents an error on startup.
+
 2006-06-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc-autoaway.el: Thanks to Mark Plaksin for the ideas and patch.
