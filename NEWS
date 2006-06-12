@@ -8,6 +8,51 @@ ERC NEWS                                                       -*- outline -*-
 
 **** Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG.
 
+* Changes in ERC 5.1.3 (unreleased)
+
+** Fix use of /quote command with no initial whitespace.
+
+** Changes and additions to modules
+
+** Make it possible to customize the colorization of the header line.
+The `erc-header-line' face is used to color the header line.
+The `erc-header-line-face-method' determines the method to use when
+colorizing the header line.
+
+** Add the new function `erc-handle-irc-url', which is a suitable
+candidate to use for `url-irc-function'.  This permits some
+integration of url.el and ERC.
+
+*** Autoaway (erc-autoaway.el)
+
+**** Rename the `erc-autoaway-use-emacs-idle' option to
+`erc-autoaway-idle-method'.
+
+**** Add support for autoaway based on user idle time.
+This is now the default.
+
+**** If you set the AWAY status yourself, erc-autoaway will not
+interfere by un-setting AWAY prematurely.
+
+*** BBDB (erc-bbdb.el)
+
+**** Add new option `erc-bbdb-electric-p', which determines whether
+to make the BBDB buffer electric.  This defaults to not electric.
+
+*** Button (erc-button.el)
+
+**** Use <backtab> instead of <C-tab> for `erc-button-previous'.
+
+*** Identd (erc-identd.el)
+
+**** Fix a bug that involves starting the identd server.
+
+**** Make this work with Emacs 22.
+
+*** Programmable completion (erc-pcomplete.el)
+
+**** Don't complete the user's current nickname.
+
 * Changes in ERC 5.1.2
 
 ** Fix compiler errors in erc-autojoin.el and erc-dcc.el.

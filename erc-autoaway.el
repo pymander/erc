@@ -76,7 +76,8 @@ Related variables: `erc-public-away-p' and `erc-away-nickname'."
        (add-hook 'post-command-hook 'erc-autoaway-reset-idle-user))
       ((eq erc-autoaway-idle-method 'emacs)
        (erc-autoaway-reestablish-idletimer)))
-     (add-hook 'erc-timer-hook 'erc-autoaway-possibly-set-away)))
+     (add-hook 'erc-timer-hook 'erc-autoaway-possibly-set-away)
+     (add-hook 'erc-server-305-functions 'erc-autoaway-reset-indicators)))
   ;; Disable:
   ((when (boundp 'erc-autoaway-idle-method)
      (cond
@@ -88,7 +89,8 @@ Related variables: `erc-public-away-p' and `erc-away-nickname'."
       ((eq erc-autoaway-idle-method 'emacs)
        (erc-cancel-timer erc-autoaway-idletimer)
        (setq erc-autoaway-idletimer nil)))
-     (remove-hook 'erc-timer-hook 'erc-autoaway-possibly-set-away))))
+     (remove-hook 'erc-timer-hook 'erc-autoaway-possibly-set-away)
+     (remove-hook 'erc-server-305-functions 'erc-autoaway-reset-indicators))))
 
 (defcustom erc-autoaway-idle-method 'user
   "*The method used to determine how long you have been idle.
@@ -171,6 +173,10 @@ in seconds."
 (defvar erc-autoaway-last-sent-time (erc-current-time)
   "The last time the user sent something.")
 
+(defvar erc-autoaway-caused-away nil
+  "Indicates whether this module was responsible for setting the
+user's away status.")
+
 (defun erc-autoaway-reset-idle-user (&rest stuff)
   "Reset the stored user idle time.
 This is one global variable since a user talking on one net can
@@ -191,8 +197,8 @@ talk on another net too."
 
 (defun erc-autoaway-set-back ()
   "Discard the away state globally."
-  (when (erc-away-p)
-    (setq erc-autoaway-last-sent-time (erc-current-time))
+  (when (and erc-autoaway-caused-away
+	     (erc-away-p))
     (erc-cmd-GAWAY "")))
 
 (defun erc-autoaway-possibly-set-away (current-time)
@@ -219,7 +225,13 @@ exceeds `erc-autoaway-idle-seconds'."
   ;; existing process.
   (when (and (erc-server-process-alive)
 	     (not (erc-away-p)))
+    (setq erc-autoaway-caused-away t)
     (erc-cmd-GAWAY (format erc-autoaway-message idle-time))))
+
+(defun erc-autoaway-reset-indicators (&rest stuff)
+  "Reset indicators used by the erc-autoaway module."
+  (setq erc-autoaway-last-sent-time (erc-current-time))
+  (setq erc-autoaway-caused-away nil))
 
 (provide 'erc-autoaway)
 

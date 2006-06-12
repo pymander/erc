@@ -1,3 +1,17 @@
+2006-06-12  Michael Olson  <mwolson@gnu.org>
+
+	* NEWS: Add items since the 5.1.2 release.
+
+	* erc-autoaway.el (erc-autoaway-caused-away): New variable that
+	indicates whether the current away status was caused by this
+	module.
+	(erc-autoaway-set-back): Only set back if this module set the user
+	away.
+	(erc-autoaway-set-away): Update `erc-autoaway-caused-away'.
+	(erc-autoaway-reset-indicators): New function that resets some
+	indicators when the user is no longer away.
+	(autoaway): Add the above function to the 305 hook.
+
 2006-06-04  Michael Olson  <mwolson@gnu.org>
 
 	* erc-autoaway.el (erc-autoaway-idle-method): Move after the

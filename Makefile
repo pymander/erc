@@ -148,7 +148,7 @@ release: autoloads distclean
 upload:
 	(cd .. && gpg --detach erc-$(VERSION).tar.gz && \
 	  gpg --detach erc-$(VERSION).zip && \
-	  echo open ftp://savannah.nongnu.org > upload.lftp ; \
+	  echo open ftp://savannah.gnu.org > upload.lftp ; \
 	  echo cd /incoming/savannah/erc >> upload.lftp ; \
 	  echo mput erc-$(VERSION).zip* >> upload.lftp ; \
 	  echo mput erc-$(VERSION).tar.gz* >> upload.lftp ; \
