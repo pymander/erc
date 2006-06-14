@@ -1,3 +1,8 @@
+2006-06-14  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-active-buffer): If the active buffer has been
+	deleted, default to the server buffer.
+
 2006-06-12  Michael Olson  <mwolson@gnu.org>
 
 	* NEWS: Add items since the 5.1.2 release.

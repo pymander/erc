@@ -1373,7 +1373,10 @@ server buffer")
 (defun erc-active-buffer ()
   "Return the value of `erc-active-buffer' for the current server.
 Defaults to the server buffer."
-  (with-current-buffer (erc-server-buffer) erc-active-buffer))
+  (with-current-buffer (erc-server-buffer)
+    (if (buffer-live-p erc-active-buffer)
+	erc-active-buffer)
+    (setq erc-active-buffer (current-buffer))))
 
 (defun erc-set-active-buffer (buffer)
   "Set the value of `erc-active-buffer' to BUFFER."
