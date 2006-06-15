@@ -2,6 +2,8 @@
 
 	* erc.el (erc-active-buffer): If the active buffer has been
 	deleted, default to the server buffer.
+	(erc-toggle-flood-control): When the user hits C-c C-f, make flood
+	control really toggle, not unconditionally turn off.
 
 2006-06-12  Michael Olson  <mwolson@gnu.org>
 

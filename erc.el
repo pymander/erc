@@ -5115,13 +5115,16 @@ If ARG is non-nil and not positive, turns CTCP replies off."
 (defun erc-toggle-flood-control (&optional arg)
   "Toggle use of flood control on sent messages.
 
-If ARG is non-nil, use flood control.
-If ARG is nil, do not use flood control.
+If ARG is positive, use flood control.
+If ARG is non-nil and not positive, do not use flood control.
 
 See `erc-server-flood-margin' for an explanation of the available
 flood control parameters."
   (interactive "P")
-  (setq erc-flood-protect arg)
+  (cond ((and (numberp arg) (> arg 0))
+	 (setq erc-flood-protect t))
+	(arg (setq erc-flood-protect nil))
+	(t (setq erc-flood-protect (not erc-flood-protect))))
   (message "ERC flood control is %s"
 	   (cond (erc-flood-protect "ON")
 		 (t "OFF"))))
