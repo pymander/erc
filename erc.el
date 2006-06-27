@@ -11,7 +11,7 @@
 ;;               Andreas Fuchs (afs@void.at)
 ;;               Gergely Nagy (algernon@midgard.debian.net)
 ;;               David Edmondson (dme@dme.org)
-;; Maintainer: Mario Lang (mlang@delysid.org)
+;; Maintainer: Michael Olson (mwolson@gnu.org)
 ;; Keywords: IRC, chat, client, Internet
 
 ;; This file is part of GNU Emacs.
@@ -36,12 +36,13 @@
 ;; ERC is an IRC client for Emacs.
 
 ;; For more information, see the following URLs:
-;; * http://sf.net/projects/erc/
+;; * http://sv.gnu.org/projects/erc/
 ;; * http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient
 
-;; Jul-26-2001. erc.el is now in CVS on SourceForge.  I invite everyone
-;; who wants to hack it to contact me <mlang@delysid.org> in order to
-;; get write access on the CVS.
+;; As of 2006-06-13, ERC development is now hosted on Savannah
+;; (http://sv.gnu.org/projects/erc).  I invite everyone who wants to
+;; hack on it to contact me <mwolson@gnu.org> in order to get write
+;; access to the shared Arch archive.
 
 ;; Installation:
 
@@ -77,12 +78,12 @@
 (require 'erc-menu)
 
 (defvar erc-official-location
-  "http://erc.sf.net (comments mailto://mlang@delysid.org)"
+  "http://emacswiki.org/cgi-bin/wiki/ERC (mailing list: erc-discuss@gnu.org)"
   "Location of the ERC client on the Internet.")
 
 (defgroup erc nil
   "Emacs Internet Relay Chat client."
-  :link '(url-link "http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient")
+  :link '(url-link "http://www.emacswiki.org/cgi-bin/wiki/ERC")
   :prefix "erc-"
   :group 'applications)
 
