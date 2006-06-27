@@ -55,6 +55,10 @@ to make the BBDB buffer electric.  This defaults to not electric.
 
 * Changes in ERC 5.1.2
 
+** Go back to using ssl.el so that SSL connections work as expected.
+Connecting with `open-tls-stream' only seems to work (if at all?) when
+using the tls.el located in lisp/net/ in Emacs22.
+
 ** Fix compiler errors in erc-autojoin.el and erc-dcc.el.
 
 ** Move to end of prompt when ERC reconnects to a server.

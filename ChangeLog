@@ -291,6 +291,11 @@
 	* erc.el (erc-modules): Added `capab-identify' to options.
 	(erc-get-parsed-vector, erc-get-parsed-vector-nick)
 	(erc-get-parsed-vector-type): Moved here from erc-match.el.
+	(erc-version-string): Remove "(CVS)".
+	(erc-open-ssl-stream): Go back to using ssl.el so that SSL
+	connections work as expected.  Connecting with `open-tls-stream'
+	only seems to work (if at all?) when using the tls.el located in
+	lisp/net/ in Emacs22.
 
 	* erc-match.el (erc-get-parsed-vector, erc-get-parsed-vector-nick)
 	(erc-get-parsed-vector-type): Moved these functions to erc.el
@@ -299,7 +304,7 @@
 	* CREDITS: Added erc-capab.el.  List both erc-nickserv.el and
 	erc-services.el since the file name has changed.
 
-	* NEWS: Added erc-capab.el.
+	* NEWS: Added erc-capab.el.  Added tls.el -> ssl.el change.
 
 	* erc-dcc.el, erc-stamp.el, erc-xdcc.el: Changed "Emacs IRC Client"
 	to "ERC".
