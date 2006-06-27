@@ -146,10 +146,16 @@ release: autoloads distclean
 	  zip -r erc-$(VERSION).zip erc-$(VERSION))
 
 upload:
-	(cd .. && echo open ftp://upload.sourceforge.net > upload.lftp ; \
-	  echo cd /incoming >> upload.lftp ; \
-	  echo mput erc-$(VERSION).zip >> upload.lftp ; \
-	  echo mput erc-$(VERSION).tar.gz >> upload.lftp ; \
+	(cd .. && gpg --detach erc-$(VERSION).tar.gz && \
+	  gpg --detach erc-$(VERSION).zip && \
+	  echo "Directory: erc" | gpg --clearsign > \
+	    erc-$(VERSION).tar.gz.directive.asc && \
+	  cp erc-$(VERSION).tar.gz.directive.asc \
+	    erc-$(VERSION).zip.directive.asc && \
+	  echo open ftp://ftp-upload.gnu.org > upload.lftp ; \
+	  echo cd /incoming/ftp >> upload.lftp ; \
+	  echo mput erc-$(VERSION).zip* >> upload.lftp ; \
+	  echo mput erc-$(VERSION).tar.gz* >> upload.lftp ; \
 	  echo close >> upload.lftp ; \
 	  lftp -f upload.lftp ; \
 	  rm -f upload.lftp)

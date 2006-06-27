@@ -1,3 +1,69 @@
+2006-06-21  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (upload): Make this work with the GNU upload system.
+
+2006-06-14  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-active-buffer): If the active buffer has been
+	deleted, default to the server buffer.
+	(erc-toggle-flood-control): When the user hits C-c C-f, make flood
+	control really toggle, not unconditionally turn off.
+
+2006-06-12  Michael Olson  <mwolson@gnu.org>
+
+	* NEWS: Add items since the 5.1.2 release.
+
+	* erc-autoaway.el (erc-autoaway-caused-away): New variable that
+	indicates whether the current away status was caused by this
+	module.
+	(erc-autoaway-set-back): Only set back if this module set the user
+	away.
+	(erc-autoaway-set-away): Update `erc-autoaway-caused-away'.
+	(erc-autoaway-reset-indicators): New function that resets some
+	indicators when the user is no longer away.
+	(autoaway): Add the above function to the 305 hook.
+
+2006-06-04  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el (erc-autoaway-idle-method): Move after the
+	definition of the autoaway module.
+	(autoaway): Don't do anything if erc-autoaway-idle-method is
+	unbound.  This prevents an error on startup.
+
+2006-06-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el: Thanks to Mark Plaksin for the ideas and patch.
+	(erc-autoaway-idle-method): Renamed from
+	`erc-autoaway-use-emacs-idle'.  We have more than two choices for
+	how to do this, so it's best to make this take symbol values.
+	Improve documentation.  Remove warning against Emacs idle-time;
+	the point is moot now that we get user idle time via a different
+	method.  Make sure we disable and re-enable the module when
+	changing this value.
+	(autoaway): Conditionalize on the above option.  If using the idle
+	timer or user idle methods, don't add anything to the
+	send-completed or server-001 hooks, since it is unnecessary.
+	(erc-autoaway-reestablish-idletimer, erc-autoaway-message):
+	Docfix.
+	(erc-autoaway-idle-seconds): Use erc-autoaway-idle-method.
+	(erc-autoaway-reset-idle-irc): Renamed from
+	`erc-autoaway-reset-idle'.  Don't pass line to
+	`erc-autoaway-set-away', since it is not used.
+	(erc-autoaway-reset-idle-user): New function that resets the idle
+	state for user idle time.
+	(erc-autoaway-set-back): Remove line argument, since it is not
+	used.
+
+	* Makefile (upload): Make this work for Savannah uploads.
+
+	* AUTHORS: Update for Savannah move.  No old entries have been
+	removed, in case people have not registered yet on Savannah.
+
+2006-06-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-buffer-filter): Make sure all buffers returned from
+	this are live.
+
 2006-05-15  Michael Olson  <mwolson@gnu.org>
 
 	* README: Add License information.  Permit images to be used,
