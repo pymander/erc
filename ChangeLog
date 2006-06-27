@@ -202,6 +202,18 @@
 
 2006-02-11  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-list.el: Define `list' module which sets the alias
+	`erc-cmd-LIST' to `erc-list-channels' when enabled and
+	`erc-list-channels-simple' when disabled.
+	(erc-list-channels): Was `erc-cmd-LIST', renamed.
+	(erc-list-channels-simple): New function.
+
+	* erc.el (erc-modules): Added `list' to enabled modules.  Changed
+	`capab-identify' description.  Moved customization options left in
+	source code.
+
+	* erc-menu.el (erc-menu-definition): Use `erc-list-channels'.
+
 	* erc-spelling.el (define-erc-module): Make sure there's a buffer
 	before calling `with-current-buffer'.
 
@@ -211,15 +223,24 @@
 	(debrevision-mwolson): New rule that causes a Debian revision to
 	be built.
 
-2006-02-08  Diane Murray  <disumu@x3y2z1.net>
+2006-02-09  Diane Murray  <disumu@x3y2z1.net>
 
-	* erc.el (erc-version-string): Remove "(CVS)".
+	* erc.el (erc-get-parsed-vector, erc-get-parsed-vector-nick)
+	(erc-get-parsed-vector-type): Moved here from erc-match.el.
+	(erc-version-string): Remove "(CVS)".
 	(erc-open-ssl-stream): Go back to using ssl.el so that SSL
 	connections work as expected.  Connecting with `open-tls-stream'
 	only seems to work (if at all?) when using the tls.el located in
 	lisp/net/ in Emacs22.
 
+	* erc-match.el (erc-get-parsed-vector, erc-get-parsed-vector-nick)
+	(erc-get-parsed-vector-type): Moved these functions to erc.el
+	since they can be useful outside of the text matching module.
+
 	* NEWS: Added tls.el -> ssl.el change.
+
+	* erc-dcc.el, erc-stamp.el, erc-xdcc.el: Changed "Emacs IRC Client"
+	to "ERC".
 
 2006-02-07  Michael Olson  <mwolson@gnu.org>
 
@@ -229,6 +250,12 @@
 	(erc-insert-timestamp-right): If the timestamp goes on the
 	following line, don't add timestamp properties to the spaces in
 	front of it.
+
+2006-02-05  Diane Murray  <disumu@x3y2z1.net>
+
+	* FOR-RELEASE: Added two things to do before the next release of
+	Emacs:  1. using M-x erc instead of M-x erc-select and 2. changing
+	the `C-c C-SPC' and `C-c C-@' global keybindings.
 
 2006-02-05  Michael Olson  <mwolson@gnu.org>
 

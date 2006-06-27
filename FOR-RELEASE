@@ -65,6 +65,19 @@ other IRC clients, like Circe.
 
 *** Add binding for S-TAB (backtab) that moves backwards by link.
 
+* next Emacs release
+
+** Source
+
+*** Make M-x erc start a session.
+New users never think of using M-x erc-select.
+
+*** Change keybinding definitions for `erc-track-switch-buffer'.
+`C-c C-SPC' / `C-c C-@' is set as a global keybinding and is known to
+conflict with rcirc, for example.  Would setting `erc-track-mode-map'
+work?  Otherwise we could encourage people to use something like
+`C-c e SPC' or `C-c c'.
+
 
 Local variables:
 mode: outline

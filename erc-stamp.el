@@ -1,4 +1,4 @@
-;;; erc-stamp.el --- Timestamping for Emacs IRC CLient
+;;; erc-stamp.el --- Timestamping for ERC messages
 
 ;; Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
 

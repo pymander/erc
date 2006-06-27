@@ -6162,6 +6162,26 @@ This function should be on `erc-kill-channel-hook'."
 			       (funcall erc-part-reason nil))
 		       nil tgt))))
 
+;;; Dealing with `erc-parsed'
+
+(defun erc-get-parsed-vector (point)
+  "Return the whole parsed vector on POINT."
+  (get-text-property point 'erc-parsed))
+
+(defun erc-get-parsed-vector-nick (vect)
+  "Return nickname in the parsed vector VECT."
+  (let* ((untreated-nick (and vect (erc-response.sender vect)))
+	 (maybe-nick (when untreated-nick
+		       (car (split-string untreated-nick "!")))))
+    (when (and (not (null maybe-nick))
+	       (erc-is-valid-nick-p maybe-nick))
+      untreated-nick)))
+
+(defun erc-get-parsed-vector-type (vect)
+  "Return message type in the parsed vector VECT."
+  (and vect
+       (erc-response.command vect)))
+
 (provide 'erc)
 
 ;;; Deprecated. We might eventually stop requiring the goodies automatically.
