@@ -109,7 +109,7 @@ the most recent speakers are listed first."
   (pcomplete-here
    (append
     (pcomplete-erc-commands)
-    (pcomplete-erc-nicks erc-pcomplete-nick-postfix))))
+    (pcomplete-erc-nicks erc-pcomplete-nick-postfix t))))
 
 (defvar erc-pcomplete-ctcp-commands
   '("ACTION" "CLIENTINFO" "ECHO" "FINGER" "PING" "TIME" "USERINFO" "VERSION"))
@@ -215,13 +215,21 @@ the most recent speakers are listed first."
     not-ops))
 
 
-(defun pcomplete-erc-nicks (&optional postfix)
-  "Returns a list of nicks in the current channel."
-  (let ((users (erc-get-channel-user-list)))
-    (if erc-pcomplete-order-nickname-completions
-        (setq users (erc-sort-channel-users-by-activity users)))
-  (mapcar (lambda (x)
-              (concat (erc-server-user-nickname (car x)) postfix))
+(defun pcomplete-erc-nicks (&optional postfix ignore-self)
+  "Returns a list of nicks in the current channel.
+Optional argument POSTFIX is something to append to the nickname.
+If optional argument IGNORE-SELF is non-nil, don't return the current nick."
+  (let ((users (if erc-pcomplete-order-nickname-completions
+                   (erc-sort-channel-users-by-activity
+                    (erc-get-channel-user-list))
+                 (erc-get-channel-user-list))))
+    (mapcar (lambda (x)
+              (cond (ignore-self
+                     (if (string= (erc-server-user-nickname (car x))
+                                  (erc-current-nick))
+                         nil
+                       (concat (erc-server-user-nickname (car x)) postfix)))
+                    (t (concat (erc-server-user-nickname (car x)) postfix))))
             users)))
 
 (defun pcomplete-erc-all-nicks (&optional postfix)
