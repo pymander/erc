@@ -27,6 +27,10 @@
 	indicators when the user is no longer away.
 	(autoaway): Add the above function to the 305 hook.
 
+2006-06-05  Romain Francoise  <romain@orebokech.com>
+
+	* erc.texi (History): Fix various typos.
+
 2006-06-04  Michael Olson  <mwolson@gnu.org>
 
 	* erc-autoaway.el (erc-autoaway-idle-method): Move after the
