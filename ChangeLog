@@ -1,3 +1,11 @@
+2006-06-29  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-coding-system-for-target): Match
+	case-insensitively.  Use a pattern match instead of `assoc', as
+	per the documentation for `erc-encoding-coding-alist'.
+
+	* erc-track.el (erc-track-shorten-aggressively): Fix typo.
+
 2006-06-27  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el: Update maintainer information and URLs.
