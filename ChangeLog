@@ -1,5 +1,10 @@
 2006-06-30  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-version-modules): Remove, since we do not use this
+	function anymore.
+	(erc-latest-version, erc-ediff-latest-version): Remove, since this
+	was only useful back when ERC consisted of one file.
+
 	* erc-autoaway.el, erc-autojoin.el, erc-backend.el, erc-bbdb.el:
 	erc-button.el, erc-chess.el, erc-compat.el, erc-complete.el:
 	erc-dcc.el, erc-ezbounce.el, erc-fill.el, erc-ibuffer.el:
