@@ -429,6 +429,10 @@ Buttonize URLs, nicknames, and other text
 @item fill
 Wrap long lines
 
+@cindex modules, identd
+@item identd
+Launch an identd server on port 8113
+
 @cindex modules, irccontrols
 @item irccontrols
 Highlight or remove IRC control characters

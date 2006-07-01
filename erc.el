@@ -1754,6 +1754,7 @@ removed from the list will be disabled."
 	      (const :tag "Integrate with Big Brother Database" bbdb)
 	      (const :tag "Buttonize URLs, nicknames, and other text" button)
 	      (const :tag "Wrap long lines" fill)
+	      (const :tag "Launch an identd server on port 8113" identd)
 	      (const :tag "Highlight or remove IRC control characters"
 		     irccontrols)
 	      (const :tag "Save buffers in logs" log)

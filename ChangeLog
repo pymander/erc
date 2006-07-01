@@ -1,5 +1,7 @@
 2006-06-30  Michael Olson  <mwolson@gnu.org>
 
+	* erc.texi (Modules): Mention identd.
+
 	* erc.el (erc-version-modules): Remove, since we do not use this
 	function anymore.
 	(erc-latest-version, erc-ediff-latest-version): Remove, since this
@@ -16,13 +18,15 @@
 
 	* erc.el (erc-cmd-SMV): Remove, since we do not have meaningful
 	module versions anymore.
+	(erc-modules): Add line for identd.
 
 	* erc-imenu.el: Remove unnecessary lines in header.
 
 	* erc-goodies.el (erc-handle-irc-url): Docfix.
 
-	* erc-identd.el (erc-identd-start): Do not prompt the user about
-	killing the identd process on exit.
+	* erc-identd.el: Define an ERC module for this.
+	(erc-identd-start): Don't create a process buffer if possible.
+	Otherwise, use conventional hidden names for process buffers.
 
 2006-06-29  Michael Olson  <mwolson@gnu.org>
 
