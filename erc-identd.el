@@ -24,14 +24,17 @@
 
 ;;; Commentary:
 
-;; You can have a local identd server (running on port 8113; I use DNAT
-;; to bind 113->8113) if you add this to .emacs.el:
+;; This module allows you to run a local identd server on port 8113.
+;; You will need to set up DNAT to bind 113->8113, or use a proxy.
 
-;;    (add-hook 'erc-connect-pre-hook 'erc-identd-start)
-;;    (add-hook 'erc-disconnected-hook 'erc-identd-stop)
-
-;; Alternatively: add identd to `erc-modules' and run
+;; To use this module, add identd to `erc-modules' and run
 ;; `erc-update-modules'.
+
+;; Here is an example /etc/inetd.conf rule that forwards identd
+;; traffic to port 8113.  You will need simpleproxy installed for it
+;; to work.
+
+;; 113 stream tcp nowait nobody /usr/sbin/tcpd /usr/bin/simpleproxy simpleproxy -i -R 127.0.0.1:8113
 
 ;;; Code:
 
