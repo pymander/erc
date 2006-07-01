@@ -46,6 +46,10 @@
 			     system-type (user-login-name)))
 	(process-send-eof erc-identd-process)))))
 
+;; Ignore useless byte-compile warning
+(eval-when-compile
+  (put 'process-kill-without-query 'byte-compile nil))
+
 ;;;###autoload
 (defun erc-identd-start (&optional port)
   "Start an identd server listening to port 8113.
@@ -69,7 +73,10 @@ system."
 				  :server t :noquery t
 				  :filter 'erc-identd-filter)
 	  (open-network-stream-server "identd" (generate-new-buffer "identd")
-				      port nil 'erc-identd-filter))))
+				      port nil 'erc-identd-filter)))
+  (if (fboundp 'set-process-query-on-exit-flag)
+      (set-process-query-on-exit-flag erc-identd-process nil)
+    (process-kill-without-query erc-identd-process)))
 
 ;;;###autoload
 (defun erc-identd-stop (&rest ignore)
