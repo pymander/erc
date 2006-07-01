@@ -1,11 +1,9 @@
 2006-06-30  Michael Olson  <mwolson@gnu.org>
 
 	* erc.texi (Modules): Mention identd.
-
-	* erc.el (erc-version-modules): Remove, since we do not use this
-	function anymore.
-	(erc-latest-version, erc-ediff-latest-version): Remove, since this
-	was only useful back when ERC consisted of one file.
+	(Releases): Update mailing list address and download location.
+	(Development): Refactor.  Provide updated directions for Arch.
+	(Keystroke Summary): Typo fix.  Use more Texinfo syntax.
 
 	* erc-autoaway.el, erc-autojoin.el, erc-backend.el, erc-bbdb.el:
 	erc-button.el, erc-chess.el, erc-compat.el, erc-complete.el:
@@ -18,7 +16,12 @@
 
 	* erc.el (erc-cmd-SMV): Remove, since we do not have meaningful
 	module versions anymore.
+	(erc-version-modules): Remove, since we do not use this function
+	anymore.
+	(erc-latest-version, erc-ediff-latest-version): Remove, since this
+	was only useful back when ERC consisted of one file.
 	(erc-modules): Add line for identd.
+	(erc-get-channel-mode-from-keypress): Typo fix.
 
 	* erc-imenu.el: Remove unnecessary lines in header.
 

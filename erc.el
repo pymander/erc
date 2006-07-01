@@ -5124,10 +5124,10 @@ This command is sent even if excess flood is detected."
 
 (defun erc-get-channel-mode-from-keypress (key)
   "Read a key sequence and call the corresponding channel mode function.
-After doing C-c C-o type in a channel mode letter.
+After doing C-c C-o, type in a channel mode letter.
 
 C-g means quit.
-RET let's you type more than one mode at a time.
+RET lets you type more than one mode at a time.
 If \"l\" is pressed, `erc-set-channel-limit' gets called.
 If \"k\" is pressed, `erc-set-channel-key' gets called.
 Anything else will be sent to `erc-toggle-channel-mode'."

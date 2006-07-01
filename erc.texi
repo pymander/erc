@@ -119,7 +119,7 @@ comes with Emacs.
 Choose to install a release if you want to minimize risk.
 
 Errors are corrected in development first.  User-visible changes will be
-announced on the @email{erc-help@@lists.sourceforge.net} mailing list.
+announced on the @email{erc-discuss@@gnu.org} mailing list.
 @pxref{Getting Help and Reporting Bugs}.
 
 @cindex releases, Debian package
@@ -129,7 +129,7 @@ available in the official Debian repository.
 
 @cindex releases, from source
 Alternatively, you can download the latest release from
-@uref{http://sourceforge.net/project/showfiles.php?group_id=30118}.
+@uref{http://ftp.gnu.org/gnu/erc}.
 
 @node Development,  , Releases, Obtaining ERC
 @comment  node-name,  next,  previous,  up
@@ -139,43 +139,13 @@ Alternatively, you can download the latest release from
 Choose the development version if you want to live on the bleeding edge
 of ERC development or try out new features before release.
 
-@subsection Using CVS
-@cindex CVS, using
+@subsection GNU Arch
 
-ERC is primarily developed using a CVS repository on sourceforge.net.
-To check out a copy of the latest changes, do the following.
-
-@example
-cvs -d:pserver:anonymous@@cvs.sourceforge.net:/cvsroot/erc login
-cvs -z3 -d:pserver:anonymous@@cvs.sourceforge.net:/cvsroot/erc co -P erc
-@end example
-
-@cindex CVS snapshot
-Alternatively, the latest CVS snapshot may be downloaded in the
-following forms.
-
-@itemize @bullet
-@item http://mwolson.org/static/dist/erc-latest.tar.gz
-@item http://mwolson.org/static/dist/erc-latest.zip
-@end itemize
-
-@subsection Using the GNU Arch Revision Control System
-@cindex arch revision control system, using
-The Arch revision control system allows you to retrieve previous
-versions and select specific features and bug fixes.
-
-Michael Olson maintains an official Arch branch for ERC which stays
-current with the CVS repository for ERC.  If you would like to
-contribute to ERC development, and would prefer to use a modern Revision
-Control System, feel free to make your own branch.
-
-If you are new to Arch, you might find this tutorial helpful:
-@uref{http://www.mwolson.org/projects/ArchTutorial.html}.
-
-Downloading ERC with Arch and staying up-to-date involves the following
-steps.
+ERC is developed using GNU Arch.  Downloading ERC with Arch and staying
+up-to-date involves the following steps.
 
 @enumerate
+@cindex GNU Arch, installing
 @item Install arch
 
 @itemize @bullet
@@ -183,15 +153,16 @@ steps.
 @item Other distributions: see @uref{ftp://ftp.gnu.org/gnu/gnu-arch/}.
 @end itemize
 
+@cindex GNU Arch, downloading ERC
 @item Register the archive.
 @example
-tla register-archive -f http://www.mwolson.org/archives/2006
+tla register-archive -f http://arch.sv.gnu.org/archives/erc/erc
 @end example
 
 @item Download the ERC source code.
 @example
 # Download ERC into the @file{erc} directory.
-tla get mwolson@@gnu.org--2006/erc--cvs--0 erc
+tla get erc@@sv.gnu.org/erc--main--0 erc
 @end example
 
 @item List upstream changes that are missing from your local copy.
@@ -206,24 +177,29 @@ cd erc/
 tla missing --summary
 @end example
 
-@cindex updating ERC with Arch
+@cindex GNU Arch, updating ERC
 @item Update to the latest version by replaying missing changes.
 @example
 cd erc
-tla replay
+tla update
 @end example
 
 @end enumerate
 
-There are other ways to interact with the ERC archive.
+If you are new to Arch and want to learn more about developing with it,
+you might find this tutorial helpful:
+@uref{http://www.mwolson.org/projects/ArchTutorial.html}.
 
-@itemize
-@item Browse arch repository: @uref{http://www.mwolson.org/archives/}
-@item Latest development snapshot: @uref{http://www.mwolson.org/static/dist/erc-latest.tar.gz}
+@subsection Development snapshots
+
+@cindex development snapshot
+Alternatively, the latest development snapshot may be downloaded in the
+following forms.
+
+@itemize @bullet
+@item http://mwolson.org/static/dist/erc-latest.tar.gz
+@item http://mwolson.org/static/dist/erc-latest.zip
 @end itemize
-
-The latest development snapshot will be kept up-to-date since it is
-updated at the same time as the Arch repository.
 
 
 @node Installation, Getting Started, Obtaining ERC, Top
@@ -367,12 +343,12 @@ Run "/names #channel" in the current channel.
 
 @item C-c C-o (`erc-get-channel-mode-from-keypress')
 Read a key sequence and call the corresponding channel mode function.
-After doing C-c C-o type in a channel mode letter.
+After doing @kbd{C-c C-o}, type in a channel mode letter.
 
-C-g means quit.
-RET let's you type more than one mode at a time.
-If "l" is pressed, `erc-set-channel-limit' gets called.
-If "k" is pressed, `erc-set-channel-key' gets called.
+@kbd{C-g} means quit.
+@kbd{RET} lets you type more than one mode at a time.
+If @kbd{l} is pressed, @code{erc-set-channel-limit} gets called.
+If @kbd{k} is pressed, @code{erc-set-channel-key} gets called.
 Anything else will be sent to `erc-toggle-channel-mode'.
 
 @item C-c C-p (`erc-part-from-channel')
@@ -545,14 +521,24 @@ emacswiki.org page for ERC.  Anyone may add tips, hints, or bug
 descriptions to it.
 
 @item
-You can join the mailing list at @email{erc-help@@lists.sourceforge.net}
-using the subscription form at
-@uref{http://lists.sourceforge.net/lists/listinfo/erc-help}.
+There are several mailing lists for ERC.  To subscribe, visit
+@uref{http://savannah.gnu.org/mail/?group=erc}.
 
-This mailing list is also available via Gmane
-(@url{http://gmane.org/}). The group is called
-@samp{gmane.emacs.erc.general}.  This provides additional methods for
-accessing the mailing list, adding content to it, and searching it.
+The mailing lists are also available on Gmane.
+(@url{http://gmane.org/}).  Gmane provides additional methods for
+accessing the mailing lists, adding content to them, and searching them.
+
+@enumerate
+@item gmane.emacs.erc.announce
+Announcements
+
+@item gmane.emacs.erc.discuss
+General discussion
+
+@item gmane.emacs.erc.cvs
+Log messages for changes to the ERC source code
+
+@end enumerate
 
 @item
 You can visit the IRC Freenode channel @samp{#emacs}. Many of the
