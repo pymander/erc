@@ -193,12 +193,12 @@ you might find this tutorial helpful:
 @subsection Development snapshots
 
 @cindex development snapshot
-Alternatively, the latest development snapshot may be downloaded in the
-following forms.
+Alternatively, the latest development snapshot may be downloaded in both
+``.tar.gz'' and ``.zip'' forms.
 
 @itemize @bullet
-@item http://mwolson.org/static/dist/erc-latest.tar.gz
-@item http://mwolson.org/static/dist/erc-latest.zip
+@item @uref{http://www.mwolson.org/static/dist/erc-latest.tar.gz}
+@item @uref{http://www.mwolson.org/static/dist/erc-latest.zip}
 @end itemize
 
 
@@ -263,15 +263,13 @@ locations that require this.
 
 To use ERC, add the directory containing its files to your
 @code{load-path} variable, in your @file{.emacs} file.  Then, load ERC
-itself along with any extra modules you desire.  An example follows.
+itself.  An example follows.
 
 @lisp
 (require 'erc)
-
-(require 'erc-spelling)
 @end lisp
 
-Once this is loaded, the command @kbd{M-x erc-select} will start ERC and
+Once ERC is loaded, the command @kbd{M-x erc-select} will start ERC and
 prompt for the server to connect to.
 
 @c PRE5_2: Sample session, including:
@@ -556,7 +554,7 @@ questions.
 ERC was originally written by Alexander L. Belikoff
 @email{abel@@bfr.co.il} and Sergey Berezin
 @email{sergey.berezin@@cs.cmu.edu}.  They stopped development around
-December 1999. Their last released version was ERC 2.0.
+December 1999.  Their last released version was ERC 2.0.
 
 P.S.: If one of the original developers of ERC reads this, we'd like to
 receive additional information for this file and hear comments in
@@ -567,20 +565,20 @@ general.
 
 In June 2001, Mario Lang @email{mlang@@delysid.org} and Alex Schroeder
 @email{alex@@gnu.org} took over development and created a ERC Project at
-sourceforge.net.
+@uref{http://sourceforge.net/projects/erc}.
 
-In reaction to a mail about the new erc development, Sergey Berezin
-said, "First of all, I'm glad that my version of ERC is being used out
-there. The thing is, I do not have free time and enough incentive
-anymore to work on ERC, so I would be happy if you guys take over the
-project entirely."
+In reaction to a mail about the new ERC development effort, Sergey
+Berezin said, ``First of all, I'm glad that my version of ERC is being
+used out there.  The thing is, I do not have free time and enough
+incentive anymore to work on ERC, so I would be happy if you guys take
+over the project entirely.''
 
 So we happily hacked away on ERC, and soon after (September 2001)
 released the next "stable" version, 2.1.
 
 Most of the development of the new ERC happened on #emacs on
-irc.openprojects.net. Over time, many people contributed code, ideas,
-bugfixes. And not to forget a lot of alpha/beta/gamma testing.
+irc.openprojects.net.  Over time, many people contributed code, ideas,
+bugfixes, and a lot of alpha/beta/gamma testing.
 
 See the @file{CREDITS} file for a list of contributors.
 
@@ -603,6 +601,10 @@ decided to include ERC in Emacs.
 @item 2006
 
 ERC 5.1 is released.  It is subsequently included in Emacs 22.
+
+ERC becomes an official GNU project, and development moves to
+@uref{http://sv.gnu.org/projects/erc}.  We switch to using GNU Arch as
+our revision control system.  Our mailing list address changes as well.
 
 @end itemize
 

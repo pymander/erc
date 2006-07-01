@@ -1,9 +1,15 @@
 2006-06-30  Michael Olson  <mwolson@gnu.org>
 
+	* HISTORY: Update.
+
 	* erc.texi (Modules): Mention identd.
 	(Releases): Update mailing list address and download location.
 	(Development): Refactor.  Provide updated directions for Arch.
+	Make URLs clickable.
 	(Keystroke Summary): Typo fix.  Use more Texinfo syntax.
+	(Getting Started): Give simpler example.  We do not need to
+	explicitly load every module.
+	(History): Update.
 
 	* erc-autoaway.el, erc-autojoin.el, erc-backend.el, erc-bbdb.el:
 	erc-button.el, erc-chess.el, erc-compat.el, erc-complete.el:
