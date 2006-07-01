@@ -42,9 +42,6 @@
 
 ;;; Code:
 
-(defconst erc-track-version "$Revision: 1.86.2.1 $"
-  "ERC track mode revision")
-
 (defgroup erc-track nil
   "Track active buffers and show activity in the modeline."
   :group 'erc)

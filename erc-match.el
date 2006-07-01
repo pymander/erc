@@ -40,9 +40,6 @@
 
 ;; Customisation:
 
-(defconst erc-match-version "$Revision: 1.51.2.1 $"
-  "ERC match mode revision.")
-
 (defgroup erc-match nil
   "Keyword and Friend/Foe/... recognition.
 Group containing all things concerning pattern matching in ERC

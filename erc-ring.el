@@ -39,9 +39,6 @@
 (require 'comint)
 (require 'ring)
 
-(defvar erc-ring-version "$Revision: 1.20.2.1 $"
-  "ERC ring revision")
-
 ;;;###autoload (autoload 'erc-ring-mode "erc-ring" nil t)
 (define-erc-module ring nil
   "Stores input in a ring so that previous commands and messages can

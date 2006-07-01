@@ -37,9 +37,6 @@
 (require 'erc-match); for erc-pals
 (require 'hippie-exp); for the hippie expand stuff
 
-(defconst erc-complete-version "$Revision: 1.18.2.1 $"
-  "ERC complete revision.")
-
 ;;;###autoload
 (defun erc-complete ()
   "Complete nick at point.

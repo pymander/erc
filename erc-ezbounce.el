@@ -29,9 +29,6 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-ezb-version "$Revision: 1.12.2.2 $"
-  "ERC EZBouncer revision.")
-
 (defgroup erc-ezbounce nil
   "Interface to the EZBounce IRC bouncer (a virtual IRC server)"
   :group 'erc)

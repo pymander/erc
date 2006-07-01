@@ -28,9 +28,6 @@
 
 ;;; Code:
 
-(defconst erc-compat-version "$Revision: 1.30.2.1 $"
-  "ERC compat revision.")
-
 ;; erc-define-minor-mode: the easy-mmode-define-minor-mode available
 ;; in XEmacs' easy-mmode.el does not have the BODY argument.  This
 ;; code has to work, even if somebody has defaliased

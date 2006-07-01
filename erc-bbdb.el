@@ -50,9 +50,6 @@
 (require 'bbdb-gui)
 (require 'bbdb-hooks)
 
-(defconst erc-bbdb-version "$Revision: 1.31.2.2 $"
-  "ERC BBDB revision.")
-
 (defgroup erc-bbdb nil
   "Variables related to BBDB usage."
   :group 'erc)
