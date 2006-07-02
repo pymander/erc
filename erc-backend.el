@@ -851,8 +851,10 @@ Finds hooks by looking in the `erc-server-responses' hashtable."
   (let ((hook (or (erc-get-hook (erc-response.command message))
                   'erc-default-server-functions)))
     (run-hook-with-args-until-success hook process message)
-    (with-current-buffer (erc-server-buffer)
-      (run-hook-with-args 'erc-timer-hook (erc-current-time)))))
+    (let ((server-buffer (erc-server-buffer)))
+      (when (buffer-live-p server-buffer)
+        (with-current-buffer server-buffer
+          (run-hook-with-args 'erc-timer-hook (erc-current-time)))))))
 
 (add-hook 'erc-default-server-functions 'erc-handle-unknown-server-response)
 
