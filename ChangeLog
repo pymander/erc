@@ -1,3 +1,9 @@
+2006-07-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc-identd.el (erc-identd-start): XEmacs defines neither
+	`make-network-process' nor `open-network-stream-server', so just
+	fail silently.
+
 2006-06-30  Michael Olson  <mwolson@gnu.org>
 
 	* HISTORY: Update.

@@ -82,9 +82,10 @@ system."
 				  :host 'local :service port
 				  :server t :noquery t :nowait t
 				  :filter 'erc-identd-filter)
-	  (open-network-stream-server "identd"
-				      (generate-new-buffer " *erc-identd*")
-				      port nil 'erc-identd-filter))))
+	  (and (fboundp 'open-network-stream-server)
+	       (open-network-stream-server
+		"identd" (generate-new-buffer " *erc-identd*")
+		port nil 'erc-identd-filter)))))
 
 ;;;###autoload
 (defun erc-identd-stop (&rest ignore)
