@@ -872,7 +872,7 @@ As an example:
 	(\"xmms\" dme:now-playing)
 	(\"version\" erc-quit-reason-normal)
 	(\"home\" \"Gone home !\")
-	(\"\" \"Default Reason\")))
+	(\"^$\" \"Default Reason\")))
 If the user types \"/quit zippy\", then a Zippy the Pinhead quotation
 will be used as the quit message."
   :group 'erc-quit-and-part
@@ -896,7 +896,7 @@ As an example:
 	(\"xmms\" dme:now-playing)
 	(\"version\" erc-part-reason-normal)
 	(\"home\" \"Gone home !\")
-	(\"\" \"Default Reason\")))
+	(\"^$\" \"Default Reason\")))
 If the user types \"/part zippy\", then a Zippy the Pinhead quotation
 will be used as the part message."
   :group 'erc-quit-and-part
@@ -3038,8 +3038,8 @@ If S is non-nil, it will be used as the quit reason."
     (cond
      ((functionp res) (funcall res))
      ((stringp res) res)
-     ;; hopefully never reached
-     (s))))
+     (s s)
+     (t (erc-quit-reason-normal)))))
 
 (defun erc-part-reason-normal (&optional s)
   "Normal part message.
@@ -3065,7 +3065,8 @@ If S is non-nil, it will be used as the quit reason."
     (cond
      ((functionp res) (funcall res))
      ((stringp res) res)
-     (s))))
+     (s s)
+     (t (erc-part-reason-normal)))))
 
 (defun erc-cmd-QUIT (reason)
   "Disconnect from the current server.

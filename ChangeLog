@@ -1,3 +1,15 @@
+2006-07-02  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-call-hooks): Fix (stringp nil) error that
+	can happen when doing /PART.
+
+	* erc.el (erc-quit-reason-various-alist)
+	(erc-part-reason-various-alist): In the example, use "^$" as an
+	example, since "" matches anything.
+	(erc-quit-reason-various, erc-part-reason-various): If no argument
+	is given, and no matches are found, use our default reason instead
+	of "nil".
+
 2006-07-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc-identd.el (erc-identd-start): XEmacs defines neither
