@@ -1744,7 +1744,7 @@ removed from the list will be disabled."
 		 (when (and (fboundp f) (boundp f) (symbol-value f))
 		   (message "Disabling `erc-%s'" module)
 		   (funcall f 0))))))
-	 (set-default sym val)
+	 (set sym val)
 	 ;; this test is for the case where erc hasn't been loaded yet
 	 (when (fboundp 'erc-update-modules)
 	   (erc-update-modules)))
@@ -1757,6 +1757,7 @@ removed from the list will be disabled."
 	      (const :tag "Launch an identd server on port 8113" identd)
 	      (const :tag "Highlight or remove IRC control characters"
 		     irccontrols)
+	      (const :tag "List channels nicely in a separate buffer" list)
 	      (const :tag "Save buffers in logs" log)
 	      (const :tag "Highlight pals, fools, and other keywords" match)
 	      (const :tag "Detect netsplits" netsplit)
@@ -1765,6 +1766,7 @@ removed from the list will be disabled."
 	      (const :tag
 		     "Notify when the online status of certain users changes"
 		     notify)
+	      (const :tag "Process CTCP PAGE requests from IRC" page)
 	      (const :tag "Complete nicknames and commands (programmable)"
 		     pcomplete)
 	      (const :tag "Complete nicknames and commands (old)" completion)

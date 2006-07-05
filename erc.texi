@@ -385,7 +385,7 @@ The following is a list of available modules.
 
 @cindex modules, autoaway
 @item autoaway
-Set away status automatically.
+Set away status automatically
 
 @cindex modules, autojoin
 @item autojoin
@@ -411,6 +411,10 @@ Launch an identd server on port 8113
 @item irccontrols
 Highlight or remove IRC control characters
 
+@cindex modules, list
+@item list
+List channels nicely in a separate buffer
+
 @cindex modules, log
 @item log
 Save buffers in logs
@@ -430,6 +434,10 @@ Don't display non-IRC commands after evaluation
 @cindex modules, notify
 @item notify
 Notify when the online status of certain users changes
+
+@cindex modules, page
+@item page
+Process CTCP PAGE requests from IRC
 
 @cindex modules, pcomplete
 @item pcomplete
@@ -463,9 +471,9 @@ Convert smileys to pretty icons
 @item sound
 Play sounds when you receive CTCP SOUND requests
 
-@cindex modules, spell
-@item spell
-Check spelling
+@cindex modules, spelling
+@item spelling
+Check spelling of messages
 
 @cindex modules, stamp
 @item stamp
@@ -584,27 +592,27 @@ See the @file{CREDITS} file for a list of contributors.
 
 @item 2003
 
-ERC 3.0 is released.
+ERC 3.0 was released.
 
 @item 2004
 
-ERC 4.0 is released.
+ERC 4.0 was released.
 
 @item 2005
 
-ERC 5.0 is released.  Michael Olson @email{mwolson@@gnu.org} becomes
+ERC 5.0 was released.  Michael Olson @email{mwolson@@gnu.org} became
 the release manager and eventually the maintainer.
 
-After some discussion between him and the Emacs developers, it is
+After some discussion between him and the Emacs developers, it was
 decided to include ERC in Emacs.
 
 @item 2006
 
-ERC 5.1 is released.  It is subsequently included in Emacs 22.
+ERC 5.1 was released.  It was subsequently included in Emacs 22.
 
-ERC becomes an official GNU project, and development moves to
-@uref{http://sv.gnu.org/projects/erc}.  We switch to using GNU Arch as
-our revision control system.  Our mailing list address changes as well.
+ERC became an official GNU project, and development moved to
+@uref{http://sv.gnu.org/projects/erc}.  We switched to using GNU Arch as
+our revision control system.  Our mailing list address changed as well.
 
 @end itemize
 

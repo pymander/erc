@@ -1,3 +1,13 @@
+2006-07-05  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-modules): Use `set' instead of `set-default', since
+	this setting should never be buffer-local.  Add the `list' and
+	`page' modules to the list.
+
+	* erc.texi (Modules): Add entries for `list' and `page' modules.
+	Change "spell" to "spelling".
+	(History): Use past tense throughout.
+
 2006-07-02  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-call-hooks): Fix (stringp nil) error that
