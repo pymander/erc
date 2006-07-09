@@ -1,5 +1,11 @@
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
+	* erc-log.el (erc-save-buffer-on-part): Move next to
+	`erc-save-queries-on-quit'.
+	(erc-save-buffer-on-quit, erc-save-queries-on-quit): Default to t.
+	(erc-log-write-after-send, erc-log-write-after-insert): Default to
+	nil.  This makes things fast, but reasonably failsafe, by default.
+
 	* erc.texi (Development): Use @subheading instead of @subsection.
 	(Advanced Usage): Add menu.
 	(Connecting): Fully document how to connect to an IRC server.
