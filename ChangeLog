@@ -1,5 +1,7 @@
 2006-07-08  Michael Olson  <mwolson@gnu.org>
 
+	* erc.texi (Modules): Document the "completion" module.
+
 	* erc-pcomplete.el (pcomplete-erc-nicks): Make sure that we don't
 	have a nil element in the list when ignore-self is non-nil.
 

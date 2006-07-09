@@ -399,6 +399,11 @@ Integrate with the Big Brother Database
 @item button
 Buttonize URLs, nicknames, and other text
 
+@cindex modules, completion
+@item completion
+Complete nicknames and commands (old).  This is the old module---you
+might prefer the ``pcomplete'' module instead.
+
 @cindex modules, fill
 @item fill
 Wrap long lines
