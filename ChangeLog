@@ -1,10 +1,6 @@
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
-	* erc-log.el (erc-save-buffer-on-part): Move next to
-	`erc-save-queries-on-quit'.
-	(erc-save-buffer-on-quit, erc-save-queries-on-quit): Default to t.
-	(erc-log-write-after-send, erc-log-write-after-insert): Default to
-	nil.  This makes things fast, but reasonably failsafe, by default.
+	* erc-identd.el: Fix compiler error.
 
 	* erc.texi (Development): Use @subheading instead of @subsection.
 	(Advanced Usage): Add menu.
@@ -28,6 +24,11 @@
 	* erc-log.el (log): Move all add-hook calls here, rather than
 	executing them immediately, and also cause them to be un-hooked
 	when the module is removed.
+	(erc-save-buffer-on-part): Move next to
+	`erc-save-queries-on-quit'.
+	(erc-save-buffer-on-quit, erc-save-queries-on-quit): Default to t.
+	(erc-log-write-after-send, erc-log-write-after-insert): Default to
+	nil.  This makes things fast, but reasonably failsafe, by default.
 
 2006-07-08  Michael Olson  <mwolson@gnu.org>
 
