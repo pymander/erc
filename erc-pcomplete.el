@@ -219,15 +219,16 @@ If optional argument IGNORE-SELF is non-nil, don't return the current nick."
   (let ((users (if erc-pcomplete-order-nickname-completions
                    (erc-sort-channel-users-by-activity
                     (erc-get-channel-user-list))
-                 (erc-get-channel-user-list))))
-    (mapcar (lambda (x)
-              (cond (ignore-self
-                     (if (string= (erc-server-user-nickname (car x))
-                                  (erc-current-nick))
-                         nil
-                       (concat (erc-server-user-nickname (car x)) postfix)))
-                    (t (concat (erc-server-user-nickname (car x)) postfix))))
-            users)))
+                 (erc-get-channel-user-list)))
+        (nicks nil))
+    (dolist (user users)
+      (unless (and ignore-self
+                   (string= (erc-server-user-nickname (car user))
+                            (erc-current-nick)))
+        (setq nicks (cons (concat (erc-server-user-nickname (car user))
+                                  postfix)
+                          nicks))))
+    (nreverse nicks)))
 
 (defun pcomplete-erc-all-nicks (&optional postfix)
   "Returns a list of all nicks on the current server."

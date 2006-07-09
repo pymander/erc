@@ -1,3 +1,8 @@
+2006-07-08  Michael Olson  <mwolson@gnu.org>
+
+	* erc-pcomplete.el (pcomplete-erc-nicks): Make sure that we don't
+	have a nil element in the list when ignore-self is non-nil.
+
 2006-07-05  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-modules): Use `set' instead of `set-default', since
