@@ -1,3 +1,17 @@
+2006-07-08  Michael Olson  <mwolson@gnu.org>
+
+	* erc-log.el (erc-log-insert-log-on-open): Make this nil by
+	default, since most IRC clients don't do this.
+	(erc-log-write-after-send): New option that determines whether the
+	log file will be written to after every sent message.
+	(erc-log-write-after-insert): New option that determines whether
+	the log file will be written to when new text is added to a logged
+	ERC buffer.
+	(log): Use the aforementioned options.
+
+	* erc-pcomplete.el (pcomplete-erc-nicks): Make sure that we don't
+	have a nil element in the list when ignore-self is non-nil.
+
 2006-07-02  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-call-hooks): Fix (stringp nil) error that
