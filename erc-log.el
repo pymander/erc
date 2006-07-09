@@ -150,7 +150,7 @@ directory should not end with a trailing slash."
   :type '(choice directory
 		 (const nil)))
 
-(defcustom erc-log-insert-log-on-open t
+(defcustom erc-log-insert-log-on-open nil
   "*Insert log file contents into the buffer if a log file exists."
   :group 'erc-log
   :type 'boolean)
@@ -158,6 +158,23 @@ directory should not end with a trailing slash."
 (defcustom erc-save-queries-on-quit nil
   "Save all query (also channel) buffers of the server on QUIT.
 See the variable `erc-save-buffer-on-part' for details."
+  :group 'erc-log
+  :type 'boolean)
+
+(defcustom erc-log-write-after-send t
+  "*If non-nil, write to log file after every message you send.
+
+If you set this to nil, you may want to enable both
+`erc-save-buffer-on-part' and `erc-save-queries-on-quit'."
+  :group 'erc-log
+  :type 'boolean)
+
+(defcustom erc-log-write-after-insert t
+  "*If non-nil, write to log file when new text is added to a
+logged ERC buffer.
+
+If you set this to nil, you may want to enable both
+`erc-save-buffer-on-part' and `erc-save-queries-on-quit'."
   :group 'erc-log
   :type 'boolean)
 
@@ -187,10 +204,12 @@ also be a predicate function. To only log when you are not set away, use:
 	(with-current-buffer buffer
 	  (not erc-away))))"
   ;; enable
-  ((add-hook 'erc-insert-post-hook
-	     'erc-save-buffer-in-logs)
-   (add-hook 'erc-send-post-hook
-	     'erc-save-buffer-in-logs))
+  ((when erc-log-write-after-insert
+     (add-hook 'erc-insert-post-hook
+	       'erc-save-buffer-in-logs))
+   (when erc-log-write-after-send
+     (add-hook 'erc-send-post-hook
+	       'erc-save-buffer-in-logs)))
   ;; disable
   ((remove-hook 'erc-insert-post-hook
 		'erc-save-buffer-in-logs)
