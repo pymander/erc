@@ -1,5 +1,24 @@
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
+	* erc.texi (Development): Use @subheading instead of @subsection.
+	(Advanced Usage): Add menu.
+	(Connecting): Fully document how to connect to an IRC server.
+	(Options, Tips and Tricks, Sample Configuration): New unwritten
+	sections.
+
+	* erc.el (erc-server, erc-port, erc-nick, erc-nick-uniquifier)
+	(erc-user-full-name, erc-password): Docfixes and customization
+	interface tweaks.
+	(erc-try-new-nick-p): Rename from
+	`erc-manual-set-nick-on-bad-nick-p' and invert meaning.
+	(erc-nickname-in-use): Use `erc-try-new-nick-p'.  Check the length
+	of `erc-nick-uniquifier', in case someone wants multiple
+	characters.
+	(erc-compute-server, erc-compute-nick, erc-compute-full-name)
+	(erc-compute-port): Docfixes.
+
+	* FOR-RELEASE: Put in future-first order.
+
 	* erc-log.el (log): Move all add-hook calls here, rather than
 	executing them immediately, and also cause them to be un-hooked
 	when the module is removed.
