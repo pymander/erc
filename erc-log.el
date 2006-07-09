@@ -205,30 +205,27 @@ also be a predicate function. To only log when you are not set away, use:
 	  (not erc-away))))"
   ;; enable
   ((when erc-log-write-after-insert
-     (add-hook 'erc-insert-post-hook
-	       'erc-save-buffer-in-logs))
+     (add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs))
    (when erc-log-write-after-send
-     (add-hook 'erc-send-post-hook
-	       'erc-save-buffer-in-logs)))
+     (add-hook 'erc-send-post-hook 'erc-save-buffer-in-logs))
+   (add-hook 'erc-kill-buffer-hook 'erc-save-buffer-in-logs)
+   (add-hook 'erc-kill-channel-hook 'erc-save-buffer-in-logs)
+   (add-hook 'erc-quit-hook 'erc-conditional-save-queries)
+   (add-hook 'erc-part-hook 'erc-conditional-save-buffer)
+   ;; append, so that 'erc-initialize-log-marker runs first
+   (add-hook 'erc-connect-pre-hook 'erc-log-setup-logging 'append))
   ;; disable
-  ((remove-hook 'erc-insert-post-hook
-		'erc-save-buffer-in-logs)
-   (remove-hook 'erc-send-post-hook
-		'erc-save-buffer-in-logs)))
-
-(when erc-enable-logging
-  (add-hook 'erc-kill-buffer-hook
-	    'erc-save-buffer-in-logs)
-  (add-hook 'erc-kill-channel-hook
-	    'erc-save-buffer-in-logs)
-  (add-hook 'erc-quit-hook
-	    'erc-conditional-save-queries)
-  (add-hook 'erc-part-hook
-	    'erc-conditional-save-buffer))
+  ((remove-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)
+   (remove-hook 'erc-send-post-hook 'erc-save-buffer-in-logs)
+   (remove-hook 'erc-kill-buffer-hook 'erc-save-buffer-in-logs)
+   (remove-hook 'erc-kill-channel-hook 'erc-save-buffer-in-logs)
+   (remove-hook 'erc-quit-hook 'erc-conditional-save-queries)
+   (remove-hook 'erc-part-hook 'erc-conditional-save-buffer)
+   (remove-hook 'erc-connect-pre-hook 'erc-log-setup-logging)))
 
 (define-key erc-mode-map "\C-c\C-l" 'erc-save-buffer-in-logs)
 
-;;;functionality referenced from erc.el
+;;; functionality referenced from erc.el
 (defun erc-log-setup-logging ()
   "Setup the buffer-local logging variables in the current buffer.
 This function is destined to be run from `erc-connect-pre-hook'."
@@ -248,9 +245,6 @@ This function is destined to be run from `erc-connect-pre-hook'."
       (ignore-errors (insert-file-contents (erc-current-logfile))
 		     (move-marker erc-last-saved-position
 				  (1- (point-max)))))))
-
-;;; Append, so that 'erc-initialize-log-marker keeps running first.
-(add-hook 'erc-connect-pre-hook 'erc-log-setup-logging 'append)
 
 (defun erc-log-all-but-server-buffers (buffer)
   "Returns t if logging should be enabled in BUFFER.
