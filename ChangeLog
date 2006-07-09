@@ -1,3 +1,9 @@
+2006-07-09  Michael Olson  <mwolson@gnu.org>
+
+	* erc-log.el (log): Move all add-hook calls here, rather than
+	executing them immediately, and also cause them to be un-hooked
+	when the module is removed.
+
 2006-07-08  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (erc-log-insert-log-on-open): Make this nil by
