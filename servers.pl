@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+# Copyright (C) 2002 Free Software Foundation, Inc.
+
 # Convert mIRC's servers.ini to a elisp structure.
 # Get the file from http://www.mirc.co.uk/servers.ini
 
