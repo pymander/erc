@@ -1,5 +1,7 @@
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
+	* NEWS: Update for 5.1.3 release.
+
 	* erc-autoaway.el (erc-autoaway-set-back): Fix bug after returning
 	from being set automatically away and current buffer is not an ERC
 	buffer.
