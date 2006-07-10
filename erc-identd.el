@@ -38,6 +38,8 @@
 
 ;;; Code:
 
+(require 'erc)
+
 (defvar erc-identd-process nil)
 
 ;;;###autoload (autoload 'erc-identd-mode "erc-identd")

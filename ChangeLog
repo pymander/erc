@@ -1,8 +1,44 @@
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-version-string): Release ERC 5.1.3.
+
+	* erc.texi, Makefile, NEWS: Update for the 5.1.3 release.
+
+	* servers.pl: Add copyright notice.
+
+	* erc-autoaway.el (erc-autoaway-set-back): Fix bug after returning
+	from being set automatically away and current buffer is not an ERC
+	buffer.
+
+	* erc-identd.el: Fix compiler error.
+
+	* erc.texi (Development): Use @subheading instead of @subsection.
+	(Advanced Usage): Add menu.
+	(Connecting): Fully document how to connect to an IRC server.
+	(Options, Tips and Tricks, Sample Configuration): New unwritten
+	sections.
+
+	* erc.el (erc-server, erc-port, erc-nick, erc-nick-uniquifier)
+	(erc-user-full-name, erc-password): Docfixes and customization
+	interface tweaks.
+	(erc-try-new-nick-p): Rename from
+	`erc-manual-set-nick-on-bad-nick-p' and invert meaning.
+	(erc-nickname-in-use): Use `erc-try-new-nick-p'.  Check the length
+	of `erc-nick-uniquifier', in case someone wants multiple
+	characters.
+	(erc-compute-server, erc-compute-nick, erc-compute-full-name)
+	(erc-compute-port): Docfixes.
+
+	* FOR-RELEASE: Put in future-first order.
+
 	* erc-log.el (log): Move all add-hook calls here, rather than
 	executing them immediately, and also cause them to be un-hooked
 	when the module is removed.
+	(erc-save-buffer-on-part): Move next to
+	`erc-save-queries-on-quit'.
+	(erc-save-buffer-on-quit, erc-save-queries-on-quit): Default to t.
+	(erc-log-write-after-send, erc-log-write-after-insert): Default to
+	nil.  This makes things fast, but reasonably failsafe, by default.
 
 2006-07-08  Michael Olson  <mwolson@gnu.org>
 

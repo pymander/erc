@@ -67,7 +67,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.2 (devel)"
+(defconst erc-version-string "Version 5.1.3 (devel)"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -144,57 +144,69 @@
 ;; tunable connection and authentication parameters
 
 (defcustom erc-server nil
-  "IRC server to use.
+  "IRC server to use if one is not provided.
 See function `erc-compute-server' for more details on connection
 parameters and authentication."
   :group 'erc
-  :type '(choice (const nil) string))
+  :type '(choice (const :tag "None" nil)
+		 (string :tag "Server")))
 
 (defcustom erc-port nil
-  "IRC port to use."
+  "IRC port to use if not specified.
+
+This can be either a string or a number."
   :group 'erc
-  :type '(choice (const nil) number string))
+  :type '(choice (const :tag "None" nil)
+		 (const :tag "Port number" number)
+		 (const :tag "Port string" string)))
 
 (defcustom erc-nick nil
-  "Nickname to use.
+  "Nickname to use if one is not provided.
 
-Can be either a string, or a list of strings.
+This can be either a string, or a list of strings.
 In the latter case, if the first nick in the list is already in use,
 other nicks are tried in the list order.
 
 See function `erc-compute-nick' for more details on connection
 parameters and authentication."
   :group 'erc
-  :type '(choice (const nil)
+  :type '(choice (const :tag "None" nil)
 		 (string :tag "Nickname")
-		 (repeat string)))
+		 (repeat (string :tag "Nickname"))))
 
 (defcustom erc-nick-uniquifier "`"
-  "The character to append to the nick if it is already in use."
+  "The string to append to the nick if it is already in use."
   :group 'erc
   :type 'string)
 
-(defcustom erc-manual-set-nick-on-bad-nick-p nil
-  "If the nickname you chose isn't available, ERC should not automatically
-attempt to set another nickname.  You can manually set another nickname with
-the /NICK command."
+(defcustom erc-try-new-nick-p t
+  "If the nickname you chose isn't available, and this option is non-nil,
+ERC should automatically attempt to connect with another nickname.
+
+You can manually set another nickname with the /NICK command."
   :group 'erc
   :type 'boolean)
 
 (defcustom erc-user-full-name nil
   "User full name.
 
+This can be either a string or a function to call.
+
 See function `erc-compute-full-name' for more details on connection
 parameters and authentication."
   :group 'erc
-  :type '(choice (const nil) string function)
+  :type '(choice (const :tag "No name" nil)
+		 (string :tag "Name")
+		 (function :tag "Get from function"))
   :set (lambda (sym val)
 	 (if (functionp val)
 	     (set sym (funcall val))
 	   (set sym val))))
 
 (defvar erc-password nil
-  "ERC password to use in authentication (not necessary).")
+  "Password to use when authenticating to an IRC server.
+It is not strictly necessary to provide this, since ERC will
+prompt you for it.")
 
 (defcustom erc-user-mode nil
   "Initial user modes to be set after a connection is established."
@@ -2077,10 +2089,12 @@ Non-interactively, it takes keyword arguments
    (full-name (erc-compute-full-name)))
 
 That is, if called with
+
    (erc-select :server \"irc.freenode.net\" :full-name \"Harry S Truman\")
+
 server and full-name will be set to those values, whereas
-erc-compute-port, erc-compute-nick and erc-compute-full-name will
-be invoked for those parameters' values"
+`erc-compute-port', `erc-compute-nick' and `erc-compute-full-name' will
+be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
 
   (run-hook-with-args 'erc-before-connect server port nick)
@@ -3727,7 +3741,7 @@ E.g. \"Read error to Nick [user@some.host]: 110\" would be shortened to
   "If NICK is unavailable, tell the user the REASON.
 
 See also `erc-display-error-notice'."
-  (if (or erc-manual-set-nick-on-bad-nick-p
+  (if (or (not erc-try-new-nick-p)
 	  ;; how many default-nicks are left + one more try...
 	  (eq erc-nick-change-attempt-count
 	      (if (consp erc-nick)
@@ -3749,12 +3763,13 @@ See also `erc-display-error-notice'."
 	  (setq newnick (concat (truncate-string-to-width
 				 nick
 				 (if (and erc-server-connected nicklen)
-				     (- (string-to-number nicklen) 1)
+				     (- (string-to-number nicklen)
+					(length erc-nick-uniquifier))
 				   ;; rfc2812 max nick length = 9
 				   ;; we must assume this is the
 				   ;; server's setting if we haven't
 				   ;; established a connection yet
-				   8))
+				   (- 9 (length erc-nick-uniquifier))))
 				erc-nick-uniquifier)))
       (erc-cmd-NICK newnick)
       (erc-display-error-notice
@@ -5401,28 +5416,28 @@ Sets the buffer local variables:
 (defun erc-compute-server (&optional server)
   "Return an IRC server name.
 
-Tries a number of increasingly more default methods until a non-nil value is
-found:
+This tries a number of increasingly more default methods until a
+non-nil value is found.
 
-- SERVER
-- `erc-server'
+- SERVER (the argument passwd to this function)
+- The `erc-server' option
 - The value of the IRCSERVER environment variable
-- `erc-default-server'."
+- The `erc-default-server' variable"
   (or server
       erc-server
       (getenv "IRCSERVER")
       erc-default-server))
 
 (defun erc-compute-nick (&optional nick)
-  "Return user's NICK.
+  "Return user's IRC nick.
 
-Tries a number of increasingly more default methods until a non-nil value is
-found:
+This tries a number of increasingly more default methods until a
+non-nil value is found.
 
-- NICK
-- `erc-nick'
+- NICK (the argument passed to this function)
+- The `erc-nick' option
 - The value of the IRCNICK environment variable
-- via the function `user-login-name'."
+- The result from the `user-login-name' function"
   (or nick
       (if (consp erc-nick) (car erc-nick) erc-nick)
       (getenv "IRCNICK")
@@ -5430,15 +5445,15 @@ found:
 
 
 (defun erc-compute-full-name (&optional full-name)
-  "Return user's FULL-NAME.
+  "Return user's full name.
 
-Tries a number of increasingly more default methods until a non-nil value is
-found:
+This tries a number of increasingly more default methods until a
+non-nil value is found.
 
-- FULL-NAME
-- `erc-user-full-name'
+- FULL-NAME (the argument passed to this function)
+- The `erc-user-full-name' option
 - The value of the IRCNAME environment variable
-- via the function `user-full-name'."
+- The result from the `user-full-name' function"
   (or full-name
       erc-user-full-name
       (getenv "IRCNAME")
@@ -5448,12 +5463,13 @@ found:
 (defun erc-compute-port (&optional port)
   "Return a port for an IRC server.
 
-Tries a number of increasingly more default methods until a non-nil
-value is found:
+This tries a number of increasingly more default methods until a
+non-nil value is found.
 
-- PORT
-- \"ircd\"."
-  (or port erc-port "ircd"))
+- PORT (the argument passed to this function)
+- The `erc-port' option
+- The `erc-default-port' variable"
+  (or port erc-port erc-default-port))
 
 ;; time routines
 

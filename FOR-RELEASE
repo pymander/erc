@@ -1,5 +1,33 @@
 Tasks that need to be accomplished in order for a release to happen.
 
+* 5.2 release (future)
+
+** Documentation
+
+*** Items with "@c PRE5_2" won't block the 5.1 release, but may block
+the release of 5.2.
+
+** Source
+
+*** Make erc-backend not need to (require) any other part of ERC.
+This will hopefully increase the chance that it will be useful for
+other IRC clients, like Circe.
+
+*** Add binding for S-TAB (backtab) that moves backwards by link.
+
+* next Emacs release
+
+** Source
+
+*** Make M-x erc start a session.
+New users never think of using M-x erc-select.
+
+*** Change keybinding definitions for `erc-track-switch-buffer'.
+`C-c C-SPC' / `C-c C-@' is set as a global keybinding and is known to
+conflict with rcirc, for example.  Would setting `erc-track-mode-map'
+work?  Otherwise we could encourage people to use something like
+`C-c e SPC' or `C-c c'.
+
 * 5.1 release
 
 ** [DONE] Documentation
@@ -49,34 +77,6 @@ install-info: muse.info
 
 *** Remove dependency on cl package.
 (eval-when-compile (require 'cl)) is acceptable.
-
-* 5.2 release (future)
-
-** Documentation
-
-*** Items with "@c PRE5_2" won't block the 5.1 release, but may block
-the release of 5.2.
-
-** Source
-
-*** Make erc-backend not need to (require) any other part of ERC.
-This will hopefully increase the chance that it will be useful for
-other IRC clients, like Circe.
-
-*** Add binding for S-TAB (backtab) that moves backwards by link.
-
-* next Emacs release
-
-** Source
-
-*** Make M-x erc start a session.
-New users never think of using M-x erc-select.
-
-*** Change keybinding definitions for `erc-track-switch-buffer'.
-`C-c C-SPC' / `C-c C-@' is set as a global keybinding and is known to
-conflict with rcirc, for example.  Would setting `erc-track-mode-map'
-work?  Otherwise we could encourage people to use something like
-`C-c e SPC' or `C-c c'.
 
 
 Local variables:
