@@ -31,9 +31,6 @@
 
 (require 'easymenu)
 
-(defconst erc-menu-version "$Revision: 1.25 $"
-  "ERC menu revision")
-
 (defvar erc-menu-definition
   (list "IRC"
 	["Connect to server..." erc-select t]

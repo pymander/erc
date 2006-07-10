@@ -67,7 +67,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.2 (CVS) $Revision: 1.815 $"
+(defconst erc-version-string "Version 5.1.2 (devel)"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -3174,12 +3174,6 @@ the message given by REASON."
   "Say the current ERC modes into channel."
   (erc-send-message (format "I'm using the following modules: %s!"
 			    (erc-modes)))
-  t)
-
-(defun erc-cmd-SMV ()
-  "Say the current ERC module versions into channel."
-  (erc-send-message (format "I'm using the following module revisions: %s!"
-			    (erc-version-modules)))
   t)
 
 (defun erc-cmd-DEOP (&rest people)

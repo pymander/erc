@@ -82,9 +82,6 @@
   (error nil))
 (eval-when-compile (require 'cl))
 
-(defconst erc-nicklist-version "$Revision: 1.16 $"
-  "ERC Nicklist version.")
-
 (defgroup erc-nicklist nil
   "Display a list of nicknames in a separate window."
   :group 'erc)

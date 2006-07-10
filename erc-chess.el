@@ -36,9 +36,6 @@
 
 ;;;; Variables
 
-(defconst erc-chess-version "$Revision: 1.28 $"
-  "ERC chess revision.")
-
 (defgroup erc-chess nil
   "Playing chess over IRC."
   :group 'erc)

@@ -37,9 +37,6 @@
 
 (require 'erc)
 
-(defconst erc-replace-version "$Revision: 1.10 $"
-  "Revision of the ERC replace module.")
-
 (defgroup erc-replace nil
   "Replace text from incoming messages"
   :group 'erc)

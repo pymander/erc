@@ -38,9 +38,6 @@
 (require 'erc)
 (require 'erc-compat)
 
-(defconst erc-stamp-version "$Revision: 1.56 $"
-  "ERC stamp mode revision.")
-
 (defgroup erc-stamp nil
   "For long conversation on IRC it is sometimes quite
 useful to have individual messages timestamp.  This

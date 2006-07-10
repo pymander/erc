@@ -58,9 +58,6 @@
   (require 'cl)
   (require 'pcomplete))
 
-(defconst erc-dcc-version "$Revision: 1.98 $"
-  "ERC DCC revision")
-
 (defgroup erc-dcc nil
   "DCC stands for Direct Client Communication, where you and your
 friend's client programs connect directly to each other,

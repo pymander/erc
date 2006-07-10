@@ -36,9 +36,6 @@
 (require 'erc-match); for erc-pals
 (require 'hippie-exp); for the hippie expand stuff
 
-(defconst erc-hecomplete-version "$Revision: 1.1 $"
-  "ERC complete revision.")
-
 ;;;###autoload (autoload 'erc-hecomplete-mode "erc-hecomplete" nil t)
 (define-erc-module hecomplete nil
   "Complete nick at point."

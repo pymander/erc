@@ -34,9 +34,6 @@
 (require 'erc)
 (require 'erc-stamp); for the timestamp stuff
 
-(defconst erc-fill-version "$Revision: 1.34 $"
-  "ERC fill revision.")
-
 (defgroup erc-fill nil
   "Filling means to reformat long lines in different ways."
   :group 'erc)

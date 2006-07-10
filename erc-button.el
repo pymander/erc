@@ -68,9 +68,6 @@
 
 ;;; Variables
 
-(defconst erc-button-version "$Revision: 1.75 $"
-  "ERC button mode revision.")
-
 (defface erc-button '((t (:bold t)))
   "ERC button face."
   :group 'erc-faces)

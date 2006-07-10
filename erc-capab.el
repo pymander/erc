@@ -66,9 +66,6 @@
 (require 'erc)
 (eval-when-compile (require 'cl))
 
-(defconst erc-capab-version "$Revision: 1.11 $"
-  "ERC CAPAB revision number.")
-
 ;;; Customization:
 
 (defgroup erc-capab nil

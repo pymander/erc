@@ -32,6 +32,20 @@
 
 2006-06-30  Michael Olson  <mwolson@gnu.org>
 
+	* erc-autoaway.el, erc-join.el, erc-backend.el, erc-bbdb.el:
+	erc-button.el, erc-chess.el, erc-compat.el, erc-hecomplete.el:
+	erc-dcc.el, erc-ezbounce.el, erc-fill.el, erc-ibuffer.el:
+	erc-imenu.el, erc-list.el, erc-log.el, erc-match.el, erc-menu.el:
+	erc-networks.el, erc-netsplit.el, erc-nicklist.el:
+	erc-services.el, erc-pcomplete.el, erc-replace.el, erc-ring.el:
+	erc-speedbar.el, erc-spelling.el, erc-stamp.el, erc-track.el:
+	erc.el: Remove version strings.
+
+	* erc.el (erc-cmd-SMV): Remove, since we do not have meaningful
+	module versions anymore.
+
+	* erc-imenu.el: Remove unnecessary lines in header.
+
 	* erc-goodies.el (erc-handle-irc-url): Docfix.
 
 	* erc-identd.el (erc-identd-start): Do not prompt the user about

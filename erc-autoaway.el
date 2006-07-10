@@ -31,9 +31,6 @@
 
 (require 'erc)
 
-(defconst erc-autoaway-version "$Revision: 1.27 $"
-  "ERC Autoaway revision.")
-
 (defgroup erc-autoaway nil
   "Set yourself automatically away after some idletime and set
 yourself back when you type something."
