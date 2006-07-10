@@ -194,9 +194,10 @@ talk on another net too."
 
 (defun erc-autoaway-set-back ()
   "Discard the away state globally."
-  (when (and erc-autoaway-caused-away
-	     (erc-away-p))
-    (erc-cmd-GAWAY "")))
+  (let ((server-buffer (car (erc-buffer-list #'erc-server-buffer-p))))
+    (when (and erc-autoaway-caused-away
+	       (with-current-buffer server-buffer (erc-away-p)))
+      (erc-cmd-GAWAY ""))))
 
 (defun erc-autoaway-possibly-set-away (current-time)
   "Set autoaway when `erc-auto-set-away' is true and the idletime is

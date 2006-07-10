@@ -1,5 +1,9 @@
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
+	* erc-autoaway.el (erc-autoaway-set-back): Fix bug after returning
+	from being set automatically away and current buffer is not an ERC
+	buffer.
+
 	* erc-identd.el: Fix compiler error.
 
 	* erc.texi (Development): Use @subheading instead of @subsection.
