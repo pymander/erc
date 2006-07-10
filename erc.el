@@ -1772,6 +1772,7 @@ removed from the list will be disabled."
      "Mark unidentified users on freenode and other servers supporting CAPAB"
      capab-identify)
     (const :tag "Wrap long lines" fill)
+    (const :tag "Launch an identd server on port 8113" identd)
     (const :tag "Highlight or remove IRC control characters"
 	   irccontrols)
     (const :tag "List channels in a separate buffer" list)
@@ -1786,6 +1787,7 @@ removed from the list will be disabled."
     (const :tag "Complete nicknames and commands (programmable)"
 	   completion)
     (const :tag "Complete nicknames and commands (old)" hecomplete)
+    (const :tag "Process CTCP PAGE requests from IRC" page)
     (const :tag "Make displayed lines read-only" readonly)
     (const :tag "Replace text in messages" replace)
     (const :tag "Enable an input history" ring)
@@ -5145,10 +5147,10 @@ This command is sent even if excess flood is detected."
 
 (defun erc-get-channel-mode-from-keypress (key)
   "Read a key sequence and call the corresponding channel mode function.
-After doing C-c C-o type in a channel mode letter.
+After doing C-c C-o, type in a channel mode letter.
 
 C-g means quit.
-RET let's you type more than one mode at a time.
+RET lets you type more than one mode at a time.
 If \"l\" is pressed, `erc-set-channel-limit' gets called.
 If \"k\" is pressed, `erc-set-channel-key' gets called.
 Anything else will be sent to `erc-toggle-channel-mode'."
@@ -5833,26 +5835,6 @@ If optional argument HERE is non-nil, insert version number at point."
 	  (message "%s" version-string)
 	version-string))))
 
-(defun erc-version-modules (&optional here)
-  "Show the version numbers of all loaded ERC modules in the minibuffer.
-If optional argument HERE is non-nil, insert version number at point."
-  (interactive "P")
-  (let ((version-string
-	 (mapconcat 'identity
-		    (let (versions (case-fold-search nil))
-		      (dolist (var (apropos-internal "^erc-.*version$"))
-			(when (and (boundp var)
-				   (stringp (symbol-value var)))
-			  (setq versions (cons (format "%S: %s"
-						       var (symbol-value var))
-					       versions))))
-		      versions) ", ")))
-    (if here
-	(insert version-string)
-      (if (interactive-p)
-	  (message "%s" version-string)
-	version-string))))
-
 (defun erc-modes (&optional here)
   "Show the active ERC modes in the minibuffer.
 If optional argument HERE is non-nil, insert version number at point."
@@ -5872,32 +5854,6 @@ If optional argument HERE is non-nil, insert version number at point."
       (if (interactive-p)
 	  (message "%s" string)
 	string))))
-
-(defun erc-latest-version ()
-  "Retrieve the latest erc.el version from CVS."
-  (interactive)
-  (if (ignore-errors (require 'url))
-      (progn
-	(switch-to-buffer (get-buffer-create "*erc.el latest version*"))
-	(delete-region (point-min) (point-max))
-	(kill-all-local-variables)
-	(url-insert-file-contents (concat
-				   "http://cvs.sourceforge.net/viewcvs.py/"
-				   "*checkout*/erc/erc/erc.el?content-type"
-				   "=text%2Fplain&rev=HEAD"))
-	(emacs-lisp-mode)
-	(current-buffer))
-    (error "URL needs to be installed")))
-
-(defun erc-ediff-latest-version ()
-  "Ediff your installed erc.el with the latest CVS version.
-See also `erc-latest-version'."
-  (interactive)
-  (let ((current (locate-library "erc.el")))
-    (if current
-	(ediff-buffers (find-file current)
-		       (erc-latest-version))
-      (error "You do not appear to have the uncompiled erc.el file"))))
 
 (defun erc-trim-string (s)
   "Trim leading and trailing spaces off S."

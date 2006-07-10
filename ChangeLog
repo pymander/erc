@@ -15,8 +15,18 @@
 	ERC buffer.
 	(log): Use the aforementioned options.
 
+	* erc.texi (Modules): Document the "completion" module.
+
 	* erc-pcomplete.el (pcomplete-erc-nicks): Make sure that we don't
 	have a nil element in the list when ignore-self is non-nil.
+
+2006-07-05  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-modules): Add the `page' module to the list.
+
+	* erc.texi (Modules): Add entries for `list' and `page' modules.
+	Change "spell" to "spelling".
+	(History): Use past tense throughout.
 
 2006-07-02  Michael Olson  <mwolson@gnu.org>
 
@@ -30,7 +40,24 @@
 	is given, and no matches are found, use our default reason instead
 	of "nil".
 
+2006-07-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc-identd.el (erc-identd-start): XEmacs defines neither
+	`make-network-process' nor `open-network-stream-server', so just
+	fail silently.
+
 2006-06-30  Michael Olson  <mwolson@gnu.org>
+
+	* HISTORY: Update.
+
+	* erc.texi (Modules): Mention identd.
+	(Releases): Update mailing list address and download location.
+	(Development): Refactor.  Provide updated directions for Arch.
+	Make URLs clickable.
+	(Keystroke Summary): Typo fix.  Use more Texinfo syntax.
+	(Getting Started): Give simpler example.  We do not need to
+	explicitly load every module.
+	(History): Update.
 
 	* erc-autoaway.el, erc-join.el, erc-backend.el, erc-bbdb.el:
 	erc-button.el, erc-chess.el, erc-compat.el, erc-hecomplete.el:
@@ -43,13 +70,20 @@
 
 	* erc.el (erc-cmd-SMV): Remove, since we do not have meaningful
 	module versions anymore.
+	(erc-version-modules): Remove, since we do not use this function
+	anymore.
+	(erc-latest-version, erc-ediff-latest-version): Remove, since this
+	was only useful back when ERC consisted of one file.
+	(erc-modules): Add line for identd.
+	(erc-get-channel-mode-from-keypress): Typo fix.
 
 	* erc-imenu.el: Remove unnecessary lines in header.
 
 	* erc-goodies.el (erc-handle-irc-url): Docfix.
 
-	* erc-identd.el (erc-identd-start): Do not prompt the user about
-	killing the identd process on exit.
+	* erc-identd.el: Define an ERC module for this.
+	(erc-identd-start): Don't create a process buffer if possible.
+	Otherwise, use conventional hidden names for process buffers.
 
 2006-06-29  Michael Olson  <mwolson@gnu.org>
 
