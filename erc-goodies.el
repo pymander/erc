@@ -521,7 +521,7 @@ servers.  If called from a program, PROC specifies the server process."
 
 (defun erc-handle-irc-url (host port channel user password)
   "Use ERC to IRC on HOST:PORT in CHANNEL as USER with PASSWORD.
-If ERC is already connected to HOST:PORT, simly /join CHANNEL.
+If ERC is already connected to HOST:PORT, simply /join CHANNEL.
 Otherwise, connect to HOST:PORT as USER and /join CHANNEL."
   (let ((server-buffer
          (car (erc-buffer-filter

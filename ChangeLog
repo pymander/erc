@@ -30,6 +30,21 @@
 	is given, and no matches are found, use our default reason instead
 	of "nil".
 
+2006-06-30  Michael Olson  <mwolson@gnu.org>
+
+	* erc-goodies.el (erc-handle-irc-url): Docfix.
+
+	* erc-identd.el (erc-identd-start): Do not prompt the user about
+	killing the identd process on exit.
+
+2006-06-29  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-coding-system-for-target): Match
+	case-insensitively.  Use a pattern match instead of `assoc', as
+	per the documentation for `erc-encoding-coding-alist'.
+
+	* erc-track.el (erc-track-shorten-aggressively): Fix typo.
+
 2006-06-27  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el: Update maintainer information and URLs.
@@ -58,6 +73,10 @@
 	(erc-autoaway-reset-indicators): New function that resets some
 	indicators when the user is no longer away.
 	(autoaway): Add the above function to the 305 hook.
+
+2006-06-05  Romain Francoise  <romain@orebokech.com>
+
+	* erc.texi (History): Fix various typos.
 
 2006-06-04  Michael Olson  <mwolson@gnu.org>
 
