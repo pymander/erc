@@ -99,6 +99,8 @@ debbuild:
 	  debsign)
 
 debrelease: debprepare
+	-rm -f ../../dist/erc_*
+	-rm -f ../erc_$(VERSION)*
 	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
 	cp -R debian ../$(SNAPDIR)
 	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
@@ -110,8 +112,9 @@ debrelease: debprepare
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	$(MAKE) debbuild
+	cp ../erc_$(VERSION)* ../../dist
 
-debrevision-mwolson:
+debrevision:
 	-rm -f ../../dist/erc_*
 	-rm -f ../erc_$(VERSION)-*
 	-rm -fr ../erc-$(VERSION)
@@ -126,12 +129,6 @@ debrevision-mwolson:
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	$(MAKE) debbuild
-	cp ../erc_$(VERSION)* ../../dist
-
-debrelease-mwolson:
-	-rm -f ../../dist/erc_*
-	-rm -f ../erc_$(VERSION)*
-	$(MAKE) debrelease
 	cp ../erc_$(VERSION)* ../../dist
 
 release: autoloads distclean

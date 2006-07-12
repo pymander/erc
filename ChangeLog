@@ -1,3 +1,9 @@
+2006-07-12  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (debrelease-mwolson): Remove and consolidate with the
+	`debrelease' target.
+	(debrevision): Rename from `debrevision-mwolson'.
+
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-version-string): Release ERC 5.1.3.
