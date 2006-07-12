@@ -1,8 +1,0 @@
-Notes for the erc-speak package
-===============================
-
-If you don't have the necessary hardware synthesiser to make Emacspeak
-work, you can install the `espeakf' (from sourceforge), or get IBM's
-ViaVoice (which sounds better, but is binary-only). Instructions for
-the latter are at
-    http://www.emacswiki.org/cgi-bin/wiki.pl?EmacSpeak
