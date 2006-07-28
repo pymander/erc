@@ -1,3 +1,8 @@
+2006-07-27  Johan Bockgård  <bojohan@users.sourceforge.net>
+
+	* erc.el (define-erc-module): Make find-function and find-variable
+	find the names constructed by `define-erc-module' in Emacs 22.
+
 2006-07-14  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (log): Make sure that we enable logging on

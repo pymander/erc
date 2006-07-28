@@ -1243,7 +1243,11 @@ With arg, turn ERC %S mode on if and only if arg is positive.
 		(format "erc-%s-mode"
 			(downcase (symbol-name alias)))))
 	     (quote
-	      ,mode))))))
+	      ,mode)))
+       ;; For find-function and find-variable.
+       (put ',mode    'definition-name ',name)
+       (put ',enable  'definition-name ',name)
+       (put ',disable 'definition-name ',name))))
 
 (put 'define-erc-module 'doc-string-elt 3)
 
