@@ -242,8 +242,7 @@ also be a predicate function. To only log when you are not set away, use:
 This function is destined to be run from `erc-connect-pre-hook'."
   (when (erc-logging-enabled)
     (auto-save-mode -1)
-    (setq buffer-offer-save t
-	  buffer-file-name nil)
+    (setq buffer-file-name nil)
     (cond ((boundp 'write-file-functions)
 	   (set (make-local-variable 'write-file-functions)
 		'(erc-save-buffer-in-logs)))
