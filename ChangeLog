@@ -44,6 +44,9 @@
 	`debrelease' target.
 	(debrevision): Rename from `debrevision-mwolson'.
 
+	* erc.el (erc-handle-irc-url): Move here from erc-goodies.el and
+	add autoload cookie.
+
 2006-07-09  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-version-string): Release ERC 5.1.3.
