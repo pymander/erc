@@ -1392,8 +1392,8 @@ server buffer")
 Defaults to the server buffer."
   (with-current-buffer (erc-server-buffer)
     (if (buffer-live-p erc-active-buffer)
-	erc-active-buffer)
-    (setq erc-active-buffer (current-buffer))))
+	erc-active-buffer
+      (setq erc-active-buffer (current-buffer)))))
 
 (defun erc-set-active-buffer (buffer)
   "Set the value of `erc-active-buffer' to BUFFER."
