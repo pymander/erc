@@ -7,6 +7,9 @@
 	* erc.el (erc-active-buffer): Fix bug that caused messages to go
 	to the wrong buffer.  Thanks to offby1 for the report.
 
+	* erc-backend.el (erc-coding-system-for-target): Handle case where
+	target is nil.  Thanks to Kai Fan for the patch.
+
 2006-07-29  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (erc-log-setup-logging): Don't offer to save the
