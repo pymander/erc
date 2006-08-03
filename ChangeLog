@@ -1,5 +1,9 @@
 2006-08-02  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-version-string): Release ERC 5.1.4.
+
+	* Makefile, NEWS, erc.texi: Update for the 5.1.4 release.
+
 	* erc.el (erc-active-buffer): Fix bug that caused messages to go
 	to the wrong buffer.  Thanks to offby1 for the report.
 
