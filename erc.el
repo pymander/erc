@@ -5899,7 +5899,8 @@ All windows are opened in the current frame."
       (setq bufs (cdr bufs))
       (while bufs
 	(split-window)
-	(switch-to-buffer-other-window (car bufs))
+	(other-window 1)
+	(switch-to-buffer (car bufs))
 	(setq bufs (cdr bufs))
 	(balance-windows)))))
 
