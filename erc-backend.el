@@ -407,30 +407,31 @@ Currently this is called by `erc-send-input'."
     (upcase-word 1)
     (buffer-string)))
 
-(defun erc-server-setup-periodical-server-ping (&rest ignore)
+(defun erc-server-send-ping (buf)
+  "Send a ping to the IRC server buffer in BUF.
+Additionally, detect whether the IRC process has hung."
+  (if (buffer-live-p buf)
+      (with-current-buffer buf
+        (if (> (erc-time-diff (erc-current-time)
+                              erc-server-last-received-time)
+               erc-server-send-ping-interval)
+            ;; if the process is hung, kill it
+            (delete-process erc-server-process)
+          (erc-server-send (format "PING %.0f" (erc-current-time)))))
+    ;; remove timer if the server buffer has been killed
+    (let ((timer (assq buf erc-server-ping-timer-alist)))
+      (when timer
+        (erc-cancel-timer (cdr timer))
+        (setcdr timer nil)))))
+
+(defun erc-server-setup-periodical-ping (&rest ignore)
   "Set up a timer to periodically ping the current server."
   (and erc-server-ping-handler (erc-cancel-timer erc-server-ping-handler))
   (when erc-server-send-ping-interval
-    (setq erc-server-ping-handler
-          (run-with-timer
-           4 erc-server-send-ping-interval
-           (lambda (buf)
-             (if (buffer-live-p buf)
-                 (with-current-buffer buf
-                   (if (> (erc-time-diff (erc-current-time)
-                                         erc-server-last-received-time)
-                          erc-server-send-ping-interval)
-                       ;; if the process is hung, kill it
-                       (kill-process erc-server-process)
-                     (erc-server-send
-                      (format "PING %.0f"
-                              (erc-current-time)))))
-               ;; remove timer if the server buffer has been killed
-               (let ((timer (assq buf erc-server-ping-timer-alist)))
-                 (when timer
-                   (erc-cancel-timer (cdr timer))
-                   (setcar timer nil)))))
-           (current-buffer)))
+    (setq erc-server-ping-handler (run-with-timer
+                                   4 erc-server-send-ping-interval
+                                   #'erc-server-send-ping
+                                   (current-buffer)))
     (setq erc-server-ping-timer-alist (cons (cons (current-buffer)
                                                   erc-server-ping-handler)
                                             erc-server-ping-timer-alist))))
@@ -483,7 +484,7 @@ We will store server variables in the current buffer."
 (defun erc-server-filter-function (process string)
   "The process filter for the ERC server."
   (with-current-buffer (process-buffer process)
-    (setq erc-server-last-received-time (current-time))
+    (setq erc-server-last-received-time (erc-current-time))
     ;; If you think this is written in a weird way - please refer to the
     ;; docstring of `erc-server-processing-p'
     (if erc-server-processing-p

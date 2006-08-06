@@ -7,15 +7,26 @@
 	(erc-server-last-received-time): New variable that specifies the
 	time of the last message we received from the server.  This is
 	used to detect hung processes.
-	(erc-server-setup-periodical-server-ping): If the server buffer no
-	longer exists, cancel the timer.  If the server process has not
-	given us a message, including PING responses, since the last PING,
-	kill it.  This is necessary to deal with some aberrant freenode
-	behavior.  Idea taken from rcirc.
+	(erc-server-send-ping): New function that sends a ping to the IRC
+	process corresponding with the given buffer.  Split from
+	erc-server-setup-periodical-ping.  If the server buffer no longer
+	exists, cancel the timer.  If the server process has not given us
+	a message, including PING responses, since the last PING, kill it.
+	This is necessary to deal with some aberrant freenode behavior.
+	Idea taken from rcirc.
+	(erc-server-setup-periodical-ping): Rename from
+	erc-server-setup-periodical-server-ping.
+	(erc-server-filter-function): Use erc-current-time instead of
+	current-time.
 
 	* erc.el (erc-arrange-session-in-multiple-windows): Fix bug with
 	multi-tty Emacs.
 	(erc-select-startup-file): Fix bug introduced by recent change.
+	(erc-cmd-QUIT): If the IRC process has not terminated itself
+	within 4 seconds of completing our quit-hook, kill it manually.
+	Freenode in particular needs this.
+	(erc-connection-established): Use erc-server-setup-periodical-ping
+	instead of erc-server-setup-periodical-server-ping.
 
 2006-08-05  Michael Olson  <mwolson@gnu.org>
 

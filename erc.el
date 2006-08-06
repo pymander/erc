@@ -3130,7 +3130,14 @@ the message given by REASON."
 	(erc-server-send (format "QUIT :%s" reason)))
       (run-hook-with-args 'erc-quit-hook erc-server-process)
       (when erc-kill-queries-on-quit
-	(erc-kill-query-buffers erc-server-process)))
+	(erc-kill-query-buffers erc-server-process))
+      ;; if the process has not been killed within 4 seconds, kill it
+      (run-at-time 4 nil
+		   (lambda (proc)
+		     (when (and (processp proc)
+				(memq (process-status proc) '(run open)))
+		       (delete-process proc)))
+		   erc-server-process))
     t)
    (t nil)))
 
@@ -4057,7 +4064,7 @@ Set user modes and run `erc-after-connect hook'."
       (setq erc-server-connected t)
       (erc-update-mode-line)
       (erc-set-initial-user-mode nick)
-      (erc-server-setup-periodical-server-ping)
+      (erc-server-setup-periodical-ping)
       (run-hook-with-args 'erc-after-connect server nick))))
 
 (defun erc-set-initial-user-mode (nick)
