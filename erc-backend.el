@@ -680,7 +680,8 @@ protection algorithm."
               (error nil)))))
       (when erc-server-flood-queue
         (setq erc-server-flood-timer
-              (run-at-time 2 nil #'erc-server-send-queue buffer))))))
+              (run-at-time (+ 0.2 erc-server-flood-penalty)
+                           nil #'erc-server-send-queue buffer))))))
 
 (defun erc-message (message-command line &optional force)
   "Send LINE to the server as a privmsg or a notice.

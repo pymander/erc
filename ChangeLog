@@ -1,5 +1,8 @@
 2006-08-06  Michael Olson  <mwolson@gnu.org>
 
+	* erc-backend.el (erc-server-send-queue): Update from Circe
+	version of this function.
+
 	* erc.el (erc-arrange-session-in-multiple-windows): Fix bug with
 	multi-tty Emacs.
 
