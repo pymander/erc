@@ -5250,7 +5250,7 @@ If FILE is found, return the path to it."
 See also `erc-startup-file-list'."
   (catch 'found
     (dolist (f erc-startup-file-list)
-      (setq f (convert-standard-file-name f))
+      (setq f (convert-standard-filename f))
       (when (file-readable-p f)
 	(throw 'found f)))))
 

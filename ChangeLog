@@ -2,9 +2,20 @@
 
 	* erc-backend.el (erc-server-send-queue): Update from Circe
 	version of this function.
+	(erc-server-ping-timer-alist): New variable that keeps track of
+	ping timers according to their associated server.
+	(erc-server-last-received-time): New variable that specifies the
+	time of the last message we received from the server.  This is
+	used to detect hung processes.
+	(erc-server-setup-periodical-server-ping): If the server buffer no
+	longer exists, cancel the timer.  If the server process has not
+	given us a message, including PING responses, since the last PING,
+	kill it.  This is necessary to deal with some aberrant freenode
+	behavior.  Idea taken from rcirc.
 
 	* erc.el (erc-arrange-session-in-multiple-windows): Fix bug with
 	multi-tty Emacs.
+	(erc-select-startup-file): Fix bug introduced by recent change.
 
 2006-08-05  Michael Olson  <mwolson@gnu.org>
 

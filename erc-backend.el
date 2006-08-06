@@ -174,6 +174,9 @@ WALLCHOPS - supports sending messages to all operators in a channel")
 
 ;;; Server and connection state
 
+(defvar erc-server-ping-timer-alist nil
+  "Mapping of server buffers to their specific ping timer.")
+
 (defvar erc-server-connected nil
   "Non-nil if the `current-buffer' is associated with an open IRC connection.
 This variable is buffer-local.")
@@ -201,6 +204,11 @@ This is useful for flood protection.")
   "Time the last ping was sent.
 This is useful for flood protection.")
 (make-variable-buffer-local 'erc-server-last-ping-time)
+
+(defvar erc-server-last-received-time nil
+  "Time the last message was received from the server.
+This is useful for detecting hung connections.")
+(make-variable-buffer-local 'erc-server-last-received-time)
 
 (defvar erc-server-lag nil
   "Calculated server lag time in seconds.
@@ -407,12 +415,25 @@ Currently this is called by `erc-send-input'."
           (run-with-timer
            4 erc-server-send-ping-interval
            (lambda (buf)
-             (when (buffer-live-p buf)
-               (with-current-buffer buf
-                 (erc-server-send
-                  (format "PING %.0f"
-                          (erc-current-time))))))
-           (current-buffer)))))
+             (if (buffer-live-p buf)
+                 (with-current-buffer buf
+                   (if (> (erc-time-diff (erc-current-time)
+                                         erc-server-last-received-time)
+                          erc-server-send-ping-interval)
+                       ;; if the process is hung, kill it
+                       (kill-process erc-server-process)
+                     (erc-server-send
+                      (format "PING %.0f"
+                              (erc-current-time)))))
+               ;; remove timer if the server buffer has been killed
+               (let ((timer (assq buf erc-server-ping-timer-alist)))
+                 (when timer
+                   (erc-cancel-timer (cdr timer))
+                   (setcar timer nil)))))
+           (current-buffer)))
+    (setq erc-server-ping-timer-alist (cons (cons (current-buffer)
+                                                  erc-server-ping-handler)
+                                            erc-server-ping-timer-alist))))
 
 (defun erc-server-process-alive ()
   "Return non-nil when `erc-server-process' is open or running."
@@ -434,8 +455,10 @@ We will store server variables in the current buffer."
     (message "%s...done" msg))
   ;; Misc server variables
   (setq erc-server-quitting nil)
-  (setq erc-server-last-sent-time (erc-current-time))
-  (setq erc-server-last-ping-time (erc-current-time))
+  (let ((time (erc-current-time)))
+    (setq erc-server-last-sent-time time)
+    (setq erc-server-last-ping-time time)
+    (setq erc-server-last-received-time time))
   (setq erc-server-lines-sent 0)
   ;; last peers (sender and receiver)
   (setq erc-server-last-peers '(nil . nil))
@@ -460,6 +483,7 @@ We will store server variables in the current buffer."
 (defun erc-server-filter-function (process string)
   "The process filter for the ERC server."
   (with-current-buffer (process-buffer process)
+    (setq erc-server-last-received-time (current-time))
     ;; If you think this is written in a weird way - please refer to the
     ;; docstring of `erc-server-processing-p'
     (if erc-server-processing-p
