@@ -12,6 +12,11 @@
 	(english): Add 'finished and 'terminated entries to the catalog.
 	Add initial and terminal newlines to 'disconnected and
 	'disconnected-noreconnect entries.  Avoid long lines.
+	(erc-cmd-QUIT): Bind the current erc-server-process to
+	server-proc.  If the IRC server responds quickly, it is possible
+	for the connection to close, and hence server buffer to be killed,
+	if erc-kill-server-buffer-on-quit is non-nil.  This avoids that
+	problem.
 
 2006-08-06  Michael Olson  <mwolson@gnu.org>
 

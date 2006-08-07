@@ -3121,7 +3121,8 @@ the message given by REASON."
    ((string-match "^\\s-*\\(.*\\)$" reason)
     (let* ((s (match-string 1 reason))
 	   (buffer (erc-server-buffer))
-	   (reason (funcall erc-quit-reason (if (equal s "") nil s))))
+	   (reason (funcall erc-quit-reason (if (equal s "") nil s)))
+	   server-proc)
       (with-current-buffer (if (and buffer
 				    (bufferp buffer))
 			       buffer
@@ -3129,17 +3130,18 @@ the message given by REASON."
 	(erc-log (format "cmd: QUIT: %s" reason))
 	(setq erc-server-quitting t)
 	(erc-set-active-buffer (erc-server-buffer))
+	(setq server-proc erc-server-process)
 	(erc-server-send (format "QUIT :%s" reason)))
-      (run-hook-with-args 'erc-quit-hook erc-server-process)
+      (run-hook-with-args 'erc-quit-hook server-proc)
       (when erc-kill-queries-on-quit
-	(erc-kill-query-buffers erc-server-process))
+	(erc-kill-query-buffers server-proc))
       ;; if the process has not been killed within 4 seconds, kill it
       (run-at-time 4 nil
 		   (lambda (proc)
 		     (when (and (processp proc)
 				(memq (process-status proc) '(run open)))
 		       (delete-process proc)))
-		   erc-server-process))
+		   server-proc))
     t)
    (t nil)))
 
