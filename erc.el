@@ -157,8 +157,8 @@ parameters and authentication."
 This can be either a string or a number."
   :group 'erc
   :type '(choice (const :tag "None" nil)
-		 (const :tag "Port number" number)
-		 (const :tag "Port string" string)))
+		 (integer :tag "Port number")
+		 (string :tag "Port string")))
 
 (defcustom erc-nick nil
   "Nickname to use if one is not provided.
@@ -2349,6 +2349,8 @@ See also `erc-format-message' and `erc-display-line'."
 		  msg)))
     (setq string
 	  (cond
+	   ((null type)
+	    string)
 	   ((listp type)
 	    (mapc (lambda (type)
 		    (setq string
@@ -2361,7 +2363,7 @@ See also `erc-format-message' and `erc-display-line'."
     (if (not (erc-response-p parsed))
 	(erc-display-line string buffer)
       (unless (member (erc-response.command parsed) erc-hide-list)
-      (erc-put-text-property 0 (length string) 'erc-parsed parsed string)
+	(erc-put-text-property 0 (length string) 'erc-parsed parsed string)
 	(erc-put-text-property 0 (length string) 'rear-sticky t string)
 	(erc-display-line string buffer)))))
 
@@ -3099,7 +3101,8 @@ the message given by REASON."
    ((string-match "^\\s-*\\(.*\\)$" reason)
     (let* ((s (match-string 1 reason))
 	   (buffer (erc-server-buffer))
-	   (reason (funcall erc-quit-reason (if (equal s "") nil s))))
+	   (reason (funcall erc-quit-reason (if (equal s "") nil s)))
+	   server-proc)
       (with-current-buffer (if (and buffer
 				    (bufferp buffer))
 			       buffer
@@ -3107,10 +3110,18 @@ the message given by REASON."
 	(erc-log (format "cmd: QUIT: %s" reason))
 	(setq erc-server-quitting t)
 	(erc-set-active-buffer (erc-server-buffer))
+	(setq server-proc erc-server-process)
 	(erc-server-send (format "QUIT :%s" reason)))
-      (run-hook-with-args 'erc-quit-hook erc-server-process)
+      (run-hook-with-args 'erc-quit-hook server-proc)
       (when erc-kill-queries-on-quit
-	(erc-kill-query-buffers erc-server-process)))
+	(erc-kill-query-buffers server-proc))
+      ;; if the process has not been killed within 4 seconds, kill it
+      (run-at-time 4 nil
+		   (lambda (proc)
+		     (when (and (processp proc)
+				(memq (process-status proc) '(run open)))
+		       (delete-process proc)))
+		   server-proc))
     t)
    (t nil)))
 
@@ -4037,7 +4048,7 @@ Set user modes and run `erc-after-connect hook'."
       (setq erc-server-connected t)
       (erc-update-mode-line)
       (erc-set-initial-user-mode nick)
-      (erc-server-setup-periodical-server-ping)
+      (erc-server-setup-periodical-ping)
       (run-hook-with-args 'erc-after-connect server nick))))
 
 (defun erc-set-initial-user-mode (nick)
@@ -5932,12 +5943,17 @@ All windows are opened in the current frame."
    (ctcp-request-to . "==> CTCP request from %n (%u@%h) to %t: %r")
    (ctcp-too-many . "Too many CTCP queries in single message. Ignoring")
    (flood-ctcp-off . "FLOOD PROTECTION: Automatic CTCP responses turned off.")
-   (flood-strict-mode . "FLOOD PROTECTION: Switched to Strict Flood Control mode.")
-   (disconnected . "Connection failed!  Re-establishing connection...")
-   (disconnected-noreconnect . "Connection failed!  Not re-establishing connection.")
+   (flood-strict-mode
+    . "FLOOD PROTECTION: Switched to Strict Flood Control mode.")
+   (disconnected . "\n\nConnection failed!  Re-establishing connection...\n")
+   (disconnected-noreconnect
+    . "\n\nConnection failed!  Not re-establishing connection.\n")
+   (finished . "\n\n*** ERC finished ***\n")
+   (terminated . "\n\n*** ERC terminated: %e\n")
    (login . "Logging in as \'%n\'...")
    (nick-in-use . "%n is in use. Choose new nickname: ")
-   (nick-too-long . "WARNING: Nick length (%i) exceeds max NICKLEN(%l) defined by server")
+   (nick-too-long
+    . "WARNING: Nick length (%i) exceeds max NICKLEN(%l) defined by server")
    (no-default-channel . "No default channel")
    (no-invitation . "You've got no invitation")
    (no-target . "No target")
