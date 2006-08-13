@@ -186,6 +186,10 @@ This variable is buffer-local.")
   "Non-nil if the user requests a quit.")
 (make-variable-buffer-local 'erc-server-quitting)
 
+(defvar erc-server-timed-out nil
+  "Non-nil if the IRC server failed to respond to a ping.")
+(make-variable-buffer-local 'erc-server-timed-out)
+
 (defvar erc-server-lines-sent nil
   "Line counter.")
 (make-variable-buffer-local 'erc-server-lines-sent)
@@ -416,6 +420,7 @@ Additionally, detect whether the IRC process has hung."
                               erc-server-last-received-time)
                erc-server-send-ping-interval)
             ;; if the process is hung, kill it
+            (setq erc-server-timed-out t)
             (delete-process erc-server-process)
           (erc-server-send (format "PING %.0f" (erc-current-time)))))
     ;; remove timer if the server buffer has been killed
@@ -456,6 +461,7 @@ We will store server variables in the current buffer."
     (message "%s...done" msg))
   ;; Misc server variables
   (setq erc-server-quitting nil)
+  (setq erc-server-timed-out nil)
   (let ((time (erc-current-time)))
     (setq erc-server-last-sent-time time)
     (setq erc-server-last-ping-time time)
@@ -532,7 +538,8 @@ action."
     (setq erc-server-last-sent-time 0)
     (setq erc-server-lines-sent 0)
     (if (and erc-server-auto-reconnect
-             (not (string-match "^deleted" event))
+             (or erc-server-timed-out
+                 (not (string-match "^deleted" event)))
              ;; open-network-stream-nowait error for connection refused
              (not (string-match "^failed with code 111" event)))
         ;; Yuck, this should perhaps funcall

@@ -1,3 +1,12 @@
+2006-08-13  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-server-timed-out): New variable that
+	indicates whether the current connection has timed out due to
+	failure to respond to a ping.
+	(erc-server-send-ping): Set erc-server-timed-out to t.
+	(erc-server-connect): Initialize erc-server-timed-out to nil.
+	(erc-process-sentinel-1): Consult erc-server-timed-out.
+
 2006-08-11  Michael Olson  <mwolson@gnu.org>
 
 	* erc-fill.el (erc-fill): Skip any initial empty lines so that we
