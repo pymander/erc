@@ -419,9 +419,10 @@ Additionally, detect whether the IRC process has hung."
         (if (> (erc-time-diff (erc-current-time)
                               erc-server-last-received-time)
                erc-server-send-ping-interval)
-            ;; if the process is hung, kill it
-            (setq erc-server-timed-out t)
-            (delete-process erc-server-process)
+            (progn
+              ;; if the process is hung, kill it
+              (setq erc-server-timed-out t)
+              (delete-process erc-server-process))
           (erc-server-send (format "PING %.0f" (erc-current-time)))))
     ;; remove timer if the server buffer has been killed
     (let ((timer (assq buf erc-server-ping-timer-alist)))
