@@ -1,5 +1,9 @@
 2006-08-14  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-menu.el: Updated copyright years.  Removed EmacsWiki URL.
+	(erc-menu-definition): Name the menu "ERC" instead of "IRC" to
+	avoid confusion with rcirc and other clients.
+
 	* erc-backend.el (erc-server-banned): New variable.
 	(erc-server-connect): Set `erc-server-banned' to nil.
 	(erc-process-sentinel-1): Use `erc-server-reconnect-p'.
