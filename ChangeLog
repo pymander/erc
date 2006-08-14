@@ -1,3 +1,17 @@
+2006-08-14  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-backend.el (erc-server-banned): New variable.
+	(erc-server-connect): Set `erc-server-banned' to nil.
+	(erc-process-sentinel-1): Use `erc-server-reconnect-p'.
+	(erc-server-reconnect-p): New function.  Return non-nil if the
+	user wants automatic reconnects and if the user has not been
+	banned from the server.  This should fix a bug where ERC gets into
+	a loop trying to reconnect with no way to stop it when the user is
+	denied access to the server due to a server ban.  It might also
+	help when Tor users are blocked from freenode if freenode servers
+	send the 465 message before disconnecting.
+	(465): Handle "banned from server" error notices.
+
 2006-08-13  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-server-timed-out): New variable that
