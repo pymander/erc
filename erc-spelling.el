@@ -71,11 +71,7 @@ name here."
       (setq ispell-local-dictionary
             (if dicts
                 (cadr (car dicts))
-              (let ((server (erc-server-buffer)))
-                (if server
-                    (with-current-buffer server
-                      ispell-local-dictionary)
-                  nil))))))
+              (erc-with-server-buffer ispell-local-dictionary)))))
   (setq flyspell-generic-check-word-p 'erc-spelling-flyspell-verify)
   (flyspell-mode 1))
 

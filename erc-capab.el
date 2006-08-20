@@ -96,7 +96,7 @@
    (mapc (lambda (buffer)
            (when buffer
              (with-current-buffer buffer (erc-capab-identify-setup))))
-         (erc-buffer-list 'erc-server-buffer-p)))
+         (erc-buffer-list 'erc-open-server-buffer-p)))
   ((remove-hook 'erc-server-005-functions 'erc-capab-identify-setup)
    (remove-hook 'erc-server-290-functions 'erc-capab-identify-activate)
    ;; we don't remove the `erc-capab-identify-remove/set-identified-flag' hooks
@@ -173,8 +173,7 @@ PARSED is an `erc-parsed' response struct."
 (defun erc-capab-identify-add-prefix ()
   "Add `erc-capab-identify-prefix' to nickname if user is unidentified."
   (when (and erc-capab-identify-prefix
-             (with-current-buffer (erc-server-buffer)
-               erc-capab-identify-activated))
+             (erc-with-server-buffer erc-capab-identify-activated))
     (goto-char (point-min))
     (goto-char (or (erc-capab-find-parsed) (point-min)))
     (let ((nickname (erc-capab-get-unidentified-nickname

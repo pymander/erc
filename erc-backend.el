@@ -178,8 +178,11 @@ WALLCHOPS - supports sending messages to all operators in a channel")
   "Mapping of server buffers to their specific ping timer.")
 
 (defvar erc-server-connected nil
-  "Non-nil if the `current-buffer' is associated with an open IRC connection.
-This variable is buffer-local.")
+  "Non-nil if the current buffer has been used by ERC to establish
+an IRC connection.
+
+If you wish to determine whether an IRC connection is currently
+active, use the `erc-server-process-alive' function instead.")
 (make-variable-buffer-local 'erc-server-connected)
 
 (defvar erc-server-quitting nil
@@ -599,6 +602,7 @@ EVENT is the message received from the closed connection process."
   "Return the coding system or cons cell appropriate for TARGET.
 This is determined via `erc-encoding-coding-alist' or
 `erc-server-coding-system'."
+  (unless target (setq target (erc-default-target)))
   (or (when target
         (let ((case-fold-search t))
           (catch 'match
@@ -644,14 +648,11 @@ See `erc-server-flood-margin' for an explanation of the flood
 protection algorithm."
   (erc-log (concat "erc-server-send: " string "(" (buffer-name) ")"))
   (setq erc-server-last-sent-time (erc-current-time))
-  (let ((buf (erc-server-buffer))
-        (encoding (erc-coding-system-for-target
-                   (or target (erc-default-target)))))
+  (let ((encoding (erc-coding-system-for-target target)))
     (when (consp encoding)
       (setq encoding (car encoding)))
-    (if (and buf
-             (erc-server-process-alive))
-        (with-current-buffer buf
+    (if (erc-server-process-alive)
+        (erc-with-server-buffer
           (let ((str (concat string "\r\n")))
             (if forcep
                 (progn
@@ -891,10 +892,8 @@ Finds hooks by looking in the `erc-server-responses' hashtable."
   (let ((hook (or (erc-get-hook (erc-response.command message))
                   'erc-default-server-functions)))
     (run-hook-with-args-until-success hook process message)
-    (let ((server-buffer (erc-server-buffer)))
-      (when (buffer-live-p server-buffer)
-        (with-current-buffer server-buffer
-          (run-hook-with-args 'erc-timer-hook (erc-current-time)))))))
+    (erc-with-server-buffer
+      (run-hook-with-args 'erc-timer-hook (erc-current-time)))))
 
 (add-hook 'erc-default-server-functions 'erc-handle-unknown-server-response)
 

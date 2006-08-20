@@ -91,12 +91,10 @@ This is the main handler for the erc-chess module."
    ((eq event 'send)
     ;; Transmit the string given in `(car args)' to the nick
     ;; saved in `erc-chess-partner'.
-    (let ((buf (process-buffer erc-server-process))
-	  (nick erc-chess-partner)
+    (let ((nick erc-chess-partner)
 	  (msg (substring (car args) 0 (1- (length (car args))))))
-      (when (buffer-live-p buf)
-	(with-current-buffer buf
-	  (erc-send-ctcp-message nick (concat "CHESS " msg) t)))))
+      (erc-with-server-buffer
+	(erc-send-ctcp-message nick (concat "CHESS " msg) t))))
 
    (t
     (cond
@@ -109,7 +107,7 @@ This is the main handler for the erc-chess module."
       (let* ((buf (process-buffer erc-server-process))
 	     (nick (erc-downcase erc-chess-partner))
 	     (engine (current-buffer)))
-	(with-current-buffer (erc-server-buffer)
+	(erc-with-server-buffer
 	  (let ((elt (assoc nick erc-chess-alist)))
 	    (when (and elt (eq (nth 1 elt) engine))
 	      (message "Removed from erc-chess-alist in destroy event")
@@ -144,7 +142,7 @@ NICK should be the first and only arg to /chess"
   (cond
    ((string-match (concat "^\\s-*\\(" erc-valid-nick-regexp "\\)\\s-*$") line)
     (let ((nick (match-string 1 line)))
-      (with-current-buffer (erc-server-buffer)
+      (erc-with-server-buffer
 	(if (assoc (erc-downcase nick) erc-chess-alist)
 	    ;; Maybe check for correctly connected game, and switch here.
 	    (erc-display-message

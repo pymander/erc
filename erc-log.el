@@ -205,7 +205,7 @@ also be a predicate function. To only log when you are not set away, use:
 \(setq erc-enable-logging
       (lambda (buffer)
 	(with-current-buffer buffer
-	  (not erc-away))))"
+	  (null (erc-away-time)))))"
   ;; enable
   ((when erc-log-write-after-insert
      (add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs))
@@ -218,8 +218,7 @@ also be a predicate function. To only log when you are not set away, use:
    ;; append, so that 'erc-initialize-log-marker runs first
    (add-hook 'erc-connect-pre-hook 'erc-log-setup-logging 'append)
    (dolist (buffer (erc-buffer-list))
-     (when (buffer-live-p buffer)
-       (with-current-buffer buffer (erc-log-setup-logging)))))
+     (with-current-buffer buffer (erc-log-setup-logging))))
   ;; disable
   ((remove-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)
    (remove-hook 'erc-send-post-hook 'erc-save-buffer-in-logs)
@@ -229,8 +228,7 @@ also be a predicate function. To only log when you are not set away, use:
    (remove-hook 'erc-part-hook 'erc-conditional-save-buffer)
    (remove-hook 'erc-connect-pre-hook 'erc-log-setup-logging)
    (dolist (buffer (erc-buffer-list))
-     (when (buffer-live-p buffer)
-       (with-current-buffer buffer (erc-log-disable-logging))))))
+     (with-current-buffer buffer (erc-log-disable-logging)))))
 
 (define-key erc-mode-map "\C-c\C-l" 'erc-save-buffer-in-logs)
 

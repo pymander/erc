@@ -357,6 +357,17 @@ nicknames with erc-server-user struct instances.")
 	      (cdr (assq (aref s (match-beginning 0)) c)))))
     s))
 
+(defmacro erc-with-server-buffer (&rest body)
+  "Execute BODY in the current ERC server buffer.
+If no server buffer exists, return nil."
+  (let ((buffer (make-symbol "buffer")))
+    `(let ((,buffer (erc-server-buffer)))
+       (when (buffer-live-p ,buffer)
+	 (with-current-buffer ,buffer
+	   ,@body)))))
+(put 'erc-with-server-buffer 'lisp-indent-function 0)
+(put 'erc-with-server-buffer 'edebug-form-spec '(body))
+
 (defstruct (erc-server-user (:type vector) :named)
   ;; User data
   nickname host login full-name info
@@ -383,14 +394,14 @@ in the current buffer's `erc-channel-users' hash table."
 (defsubst erc-get-server-user (nick)
   "Finds the USER corresponding to NICK in the current server's
 `erc-server-users' hash table."
-  (with-current-buffer (process-buffer erc-server-process)
+  (erc-with-server-buffer
     (gethash (erc-downcase nick) erc-server-users)))
 
 (defsubst erc-add-server-user (nick user)
   "This function is for internal use only.
 
 Adds USER with nickname NICK to the `erc-server-users' hash table."
-  (with-current-buffer (process-buffer erc-server-process)
+  (erc-with-server-buffer
     (puthash (erc-downcase nick) user erc-server-users)))
 
 (defsubst erc-remove-server-user (nick)
@@ -401,7 +412,7 @@ hash table.  This user is not removed from the
 `erc-channel-users' lists of other buffers.
 
 See also: `erc-remove-user'."
-  (with-current-buffer (process-buffer erc-server-process)
+  (erc-with-server-buffer
     (remhash (erc-downcase nick) erc-server-users)))
 
 (defun erc-change-user-nickname (user new-nick)
@@ -412,7 +423,7 @@ Changes the nickname of USER to NEW-NICK in the
 other buffers are also changed."
   (let ((nick (erc-server-user-nickname user)))
     (setf (erc-server-user-nickname user) new-nick)
-    (with-current-buffer (process-buffer erc-server-process)
+    (erc-with-server-buffer
       (remhash (erc-downcase nick) erc-server-users)
       (puthash (erc-downcase new-nick) user erc-server-users))
     (dolist (buf (erc-server-user-buffers user))
@@ -505,16 +516,15 @@ See also: `erc-sort-channel-users-by-activity'"
 
 (defun erc-get-server-nickname-list ()
   "Returns a list of known nicknames on the current server."
-    (if (erc-server-process-alive)
-	(with-current-buffer (erc-server-buffer)
-	  (let (nicks)
-	    (when (hash-table-p erc-server-users)
-	      (maphash (lambda (n user)
-			 (setq nicks
-			       (cons (erc-server-user-nickname user)
-				     nicks)))
-		       erc-server-users)
-	      nicks)))))
+  (erc-with-server-buffer
+    (let (nicks)
+      (when (hash-table-p erc-server-users)
+	(maphash (lambda (n user)
+		   (setq nicks
+			 (cons (erc-server-user-nickname user)
+			       nicks)))
+		 erc-server-users)
+	nicks))))
 
 (defun erc-get-channel-nickname-list ()
   "Returns a list of known nicknames on the current channel."
@@ -529,16 +539,15 @@ See also: `erc-sort-channel-users-by-activity'"
 
 (defun erc-get-server-nickname-alist ()
   "Returns an alist of known nicknames on the current server."
-    (if (erc-server-process-alive)
-	(with-current-buffer (erc-server-buffer)
-	  (let (nicks)
-	    (when (hash-table-p erc-server-users)
-	      (maphash (lambda (n user)
-			 (setq nicks
-			       (cons (cons (erc-server-user-nickname user) nil)
-				     nicks)))
-		       erc-server-users)
-	      nicks)))))
+  (erc-with-server-buffer
+    (let (nicks)
+      (when (hash-table-p erc-server-users)
+	(maphash (lambda (n user)
+		   (setq nicks
+			 (cons (cons (erc-server-user-nickname user) nil)
+			       nicks)))
+		 erc-server-users)
+	nicks))))
 
 (defun erc-get-channel-nickname-alist ()
   "Returns an alist of known nicknames on the current channel."
@@ -1271,7 +1280,7 @@ capabilities."
   (unless (erc-server-buffer-p)
     (error
      "You should only run `erc-once-with-server-event' in a server buffer"))
-  (let ((fun (erc-gensym))
+  (let ((fun (make-symbol "fun"))
 	(hook (erc-get-hook event)))
      (put fun 'erc-original-buffer (current-buffer))
      (fset fun `(lambda (proc parsed)
@@ -1294,7 +1303,7 @@ not be run.
 
 When FORMS execute, the current buffer is the server buffer associated with the
 connection over which the data was received that triggered EVENT."
-  (let ((fun (erc-gensym))
+  (let ((fun (make-symbol "fun"))
 	(hook (erc-get-hook event)))
      (fset fun `(lambda (proc parsed)
 		  (remove-hook ',hook ',fun)
@@ -1329,6 +1338,14 @@ If BUFFER is nil, the current buffer is used."
     (and (eq major-mode 'erc-mode)
 	 (null (erc-default-target)))))
 
+(defun erc-open-server-buffer-p (&optional buffer)
+  "Return non-nil if argument BUFFER is an ERC server buffer that
+has an open IRC process.
+
+If BUFFER is nil, the current buffer is used."
+  (and (erc-server-buffer-p)
+       (erc-server-process-alive)))
+
 (defun erc-query-buffer-p (&optional buffer)
   "Return non-nil if BUFFER is an ERC query buffer.
 If BUFFER is nil, the current buffer is used."
@@ -1341,7 +1358,7 @@ If BUFFER is nil, the current buffer is used."
 (defun erc-ison-p (nick)
   "Return non-nil if NICK is online."
   (interactive "sNick: ")
-  (with-current-buffer (erc-server-buffer)
+  (erc-with-server-buffer
     (let ((erc-online-p 'unknown))
       (erc-once-with-server-event
        303
@@ -1391,7 +1408,7 @@ server buffer")
 (defun erc-active-buffer ()
   "Return the value of `erc-active-buffer' for the current server.
 Defaults to the server buffer."
-  (with-current-buffer (erc-server-buffer)
+  (erc-with-server-buffer
     (if (buffer-live-p erc-active-buffer)
 	erc-active-buffer
       (setq erc-active-buffer (current-buffer)))))
@@ -1573,10 +1590,10 @@ See `erc-get-buffer' for details.
 See also `with-current-buffer'.
 
 \(fn (TARGET [PROCESS]) BODY...)"
-  (let ((buf (erc-gensym))
-	(proc (erc-gensym))
-	(target (erc-gensym))
-	(process (erc-gensym)))
+  (let ((buf (make-symbol "buf"))
+	(proc (make-symbol "proc"))
+	(target (make-symbol "target"))
+	(process (make-symbol "process")))
     `(let* ((,target ,(car spec))
 	    (,process ,(cadr spec))
 	    (,buf (if (bufferp ,target)
@@ -1586,7 +1603,7 @@ See also `with-current-buffer'.
 					  erc-server-process))))
 		      (if (and ,target ,proc)
 			  (erc-get-buffer ,target ,proc))))))
-       (when ,buf
+       (when (buffer-live-p ,buf)
 	 (with-current-buffer ,buf
 	   ,@body)))))
 (put 'erc-with-buffer 'lisp-indent-function 1)
@@ -1641,8 +1658,8 @@ FORMS will be evaluated in all buffers having the process PROCESS and
 where PRED matches or in all buffers of the server process if PRED is
 nil."
   ;; Make the evaluation have the correct order
-  (let ((pre (erc-gensym))
-	(pro (erc-gensym)))
+  (let ((pre (make-symbol "pre"))
+	(pro (make-symbol "pro")))
     `(let ((,pro ,process)
 	   (,pre ,pred))
        (mapcar (lambda (buffer)
@@ -1722,7 +1739,10 @@ all channel buffers on all servers."
 (make-variable-buffer-local 'erc-invitation)
 
 (defvar erc-away nil
-  "Non-nil indicates that we are away.")
+  "Non-nil indicates that we are away.
+
+Use `erc-away-time' to access this if you might be in a channel
+buffer rather than a server buffer.")
 (make-variable-buffer-local 'erc-away)
 
 (defvar erc-channel-list nil
@@ -1934,10 +1954,6 @@ Returns the buffer for the given server or channel."
     (erc-set-active-buffer buffer)
     ;; last invitation channel
     (setq erc-invitation nil)
-    ;; away flag
-    ;; Should only be used in session-buffers
-    (setq erc-away (let ((serverbuf (erc-server-buffer)))
-		     (and serverbuf (with-current-buffer serverbuf erc-away))))
     ;; Server channel list
     (setq erc-channel-list ())
     ;; login-time 'nick in use' error
@@ -2546,20 +2562,19 @@ If no USER argument is specified, list the contents of `erc-ignore-list'."
 	(erc-display-line
 	 (erc-make-notice (format "Now ignoring %s" user))
 	 'active)
-	(with-current-buffer (erc-server-buffer)
-	  (add-to-list 'erc-ignore-list user)))
-    (if (null (with-current-buffer (erc-server-buffer) erc-ignore-list))
+	(erc-with-server-buffer (add-to-list 'erc-ignore-list user)))
+    (if (null (erc-with-server-buffer erc-ignore-list))
 	(erc-display-line (erc-make-notice "Ignore list is empty") 'active)
       (erc-display-line (erc-make-notice "Ignore list:") 'active)
       (mapc #'(lambda (item)
 		(erc-display-line (erc-make-notice item)
 				  'active))
-	    (with-current-buffer (erc-server-buffer) erc-ignore-list))))
+	    (erc-with-server-buffer erc-ignore-list))))
   t)
 
 (defun erc-cmd-UNIGNORE (user)
   "Remove the user specified in USER from the ignore list."
-  (let ((ignored-nick (car (with-current-buffer (erc-server-buffer)
+  (let ((ignored-nick (car (erc-with-server-buffer
 			     (erc-member-ignore-case user erc-ignore-list)))))
     (if (null ignored-nick)
 	(erc-display-line
@@ -2568,7 +2583,7 @@ If no USER argument is specified, list the contents of `erc-ignore-list'."
       (erc-display-line
        (erc-make-notice (format "No longer ignoring %s" user))
        'active))
-    (with-current-buffer (erc-server-buffer)
+    (erc-with-server-buffer
       (setq erc-ignore-list (delete ignored-nick erc-ignore-list))))
   t)
 
@@ -2627,8 +2642,8 @@ If no reason is given, unset away status."
   "Mark the user as being away everywhere, the reason being indicated by LINE."
   ;; on all server buffers.
   (erc-with-all-buffers-of-server nil
-   #'erc-server-buffer-p
-   (erc-cmd-AWAY line)))
+    #'erc-open-server-buffer-p
+    (erc-cmd-AWAY line)))
 (put 'erc-cmd-GAWAY 'do-not-parse-args t)
 
 (defun erc-cmd-CTCP (nick cmd &rest args)
@@ -2820,10 +2835,9 @@ If SERVER is non-nil, use that, rather than the current server."
 
 (defun erc-cmd-IDLE (nick)
   "Show the length of time NICK has been idle."
-  (let ((serverbuf (erc-server-buffer))
-	(origbuf (current-buffer))
+  (let ((origbuf (current-buffer))
 	symlist)
-    (with-current-buffer serverbuf
+    (erc-with-server-buffer
       (add-to-list 'symlist
 		   (cons (erc-once-with-server-event
 			  311 `(string= ,nick
@@ -2981,8 +2995,8 @@ The rest of LINE is the message to send."
 (defun erc-cmd-NICK (nick)
   "Change current nickname to NICK."
   (erc-log (format "cmd: NICK: %s (erc-bad-nick: %S)" nick erc-bad-nick))
-  (let ((nicklen (cdr (assoc "NICKLEN" (with-current-buffer (erc-server-buffer)
-				    erc-server-parameters)))))
+  (let ((nicklen (cdr (assoc "NICKLEN" (erc-with-server-buffer
+					 erc-server-parameters)))))
     (and nicklen (> (length nick) (string-to-number nicklen))
 	 (erc-display-message
 	  nil 'notice 'active 'nick-too-long
@@ -3152,9 +3166,7 @@ the message given by REASON."
 
 (defun erc-cmd-GQUIT (reason)
   "Disconnect from all servers at once with the same quit REASON."
-  (erc-with-all-buffers-of-server nil #'(lambda ()
-					  (and (erc-server-buffer-p)
-					       (erc-server-process-alive)))
+  (erc-with-all-buffers-of-server nil #'erc-open-server-buffer-p
 				  (erc-cmd-QUIT reason)))
 
 (defalias 'erc-cmd-GQ 'erc-cmd-GQUIT)
@@ -3330,7 +3342,7 @@ The ban list is fetched from the server if necessary."
 	(setq erc-server-367-functions 'erc-banlist-store
 	      erc-channel-banlist nil)
 	;; fetch the ban list then callback
-	(with-current-buffer (erc-server-buffer)
+	(erc-with-server-buffer
 	  (erc-once-with-server-event
 	   368
 	   `(with-current-buffer ,chnl-name
@@ -3400,7 +3412,7 @@ Unban all currently banned users in the current channel."
       (let ((old-367-hook erc-server-367-functions))
 	(setq erc-server-367-functions 'erc-banlist-store)
       ;; fetch the ban list then callback
-      (with-current-buffer (erc-server-buffer)
+      (erc-with-server-buffer
 	(erc-once-with-server-event
 	 368
 	 `(with-current-buffer ,chnl
@@ -3769,7 +3781,7 @@ See also `erc-display-error-notice'."
     (setq erc-nick-change-attempt-count (+ erc-nick-change-attempt-count 1))
     (let ((newnick (nth 1 erc-default-nicks))
 	  (nicklen (cdr (assoc "NICKLEN"
-			       (with-current-buffer (erc-server-buffer)
+			       (erc-with-server-buffer
 				 erc-server-parameters)))))
       (setq erc-bad-nick t)
       ;; try to use a different nick
@@ -4291,8 +4303,10 @@ See also `erc-display-message'."
   nil)
 
 (defun erc-process-away (proc away-p)
-  ;; FIXME: This docstring is AWFUL -- Lawrence 2004-01-08
-  "Process the user being away, or returning from an away break."
+  "Toggle the away status of the user depending on the value of AWAY-P.
+
+If nil, set the user as away.
+If non-nil, return from being away."
   (let ((sessionbuf (process-buffer proc)))
     (when sessionbuf
       (with-current-buffer sessionbuf
@@ -4304,14 +4318,12 @@ See also `erc-display-message'."
 			  erc-nick)))
 	(cond
 	 (away-p
-	  (erc-with-all-buffers-of-server proc nil
-					  (setq erc-away (current-time))))
+	  (setq erc-away (current-time)))
 	 (t
 	  (let ((away-time erc-away))
 	    ;; away must be set to NIL BEFORE sending anything to prevent
 	    ;; an infinite recursion
-	    (erc-with-all-buffers-of-server proc nil
-					    (setq erc-away nil))
+	    (setq erc-away nil)
 	    (save-excursion
 	      (set-buffer (erc-active-buffer))
 	      (when erc-public-away-p
@@ -4993,8 +5005,9 @@ strings over to the next call."
 
 (defun erc-set-current-nick (nick)
   "Set the current nickname to NICK."
-  (with-current-buffer (or (erc-server-buffer)
-			   (current-buffer))
+  (with-current-buffer (if (buffer-live-p (erc-server-buffer))
+			   (erc-server-buffer)
+			 (current-buffer))
     (setq erc-server-current-nick nick)))
 
 (defun erc-current-nick ()
@@ -5074,7 +5087,7 @@ The previous default target of QUERY type gets removed"
 Takes a full SPEC of a user in the form \"nick!login@host\", and
 matches against all the regexp's in `erc-ignore-list'.  If any
 match, returns that regexp."
-  (dolist (ignored (with-current-buffer (erc-server-buffer) erc-ignore-list))
+  (dolist (ignored (erc-with-server-buffer erc-ignore-list))
     (if (string-match ignored spec)
 	;; We have `require'd cl, so we can return from the block named nil
 	(return ignored))))
@@ -5629,12 +5642,12 @@ entry of `channel-members'."
 			     ""))
 	user))))
 
-(defun erc-away-p ()
-  "Return t if the current ERC process is set away."
-  (save-excursion
-    (and (erc-server-buffer-live-p)
-	 (set-buffer (process-buffer erc-server-process))
-	 erc-away)))
+(defun erc-away-time ()
+  "Return non-nil if the current ERC process is set away.
+
+In particular, the time that we were set away is returned.
+See `current-time' for details on the time format."
+  (erc-with-server-buffer erc-away))
 
 ;; Mode line handling
 
@@ -5741,18 +5754,14 @@ format-time-message."
 (defun erc-format-away-status ()
   "Return a formatted `erc-mode-line-away-status-format'
 if `erc-away' is non-nil."
-  (let ((a (when (erc-server-buffer-live-p)
-	     (with-current-buffer (process-buffer erc-server-process)
-	       erc-away))))
+  (let ((a (erc-away-time)))
     (if a
 	(format-time-string erc-mode-line-away-status-format a)
       "")))
 
 (defun erc-format-channel-modes ()
   "Return the current channel's modes and the estimated lag."
-  (let ((lag (when (erc-server-buffer-live-p)
-	       (with-current-buffer (process-buffer erc-server-process)
-		 erc-server-lag))))
+  (let ((lag (erc-with-server-buffer erc-server-lag)))
     (concat (apply 'concat
 		   "(+" erc-channel-modes)
 	    (cond ((and erc-channel-user-limit erc-channel-key)
@@ -6204,8 +6213,7 @@ Otherwise, connect to HOST:PORT as USER and /join CHANNEL."
 	       (lambda ()
 		 (and (string-equal erc-session-server host)
 		      (= erc-session-port port)
-		      erc-server-connected
-		      (eq (erc-server-buffer) (current-buffer))))))))
+		      (erc-open-server-buffer-p)))))))
     (with-current-buffer (or server-buffer (current-buffer))
       (if (and server-buffer channel)
 	  (erc-cmd-JOIN channel)
