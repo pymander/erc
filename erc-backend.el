@@ -437,17 +437,19 @@ Additionally, detect whether the IRC process has hung."
         (erc-cancel-timer (cdr timer))
         (setcdr timer nil)))))
 
-(defun erc-server-setup-periodical-ping (&rest ignore)
-  "Set up a timer to periodically ping the current server."
-  (and erc-server-ping-handler (erc-cancel-timer erc-server-ping-handler))
-  (when erc-server-send-ping-interval
-    (setq erc-server-ping-handler (run-with-timer
-                                   4 erc-server-send-ping-interval
-                                   #'erc-server-send-ping
-                                   (current-buffer)))
-    (setq erc-server-ping-timer-alist (cons (cons (current-buffer)
-                                                  erc-server-ping-handler)
-                                            erc-server-ping-timer-alist))))
+(defun erc-server-setup-periodical-ping (buffer)
+  "Set up a timer to periodically ping the current server.
+The current buffer is given by BUFFER."
+  (with-current-buffer buffer
+    (and erc-server-ping-handler (erc-cancel-timer erc-server-ping-handler))
+    (when erc-server-send-ping-interval
+      (setq erc-server-ping-handler (run-with-timer
+                                     4 erc-server-send-ping-interval
+                                     #'erc-server-send-ping
+                                     buffer))
+      (setq erc-server-ping-timer-alist (cons (cons buffer
+                                                    erc-server-ping-handler)
+                                              erc-server-ping-timer-alist)))))
 
 (defun erc-server-process-alive ()
   "Return non-nil when `erc-server-process' is open or running."
@@ -457,43 +459,45 @@ Additionally, detect whether the IRC process has hung."
 
 ;;;; Connecting to a server
 
-(defun erc-server-connect (server port)
-  "Perform the connection and login.
-We will store server variables in the current buffer."
+(defun erc-server-connect (server port buffer)
+  "Perform the connection and login using the specified SERVER and PORT.
+We will store server variables in the buffer given by BUFFER."
   (let ((msg (erc-format-message 'connect ?S server ?p port)))
     (message "%s" msg)
-    (setq erc-server-process
-          (funcall erc-server-connect-function
-                   (format "erc-%s-%s" server port)
-                   (current-buffer) server port))
-    (message "%s...done" msg))
-  ;; Misc server variables
-  (setq erc-server-quitting nil)
-  (setq erc-server-timed-out nil)
-  (setq erc-server-banned nil)
-  (let ((time (erc-current-time)))
-    (setq erc-server-last-sent-time time)
-    (setq erc-server-last-ping-time time)
-    (setq erc-server-last-received-time time))
-  (setq erc-server-lines-sent 0)
-  ;; last peers (sender and receiver)
-  (setq erc-server-last-peers '(nil . nil))
-  ;; process handlers
-  (set-process-sentinel erc-server-process 'erc-process-sentinel)
-  (set-process-filter erc-server-process 'erc-server-filter-function)
-  ;; we do our own encoding and decoding
-  (when (fboundp 'set-process-coding-system)
-    (set-process-coding-system erc-server-process 'raw-text))
-  (set-marker (process-mark erc-server-process) (point))
+    (let ((process (funcall erc-server-connect-function
+                            (format "erc-%s-%s" server port)
+                            nil server port)))
+      (message "%s...done" msg)
+      ;; Misc server variables
+      (with-current-buffer buffer
+        (setq erc-server-process process)
+        (setq erc-server-quitting nil)
+        (setq erc-server-timed-out nil)
+        (setq erc-server-banned nil)
+        (let ((time (erc-current-time)))
+          (setq erc-server-last-sent-time time)
+          (setq erc-server-last-ping-time time)
+          (setq erc-server-last-received-time time))
+        (setq erc-server-lines-sent 0)
+        ;; last peers (sender and receiver)
+        (setq erc-server-last-peers '(nil . nil)))
+      ;; we do our own encoding and decoding
+      (when (fboundp 'set-process-coding-system)
+        (set-process-coding-system process 'raw-text))
+      ;; process handlers
+      (set-process-sentinel process 'erc-process-sentinel)
+      (set-process-filter process 'erc-server-filter-function)
+      (set-process-buffer process buffer)))
   (erc-log "\n\n\n********************************************\n")
-  (message (erc-format-message 'login ?n (erc-current-nick)))
+  (message (erc-format-message
+            'login ?n
+            (with-current-buffer buffer (erc-current-nick))))
   ;; wait with script loading until we receive a confirmation (first
   ;; MOTD line)
   (if (eq erc-server-connect-function 'open-network-stream-nowait)
       ;; it's a bit unclear otherwise that it's attempting to establish a
       ;; connection
-      (erc-display-message nil nil (current-buffer)
-                           "Opening connection..\n")
+      (erc-display-message nil nil buffer "Opening connection..\n")
     (erc-login)))
 
 (defun erc-server-filter-function (process string)

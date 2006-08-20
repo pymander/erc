@@ -326,7 +326,7 @@ Each function should accept two arguments, NEW-NICK and OLD-NICK."
 
 (defcustom erc-connect-pre-hook '(erc-initialize-log-marker)
   "Hook called just before `erc' calls `erc-connect'.
-Functions are run in the buffer-to-be."
+Functions are passed a buffer as the first argument."
   :group 'erc-hooks
   :type 'hook)
 
@@ -1968,24 +1968,24 @@ Returns the buffer for the given server or channel."
     (setq erc-dbuf
 	  (when erc-log-p
 	    (get-buffer-create (concat "*ERC-DEBUG: " server "*"))))
-    (erc-determine-parameters server port nick full-name)
-
-    ;; Saving log file on exit
-    (run-hooks 'erc-connect-pre-hook)
-
-    (when connect
-      (erc-server-connect erc-session-server erc-session-port))
-    (erc-update-mode-line)
-    (set-marker erc-insert-marker (point))
+    ;; set up prompt
     (unless continued-session
       (goto-char (point-max))
       (insert "\n"))
-    (set-marker (process-mark erc-server-process) (point))
     (if continued-session
 	(goto-char (point-max))
       (set-marker erc-insert-marker (point))
       (erc-display-prompt)
       (goto-char (point-max)))
+
+    (erc-determine-parameters server port nick full-name)
+
+    ;; Saving log file on exit
+    (run-hook-with-args 'erc-connect-pre-hook buffer)
+
+    (when connect
+      (erc-server-connect erc-session-server erc-session-port buffer))
+    (erc-update-mode-line)
 
     ;; Now display the buffer in a window as per user wishes.
     (unless (eq buffer old-buffer)
@@ -1997,11 +1997,13 @@ Returns the buffer for the given server or channel."
 
     buffer))
 
-(defun erc-initialize-log-marker ()
-  "Initialize the `erc-last-saved-position' marker to a sensible position."
+(defun erc-initialize-log-marker (buffer)
+  "Initialize the `erc-last-saved-position' marker to a sensible position.
+BUFFER is the current buffer."
+  (with-current-buffer buffer
     (setq erc-last-saved-position (make-marker))
     (move-marker erc-last-saved-position
-		 (1- (marker-position erc-insert-marker))))
+		 (1- (marker-position erc-insert-marker)))))
 
 ;; interactive startup
 
@@ -4074,24 +4076,29 @@ See also: `erc-echo-notice-in-user-buffers',
   "Run just after connection.
 
 Set user modes and run `erc-after-connect hook'."
-  (unless erc-server-connected ; only once per session
-    (let ((server (or erc-server-announced-name (erc-response.sender parsed)))
-	  (nick (car (erc-response.command-args parsed ))))
-      (setq erc-server-connected t)
-      (erc-update-mode-line)
-      (erc-set-initial-user-mode nick)
-      (erc-server-setup-periodical-ping)
-      (run-hook-with-args 'erc-after-connect server nick))))
+  (with-current-buffer (process-buffer proc)
+    (unless erc-server-connected ; only once per session
+      (let ((server (or erc-server-announced-name
+			(erc-response.sender parsed)))
+	    (nick (car (erc-response.command-args parsed)))
+	    (buffer (process-buffer proc)))
+	(setq erc-server-connected t)
+	(erc-update-mode-line)
+	(erc-set-initial-user-mode nick buffer)
+	(erc-server-setup-periodical-ping buffer)
+	(run-hook-with-args 'erc-after-connect server nick)))))
 
-(defun erc-set-initial-user-mode (nick)
-  "If `erc-user-mode' is non-nil for NICK, set the user modes."
-  (when erc-user-mode
-    (let ((mode (if (functionp erc-user-mode)
-		    (funcall erc-user-mode)
-		  erc-user-mode)))
-      (when (stringp mode)
-	(erc-log (format "changing mode for %s to %s" nick mode))
-	(erc-server-send (format "MODE %s %s" nick mode))))))
+(defun erc-set-initial-user-mode (nick buffer)
+  "If `erc-user-mode' is non-nil for NICK, set the user modes.
+The server buffer is given by BUFFER."
+  (with-current-buffer buffer
+    (when erc-user-mode
+      (let ((mode (if (functionp erc-user-mode)
+		      (funcall erc-user-mode)
+		    erc-user-mode)))
+	(when (stringp mode)
+	  (erc-log (format "changing mode for %s to %s" nick mode))
+	  (erc-server-send (format "MODE %s %s" nick mode)))))))
 
 (defun erc-display-error-notice (parsed string)
   "Display STRING as an error notice.

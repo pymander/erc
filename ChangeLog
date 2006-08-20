@@ -1,5 +1,15 @@
 2006-08-20  Michael Olson  <mwolson@gnu.org>
 
+	* erc-identd.el (erc-identd): New customization group.
+	(erc-identd-port): New option that specifies the port to use if
+	none is given as an argument to erc-identd-start.
+	(identd): Place erc-identd-quickstart in erc-connect-pre-hook
+	instead of erc-identd-start so that we deal with the different
+	meaning of the first argument.
+	(erc-identd-start): Use erc-identd-port.
+	(erc-identd-quickstart): New function that ignores any arguments
+	and calls erc-identd-start.
+
 	* erc.el (erc-with-server-buffer): New macro that switches to the
 	current ERC server buffer and runs some code.  If no server buffer
 	is available, return nil.  This is a useful way to access
@@ -21,7 +31,9 @@
 	though it isn't really needed here.
 	(erc-away): Mention erc-away-time.
 	(erc): Don't propagate the erc-away setting, since it makes more
-	sense to access it from the server buffer.
+	sense to access it from the server buffer.  Set up the prompt
+	before connecting rather than after.  Run erc-connect-pre-hook
+	with the buffer as an argument, instead of no arguments.
 	(erc-cmd-GAWAY): Use erc-open-server-buffer-p instead of
 	erc-server-buffer-p so that only open connections are set away.
 	(erc-cmd-GQUIT): Use erc-open-server-buffer-p.
@@ -32,10 +44,17 @@
 	(erc-away-time): Rename from erc-away-p, since this is no longer a
 	boolean-style predicate.
 	(erc-format-away-status): Use it.
+	(erc-initialize-log-marker): Accept a `buffer' argument.
+	(erc-connect-pre-hook): Docfix.
+	(erc-connection-established): Make sure this runs in the correct
+	buffer.
+	(erc-set-initial-user-mode): Accept a `buffer' argument.
 
 	* erc-stamp.el (erc-add-timestamp): Use erc-away-time.
 
-	* erc-spelling.el (erc-spelling-init): Use erc-with-server-buffer.
+	* erc-spelling.el (erc-spelling-init): Use
+	erc-with-server-buffer.  Accept `buffer' argument.
+	(spelling): Call erc-spelling-init with the `buffer' argument.
 
 	* erc-speedbar.el (erc-speedbar-buttons): Use erc-server-buffer-p.
 
@@ -54,6 +73,10 @@
 	erc-away-time.
 
 	* erc-log.el (log): Use erc-away-time.  Remove unnecessary check.
+	Pass `buffer' argument to erc-log-setup-logging instead of setting
+	the current buffer.  Ditto for erc-log-disable-logging.
+	(erc-log-setup-logging, erc-log-disable-loggin): Accept a `buffer'
+	argument.
 
 	* erc-list.el (erc-chanlist): Use erc-with-server-buffer.
 
@@ -78,6 +101,8 @@
 	not given.
 	(erc-server-send): Simplify slightly.
 	(erc-call-hooks): Use erc-with-server-buffer.
+	(erc-server-connect, erc-server-setup-periodical-ping): Accept
+	`buffer' argument.
 
 	* erc-autoaway.el (erc-autoaway-reestablish-idletimer): Move
 	higher to avoid an automatic load snafu.
@@ -103,6 +128,8 @@
 	(erc-autoaway-possibly-set-away, erc-autoaway-set-away): Use it.
 	(erc-autoaway-set-away): Accept a `notest' argument which is used
 	to avoid testing the same thing twice.
+	(erc-autoaway-last-sent-time, erc-autoaway-caused-away): Move
+	higher in file to fix byte-compile warning.
 
 2006-08-20  Diane Murray  <disumu@x3y2z1.net>
 

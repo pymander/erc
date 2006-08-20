@@ -40,6 +40,13 @@ yourself back when you type something."
   "The Emacs idletimer.
 This is only used when `erc-autoaway-use-emacs-idle' is non-nil.")
 
+(defvar erc-autoaway-last-sent-time (erc-current-time)
+  "The last time the user sent something.")
+
+(defvar erc-autoaway-caused-away nil
+  "Indicates whether this module was responsible for setting the
+user's away status.")
+
 (eval-when-compile (defvar erc-autoaway-idle-seconds))
 
 (defun erc-autoaway-reestablish-idletimer ()
@@ -194,13 +201,6 @@ It is used as a `format' string with the argument of the idletime
 in seconds."
   :group 'erc-autoaway
   :type 'string)
-
-(defvar erc-autoaway-last-sent-time (erc-current-time)
-  "The last time the user sent something.")
-
-(defvar erc-autoaway-caused-away nil
-  "Indicates whether this module was responsible for setting the
-user's away status.")
 
 (defun erc-autoaway-reset-idle-user (&rest stuff)
   "Reset the stored user idle time.
