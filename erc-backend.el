@@ -523,10 +523,9 @@ We will store server variables in the current buffer."
             (erc-parse-server-response process line)))))))
 
 (defun erc-process-sentinel-1 (event)
-  "This will be called when erc-process-sentinel has decided that we
-are going to quit.  Determine whether user has quit or whether erc has
-been terminated.  Conditionally try to reconnect and take appropriate
-action."
+  "Called when `erc-process-sentinel' has decided that we're disconnecting.
+Determine whether user has quit or whether erc has been terminated.
+Conditionally try to reconnect and take appropriate action."
   (if erc-server-quitting
       ;; normal quit
       (progn
@@ -536,18 +535,14 @@ action."
           (kill-buffer (current-buffer))))
     ;; unexpected disconnect
     (erc-display-message nil 'error (current-buffer)
-                         (if (erc-server-reconnect-p)
+                         (if (erc-server-reconnect-p event)
                              'disconnected
                            'disconnected-noreconnect))
     (erc-update-mode-line)
     (erc-set-active-buffer (current-buffer))
     (setq erc-server-last-sent-time 0)
     (setq erc-server-lines-sent 0)
-    (if (and (erc-server-reconnect-p)
-             (or erc-server-timed-out
-                 (not (string-match "^deleted" event)))
-             ;; open-network-stream-nowait error for connection refused
-             (not (string-match "^failed with code 111" event)))
+    (if (erc-server-reconnect-p event)
         ;; Yuck, this should perhaps funcall
         ;; erc-server-reconnect-function with no args
         (erc erc-session-server erc-session-port erc-server-current-nick
@@ -556,9 +551,15 @@ action."
       (erc-display-message nil 'error (current-buffer)
                            'terminated ?e event))))
 
-(defun erc-server-reconnect-p ()
-  "Return non-nil if ERC should attempt to reconnect automatically."
-  (and erc-server-auto-reconnect (not erc-server-banned)))
+(defun erc-server-reconnect-p (event)
+  "Return non-nil if ERC should attempt to reconnect automatically.
+EVENT is the message received from the closed connection process."
+  (and erc-server-auto-reconnect
+       (not erc-server-banned)
+       (or erc-server-timed-out
+           (not (string-match "^deleted" event)))
+       ;; open-network-stream-nowait error for connection refused
+       (not (string-match "^failed with code 111" event))))
 
 (defun erc-process-sentinel (cproc event)
   "Sentinel function for ERC process."

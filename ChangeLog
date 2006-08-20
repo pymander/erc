@@ -1,3 +1,10 @@
+2006-08-20  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-backend.el (erc-process-sentinel-1): Doc fix.  Let
+	`erc-server-reconnect-p' check all condition cases.
+	(erc-server-reconnect-p): Moved rest of checks from
+	`erc-process-sentinel-1' to here.  Now takes an argument, EVENT.
+
 2006-08-14  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-menu.el: Updated copyright years.  Removed EmacsWiki URL.
