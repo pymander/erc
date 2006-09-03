@@ -1,6 +1,6 @@
 ;;; erc-networks.el --- IRC networks
 
-;; Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
+;; Copyright (C) 2002, 2004, 2005, 2006 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@lexx.delysid.org>
 ;; Keywords: comm
@@ -809,7 +809,7 @@ As an example:
 		    (erc-ports-list (nth 3 srv))
 		  (list (nth 3 srv))))
 	 (port (nth (random (length ports)) ports)))
-    (erc host port erc-nick erc-user-full-name t)))
+    (erc :server host :port port)))
 
 ;;; The following experimental
 ;; It does not work yet, help me with it if you

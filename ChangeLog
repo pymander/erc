@@ -1,3 +1,31 @@
+2006-09-03  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el: M-x erc RET can now be used to start ERC.
+	(erc-open): Renamed from `erc'.
+	(erc-before-connect): Change erc-select to erc.
+	(erc): Renamed from `erc-select'.  Use `erc-open'.
+	(erc-select): Defined as alias of `erc'.
+	(erc-ssl): Renamed from `erc-select-ssl'.  Use `erc'.
+	(erc-select-ssl): Defined as alias of `erc-ssl'.
+	(erc-cmd-SERVER): Use `erc'.
+	(erc-query, erc-handle-irc-url): Use `erc-open'.
+
+	* erc-backend.el (erc-process-sentinel-1, JOIN): Use `erc-open'.
+
+	* erc-menu.el (erc-menu-definition): Use `erc'.
+
+	* erc-networks.el: Updated copyright years.
+	(erc-server-select): Use keyword arguments when calling `erc'.
+
+	* erc.texi (Getting Started, Connecting): Changed erc-select to
+	erc.
+
+	* README: Changed erc-select to erc.
+
+	* NEWS: Added note about these changes.
+
+	* FOR-RELEASE: Marked this item as done.
+
 2006-08-21  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-track.el (erc-track-mode-line-mouse-face): New variable.

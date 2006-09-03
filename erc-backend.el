@@ -552,8 +552,8 @@ Conditionally try to reconnect and take appropriate action."
     (if (erc-server-reconnect-p event)
         ;; Yuck, this should perhaps funcall
         ;; erc-server-reconnect-function with no args
-        (erc erc-session-server erc-session-port erc-server-current-nick
-             erc-session-user-full-name t erc-session-password)
+        (erc-open erc-session-server erc-session-port erc-server-current-nick
+                  erc-session-user-full-name t erc-session-password)
       ;; terminate, do not reconnect
       (erc-display-message nil 'error (current-buffer)
                            'terminated ?e event))))
@@ -1085,11 +1085,11 @@ add things to `%s' instead."
         (let* ((str (cond
                      ;; If I have joined a channel
                      ((erc-current-nick-p nick)
-                      (setq buffer (erc erc-session-server erc-session-port
-                                        nick erc-session-user-full-name
-                                        nil nil
-                                        erc-default-recipients chnl
-                                        erc-server-process))
+                      (setq buffer (erc-open erc-session-server erc-session-port
+                                             nick erc-session-user-full-name
+                                             nil nil
+                                             erc-default-recipients chnl
+                                             erc-server-process))
                       (when buffer
                         (set-buffer buffer)
                         (erc-add-default-channel chnl)

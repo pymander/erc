@@ -57,7 +57,7 @@
 
 ;; To connect to an IRC server, do
 ;;
-;; M-x erc-select RET
+;; M-x erc RET
 ;;
 ;; After you are connected to a server, you can use C-h m or have a look at
 ;; the IRC menu.
@@ -1888,8 +1888,8 @@ removed from the list will be disabled."
 	     (display-buffer buffer)
 	   (switch-to-buffer buffer)))))
 
-(defun erc (&optional server port nick full-name
-		      connect passwd tgt-list channel process)
+(defun erc-open (&optional server port nick full-name
+			   connect passwd tgt-list channel process)
   "ERC is a powerful, modular, and extensible IRC client.
 
 Connect to SERVER on PORT as NICK with FULL-NAME.
@@ -2032,7 +2032,7 @@ If no buffer matches, return nil."
 
 (defcustom erc-before-connect nil
   "Hook called before connecting to a server.
-This hook gets executed before `erc-select' actually invokes `erc-mode'
+This hook gets executed before `erc' actually invokes `erc-mode'
 with your input data.  The functions in here get called with three
 parameters, SERVER, PORT and NICK."
   :group 'erc-hooks
@@ -2098,11 +2098,11 @@ functions in here get called with the parameters SERVER and NICK."
     (list :server server :port port :nick nick :password passwd)))
 
 ;;;###autoload
-(defun* erc-select (&key (server (erc-compute-server))
-			 (port   (erc-compute-port))
-			 (nick   (erc-compute-nick))
-			 password
-			 (full-name (erc-compute-full-name)))
+(defun* erc (&key (server (erc-compute-server))
+		  (port   (erc-compute-port))
+		  (nick   (erc-compute-nick))
+		  password
+		  (full-name (erc-compute-full-name)))
   "Select connection parameters and run ERC.
 Non-interactively, it takes keyword arguments
    (server (erc-compute-server))
@@ -2113,7 +2113,7 @@ Non-interactively, it takes keyword arguments
 
 That is, if called with
 
-   (erc-select :server \"irc.freenode.net\" :full-name \"Harry S Truman\")
+   (erc :server \"irc.freenode.net\" :full-name \"Harry S Truman\")
 
 server and full-name will be set to those values, whereas
 `erc-compute-port', `erc-compute-nick' and `erc-compute-full-name' will
@@ -2121,15 +2121,18 @@ be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
 
   (run-hook-with-args 'erc-before-connect server port nick)
-  (erc server port nick erc-user-full-name t password))
+  (erc-open server port nick erc-user-full-name t password))
 
+(defalias 'erc-select 'erc)
 
-(defun erc-select-ssl (&rest r)
+(defun erc-ssl (&rest r)
   "Interactively select SSL connection parameters and run ERC.
-Arguments are as to erc-select."
+Arguments are the same as for `erc'."
   (interactive (erc-select-read-args))
   (let ((erc-server-connect-function 'erc-open-ssl-stream))
-    (apply 'erc-select r)))
+    (apply 'erc r)))
+
+(defalias 'erc-select-ssl 'erc-ssl)
 
 (defun erc-open-ssl-stream (name buffer host port)
   "Open an SSL stream to an IRC server.
@@ -3178,7 +3181,7 @@ the message given by REASON."
   "Connect to SERVER, leaving existing connection intact."
   (erc-log (format "cmd: SERVER: %s" server))
   (condition-case nil
-      (erc-select :server server :nick (erc-current-nick))
+      (erc :server server :nick (erc-current-nick))
     (error
      (message "Cannot find host %s." server)
      (beep)))
@@ -3695,15 +3698,15 @@ To change how this query window is displayed, use `let' to bind
 	       (buffer-live-p server)
 	       (set-buffer server))
     (error "Couldn't switch to server buffer"))
-  (let ((buf (erc erc-session-server
-		  erc-session-port
-		  (erc-current-nick)
-		  erc-session-user-full-name
-		  nil
-		  nil
-		  (list target)
-		  target
-		  erc-server-process)))
+  (let ((buf (erc-open erc-session-server
+		       erc-session-port
+		       (erc-current-nick)
+		       erc-session-user-full-name
+		       nil
+		       nil
+		       (list target)
+		       target
+		       erc-server-process)))
     (unless buf
       (error "Couldn't open query window"))
     (erc-update-mode-line)
@@ -6224,10 +6227,10 @@ Otherwise, connect to HOST:PORT as USER and /join CHANNEL."
     (with-current-buffer (or server-buffer (current-buffer))
       (if (and server-buffer channel)
 	  (erc-cmd-JOIN channel)
-	(erc host port (or user (erc-compute-nick)) (erc-compute-full-name)
-	     (not server-buffer) password nil channel
-	     (when server-buffer
-	       (get-buffer-process server-buffer)))))))
+	(erc-open host port (or user (erc-compute-nick)) (erc-compute-full-name)
+		  (not server-buffer) password nil channel
+		  (when server-buffer
+		    (get-buffer-process server-buffer)))))))
 
 (provide 'erc)
 

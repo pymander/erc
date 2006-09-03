@@ -24,8 +24,8 @@ http://www.emacswiki.org/cgi-bin/wiki.pl?LoadPath
 Usage
 -----
 
-Use M-x erc-select to connect to a server.  You can connect to
-multiple servers.
+Use M-x erc to connect to a server.  You can connect to multiple
+servers.
 
 Customization
 -------------
