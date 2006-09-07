@@ -38,7 +38,7 @@ yourself back when you type something."
 
 (defvar erc-autoaway-idletimer nil
   "The Emacs idletimer.
-This is only used when `erc-autoaway-use-emacs-idle' is non-nil.")
+This is only used when `erc-autoaway-idle-method' is set to 'emacs.")
 
 (defvar erc-autoaway-last-sent-time (erc-current-time)
   "The last time the user sent something.")

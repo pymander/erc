@@ -1,13 +1,17 @@
 
-This is the README file for the ERC.
+This is the README file for ERC.
 
 ERC is a powerful, modular, and extensible IRC client for Emacs.
 
 Installation
 ------------
 
-Type `make install'.  If you wish to install to someplace other than
-/usr/local/share/emacs/site-lisp/erc, edit the PREFIX, ELISPDIR,
+Type `make install'.  This will compile all the emacs-lisp files and
+install them in the directory /usr/local/share/emacs/site-lisp/erc.
+The info manual will be installed to /usr/local/info.  You'll most
+likely need to be the root user to install to these locations.
+
+If you wish to install to someplace else, edit the PREFIX, ELISPDIR,
 and/or INFODIR options in Makefile.
 
 QuickStart
@@ -42,7 +46,7 @@ versions of it.
 Additional documentation is kept on the Emacs Wiki, and may be added
 to by anyone.
 
-* http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient
+* http://www.emacswiki.org/cgi-bin/wiki/ERC
 
 License information
 -------------------

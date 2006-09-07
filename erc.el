@@ -33,11 +33,11 @@
 
 ;;; Commentary:
 
-;; ERC is an IRC client for Emacs.
+;; ERC is a powerful, modular, and extensible IRC client for Emacs.
 
 ;; For more information, see the following URLs:
 ;; * http://sv.gnu.org/projects/erc/
-;; * http://www.emacswiki.org/cgi-bin/wiki.pl?EmacsIRCClient
+;; * http://www.emacswiki.org/cgi-bin/wiki/ERC
 
 ;; As of 2006-06-13, ERC development is now hosted on Savannah
 ;; (http://sv.gnu.org/projects/erc).  I invite everyone who wants to
@@ -60,7 +60,7 @@
 ;; M-x erc RET
 ;;
 ;; After you are connected to a server, you can use C-h m or have a look at
-;; the IRC menu.
+;; the ERC menu.
 
 ;;; History:
 ;;
@@ -1325,8 +1325,7 @@ the process buffer."
        (process-buffer erc-server-process)))
 
 (defun erc-server-buffer-live-p ()
-  "Return t if the buffer associated with `erc-server-process'
-has not been killed."
+  "Return t if the server buffer has not been killed."
   (and (processp erc-server-process)
        (buffer-live-p (process-buffer erc-server-process))))
 
@@ -1688,8 +1687,7 @@ needs to be active for this function to work."
 		 (mapcar 'buffer-name
 			 (erc-buffer-list
 			  nil
-			  (when (and arg (boundp 'erc-server-process))
-			    erc-server-process)))))))
+			  (when arg erc-server-process)))))))
     (switch-to-buffer
      (iswitchb-read-buffer
       "Switch-to: "
@@ -2348,9 +2346,8 @@ If STRING is nil, the function does nothing."
 		  ((listp buffer) buffer)
 		  ((processp buffer) (list (process-buffer buffer)))
 		  ((eq 'all buffer)
-		   (and (boundp 'erc-server-process)
-			;; Hmm, or all of the same session server?
-			(erc-buffer-list nil erc-server-process)))
+		   ;; Hmm, or all of the same session server?
+		   (erc-buffer-list nil erc-server-process))
 		  ((and (eq 'active buffer) (erc-active-buffer))
 		   (list (erc-active-buffer)))
 		  ((erc-server-buffer-live-p)
@@ -3566,9 +3563,8 @@ If `point' is at the beginning of a channel name, use that as default."
    (list
     (if (and (boundp 'reason) (stringp reason) (not (string= reason "")))
 	reason
-      (read-from-minibuffer (concat "Leave " (erc-default-target)
-				    ", Reason? ")
-			    (cons "No reason" 0)))))
+      (read-from-minibuffer (concat "Reason for leaving " (erc-default-target)
+				    ": ")))))
   (erc-cmd-PART (concat (erc-default-target)" " reason)))
 
 (defun erc-set-topic (topic)
@@ -3878,22 +3874,19 @@ and as second argument the event parsed as a vector."
   :type 'function)
 
 (defun erc-format-nick (&optional user channel-data)
-  "Standard nickname formatting function.  Only returns the value
-of NICK."
-  (if user
-      (erc-server-user-nickname user)))
+  "Return the nickname of USER.
+See also `erc-format-nick-function'."
+  (when user (erc-server-user-nickname user)))
 
 (defun erc-format-@nick (&optional user channel-data)
-  "Format a nickname such that @ or + are prefix for the NICK
-if OP or VOICE are t respectively."
-  (if user
-      (let (op voice)
-	(if channel-data
-	    (setq op (erc-channel-user-op channel-data)
-		  voice (erc-channel-user-voice channel-data)))
-    (concat (if voice "+" "")
-	    (if op "@" "")
-		(erc-server-user-nickname user)))))
+  "Format the nickname of USER showing if USER is an operator or has voice.
+Operators have \"@\" and users with voice have \"+\" as a prefix.
+Use CHANNEL-DATA to determine op and voice status.
+See also `erc-format-nick-function'."
+  (when user
+    (let ((op (and channel-data (erc-channel-user-op channel-data) "@"))
+	  (voice (and channel-data (erc-channel-user-voice channel-data) "+")))
+      (concat voice op (erc-server-user-nickname user)))))
 
 (defun erc-format-my-nick ()
   "Return the beginning of this user's message, correctly propertized"
@@ -4585,7 +4578,7 @@ TOPIC string to the current topic."
 	 ;; list of triples: (mode-char 'on/'off argument)
 	 (arg-modes (nth 2 modes)))
     (cond ((erc-channel-p tgt); channel modes
-	   (let ((buf (and (boundp 'erc-server-process) erc-server-process
+	   (let ((buf (and erc-server-process
 			   (erc-get-buffer tgt erc-server-process))))
 	     (when buf
 	       (with-current-buffer buf
@@ -4677,7 +4670,7 @@ person who changed the modes."
 	 (arg-modes (nth 2 modes)))
     ;; now parse the modes changes and do the updates
     (cond ((erc-channel-p tgt); channel modes
-	   (let ((buf (and (boundp 'erc-server-process) erc-server-process
+	   (let ((buf (and erc-server-process
 			   (erc-get-buffer tgt erc-server-process))))
 	     (when buf
 	       ;; FIXME! This used to have an original buffer
@@ -5920,8 +5913,8 @@ If optional argument HERE is non-nil, insert version number at point."
 
 All windows are opened in the current frame."
   (interactive)
-  (unless (boundp 'erc-server-process)
-    (error "No erc-process found in current buffer"))
+  (unless erc-server-process
+    (error "No erc-server-process found in current buffer"))
   (let ((bufs (erc-buffer-list nil erc-server-process)))
     (when bufs
       (delete-other-windows)
@@ -6053,7 +6046,8 @@ All windows are opened in the current frame."
    (s341   . "Inviting %n to channel %c")
    (s352   . "%-11c %-10n %-4a %u@%h (%f)")
    (s353   . "Users on %c: %u")
-   (s367   . "Ban on %b on %c set by %s on %t (Use /banlist!)")
+   (s367   . "Ban for %b on %c")
+   (s367-set-by . "Ban for %b on %c set by %s on %t")
    (s368   . "Banlist of %c ends.")
    (s379   . "%c: Forwarded to %f")
    (s391   . "The time at %s is %t")

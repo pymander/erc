@@ -11,8 +11,15 @@ known as `erc' is now `erc-open'.
 ** New modules
 
 *** Capab identify (erc-capab.el)
+Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG.
 
-**** Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG.
+** Changes and additions to modules
+
+*** Channel tracking (erc-track.el)
+
+**** Use mouse-face and help-echo for channel names in the mode-line.
+This helps people using a mouse know that they are buttons and can be
+clicked on.
 
 * Changes in ERC 5.1.4
 
