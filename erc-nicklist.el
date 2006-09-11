@@ -207,8 +207,9 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 	   (channels (erc-server-user-buffers server-user))
 	   (op       (erc-channel-user-op channel-user))
 	   (voice    (erc-channel-user-voice channel-user))
-	   (bbdb-nick (or (erc-nicklist-search-for-nick (concat login "@" host))
-			  "")
+	   (bbdb-nick (or (erc-nicklist-search-for-nick
+			   (concat login "@" host))
+			  ""))
 	   (away-status (if voice "" "\n(Away)"))
 	   (balloon-text (concat bbdb-nick (if (string= "" bbdb-nick)
 					       "" "\n")
