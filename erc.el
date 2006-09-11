@@ -1803,6 +1803,10 @@ removed from the list will be disabled."
     (const :tag "Join channels automatically" autojoin)
     (const :tag "Integrate with Big Brother Database" bbdb)
     (const :tag "Buttonize URLs, nicknames, and other text" button)
+    (const
+     :tag
+     "Mark unidentified users on freenode and other servers supporting CAPAB"
+     capab-identify)
     (const :tag "Complete nicknames and commands (programmable)"
 	   completion)
     (const :tag "Complete nicknames and commands (old)" hecomplete)
@@ -1843,6 +1847,8 @@ removed from the list will be disabled."
       (setq req (concat "erc-" (symbol-name mod)))
       (cond
        ;; yuck. perhaps we should bring the filenames into sync?
+       ((string= req "erc-capab-identify")
+	(setq req "erc-capab"))
        ((string= req "erc-completion")
 	(setq req "erc-pcomplete"))
        ((string= req "erc-pcomplete")

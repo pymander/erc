@@ -407,13 +407,17 @@ Integrate with the Big Brother Database
 Buttonize URLs, nicknames, and other text
 
 @cindex modules, completion
-@item completion
-Complete nicknames and commands (old).  This is the old module---you
-might prefer the ``pcomplete'' module instead.
+@item pcomplete
+Complete nicknames and commands (programmable)
 
 @cindex modules, fill
 @item fill
 Wrap long lines
+
+@cindex modules, hecomplete
+@item completion
+Complete nicknames and commands (old).  This is the old module---you
+might prefer the ``completion'' module instead.
 
 @cindex modules, identd
 @item identd
@@ -450,10 +454,6 @@ Notify when the online status of certain users changes
 @cindex modules, page
 @item page
 Process CTCP PAGE requests from IRC
-
-@cindex modules, pcomplete
-@item pcomplete
-Complete nicknames and commands (programmable)
 
 @cindex modules, readonly
 @item readonly
