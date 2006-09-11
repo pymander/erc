@@ -1,9 +1,20 @@
+2006-09-10  Eric Hanchrow  <offby1@blarg.net>
+
+	* erc.el (erc-cmd-IGNORE): Prompt user if this might be a regexp
+	instead of a single user.
+
 2006-09-10  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-generate-new-buffer-name): If this is a server
 	buffer and a process exists already, create a new buffer.
 	(erc-open): If the IRC session was continued, restore the old
 	point.  Thanks to Stephan Stahl for the report.
+	(erc-member-ignore-case): Coding style tweak.
+	(erc-cmd-UNIGNORE): Quote the user before comparison.  If we don't
+	find the user listed verbatim, try to match them against the list
+	using string-match.  In this case, prompt as to whether the regexp
+	should be removed.
+	(erc-ignored-user-p): Remove CL-ism.
 
 	* erc-autoaway.el (erc-autoaway-possibly-set-away): Check to see
 	whether we are already away.

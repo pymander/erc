@@ -1571,7 +1571,8 @@ All strings are compared according to IRC protocol case rules, see
   (catch 'result
     (while list
       (if (string= string (erc-downcase (car list)))
-	  (throw 'result list) (setq list (cdr list))))))
+	  (throw 'result list)
+	(setq list (cdr list))))))
 
 (defmacro erc-with-buffer (spec &rest body)
   "Execute BODY in the buffer associated with SPEC.
@@ -2561,7 +2562,11 @@ therefore has to contain the command itself as well."
   "Ignore USER.  This should be a regexp matching nick!user@host.
 If no USER argument is specified, list the contents of `erc-ignore-list'."
   (if user
-      (progn
+      (let ((quoted (regexp-quote user)))
+	(when (and (not (string= user quoted))
+		   (y-or-n-p (format "Use regexp-quoted form (%s) instead? "
+				     quoted)))
+	  (setq user quoted))
 	(erc-display-line
 	 (erc-make-notice (format "Now ignoring %s" user))
 	 'active)
@@ -2578,16 +2583,22 @@ If no USER argument is specified, list the contents of `erc-ignore-list'."
 (defun erc-cmd-UNIGNORE (user)
   "Remove the user specified in USER from the ignore list."
   (let ((ignored-nick (car (erc-with-server-buffer
-			     (erc-member-ignore-case user erc-ignore-list)))))
-    (if (null ignored-nick)
+			     (erc-member-ignore-case (regexp-quote user)
+						     erc-ignore-list)))))
+    (unless ignored-nick
+      (if (setq ignored-nick (erc-ignored-user-p user))
+	  (unless (y-or-n-p (format "Remove this regexp (%s)? "
+				    ignored-nick))
+	    (setq ignored-nick nil))
 	(erc-display-line
 	 (erc-make-notice (format "%s is not currently ignored!" user))
-	 'active)
+	 'active)))
+    (when ignored-nick
       (erc-display-line
        (erc-make-notice (format "No longer ignoring %s" user))
-       'active))
-    (erc-with-server-buffer
-      (setq erc-ignore-list (delete ignored-nick erc-ignore-list))))
+       'active)
+      (erc-with-server-buffer
+	(setq erc-ignore-list (delete ignored-nick erc-ignore-list)))))
   t)
 
 (defun erc-cmd-CLEAR ()
@@ -5091,10 +5102,10 @@ The previous default target of QUERY type gets removed"
 Takes a full SPEC of a user in the form \"nick!login@host\", and
 matches against all the regexp's in `erc-ignore-list'.  If any
 match, returns that regexp."
-  (dolist (ignored (erc-with-server-buffer erc-ignore-list))
-    (if (string-match ignored spec)
-	;; We have `require'd cl, so we can return from the block named nil
-	(return ignored))))
+  (catch 'found
+    (dolist (ignored (erc-with-server-buffer erc-ignore-list))
+      (if (string-match ignored spec)
+	  (throw 'found ignored)))))
 
 (defun erc-ignored-reply-p (msg tgt proc)
   ;; FIXME: this docstring needs fixing -- Lawrence 2004-01-08
