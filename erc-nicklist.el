@@ -225,7 +225,7 @@ Seach for the BBDB record of this contact.  If not found, return nil."
 			      'erc-nicklist-channel channel
 			      'help-echo balloon-text)
 	      "\n")))
-  (erc-nicklist-mode))
+  (erc-nicklist-mode)))
 
 
 (defun erc-nicklist ()
