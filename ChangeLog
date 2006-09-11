@@ -442,7 +442,21 @@
 
 	* erc-dcc.el: Use (eval-when-compile (require 'cl)).
 
+2006-02-12  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el, erc-dcc.el, erc-ezbounce.el, erc-fill.el,
+	erc-goodies.el, erc-hecomplete.el, erc-ibuffer.el, erc-identd.el,
+	erc-imenu.el, erc-join.el, erc-lang.el, erc-list.el, erc-log.el,
+	erc-match.el, erc-menu.el, erc-netsplit.el, erc-networks.el,
+	erc-notify.el, erc-page.el, erc-pcomplete.el, erc-replace.el,
+	erc-ring.el, erc-services.el, erc-sound.el, erc-speedbar.el,
+	erc-spelling.el, erc-track.el, erc-truncate.el, erc-xdcc.el: Add
+	2006 to copyright years, to comply with the changed guidelines.
+
 2006-02-11  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-update-modules): Make some requirements shorter, so
+	that it's easier to see why they are needed.
 
 	* erc-stamp.el (erc-timestamp-use-align-to): Renamed from
 	`erc-timestamp-right-align-by-pixel'.  Set the default based on
@@ -481,6 +495,10 @@
 	(debrevision-mwolson): New rule that causes a Debian revision to
 	be built.
 
+	* erc.el (erc-migrate-modules): Use a better algorithm.  Thanks to
+	Johan Bockgård.
+	(erc-modules): Change use of 'pcomplete to 'completion.
+
 2006-02-09  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-get-parsed-vector, erc-get-parsed-vector-nick)
@@ -502,12 +520,35 @@
 
 2006-02-07  Michael Olson  <mwolson@gnu.org>
 
+	* ChangeLog.01, ChangeLog.02, ChangeLog.03, ChangeLog.04,
+	ChangeLog.05: Rename from ChangeLog.NNNN in order to disambiguate
+	the filenames in DOS.
+
+	* erc-goodies.el: Comment fix.
+
+	* erc-hecomplete.el: Rename from erc-complete.el.  Update
+	commentary.  Use define-erc-module so that it's possible to
+	actually use this.
+	(erc-hecomplete): Rename function from `erc-complete'.
+	(erc-hecomplete): Rename group from `erc-old-complete'.  Docfix.
+
+	* erc-join.el: Rename from erc-autojoin.el.
+
+	* erc-networks.el: Rename from erc-nets.el.
+
+	* erc-services.el: Rename from erc-nickserv.el.
+
 	* erc-stamp.el (erc-insert-aligned): Don't take 3rd argument.  Use
 	the simpler `indent-to' function when
 	`erc-timestamp-right-align-by-pixel' is nil.
 	(erc-insert-timestamp-right): If the timestamp goes on the
 	following line, don't add timestamp properties to the spaces in
 	front of it.
+
+	* erc.el (erc-migrate-modules): New function that eases migration
+	of module names.
+	(erc-modules): Call erc-migrate-modules in the :get accessor.
+	(erc-modules, erc-update-modules): Update for new modules names.
 
 2006-02-05  Diane Murray  <disumu@x3y2z1.net>
 
@@ -928,7 +969,12 @@
 	* erc-track.el (erc-track-remove-from-mode-line): Handle case
 	where global-mode-string is not a list.  Emacs22 permits this.
 
-See ChangeLog.2005 for earlier changes.
+
+See ChangeLog.05 for earlier changes.
+
+    Copyright (C) 2006 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.
 
 ;; Local Variables:
 ;; coding: utf-8
