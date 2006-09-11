@@ -1,7 +1,5 @@
 ERC NEWS                                                       -*- outline -*-
 
-<<<<<<< TREE
-=======
 * Changes in ERC 5.2 (unreleased)
 
 ** M-x erc RET now starts ERC.
@@ -23,7 +21,6 @@ Mark unidentified users on servers supporting CAPAB IDENTIFY-MSG.
 This helps people using a mouse know that they are buttons and can be
 clicked on.
 
->>>>>>> MERGE-SOURCE
 * Changes in ERC 5.1.4
 
 ** Make find-function and find-variable work in Emacs 22 for
