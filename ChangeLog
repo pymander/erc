@@ -1,3 +1,37 @@
+2006-08-20  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-backend.el (erc-process-sentinel-1): Doc fix.  Let
+	`erc-server-reconnect-p' check all condition cases.
+	(erc-server-reconnect-p): Moved rest of checks from
+	`erc-process-sentinel-1' to here.  Now takes an argument, EVENT.
+
+2006-08-14  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-menu.el: Updated copyright years.  Removed EmacsWiki URL.
+	(erc-menu-definition): Name the menu "ERC" instead of "IRC" to
+	avoid confusion with rcirc and other clients.
+
+	* erc-backend.el (erc-server-banned): New variable.
+	(erc-server-connect): Set `erc-server-banned' to nil.
+	(erc-process-sentinel-1): Use `erc-server-reconnect-p'.
+	(erc-server-reconnect-p): New function.  Return non-nil if the
+	user wants automatic reconnects and if the user has not been
+	banned from the server.  This should fix a bug where ERC gets into
+	a loop trying to reconnect with no way to stop it when the user is
+	denied access to the server due to a server ban.  It might also
+	help when Tor users are blocked from freenode if freenode servers
+	send the 465 message before disconnecting.
+	(465): Handle "banned from server" error notices.
+
+2006-08-13  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-server-timed-out): New variable that
+	indicates whether the current connection has timed out due to
+	failure to respond to a ping.
+	(erc-server-send-ping): Set erc-server-timed-out to t.
+	(erc-server-connect): Initialize erc-server-timed-out to nil.
+	(erc-process-sentinel-1): Consult erc-server-timed-out.
+
 2006-08-11  Michael Olson  <mwolson@gnu.org>
 
 	* erc-fill.el (erc-fill): Skip any initial empty lines so that we

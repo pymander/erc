@@ -186,6 +186,14 @@ This variable is buffer-local.")
   "Non-nil if the user requests a quit.")
 (make-variable-buffer-local 'erc-server-quitting)
 
+(defvar erc-server-timed-out nil
+  "Non-nil if the IRC server failed to respond to a ping.")
+(make-variable-buffer-local 'erc-server-timed-out)
+
+(defvar erc-server-banned nil
+  "Non-nil if the user is denied access because of a server ban.")
+(make-variable-buffer-local 'erc-server-banned)
+
 (defvar erc-server-lines-sent nil
   "Line counter.")
 (make-variable-buffer-local 'erc-server-lines-sent)
@@ -415,8 +423,10 @@ Additionally, detect whether the IRC process has hung."
         (if (> (erc-time-diff (erc-current-time)
                               erc-server-last-received-time)
                erc-server-send-ping-interval)
-            ;; if the process is hung, kill it
-            (delete-process erc-server-process)
+            (progn
+              ;; if the process is hung, kill it
+              (setq erc-server-timed-out t)
+              (delete-process erc-server-process))
           (erc-server-send (format "PING %.0f" (erc-current-time)))))
     ;; remove timer if the server buffer has been killed
     (let ((timer (assq buf erc-server-ping-timer-alist)))
@@ -456,6 +466,8 @@ We will store server variables in the current buffer."
     (message "%s...done" msg))
   ;; Misc server variables
   (setq erc-server-quitting nil)
+  (setq erc-server-timed-out nil)
+  (setq erc-server-banned nil)
   (let ((time (erc-current-time)))
     (setq erc-server-last-sent-time time)
     (setq erc-server-last-ping-time time)
@@ -511,10 +523,9 @@ We will store server variables in the current buffer."
             (erc-parse-server-response process line)))))))
 
 (defun erc-process-sentinel-1 (event)
-  "This will be called when erc-process-sentinel has decided that we
-are going to quit.  Determine whether user has quit or whether erc has
-been terminated.  Conditionally try to reconnect and take appropriate
-action."
+  "Called when `erc-process-sentinel' has decided that we're disconnecting.
+Determine whether user has quit or whether erc has been terminated.
+Conditionally try to reconnect and take appropriate action."
   (if erc-server-quitting
       ;; normal quit
       (progn
@@ -524,17 +535,14 @@ action."
           (kill-buffer (current-buffer))))
     ;; unexpected disconnect
     (erc-display-message nil 'error (current-buffer)
-                         (if erc-server-auto-reconnect
+                         (if (erc-server-reconnect-p event)
                              'disconnected
                            'disconnected-noreconnect))
     (erc-update-mode-line)
     (erc-set-active-buffer (current-buffer))
     (setq erc-server-last-sent-time 0)
     (setq erc-server-lines-sent 0)
-    (if (and erc-server-auto-reconnect
-             (not (string-match "^deleted" event))
-             ;; open-network-stream-nowait error for connection refused
-             (not (string-match "^failed with code 111" event)))
+    (if (erc-server-reconnect-p event)
         ;; Yuck, this should perhaps funcall
         ;; erc-server-reconnect-function with no args
         (erc erc-session-server erc-session-port erc-server-current-nick
@@ -542,6 +550,16 @@ action."
       ;; terminate, do not reconnect
       (erc-display-message nil 'error (current-buffer)
                            'terminated ?e event))))
+
+(defun erc-server-reconnect-p (event)
+  "Return non-nil if ERC should attempt to reconnect automatically.
+EVENT is the message received from the closed connection process."
+  (and erc-server-auto-reconnect
+       (not erc-server-banned)
+       (or erc-server-timed-out
+           (not (string-match "^deleted" event)))
+       ;; open-network-stream-nowait error for connection refused
+       (not (string-match "^failed with code 111" event))))
 
 (defun erc-process-sentinel (cproc event)
   "Sentinel function for ERC process."
@@ -1728,6 +1746,14 @@ See `erc-display-server-message'." nil
                        ?c (second (erc-response.command-args parsed))
                        ?m (erc-response.contents parsed)))
 
+(define-erc-response-handler (465)
+  "You are banned from this server." nil
+  (setq erc-server-banned t)
+  ;; show the server's message, as a reason might be provided
+  (erc-display-error-notice
+   parsed
+   (erc-response.contents parsed)))
+
 (define-erc-response-handler (474)
   "Banned from channel errors" nil
   (erc-display-message parsed '(notice error) nil
@@ -1761,7 +1787,7 @@ See `erc-display-server-message'." nil
     (erc-display-message parsed '(error notice) 'active 's482
                          ?c channel ?m message)))
 
-(define-erc-response-handler (431 445 446 451 462 463 464 465 481 483 484 485
+(define-erc-response-handler (431 445 446 451 462 463 464 481 483 484 485
                                   491 501 502)
   ;; 431 - No nickname given
   ;; 445 - SUMMON has been disabled
@@ -1770,7 +1796,6 @@ See `erc-display-server-message'." nil
   ;; 462 - Unauthorized command (already registered)
   ;; 463 - Your host isn't among the privileged
   ;; 464 - Password incorrect
-  ;; 465 - You are banned from this server
   ;; 481 - Need IRCop privileges
   ;; 483 - You can't kill a server!
   ;; 484 - Your connection is restricted!

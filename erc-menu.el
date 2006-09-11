@@ -1,10 +1,9 @@
 ;; erc-menu.el -- Menu-bar definitions for ERC
 
-;; Copyright (C) 2001, 2002, 2004, 2005 Free Software Foundation, Inc.
+;; Copyright (C) 2001, 2002, 2004, 2005, 2006 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@delysid.org>
 ;; Keywords: comm, processes, menu
-;; URL: http://www.emacswiki.org/cgi-bin/wiki.pl?ErcMenu
 
 ;; This file is part of GNU Emacs.
 
@@ -32,7 +31,7 @@
 (require 'easymenu)
 
 (defvar erc-menu-definition
-  (list "IRC"
+  (list "ERC"
 	["Connect to server..." erc-select t]
 	["Disconnect from server..." erc-quit-server erc-server-connected]
 	"-"
