@@ -464,7 +464,9 @@
 
 2006-07-05  Michael Olson  <mwolson@gnu.org>
 
-	* erc.el (erc-modules): Add the `page' module to the list.
+	* erc.el (erc-modules): Use `set' instead of `set-default', since
+	this setting should never be buffer-local.  Add the `list' and
+	`page' modules to the list.
 
 	* erc.texi (Modules): Add entries for `list' and `page' modules.
 	Change "spell" to "spelling".
@@ -752,6 +754,17 @@
 2006-02-13  Michael Olson  <mwolson@gnu.org>
 
 	* erc-dcc.el: Use (eval-when-compile (require 'cl)).
+
+2006-02-12  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el, erc-dcc.el, erc-ezbounce.el, erc-fill.el,
+	erc-goodies.el, erc-hecomplete.el, erc-ibuffer.el, erc-identd.el,
+	erc-imenu.el, erc-join.el, erc-lang.el, erc-list.el, erc-log.el,
+	erc-match.el, erc-menu.el, erc-netsplit.el, erc-networks.el,
+	erc-notify.el, erc-page.el, erc-pcomplete.el, erc-replace.el,
+	erc-ring.el, erc-services.el, erc-sound.el, erc-speedbar.el,
+	erc-spelling.el, erc-track.el, erc-truncate.el, erc-xdcc.el: Add
+	2006 to copyright years, to comply with the changed guidelines.
 
 2006-02-11  Michael Olson  <mwolson@gnu.org>
 
@@ -1305,7 +1318,12 @@
 	* erc-track.el (erc-track-remove-from-mode-line): Handle case
 	where global-mode-string is not a list.  Emacs22 permits this.
 
+
 See ChangeLog.05 for earlier changes.
+
+    Copyright (C) 2006 Free Software Foundation, Inc.
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.
 
 ;; Local Variables:
 ;; coding: utf-8

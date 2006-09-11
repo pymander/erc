@@ -1807,6 +1807,9 @@ removed from the list will be disabled."
      :tag
      "Mark unidentified users on freenode and other servers supporting CAPAB"
      capab-identify)
+    (const :tag "Complete nicknames and commands (programmable)"
+	   completion)
+    (const :tag "Complete nicknames and commands (old)" hecomplete)
     (const :tag "Wrap long lines" fill)
     (const :tag "Launch an identd server on port 8113" identd)
     (const :tag "Highlight or remove IRC control characters"
@@ -1817,12 +1820,8 @@ removed from the list will be disabled."
     (const :tag "Detect netsplits" netsplit)
     (const :tag "Don't display non-IRC commands after evaluation"
 	   noncommands)
-    (const :tag
-	   "Notify when the online status of certain users changes"
+    (const :tag "Notify when the online status of certain users changes"
 	   notify)
-    (const :tag "Complete nicknames and commands (programmable)"
-	   completion)
-    (const :tag "Complete nicknames and commands (old)" hecomplete)
     (const :tag "Process CTCP PAGE requests from IRC" page)
     (const :tag "Make displayed lines read-only" readonly)
     (const :tag "Replace text in messages" replace)
