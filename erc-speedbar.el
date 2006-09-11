@@ -113,7 +113,7 @@ This will add a speedbar major display mode."
   (erase-buffer)
   (let (serverp chanp queryp)
     (with-current-buffer buffer
-      (setq serverp (eq buffer (process-buffer erc-server-process)))
+      (setq serverp (erc-server-buffer-p))
       (setq chanp (erc-channel-p (erc-default-target)))
       (setq queryp (erc-query-buffer-p)))
     (cond (serverp

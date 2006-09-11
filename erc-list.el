@@ -188,7 +188,7 @@ available channel)."
 Please note that this function only works with IRC servers which conform
 to RFC and send the LIST header (#321) at start of list transmission."
   (interactive)
-  (with-current-buffer (erc-server-buffer)
+  (erc-with-server-buffer
     (erc-once-with-server-event
      321
      '(progn

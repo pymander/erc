@@ -540,7 +540,7 @@ deactivate/activate match logging in the latter. See
     (when (and
 	   (or (eq erc-log-matches-flag t)
 	       (and (eq erc-log-matches-flag 'away)
-		    erc-away))
+		    (erc-away-time)))
 	   match-buffer-name)
       (let ((line (format-spec erc-log-match-format
 		   (format-spec-make
@@ -572,7 +572,7 @@ deactivate/activate match logging in the latter. See
 
 (defun erc-log-matches-come-back (proc parsed)
   "Display a notice that messages were logged while away."
-  (when (and erc-away
+  (when (and (erc-away-time)
 	     (eq erc-log-matches-flag 'away))
     (mapc
      (lambda (match-type)
@@ -583,7 +583,7 @@ deactivate/activate match logging in the latter. See
 				  (with-current-buffer buffer
 				    (get-text-property (1- (point-max))
 						       'timestamp))))
-		  (away-time     (erc-emacs-time-to-erc-time erc-away)))
+		  (away-time (erc-emacs-time-to-erc-time (erc-away-time))))
 	     (when (and away-time last-msg-time
 			(erc-time-gt last-msg-time away-time))
 	       (erc-display-message

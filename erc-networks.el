@@ -733,12 +733,12 @@ search for a match in `erc-networks-alist'."
 
 (defun erc-network ()
   "Return the value of `erc-network' for the current server."
-  (with-current-buffer (erc-server-buffer) erc-network))
+  (erc-with-server-buffer erc-network))
 
 (defun erc-current-network ()
   "Deprecated.  Use `erc-network' instead.  Return the name of this server's
 network as a symbol."
-  (with-current-buffer (erc-server-buffer)
+  (erc-with-server-buffer
     (intern (downcase (symbol-name erc-network)))))
 
 (erc-make-obsolete 'erc-current-network 'erc-network
@@ -746,7 +746,7 @@ network as a symbol."
 
 (defun erc-network-name ()
   "Returns the name of the current network as a string."
-  (with-current-buffer (erc-server-buffer) (symbol-name erc-network)))
+  (erc-with-server-buffer (symbol-name erc-network)))
 
 (defun erc-set-network-name (proc parsed)
   "Set `erc-network' to the value returned by `erc-determine-network'."

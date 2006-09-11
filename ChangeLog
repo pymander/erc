@@ -1,3 +1,136 @@
+2006-08-20  Michael Olson  <mwolson@gnu.org>
+
+	* erc-identd.el (erc-identd): New customization group.
+	(erc-identd-port): New option that specifies the port to use if
+	none is given as an argument to erc-identd-start.
+	(identd): Place erc-identd-quickstart in erc-connect-pre-hook
+	instead of erc-identd-start so that we deal with the different
+	meaning of the first argument.
+	(erc-identd-start): Use erc-identd-port.
+	(erc-identd-quickstart): New function that ignores any arguments
+	and calls erc-identd-start.
+
+	* erc.el (erc-with-server-buffer): New macro that switches to the
+	current ERC server buffer and runs some code.  If no server buffer
+	is available, return nil.  This is a useful way to access
+	variables in the server buffer.
+	(erc-get-server-user, erc-add-server-user)
+	(erc-remove-server-user, erc-change-user-nickname)
+	(erc-get-server-nickname-list, erc-get-server-nickname-alist)
+	(erc-ison-p, erc-active-buffer, erc-cmd-IGNORE)
+	(erc-cmd-UNIGNORE, erc-cmd-IDLE, erc-cmd-NICK, erc-cmd-BANLIST)
+	(erc-cmd-MASSUNBAN, erc-nickname-in-use, erc-ignored-user-p)
+	(erc-format-channel-modes): Use it.
+	(erc-once-with-server-event, erc-once-with-server-event-global)
+	(erc-with-buffer, erc-with-all-buffers-of-server): Use make-symbol
+	instead of gensym.
+	(erc-open-server-buffer-p): New function that returns non-nil if
+	the given buffer is an ERC server buffer that has an open IRC
+	process.
+	(erc-with-buffer): Use buffer-live-p here to set a good example,
+	though it isn't really needed here.
+	(erc-away): Mention erc-away-time.
+	(erc): Don't propagate the erc-away setting, since it makes more
+	sense to access it from the server buffer.  Set up the prompt
+	before connecting rather than after.  Run erc-connect-pre-hook
+	with the buffer as an argument, instead of no arguments.
+	(erc-cmd-GAWAY): Use erc-open-server-buffer-p instead of
+	erc-server-buffer-p so that only open connections are set away.
+	(erc-cmd-GQUIT): Use erc-open-server-buffer-p.
+	(erc-process-away): Docfix.  Don't set erc-away in channel
+	buffers.
+	(erc-set-current-nick): Make this uniform with the style used in
+	erc-current-nick.
+	(erc-away-time): Rename from erc-away-p, since this is no longer a
+	boolean-style predicate.
+	(erc-format-away-status): Use it.
+	(erc-initialize-log-marker): Accept a `buffer' argument.
+	(erc-connect-pre-hook): Docfix.
+	(erc-connection-established): Make sure this runs in the correct
+	buffer.
+	(erc-set-initial-user-mode): Accept a `buffer' argument.
+
+	* erc-stamp.el (erc-add-timestamp): Use erc-away-time.
+
+	* erc-spelling.el (erc-spelling-init): Use
+	erc-with-server-buffer.  Accept `buffer' argument.
+	(spelling): Call erc-spelling-init with the `buffer' argument.
+
+	* erc-speedbar.el (erc-speedbar-buttons): Use erc-server-buffer-p.
+
+	* erc-pcomplete.el (pcomplete/erc-mode/UNIGNORE)
+	(pcomplete-erc-all-nicks): Use erc-with-server-buffer.
+
+	* erc-notify.el (erc-notify-timer, erc-cmd-NOTIFY): Use
+	erc-with-server-buffer.
+
+	* erc-networks.el (erc-network, erc-current-network)
+	(erc-network-name): Use erc-with-server-buffer.
+
+	* erc-netsplit.el (erc-cmd-WHOLEFT): Use erc-with-server-buffer.
+
+	* erc-match.el (erc-log-matches, erc-log-matches-come-back): Use
+	erc-away-time.
+
+	* erc-log.el (log): Use erc-away-time.  Remove unnecessary check.
+	Pass `buffer' argument to erc-log-setup-logging instead of setting
+	the current buffer.  Ditto for erc-log-disable-logging.
+	(erc-log-setup-logging, erc-log-disable-loggin): Accept a `buffer'
+	argument.
+
+	* erc-list.el (erc-chanlist): Use erc-with-server-buffer.
+
+	* erc-ibuffer.el (erc-away): Use erc-away-time.
+
+	* erc-dcc.el (erc-dcc-get-filter): Temporarily make the buffer
+	read only instead of permanently doing so.
+
+	* erc-compat.el (erc-gensym, *erc-sym-counter*): Remove, since
+	Emacs Lisp has make-symbol, which is better.
+
+	* erc-chess.el (erc-chess-handler, erc-cmd-CHESS): Use
+	erc-with-server-buffer.
+
+	* erc-capab.el (capab-identify): Only deal with server buffers
+	that have an open IRC process.
+	(erc-capab-identify-add-prefix): Use erc-with-server-buffer.
+
+	* erc-backend.el (erc-server-connected): Docfix.  Recommend the
+	`erc-server-process-alive' function.
+	(erc-coding-system-for-target): Supply a default target if one is
+	not given.
+	(erc-server-send): Simplify slightly.
+	(erc-call-hooks): Use erc-with-server-buffer.
+	(erc-server-connect, erc-server-setup-periodical-ping): Accept
+	`buffer' argument.
+
+	* erc-autoaway.el (erc-autoaway-reestablish-idletimer): Move
+	higher to avoid an automatic load snafu.
+	(erc-autoaway-some-server-buffer): New function that returns an
+	ERC server buffer with a live connection, or nil otherwise.
+	(erc-autoaway-insinuate-maybe): New function that adds the
+	autoaway reset function to post-command-hook if at least one ERC
+	process is alive.
+	(erc-autoaway-remove-maybe): New function that removes the
+	autoaway reset function from post-command-hook if no ERC process
+	is alive.
+	(autoaway): Don't touch post-command-hook unless an IRC process is
+	already open.  Remove our addition to post-command-hook as soon as
+	there are no more IRC processes open.  Reset the indicators before
+	connecting to an IRC server, which fixes a bug when re-connecting.
+	(erc-autoaway-reset-idle-user): Call erc-autoaway-remove-maybe if
+	there are no more IRC processes open.
+	(erc-autoaway-set-back): Pick an open IRC process.  Accept an
+	argument which is a function call if we can't find one.
+	(erc-autoaway-some-open-server-buffer): New function which returns
+	an ERC server buffer with an open connection and a user that is
+	not away.
+	(erc-autoaway-possibly-set-away, erc-autoaway-set-away): Use it.
+	(erc-autoaway-set-away): Accept a `notest' argument which is used
+	to avoid testing the same thing twice.
+	(erc-autoaway-last-sent-time, erc-autoaway-caused-away): Move
+	higher in file to fix byte-compile warning.
+
 2006-08-20  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-backend.el (erc-process-sentinel-1): Doc fix.  Let

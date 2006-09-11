@@ -205,7 +205,7 @@ also be a predicate function. To only log when you are not set away, use:
 \(setq erc-enable-logging
       (lambda (buffer)
 	(with-current-buffer buffer
-	  (not erc-away))))"
+	  (null (erc-away-time)))))"
   ;; enable
   ((when erc-log-write-after-insert
      (add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs))
@@ -218,8 +218,7 @@ also be a predicate function. To only log when you are not set away, use:
    ;; append, so that 'erc-initialize-log-marker runs first
    (add-hook 'erc-connect-pre-hook 'erc-log-setup-logging 'append)
    (dolist (buffer (erc-buffer-list))
-     (when (buffer-live-p buffer)
-       (with-current-buffer buffer (erc-log-setup-logging)))))
+     (erc-log-setup-logging buffer)))
   ;; disable
   ((remove-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)
    (remove-hook 'erc-send-post-hook 'erc-save-buffer-in-logs)
@@ -229,36 +228,38 @@ also be a predicate function. To only log when you are not set away, use:
    (remove-hook 'erc-part-hook 'erc-conditional-save-buffer)
    (remove-hook 'erc-connect-pre-hook 'erc-log-setup-logging)
    (dolist (buffer (erc-buffer-list))
-     (when (buffer-live-p buffer)
-       (with-current-buffer buffer (erc-log-disable-logging))))))
+     (erc-log-disable-logging buffer))))
 
 (define-key erc-mode-map "\C-c\C-l" 'erc-save-buffer-in-logs)
 
 ;;; functionality referenced from erc.el
-(defun erc-log-setup-logging ()
+(defun erc-log-setup-logging (buffer)
   "Setup the buffer-local logging variables in the current buffer.
-This function is destined to be run from `erc-connect-pre-hook'."
-  (when (erc-logging-enabled)
-    (auto-save-mode -1)
-    (setq buffer-file-name nil)
-    (cond ((boundp 'write-file-functions)
-	   (set (make-local-variable 'write-file-functions)
-		'(erc-save-buffer-in-logs)))
-	  ((boundp 'local-write-file-hooks)
-	   (setq local-write-file-hooks '(erc-save-buffer-in-logs)))
-	  (t
-	   (set (make-local-variable 'write-file-hooks)
-		'(erc-save-buffer-in-logs))))
-    (when erc-log-insert-log-on-open
-      (ignore-errors (insert-file-contents (erc-current-logfile))
-		     (move-marker erc-last-saved-position
-				  (1- (point-max)))))))
+This function is destined to be run from `erc-connect-pre-hook'.
+The current buffer is given by BUFFER."
+  (when (erc-logging-enabled buffer)
+    (with-current-buffer buffer
+      (auto-save-mode -1)
+      (setq buffer-file-name nil)
+      (cond ((boundp 'write-file-functions)
+	     (set (make-local-variable 'write-file-functions)
+		  '(erc-save-buffer-in-logs)))
+	    ((boundp 'local-write-file-hooks)
+	     (setq local-write-file-hooks '(erc-save-buffer-in-logs)))
+	    (t
+	     (set (make-local-variable 'write-file-hooks)
+		  '(erc-save-buffer-in-logs))))
+      (when erc-log-insert-log-on-open
+	(ignore-errors (insert-file-contents (erc-current-logfile))
+		       (move-marker erc-last-saved-position
+				    (1- (point-max))))))))
 
-(defun erc-log-disable-logging ()
-  "Disable logging in the current buffer."
-  (when (erc-logging-enabled)
-    (setq buffer-offer-save nil
-	  erc-enable-logging nil)))
+(defun erc-log-disable-logging (buffer)
+  "Disable logging in BUFFER."
+  (when (erc-logging-enabled buffer)
+    (with-current-buffer buffer
+      (setq buffer-offer-save nil
+	    erc-enable-logging nil))))
 
 (defun erc-log-all-but-server-buffers (buffer)
   "Returns t if logging should be enabled in BUFFER.

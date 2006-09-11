@@ -147,7 +147,7 @@ or `erc-send-modify-hook'."
 	(error "Timestamp function unbound"))
       (when (and (fboundp erc-insert-away-timestamp-function)
 		 erc-away-timestamp-format
-		 (with-current-buffer (erc-server-buffer) erc-away)
+		 (erc-away-time)
 		 (not erc-timestamp-format))
 	(funcall erc-insert-away-timestamp-function
 		 (erc-format-timestamp ct erc-away-timestamp-format)))
