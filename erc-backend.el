@@ -453,7 +453,7 @@ The current buffer is given by BUFFER."
 
 (defun erc-server-process-alive ()
   "Return non-nil when `erc-server-process' is open or running."
-  (and (boundp 'erc-server-process)
+  (and erc-server-process
        (processp erc-server-process)
        (memq (process-status erc-server-process) '(run open))))
 
@@ -552,8 +552,8 @@ Conditionally try to reconnect and take appropriate action."
     (if (erc-server-reconnect-p event)
         ;; Yuck, this should perhaps funcall
         ;; erc-server-reconnect-function with no args
-        (erc erc-session-server erc-session-port erc-server-current-nick
-             erc-session-user-full-name t erc-session-password)
+        (erc-open erc-session-server erc-session-port erc-server-current-nick
+                  erc-session-user-full-name t erc-session-password)
       ;; terminate, do not reconnect
       (erc-display-message nil 'error (current-buffer)
                            'terminated ?e event))))
@@ -1085,11 +1085,11 @@ add things to `%s' instead."
         (let* ((str (cond
                      ;; If I have joined a channel
                      ((erc-current-nick-p nick)
-                      (setq buffer (erc erc-session-server erc-session-port
-                                        nick erc-session-user-full-name
-                                        nil nil
-                                        erc-default-recipients chnl
-                                        erc-server-process))
+                      (setq buffer (erc-open erc-session-server erc-session-port
+                                             nick erc-session-user-full-name
+                                             nil nil
+                                             erc-default-recipients chnl
+                                             erc-server-process))
                       (when buffer
                         (set-buffer buffer)
                         (erc-add-default-channel chnl)
@@ -1645,11 +1645,16 @@ See `erc-display-server-message'." nil
   "Channel ban list entries" nil
   (multiple-value-bind (channel banmask setter time)
       (cdr (erc-response.command-args parsed))
-    (erc-display-message parsed 'notice 'active 's367
-                         ?c channel
-                         ?b banmask
-                         ?s setter
-                         ?t time)))
+    ;; setter and time are not standard
+    (if setter
+        (erc-display-message parsed 'notice 'active 's367-set-by
+                             ?c channel
+                             ?b banmask
+                             ?s setter
+                             ?t (or time ""))
+      (erc-display-message parsed 'notice 'active 's367
+                           ?c channel
+                           ?b banmask))))
 
 (define-erc-response-handler (368)
   "End of channel ban list" nil

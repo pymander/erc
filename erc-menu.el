@@ -28,11 +28,12 @@
 
 ;;; Code:
 
+;(require 'erc)
 (require 'easymenu)
 
 (defvar erc-menu-definition
   (list "ERC"
-	["Connect to server..." erc-select t]
+	["Connect to server..." erc t]
 	["Disconnect from server..." erc-quit-server erc-server-connected]
 	"-"
 	["List channels..." erc-list-channels

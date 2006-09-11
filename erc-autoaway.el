@@ -38,7 +38,7 @@ yourself back when you type something."
 
 (defvar erc-autoaway-idletimer nil
   "The Emacs idletimer.
-This is only used when `erc-autoaway-use-emacs-idle' is non-nil.")
+This is only used when `erc-autoaway-idle-method' is set to 'emacs.")
 
 (defvar erc-autoaway-last-sent-time (erc-current-time)
   "The last time the user sent something.")
@@ -246,6 +246,7 @@ exceeds `erc-autoaway-idle-seconds'."
   ;; this function is called from `erc-timer-hook', which is called
   ;; whenever the server sends something to the client.
   (when (and erc-auto-set-away
+	     (not erc-autoaway-caused-away)
 	     (erc-autoaway-some-open-server-buffer))
     (let ((idle-time (erc-time-diff erc-autoaway-last-sent-time
 				    current-time)))

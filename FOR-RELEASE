@@ -19,7 +19,7 @@ other IRC clients, like Circe.
 
 ** Source
 
-*** Make M-x erc start a session.
+*** [DONE] Make M-x erc start a session.
 New users never think of using M-x erc-select.
 
 *** Change keybinding definitions for `erc-track-switch-buffer'.
