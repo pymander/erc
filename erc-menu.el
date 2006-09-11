@@ -28,6 +28,7 @@
 
 ;;; Code:
 
+;(require 'erc)
 (require 'easymenu)
 
 (defvar erc-menu-definition

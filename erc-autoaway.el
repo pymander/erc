@@ -246,6 +246,7 @@ exceeds `erc-autoaway-idle-seconds'."
   ;; this function is called from `erc-timer-hook', which is called
   ;; whenever the server sends something to the client.
   (when (and erc-auto-set-away
+	     (not erc-autoaway-caused-away)
 	     (erc-autoaway-some-open-server-buffer))
     (let ((idle-time (erc-time-diff erc-autoaway-last-sent-time
 				    current-time)))

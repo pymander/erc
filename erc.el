@@ -1550,7 +1550,7 @@ symbol, it may have these values:
 	     (or target
 		 (with-current-buffer (get-buffer buf-name)
 		   (and (erc-server-buffer-p)
-			(not erc-server-connected))))
+			(not (erc-server-process-alive)))))
 	     (with-current-buffer (get-buffer buf-name)
 	       (and (string= erc-session-server server)
 		    (erc-port-equal erc-session-port port))))
@@ -1906,6 +1906,7 @@ Returns the buffer for the given server or channel."
 	(connected-p (unless connect erc-server-connected))
 	(buffer (erc-get-buffer-create server port channel))
 	(old-buffer (current-buffer))
+	(old-point (point))
 	continued-session)
     (erc-update-modules)
     (set-buffer buffer)
@@ -1971,7 +1972,7 @@ Returns the buffer for the given server or channel."
       (goto-char (point-max))
       (insert "\n"))
     (if continued-session
-	(goto-char (point-max))
+	(goto-char old-point)
       (set-marker erc-insert-marker (point))
       (erc-display-prompt)
       (goto-char (point-max)))

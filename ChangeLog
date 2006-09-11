@@ -1,3 +1,15 @@
+2006-09-10  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-generate-new-buffer-name): If this is a server
+	buffer and a process exists already, create a new buffer.
+	(erc-open): If the IRC session was continued, restore the old
+	point.  Thanks to Stephan Stahl for the report.
+
+	* erc-autoaway.el (erc-autoaway-possibly-set-away): Check to see
+	whether we are already away.
+
+	* erc-menu.el: Fix potential compiler warning.
+
 2006-09-07  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el: Updated Commentary and URL.
