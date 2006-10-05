@@ -1,3 +1,14 @@
+2006-10-05  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el (erc-my-nick-face): New face.
+	(erc): Use FULL-NAME argument, not `erc-user-full-name'.  This
+	fixes a bug where the :full-name argument passed to the function
+	was not respected.
+	(erc-format-my-nick): Use `erc-my-nick-face'.  This should help
+	make it easier to find messages you sent in conversations when
+	`erc-show-my-nick' is non-nil.
+	(erc-compute-server): Doc fix.
+
 2006-09-11  Michael Olson  <mwolson@gnu.org>
 
 	* erc-nicklist.el (erc-nicklist-insert-contents): Add missing

@@ -1173,6 +1173,12 @@ See the variable `erc-command-indicator'."
   "ERC face for errors."
   :group 'erc-faces)
 
+;; same default color as `erc-input-face'
+(defface erc-my-nick-face '((t (:bold t :foreground "brown")))
+  "ERC face for your current nickname in messages sent by you.
+See also `erc-show-my-nick'."
+  :group 'erc-faces)
+
 (defface erc-nick-default-face '((t (:bold t)))
   "ERC nickname default face."
   :group 'erc-faces)
@@ -2120,7 +2126,7 @@ be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
 
   (run-hook-with-args 'erc-before-connect server port nick)
-  (erc-open server port nick erc-user-full-name t password))
+  (erc-open server port nick full-name t password))
 
 (defalias 'erc-select 'erc)
 
@@ -3907,7 +3913,7 @@ See also `erc-format-nick-function'."
 	    (nick (erc-current-nick)))
 	(concat
 	 (erc-propertize open 'face 'erc-default-face)
-	 (erc-propertize nick 'face 'erc-nick-default-face)
+	 (erc-propertize nick 'face 'erc-my-nick-face)
 	 (erc-propertize close 'face 'erc-default-face)))
     (let ((prefix "> "))
       (erc-propertize prefix 'face 'erc-default-face))))
@@ -5460,7 +5466,7 @@ Sets the buffer local variables:
 This tries a number of increasingly more default methods until a
 non-nil value is found.
 
-- SERVER (the argument passwd to this function)
+- SERVER (the argument passed to this function)
 - The `erc-server' option
 - The value of the IRCSERVER environment variable
 - The `erc-default-server' variable"
