@@ -1630,11 +1630,11 @@ See `erc-display-server-message'." nil
   "NAMES notice." nil
   (let ((channel (third (erc-response.command-args parsed)))
         (users (erc-response.contents parsed)))
-    (erc-with-buffer (channel proc)
-      (erc-channel-receive-names users))
     (erc-display-message parsed 'notice (or (erc-get-buffer channel proc)
                                             'active)
-                         's353 ?c channel ?u users)))
+                         's353 ?c channel ?u users)
+    (erc-with-buffer (channel proc)
+      (erc-channel-receive-names users))))
 
 (define-erc-response-handler (366)
   "End of NAMES." nil
