@@ -1686,7 +1686,7 @@ If `erc-track-mode' is in enabled, put the last element of
 Due to some yet unresolved reason, global function `iswitchb-mode'
 needs to be active for this function to work."
   (interactive "P")
-  (eval-when-compile
+  (eval-and-compile
     (require 'iswitchb))
   (let ((iswitchb-make-buflist-hook
 	 (lambda ()
