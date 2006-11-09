@@ -5877,10 +5877,12 @@ P may be an integer or a service name."
 
 (defun erc-string-to-port (s)
   "Convert string S to either an integer port number or a service name."
-  (let ((n (string-to-number s)))
-    (if (= n 0)
-	s
-      n)))
+  (if (numberp s)
+      s
+    (let ((n (string-to-number s)))
+      (if (= n 0)
+	  s
+	n))))
 
 (defun erc-version (&optional here)
   "Show the version number of ERC in the minibuffer.
