@@ -282,8 +282,7 @@ Returns nil iff `erc-server-buffer-p' returns t."
 ;; Make sure that logs get saved, even if someone overrides the active
 ;; process prompt for a quick exit from Emacs
 (defun erc-log-save-all-buffers ()
-  (dolist (buffer (erc-buffer-filter #'(lambda ()
-					 (not (erc-server-buffer-p)))))
+  (dolist (buffer (erc-buffer-list))
     (erc-save-buffer-in-logs buffer)))
 
 ;;;###autoload
