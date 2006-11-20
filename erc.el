@@ -1864,9 +1864,10 @@ removed from the list will be disabled."
       (condition-case nil
 	  (require (intern req))
 	(error nil))
-      (funcall (or (intern-soft (concat "erc-" (symbol-name mod) "-mode"))
-		   (error "`%s' is not a known ERC module" mod))
-	       1))))
+      (let ((sym (intern-soft (concat "erc-" (symbol-name mod) "-mode"))))
+	(if (fboundp sym)
+	    (funcall sym 1)
+	  (error "`%s' is not a known ERC module" mod))))))
 
 (defun erc-setup-buffer (buffer)
   "Consults `erc-join-buffer' to find out how to display `BUFFER'."

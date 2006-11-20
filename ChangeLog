@@ -1,3 +1,8 @@
+2006-11-20  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-update-modules): Display better error message when
+	module not found.
+
 2006-11-12  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el: Save all log buffers when Emacs exits, in case
@@ -15,7 +20,7 @@
 	* erc.el (erc-string-to-port): Avoid error when a numerical port
 	is passed.  Thanks to Zekeriya KOÇ for the report.
 
-2006-11-08  "Łukasz Demianiuk"  <ldemianiuk@gmail.com> (tiny change)
+2006-11-08  Łukasz Demianiuk  <ldemianiuk@gmail.com>  (tiny change)
 
 	* erc.el (erc-header-line): Fix typo.
 
