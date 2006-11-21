@@ -138,8 +138,21 @@ Eric Hanchrow <offby1@blarg.net>:
   * Implemented check of /ignore argument to see whether it was a
     regexp or a normal string (4 lines changed).
 
+John J Foerch <jjfoerch@earthlink.net>
+  * Fix bug with movement around right timestamps (2 lines changed).
+
+ukasz Demianiuk  <ldemianiuk@gmail.com>:
+  * Fix bug in erc-header-line (1 line changed).
+
+Andrea Russo <rastandy@inventati.org>:
+  * Fixed wrong type argument bug in erc-dcc (1 line changed).
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
 forgot.  If you aren't listed here and should be, send an email to
 mwolson@gnu.org along with a list of your contributions.
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
