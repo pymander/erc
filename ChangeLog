@@ -1,3 +1,8 @@
+2006-11-20  Andrea Russo  <rastandy@inventati.org>
+
+	* erc-dcc.el (erc-dcc-chat-setup): Initialize `erc-input-marker'
+	before calling `erc-display-prompt'.
+
 2006-11-20  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-update-modules): Display better error message when
