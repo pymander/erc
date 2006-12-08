@@ -1272,7 +1272,7 @@ add things to `%s' instead."
         (when buffer
           (with-current-buffer buffer
             ;; update the chat partner info.  Add to the list if private
-            ;; message.	 We will accumulate private identities indefinitely
+            ;; message.  We will accumulate private identities indefinitely
             ;; at this point.
             (erc-update-channel-member (if privp nick tgt) nick nick
                                        privp nil nil host login nil nil t)
@@ -1387,7 +1387,7 @@ add things to `%s' instead."
 According to RFC 2812, suggests alternate servers on the network.
 Many servers, however, use this code to show which parameters they have set,
 for example, the network identifier, maximum allowed topic length, whether
-certain commands are accepted and more.	 See documentation for
+certain commands are accepted and more.  See documentation for
 `erc-server-parameters' for more information on the parameters sent.
 
 A server may send more than one 005 message."
