@@ -141,11 +141,14 @@ Eric Hanchrow <offby1@blarg.net>:
 John J Foerch <jjfoerch@earthlink.net>
   * Fix bug with movement around right timestamps (2 lines changed).
 
-ukasz Demianiuk  <ldemianiuk@gmail.com>:
+ukasz Demianiuk <ldemianiuk@gmail.com>:
   * Fix bug in erc-header-line (1 line changed).
 
 Andrea Russo <rastandy@inventati.org>:
   * Fixed wrong type argument bug in erc-dcc (1 line changed).
+
+Juanma Barranquero <lekktu@gmail.com>:
+  * Vetted the inline documentation and provided many fixes.
 
 ----
 

@@ -1,3 +1,7 @@
+2006-12-08  Michael Olson  <mwolson@gnu.org>
+
+	* CREDITS: Add Juanma Barranquero.
+
 2006-11-28  Juanma Barranquero  <lekktu@gmail.com>
 
 	* erc.el (erc-cmd-BANLIST, erc-cmd-MASSUNBAN): Simplify.
