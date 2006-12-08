@@ -2,6 +2,10 @@
 
 	* CREDITS: Add Juanma Barranquero.
 
+	* erc.el: Re-evaluate contributions from a contributor, and found
+	them under 15 lines of non-obvious code, so it is safe to remove
+	the copyright notice.
+
 2006-11-28  Juanma Barranquero  <lekktu@gmail.com>
 
 	* erc.el (erc-cmd-BANLIST, erc-cmd-MASSUNBAN): Simplify.
