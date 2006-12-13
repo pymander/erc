@@ -154,6 +154,11 @@ Andrea Russo <rastandy@inventati.org>:
 Juanma Barranquero <lekktu@gmail.com>:
   * Vetted the inline documentation and provided many fixes.
 
+Leo <sdl.web AT gmail.com>:
+  * Fixed the erc-iswitchb function to only temporarily enable
+    iswitchb mode if it isn't active already (4 lines changed).
+
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
