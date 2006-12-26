@@ -1915,10 +1915,11 @@ Returns the buffer for the given server or channel."
 	(connected-p (unless connect erc-server-connected))
 	(buffer (erc-get-buffer-create server port channel))
 	(old-buffer (current-buffer))
-	(old-point (point))
+	old-point
 	continued-session)
     (erc-update-modules)
     (set-buffer buffer)
+    (setq old-point (point))
     (erc-mode)
     (setq erc-server-announced-name server-announced-name)
     (setq erc-server-connected connected-p)
