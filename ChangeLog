@@ -9,7 +9,7 @@
 	number of reconnection attempts that ERC will make per server.
 	(erc-server-reconnect-timeout): New option that determines the
 	amount of time, in seconds, that ERC will wait between successive
-	reconnect attempts
+	reconnect attempts.
 	(erc-server-reconnect): New function that reestablishes the
 	current IRC connection.  Move some commands from
 	erc-process-sentinel-1 here.
