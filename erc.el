@@ -3195,6 +3195,8 @@ the message given by REASON."
 (defalias 'erc-cmd-GQ 'erc-cmd-GQUIT)
 (put 'erc-cmd-GQUIT 'do-not-parse-args t)
 
+(defalias 'erc-cmd-RECONNECT 'erc-server-reconnect)
+
 (defun erc-cmd-SERVER (server)
   "Connect to SERVER, leaving existing connection intact."
   (erc-log (format "cmd: SERVER: %s" server))
