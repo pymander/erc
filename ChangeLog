@@ -1,12 +1,23 @@
 2006-12-27  Michael Olson  <mwolson@gnu.org>
 
-	* erc.el (erc-cmd-RECONNECT): New command which is an alias to
+	* erc.el (erc-cmd-RECONNECT): New command that calls
 	erc-server-reconnect.
 
-	* erc-backend.el (erc-server-reconnect): New function that
-	reestablishes the current IRC connection.
-	(erc-process-sentinel-1): Use it.
-	(erc-server-reconnect-p): Move higher.
+	* erc-backend.el (erc-server-reconnect-count): New server variable
+	that keeps track of reconnection attempts.
+	(erc-server-reconnect-attempts): New option that determines the
+	number of reconnection attempts that ERC will make per server.
+	(erc-server-reconnect-timeout): New option that determines the
+	amount of time, in seconds, that ERC will wait between successive
+	reconnect attempts
+	(erc-server-reconnect): New function that reestablishes the
+	current IRC connection.  Move some commands from
+	erc-process-sentinel-1 here.
+	(erc-process-sentinel-1): If we have been disconnected, loop until
+	we either reconnect or run out of attempts.
+	(erc-server-reconnect-p): Move higher and make this a defsubst,
+	since I'm worried about the current buffer changing from
+	underneath us.  Implement limit of number of reconnect attempts..
 
 	* erc.texi (Getting Started): Update for /RECONNECT command.
 
