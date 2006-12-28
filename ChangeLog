@@ -1,3 +1,12 @@
+2006-12-28  Michael Olson  <mwolson@gnu.org>
+
+	* erc-list.el: Change header to mention that this is part of ERC,
+	rather than GNU Emacs.
+
+	* erc-networks.el (erc-server-alist): Add Ars OpenIRC and
+	LinuxChix networks.  Thanks to Angelina Carlton for mentioning
+	them.
+
 2006-12-28  Leo  <sdl.web@gmail.com>
 
 	* erc.el (erc-iswitchb): Wrap body in unwind-protect so that
