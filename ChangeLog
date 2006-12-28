@@ -1,3 +1,8 @@
+2006-12-28  Leo  <sdl.web@gmail.com>
+
+	* erc.el (erc-iswitchb): Wrap body in unwind-protect so that
+	hitting C-g does not leave iswitchb-mode on.
+
 2006-12-27  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-cmd-RECONNECT): New command that calls
