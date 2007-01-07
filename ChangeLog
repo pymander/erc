@@ -1,3 +1,12 @@
+2007-01-07  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-modules): Add the menu module.  This should fix a
+	bug with incorrect ERC submenus being displayed.
+
+	* erc-menu.el: Turn this into a module.
+	(erc-menu-add, erc-menu-remove): New functions that add and remove
+	the ERC menu.
+
 2006-12-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc-list.el: Change header to mention that this is part of ERC,

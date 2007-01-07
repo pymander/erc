@@ -74,7 +74,6 @@
 (require 'pp)
 (require 'thingatpt)
 (require 'erc-compat)
-(require 'erc-menu)
 
 (defvar erc-official-location
   "http://emacswiki.org/cgi-bin/wiki/ERC (mailing list: erc-discuss@gnu.org)"
@@ -1784,7 +1783,7 @@ buffer rather than a server buffer.")
 
 (defcustom erc-modules '(netsplit fill button match track completion readonly
 				  ring autojoin noncommands irccontrols
-				  stamp list)
+				  stamp menu list)
   "A list of modules which ERC should enable.
 If you set the value of this without using `customize' remember to call
 \(erc-update-modules) after you change it.  When using `customize', modules
@@ -1826,6 +1825,7 @@ removed from the list will be disabled."
     (const :tag "List channels in a separate buffer" list)
     (const :tag "Save buffers in logs" log)
     (const :tag "Highlight pals, fools, and other keywords" match)
+    (const :tag "Display a menu in ERC buffers" menu)
     (const :tag "Detect netsplits" netsplit)
     (const :tag "Don't display non-IRC commands after evaluation"
 	   noncommands)

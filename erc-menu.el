@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-;(require 'erc)
+(require 'erc)
 (require 'easymenu)
 
 (defvar erc-menu-definition
@@ -98,16 +98,46 @@
 	["Show ERC version" erc-version t])
   "ERC menu definition.")
 
-;; `erc-mode-map' must be defined before doing this
-(eval-after-load "erc"
-  '(progn
-     (easy-menu-define erc-menu erc-mode-map "ERC menu" erc-menu-definition)
-     (easy-menu-add erc-menu erc-mode-map)
+(defvar erc-menu-defined nil
+  "Internal variable used to keep track of whether we've defined the
+ERC menu yet.")
 
-     ;; for some reason the menu isn't automatically added to the menu bar
-     (when (featurep 'xemacs)
-       (add-hook 'erc-mode-hook
-		 (lambda () (easy-menu-add erc-menu erc-mode-map))))))
+;;;###autoload (autoload 'erc-menu-mode "erc-menu" nil t)
+(define-erc-module menu nil
+  "Enable a menu in ERC buffers."
+  ((unless erc-menu-defined
+     ;; make sure the menu only gets defined once, since Emacs 22
+     ;; activates it immediately
+     (easy-menu-define erc-menu erc-mode-map "ERC menu" erc-menu-definition)
+     (setq erc-menu-defined t))
+   (if (featurep 'xemacs)
+       (progn
+	 ;; the menu isn't automatically added to the menu bar in
+	 ;; XEmacs
+	 (add-hook 'erc-mode-hook 'erc-menu-add)
+	 (dolist (buffer (erc-buffer-list))
+	   (with-current-buffer buffer (erc-menu-add))))
+     (erc-menu-add)))
+  ((if (featurep 'xemacs)
+       (progn
+	 (remove-hook 'erc-mode-hook 'erc-menu-add)
+	 (dolist (buffer (erc-buffer-list))
+	   (with-current-buffer buffer (erc-menu-remove))))
+     (erc-menu-remove)
+     ;; `easy-menu-remove' is a no-op in Emacs 22
+     (message "You might have to restart Emacs to remove the ERC menu"))))
+
+;; silence byte-compiler warning
+(eval-when-compile
+  (defvar erc-menu nil))
+
+(defun erc-menu-add ()
+  "Add the ERC menu to the current buffer."
+  (easy-menu-add erc-menu erc-mode-map))
+
+(defun erc-menu-remove ()
+  "Remove the ERC menu from the current buffer."
+  (easy-menu-remove erc-menu))
 
 (provide 'erc-menu)
 
