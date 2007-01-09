@@ -790,6 +790,13 @@ set if some hacker is trying to flood you away."
   :group 'erc
   :type 'string)
 
+(defcustom erc-system-name nil
+  "Use this as the name of your system.
+If nil, ERC will call `system-name' to get this information."
+  :group 'erc
+  :type '(choice (const :tag "Default system name" nil)
+		 string))
+
 (defcustom erc-ignore-list nil
   "*List of regexps matching user identifiers to ignore.
 
@@ -5441,7 +5448,7 @@ user input."
   (erc-log (format "login: nick: %s, user: %s %s %s :%s"
 		   (erc-current-nick)
 		   (user-login-name)
-		   (system-name)
+		   (or erc-system-name (system-name))
 		   erc-session-server
 		   erc-session-user-full-name))
   (if erc-session-password

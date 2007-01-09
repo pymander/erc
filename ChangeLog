@@ -1,3 +1,10 @@
+2007-01-09  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-system-name): New option that determines the system
+	name to use when logging in.  The default is to figure this out by
+	calling `system-name'.
+	(erc-login): Use it.
+
 2007-01-07  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-modules): Add the menu module.  This should fix a
