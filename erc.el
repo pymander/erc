@@ -5697,6 +5697,7 @@ of `mode-line-buffer-identification'.
 
 The following characters are replaced:
 %a: String indicating away status or \"\" if you are not away
+%l: The estimated lag time to the server
 %m: The modes of the channel
 %n: The current nick name
 %o: The topic of the channel
@@ -5708,9 +5709,9 @@ The following characters are replaced:
   :group 'erc-mode-line-and-header
   :type 'string)
 
-(defcustom erc-header-line-format "[IRC] %n on %t %m %o"
+(defcustom erc-header-line-format "%n on %t (%m,%l) %o"
   "A string to be formatted and shown in the header-line in `erc-mode'.
-Only used in Emacs 21.
+Only used starting in Emacs 21.
 
 See `erc-mode-line-format' for which characters are can be used."
   :group 'erc-mode-line-and-header
@@ -5798,31 +5799,33 @@ if `erc-away' is non-nil."
       "")))
 
 (defun erc-format-channel-modes ()
-  "Return the current channel's modes and the estimated lag."
-  (let ((lag (erc-with-server-buffer erc-server-lag)))
-    (concat (apply 'concat
-		   "(+" erc-channel-modes)
-	    (cond ((and erc-channel-user-limit erc-channel-key)
-		   (if erc-show-channel-key-p
-		       (format "lk %.0f %s" erc-channel-user-limit
-			       erc-channel-key)
-		     (format "kl %.0f" erc-channel-user-limit)))
-		  (erc-channel-user-limit
-		   ;; Emacs has no bignums
-		   (format "l %.0f" erc-channel-user-limit))
-		  (erc-channel-key
-		   (if erc-show-channel-key-p
-		       (format "k %s" erc-channel-key)
-		     "k"))
-		  (t ""))
-	    (if lag (format ",lag:%.0f" lag) "")
-	    ")")))
+  "Return the current channel's modes."
+  (concat (apply 'concat
+		 "+" erc-channel-modes)
+	  (cond ((and erc-channel-user-limit erc-channel-key)
+		 (if erc-show-channel-key-p
+		     (format "lk %.0f %s" erc-channel-user-limit
+			     erc-channel-key)
+		   (format "kl %.0f" erc-channel-user-limit)))
+		(erc-channel-user-limit
+		 ;; Emacs has no bignums
+		 (format "l %.0f" erc-channel-user-limit))
+		(erc-channel-key
+		 (if erc-show-channel-key-p
+		     (format "k %s" erc-channel-key)
+		   "k"))
+		(t nil))))
+
+(defun erc-format-lag-time ()
+  "Return the estimated lag time to server, `erc-server-lag'."
+  (format "lag:%.0f" (erc-with-server-buffer erc-server-lag)))
 
 (defun erc-update-mode-line-buffer (buffer)
   "Update the mode line in a single ERC buffer BUFFER."
   (with-current-buffer buffer
     (let ((spec (format-spec-make
 		 ?a (erc-format-away-status)
+		 ?l (erc-format-lag-time)
 		 ?m (erc-format-channel-modes)
 		 ?n (or (erc-current-nick) "")
 		 ?o (erc-controls-strip erc-channel-topic)

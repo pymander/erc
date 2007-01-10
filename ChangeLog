@@ -1,3 +1,13 @@
+2007-01-10  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el (erc-mode-line-format): Added %l to documentation.
+	(erc-header-line-format): Removed "[IRC]".  Use the new %l
+	replacement character.  Doc fix.
+	(erc-format-channel-modes): Removed lag code.  Removed parentheses
+	from mode string.
+	(erc-format-lag-time): New function.
+	(erc-update-mode-line-buffer): Use it.
+
 2007-01-10  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el: Fix typo in url-irc-function instructions.
