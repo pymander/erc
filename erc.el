@@ -6242,7 +6242,7 @@ This function should be on `erc-kill-channel-hook'."
        (erc-response.command vect)))
 
 ;; Teach url.el how to open irc:// URLs with ERC.
-;; To activate, customize `url-irc-function' to `url-irc-erc'.
+;; To activate, customize `url-irc-function' to `erc-handle-irc-url'.
 
 ;;;###autoload
 (defun erc-handle-irc-url (host port channel user password)

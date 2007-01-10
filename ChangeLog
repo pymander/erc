@@ -1,3 +1,7 @@
+2007-01-10  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el: Fix typo in url-irc-function instructions.
+
 2007-01-09  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-system-name): New option that determines the system
