@@ -1,5 +1,8 @@
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-menu.el (erc-menu-definition): Put items specific to
+	channels in a "Current channel" submenu.
+
 	* erc-backend.el (321, 323): Display channel list in server buffer
 	when not using the channel list module.
 
