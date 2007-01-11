@@ -96,7 +96,9 @@ You can also use M-x erc-nickserv-identify-mode to change modes."
 		 (const nil))
   :set (lambda (sym val)
 	 (set sym val)
-	 (erc-nickserv-identify-mode val)))
+	 ;; avoid recursive load at startup
+	 (when (featurep 'erc-services)
+	   (erc-nickserv-identify-mode val))))
 
 ;;;###autoload (autoload 'erc-services-mode "erc-services" nil t)
 (define-erc-module services nickserv

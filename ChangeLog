@@ -12,7 +12,7 @@
 
 	* erc-services.el (erc-nickserv-identify-mode): Improve
 	documentation for nick-change option and move higher to fix
-	compiler warning.
+	compiler warning.  Avoid a recursive load error.
 	(erc-nickserv-alist): Add simple entry for BitlBee, to avoid
 	"NickServ is AWAY: User is offline" error.  Oddly enough, bitlbee
 	was smart enough to recognize that as an authentication request
