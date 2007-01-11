@@ -1,5 +1,11 @@
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc.el (erc-open): Run `erc-before-connect' hook here.  This
+	makes sure the hook always gets called before a connection is
+	made, as some functions, like `erc-handle-irc-url', use `erc-open'
+	instead of `erc'.
+	(erc): Removed `erc-before-connect' hook.
+
 	* erc-menu.el (erc-menu-definition): Put items specific to
 	channels in a "Current channel" submenu.
 

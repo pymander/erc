@@ -1925,6 +1925,7 @@ Returns the buffer for the given server or channel."
 	(old-buffer (current-buffer))
 	old-point
 	continued-session)
+    (when connect (run-hook-with-args 'erc-before-connect server port nick))
     (erc-update-modules)
     (set-buffer buffer)
     (setq old-point (point))
@@ -2136,8 +2137,6 @@ server and full-name will be set to those values, whereas
 `erc-compute-port', `erc-compute-nick' and `erc-compute-full-name' will
 be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
-
-  (run-hook-with-args 'erc-before-connect server port nick)
   (erc-open server port nick full-name t password))
 
 (defalias 'erc-select 'erc)
