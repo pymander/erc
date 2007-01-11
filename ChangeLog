@@ -1,5 +1,8 @@
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-backend.el (321, 323): Display channel list in server buffer
+	when not using the channel list module.
+
 	* erc.el: Updated copyright years.
 	(erc-version-string): Set to 5.2 (devel).
 	(erc-format-lag-time): Fixed to work when `erc-server-lag' is nil.
