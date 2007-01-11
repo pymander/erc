@@ -1,3 +1,8 @@
+2007-01-11  Diane Murray  <disumu@x3y2z1.net>
+
+	* NEWS: Added note for `erc-my-nick-face'.  Fixed capab-identify
+	wording.
+
 2007-01-10  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-mode-line-format): Added %l to documentation.
