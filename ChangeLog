@@ -1,5 +1,13 @@
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc.el (erc-find-parsed-property): Moved here from erc-track.el
+	since it can be useful in general.
+
+	* erc-track.el (erc-find-parsed-property): Removed.
+
+	* erc-capab.el (erc-capab-find-parsed): Removed.
+	(erc-capab-identify-add-prefix): Use `erc-find-parsed-property'.
+
 	* erc.el (erc-open): Run `erc-before-connect' hook here.  This
 	makes sure the hook always gets called before a connection is
 	made, as some functions, like `erc-handle-irc-url', use `erc-open'
