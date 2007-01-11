@@ -1,7 +1,7 @@
 ;; erc.el --- An Emacs Internet Relay Chat client
 
 ;; Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-;;   2006 Free Software Foundation, Inc.
+;;   2006, 2007 Free Software Foundation, Inc.
 
 ;; Author: Alexander L. Belikoff (alexander@belikoff.net)
 ;; Contributors: Sergey Berezin (sergey.berezin@cs.cmu.edu),
@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.1.4 (devel)"
+(defconst erc-version-string "Version 5.2 (devel)"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -5818,7 +5818,9 @@ if `erc-away' is non-nil."
 
 (defun erc-format-lag-time ()
   "Return the estimated lag time to server, `erc-server-lag'."
-  (format "lag:%.0f" (erc-with-server-buffer erc-server-lag)))
+  (let ((lag (erc-with-server-buffer erc-server-lag)))
+    (cond (lag (format "lag:%.0f" lag))
+	  (t ""))))
 
 (defun erc-update-mode-line-buffer (buffer)
   "Update the mode line in a single ERC buffer BUFFER."
@@ -5872,7 +5874,10 @@ if `erc-away' is non-nil."
 			      (erc-propertize header 'help-echo help-echo
 					      'face face)
 			    (erc-propertize header 'help-echo help-echo))))))
-		(t (setq header-line-format header))))))
+		(t (setq header-line-format
+			 (if face
+			     (erc-propertize header 'face face)
+			   header)))))))
     (if (featurep 'xemacs)
 	(redraw-modeline)
       (force-mode-line-update))))

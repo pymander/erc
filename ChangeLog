@@ -1,3 +1,10 @@
+2007-01-11  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el: Updated copyright years.
+	(erc-version-string): Set to 5.2 (devel).
+	(erc-format-lag-time): Fixed to work when `erc-server-lag' is nil.
+	(erc-update-mode-line-buffer): Set the header face.
+
 2007-01-11  Michael Olson  <mwolson@gnu.org>
 
 	* erc-bbdb.el (erc-bbdb-popup-type): Fix customization type and
