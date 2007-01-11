@@ -78,10 +78,15 @@ on if you want to have lots of People named \"John Doe\" in your BBDB."
 (defcustom erc-bbdb-popup-type 'visible
   "*If t, pop up a BBDB buffer showing the record of a WHOISed person
 or the person who has just joined a channel.
+
 If set to 'visible, the BBDB buffer only pops up when someone was WHOISed
-or a person joined a channel visible on any frame."
+or a person joined a channel visible on any frame.
+
+If set to nil, never pop up a BBDD buffer."
   :group 'erc-bbdb
-  :type 'sexp)
+  :type '(choice (const :tag "When visible" visible)
+		 (const :tag "When joining" t)
+		 (const :tag "Never" nil)))
 
 (defcustom erc-bbdb-irc-nick-field 'irc-nick
   "The notes field name to use for annotating IRC nicknames."

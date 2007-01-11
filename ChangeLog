@@ -1,3 +1,25 @@
+2007-01-11  Michael Olson  <mwolson@gnu.org>
+
+	* erc-bbdb.el (erc-bbdb-popup-type): Fix customization type and
+	documentation.
+
+	* erc-services.el (erc-nickserv-identify-mode): Improve
+	documentation for nick-change option and move higher to fix
+	compiler warning.
+	(erc-nickserv-alist): Add simple entry for BitlBee, to avoid
+	"NickServ is AWAY: User is offline" error.  Oddly enough, bitlbee
+	was smart enough to recognize that as an authentication request
+	and log in regardless, which is why I didn't notice this earlier.
+	(erc-nickserv-alist-sender, erc-nickserv-alist-regexp)
+	(erc-nickserv-alist-nickserv, erc-nickserv-alist-ident-keyword)
+	(erc-nickserv-alist-use-nick-p)
+	(erc-nickserv-alist-ident-command): New accessors for
+	erc-nickserv-alist.  Using nth is unwieldy.
+	(erc-nickserv-identify-autodetect)
+	(erc-nickserv-identify-on-connect)
+	(erc-nickserv-identify-on-nick-change, erc-nickserv-identify): Use
+	the new accessors.
+
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
 	* NEWS: Added note for `erc-my-nick-face'.  Fixed capab-identify
