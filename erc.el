@@ -4921,6 +4921,9 @@ Specifically, return the position of `erc-insert-marker'."
    erc-input-marker
    (erc-end-of-input-line)))
 
+(defvar erc-command-regexp "^/\\([A-Za-z]+\\)\\(\\s-+.*\\|\\s-*\\)$"
+  "Regular expression used for matching commands in ERC.")
+
 (defun erc-send-input (input)
   "Treat INPUT as typed in by the user. It is assumed that the input
 and the prompt is already deleted.
@@ -4942,7 +4945,7 @@ This returns non-nil only iff we actually send anything."
       (run-hook-with-args 'erc-send-pre-hook input)
       (when erc-send-this
 	(if (or (string-match "\n" str)
-		(not (char-equal (aref str 0) ?/)))
+		(not (string-match erc-command-regexp str)))
 	    (mapc
 	     (lambda (line)
 	       (mapc
@@ -5007,7 +5010,7 @@ current position."
   "Extract command and args from the input LINE.
 If no command was given, return nil.  If command matches, return a
 list of the form: (command args) where both elements are strings."
-  (when (string-match "^/\\([A-Za-z]+\\)\\(\\s-+.*\\|\\s-*\\)$" line)
+  (when (string-match erc-command-regexp line)
     (let* ((cmd (erc-command-symbol (match-string 1 line)))
 	   ;; note: return is nil, we apply this simply for side effects
 	   (canon-defun (while (and cmd (symbolp (symbol-function cmd)))

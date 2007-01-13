@@ -1,3 +1,12 @@
+2007-01-13  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-command-regexp): New variable that is used to match
+	a command.
+	(erc-send-input): Use it.  This fixes a bug where paths --
+	"/usr/bin/foo", for example -- were being displayed as commands,
+	but still sent correctly.
+	(erc-extract-command-from-line): Use it.
+
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-find-parsed-property): Moved here from erc-track.el
