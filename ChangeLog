@@ -7,6 +7,8 @@
 	but still sent correctly.
 	(erc-extract-command-from-line): Use it.
 
+	* erc.texi (Modules): Document erc-capab-identify.
+
 2007-01-11  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-find-parsed-property): Moved here from erc-track.el
