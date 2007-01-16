@@ -1,5 +1,11 @@
 2007-01-16  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-stamp.el (erc-insert-timestamp-left): Fixed so that the
+	whitespace string filler is hidden correctly when timestamps are
+	hidden.
+	(erc-toggle-timestamps): New function to use instead of
+	`erc-show-timestamps' and `erc-hide-timestamps'.
+
 	* erc.el (erc-restore-text-properties): Moved here from
 	erc-fill.el since it could be useful in general.
 
