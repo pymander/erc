@@ -1,3 +1,10 @@
+2007-01-16  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el (erc-restore-text-properties): Moved here from
+	erc-fill.el since it could be useful in general.
+
+	* erc-fill.el (erc-restore-text-properties): Removed.
+
 2007-01-13  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-command-regexp): New variable that is used to match

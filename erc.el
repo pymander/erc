@@ -6237,6 +6237,14 @@ This function should be on `erc-kill-channel-hook'."
   "Find the next occurrence of the `erc-parsed' text property."
   (text-property-not-all (point-min) (point-max) 'erc-parsed nil))
 
+(defun erc-restore-text-properties ()
+  "Restore the property 'erc-parsed for the region."
+  (let ((parsed-posn (erc-find-parsed-property)))
+    (put-text-property
+     (point-min) (point-max)
+     'erc-parsed (when parsed-posn
+                   (get-text-property parsed-posn 'erc-parsed)))))
+
 (defun erc-get-parsed-vector (point)
   "Return the whole parsed vector on POINT."
   (get-text-property point 'erc-parsed))

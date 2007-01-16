@@ -187,14 +187,6 @@ You can put this on `erc-insert-modify-hook' and/or `erc-send-modify-hook'."
       (length (format-time-string erc-timestamp-format))
     0))
 
-(defun erc-restore-text-properties ()
-  "Restore the property 'erc-parsed for the region."
-  (let* ((parsed-posn (text-property-not-all (point-min) (point-max)
-                                             'erc-parsed nil))
-         (parsed-prop (when parsed-posn
-                        (get-text-property parsed-posn 'erc-parsed))))
-    (put-text-property (point-min) (point-max) 'erc-parsed parsed-prop)))
-
 (provide 'erc-fill)
 
 ;;; erc-fill.el ends here
