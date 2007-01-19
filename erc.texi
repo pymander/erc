@@ -448,6 +448,10 @@ Save buffers in logs
 @item match
 Highlight pals, fools, and other keywords
 
+@cindex modules, menu
+@item menu
+Display a menu in ERC buffers
+
 @cindex modules, netsplit
 @item netsplit
 Detect netsplits
