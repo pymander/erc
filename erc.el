@@ -5720,9 +5720,10 @@ displayed.
 
 See `erc-mode-line-format' for which characters are can be used."
   :group 'erc-mode-line-and-header
-  :set #'(lambda (sym val)
-	   (set sym val)
-	   (erc-update-mode-line nil))
+  :set (lambda (sym val)
+	 (set sym val)
+	 (when (fboundp 'erc-update-mode-line)
+	   (erc-update-mode-line nil)))
   :type '(choice (const :tag "Disabled" nil)
 		 string))
 
