@@ -5715,9 +5715,16 @@ The following characters are replaced:
   "A string to be formatted and shown in the header-line in `erc-mode'.
 Only used starting in Emacs 21.
 
+Set this to nil if you do not want the header line to be
+displayed.
+
 See `erc-mode-line-format' for which characters are can be used."
   :group 'erc-mode-line-and-header
-  :type 'string)
+  :set #'(lambda (sym val)
+	   (set sym val)
+	   (erc-update-mode-line nil))
+  :type '(choice (const :tag "Disabled" nil)
+		 string))
 
 (defcustom erc-header-line-uses-help-echo-p t
   "Show the contents of the header line in the echo area or as a tooltip

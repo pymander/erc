@@ -1,3 +1,9 @@
+2007-01-21  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-header-line-format): Document how to disable the
+	header line, and add a customization type for it.  Also, make the
+	changes take effect immediately.
+
 2007-01-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc.texi (Modules): Document new menu module.  Thanks to Leo
