@@ -201,6 +201,10 @@ active, use the `erc-server-process-alive' function instead.")
   "Non-nil if the user is denied access because of a server ban.")
 (make-variable-buffer-local 'erc-server-banned)
 
+(defvar erc-server-error-occurred nil
+  "Non-nil if the user triggers some server error.")
+(make-variable-buffer-local 'erc-server-error-occurred)
+
 (defvar erc-server-lines-sent nil
   "Line counter.")
 (make-variable-buffer-local 'erc-server-lines-sent)
@@ -495,6 +499,7 @@ We will store server variables in the buffer given by BUFFER."
         (setq erc-server-quitting nil)
         (setq erc-server-timed-out nil)
         (setq erc-server-banned nil)
+        (setq erc-server-error-occurred nil)
         (let ((time (erc-current-time)))
           (setq erc-server-last-sent-time time)
           (setq erc-server-last-ping-time time)
@@ -570,6 +575,7 @@ Make sure you are in an ERC buffer when running this."
 EVENT is the message received from the closed connection process."
   (and erc-server-auto-reconnect
        (not erc-server-banned)
+       (not erc-server-error-occurred)
        ;; make sure we don't infinitely try to reconnect, unless the
        ;; user wants that
        (or (eq erc-server-reconnect-attempts t)
@@ -1098,6 +1104,7 @@ add things to `%s' instead."
 
 (define-erc-response-handler (ERROR)
   "Handle an ERROR command from the server." nil
+  (setq erc-server-error-occurred t)
   (erc-display-message
    parsed 'error nil 'ERROR
    ?s (erc-response.sender parsed) ?c (erc-response.contents parsed)))

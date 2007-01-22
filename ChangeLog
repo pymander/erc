@@ -1,5 +1,13 @@
 2007-01-22  Michael Olson  <mwolson@gnu.org>
 
+	* erc-backend.el (erc-server-error-occurred): New variable that
+	indicates when an error has been signaled by the server.  This
+	should fix an infinite reconnect bug when giving some servers a
+	bogus :full-name.  Thanks to Angelina Carlton for the report.
+	(erc-server-connect): Initialize erc-server-error-occurred.
+	(erc-server-reconnect-p): Use it.
+	(ERROR): Set it.
+
 	* erc-services.el (erc-nickserv-alist): Alphabetize and add Ars
 	and QuakeNet.  Standardize look of entries.  Fix type mismatch
 	error in customize interface.
