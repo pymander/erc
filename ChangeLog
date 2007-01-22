@@ -1,8 +1,8 @@
 2007-01-22  Michael Olson  <mwolson@gnu.org>
 
-	* erc-services.el (erc-nickserv-alist): Alphabetize and add
-	QuakeNet.  Standardize look of entries.  Fix type mismatch error
-	in customize interface.
+	* erc-services.el (erc-nickserv-alist): Alphabetize and add Ars
+	and QuakeNet.  Standardize look of entries.  Fix type mismatch
+	error in customize interface.
 	(erc-nickserv-passwords): Alphabetize and add missing entries from
 	erc-nickserv-alist.
 

@@ -168,6 +168,7 @@ Example of use:
   :type '(repeat
 	  (list :tag "Network"
 		(choice :tag "Network name"
+			(const Ars)
 			(const Austnet)
 			(const Azzurra)
 			(const BitlBee)
@@ -188,7 +189,11 @@ Example of use:
 ;; Variables:
 
 (defcustom erc-nickserv-alist
-  '((Austnet
+  '((Ars
+     nil nil
+     "Census"
+     "IDENTIFY" nil nil)
+    (Austnet
      "NickOP!service@austnet.org"
      "/msg\\s-NickOP@austnet.org\\s-identify\\s-<password>"
      "nickop@austnet.org"
