@@ -318,7 +318,6 @@
   ("Nullrouted: Random server" Nullrouted "irc.nullrouted.org" ((6666 6669) 7000 ))
   ("NullusNet: Random server" NullusNet "irc.nullus.net" 6667)
   ("OFTC: Random server" OFTC "irc.oftc.net" ((6667 6670) 7000))
-  ("OFTC: SSL enabled server" OFTC "ircs.oftc.net" (6697 9999))
   ("OpChat: Random server" OpChat "irc.opchat.org" ((6667 6669)))
   ("Othernet: Random server" Othernet "irc.othernet.org" 6667)
   ("Othernet: US, FL, Miami" Othernet "miami.fl.us.othernet.org" 6667)

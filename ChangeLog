@@ -1,5 +1,8 @@
 2007-01-25  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-networks.el (erc-server-alist): Removed SSL server for now
+	since `erc-server-select' doesn't know to use `erc-ssl'.
+
 	* erc-networks.el (erc-server-alist, erc-networks-alist): Added
 	definitions for oftc.net.
 
