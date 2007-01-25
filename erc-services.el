@@ -234,7 +234,7 @@ Example of use:
      "IDENTIFY" nil "SQUERY")
     (OFTC
      "NickServ!services@services.oftc.net"
-     "/msg\\s-NickServ\\s-IDENTIFY\\s-\^_password"
+     "type\\s-/msg\\s-NickServ\\s-IDENTIFY\\s-password."
      "NickServ"
      "IDENTIFY" nil nil)
     (QuakeNet

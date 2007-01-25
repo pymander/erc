@@ -1,3 +1,10 @@
+2007-01-25  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-networks.el (erc-server-alist, erc-networks-alist): Added
+	definitions for oftc.net.
+
+	* erc-services.el (erc-nickserv-alist): Fixed OFTC message regexp.
+
 2007-01-22  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-server-error-occurred): New variable that
