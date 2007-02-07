@@ -76,8 +76,8 @@
 		(erc-channel-user-op-p (erc-current-nick))]
 	       ["Set a key..." erc-set-channel-key
 		(erc-channel-user-op-p (erc-current-nick))])
-	 ["Leave this channel..." erc-part-from-channel erc-channel-users]
-	 "-")
+	 ["Leave this channel..." erc-part-from-channel erc-channel-users])
+	"-"
 	(list "Pals, fools and other keywords"
 	      ["Add pal..." erc-add-pal]
 	      ["Delete pal..." erc-delete-pal]

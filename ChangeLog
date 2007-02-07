@@ -1,3 +1,9 @@
+2007-02-07  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-menu.el (erc-menu-definition): Fixed so that the separator
+	is between "Current channel" and "Pals, fools and other keywords",
+	not at the bottom of the "Current channel" submenu.
+
 2007-01-25  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-networks.el (erc-server-alist): Removed SSL server for now
