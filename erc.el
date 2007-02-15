@@ -1814,45 +1814,45 @@ removed from the list will be disabled."
   :type
   '(set
     :greedy t
-    (const :tag "Set away status automatically" autoaway)
-    (const :tag "Join channels automatically" autojoin)
-    (const :tag "Integrate with Big Brother Database" bbdb)
-    (const :tag "Buttonize URLs, nicknames, and other text" button)
-    (const
-     :tag
-     "Mark unidentified users on freenode and other servers supporting CAPAB"
-     capab-identify)
-    (const :tag "Complete nicknames and commands (programmable)"
+    (const :tag "autoaway: Set away status automatically" autoaway)
+    (const :tag "autojoin: Join channels automatically" autojoin)
+    (const :tag "bbdb: Integrate with Big Brother Database" bbdb)
+    (const :tag "button: Buttonize URLs, nicknames, and other text" button)
+    (const :tag "capab: Mark unidentified users on servers supporting CAPAB"
+	   capab-identify)
+    (const :tag "completion: Complete nicknames and commands (programmable)"
 	   completion)
-    (const :tag "Complete nicknames and commands (old)" hecomplete)
-    (const :tag "Wrap long lines" fill)
-    (const :tag "Launch an identd server on port 8113" identd)
-    (const :tag "Highlight or remove IRC control characters"
+    (const :tag "hecomplete: Complete nicknames and commands (old)" hecomplete)
+    (const :tag "fill: Wrap long lines" fill)
+    (const :tag "identd: Launch an identd server on port 8113" identd)
+    (const :tag "irccontrols: Highlight or remove IRC control characters"
 	   irccontrols)
-    (const :tag "List channels in a separate buffer" list)
-    (const :tag "Save buffers in logs" log)
-    (const :tag "Highlight pals, fools, and other keywords" match)
-    (const :tag "Display a menu in ERC buffers" menu)
-    (const :tag "Detect netsplits" netsplit)
-    (const :tag "Don't display non-IRC commands after evaluation"
+    (const :tag "list: List channels in a separate buffer" list)
+    (const :tag "log: Save buffers in logs" log)
+    (const :tag "match: Highlight pals, fools, and other keywords" match)
+    (const :tag "menu: Display a menu in ERC buffers" menu)
+    (const :tag "netsplit: Detect netsplits" netsplit)
+    (const :tag "noncommands: Don't display non-IRC commands after evaluation"
 	   noncommands)
-    (const :tag "Notify when the online status of certain users changes"
+    (const :tag
+	   "notify: Notify when the online status of certain users changes"
 	   notify)
-    (const :tag "Process CTCP PAGE requests from IRC" page)
-    (const :tag "Make displayed lines read-only" readonly)
-    (const :tag "Replace text in messages" replace)
-    (const :tag "Enable an input history" ring)
-    (const :tag "Scroll to the bottom of the buffer" scrolltobottom)
-    (const :tag "Identify to Nickserv (IRC Services) automatically"
+    (const :tag "page: Process CTCP PAGE requests from IRC" page)
+    (const :tag "readonly: Make displayed lines read-only" readonly)
+    (const :tag "replace: Replace text in messages" replace)
+    (const :tag "ring: Enable an input history" ring)
+    (const :tag "scrolltobottom: Scroll to the bottom of the buffer"
+	   scrolltobottom)
+    (const :tag "services: Identify to Nickserv (IRC Services) automatically"
 	   services)
-    (const :tag "Convert smileys to pretty icons" smiley)
-    (const :tag "Play sounds when you receive CTCP SOUND requests"
+    (const :tag "smiley: Convert smileys to pretty icons" smiley)
+    (const :tag "sound: Play sounds when you receive CTCP SOUND requests"
 	   sound)
-    (const :tag "Add timestamps to messages" stamp)
-    (const :tag "Check spelling" spelling)
-    (const :tag "Track channel activity in the mode-line" track)
-    (const :tag "Truncate buffers to a certain size" truncate)
-    (const :tag "Translate morse code in messages" unmorse)
+    (const :tag "stamp: Add timestamps to messages" stamp)
+    (const :tag "spelling: Check spelling" spelling)
+    (const :tag "track: Track channel activity in the mode-line" track)
+    (const :tag "truncate: Truncate buffers to a certain size" truncate)
+    (const :tag "unmorse: Translate morse code in messages" unmorse)
     (repeat :tag "Others" :inline t symbol))
   :group 'erc)
 
