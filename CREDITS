@@ -158,6 +158,9 @@ Leo <sdl.web AT gmail.com>:
   * Fixed the erc-iswitchb function to only temporarily enable
     iswitchb mode if it isn't active already (4 lines changed).
 
+Vivek Dasmohapatra <vivek AT etla DOT org>:
+  * Fixed issue with reconnecting to a not-yet-dead server connection.
+
 
 ----
 

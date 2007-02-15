@@ -411,9 +411,18 @@ protection algorithm."
 
 ;; Ping handling
 
-(defcustom erc-server-send-ping-interval 90
+(defcustom erc-server-send-ping-interval 30
   "*Interval of sending pings to the server, in seconds.
 If this is set to nil, pinging the server is disabled."
+  :group 'erc-server
+  :type '(choice (const nil) (integer :tag "Seconds")))
+
+(defcustom erc-server-send-ping-timeout 120
+  "*If the time between ping and response is greater than this, reconnect.
+The time is in seconds.
+
+This must be greater than or equal to the value for
+`erc-server-send-ping-interval'."
   :group 'erc-server
   :type '(choice (const nil) (integer :tag "Seconds")))
 
@@ -455,7 +464,7 @@ Additionally, detect whether the IRC process has hung."
       (with-current-buffer buf
         (if (> (erc-time-diff (erc-current-time)
                               erc-server-last-received-time)
-               erc-server-send-ping-interval)
+               erc-server-send-ping-timeout)
             (progn
               ;; if the process is hung, kill it
               (setq erc-server-timed-out t)
