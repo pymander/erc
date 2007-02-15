@@ -3204,8 +3204,17 @@ the message given by REASON."
 
 (defun erc-cmd-RECONNECT ()
   "Try to reconnect to the current IRC server."
-  (setq erc-server-reconnect-count 0)
-  (erc-server-reconnect)
+  (let ((buffer (or (erc-server-buffer) (current-buffer)))
+	(process nil))
+    (with-current-buffer (if (bufferp buffer) buffer (current-buffer))
+      (setq erc-server-quitting nil)
+      (setq erc-server-reconnecting t)
+      (setq erc-server-reconnect-count 0)
+      (setq process (get-buffer-process (erc-server-buffer)))
+      (if process
+	  (delete-process process)
+	(erc-server-reconnect))
+      (setq erc-server-reconnecting nil)))
   t)
 
 (defun erc-cmd-SERVER (server)
@@ -6150,7 +6159,8 @@ functions."
       (format "%s (%s@%s) has left channel %s%s"
 	      nick user host channel
 	      (if (not (string= reason ""))
-		  (format ": %s" reason)
+		  (format ": %s"
+			  (erc-replace-regexp-in-string "%" "%%" reason))
 		"")))))
 
 

@@ -1,3 +1,19 @@
+2007-02-15  Vivek Dasmohapatra  <vivek@etla.org>
+
+	* erc.el (erc-cmd-RECONNECT): Kill old process if it is still
+	alive.
+	(erc-message-english-PART): Properly escape "%" characters in
+	reason.
+
+	* erc-backend.el (erc-server-reconnecting): New variable that is
+	set when the user requests a reconnect, but the old process is
+	still alive.  This forces the reconnect to work even though the
+	process is killed manually during reconnect.
+	(erc-server-connect): Initialize it.
+	(erc-server-reconnect-p): Use it.
+	(erc-process-sentinel-1): Set it to nil after the first reconnect
+	attempt.
+
 2007-02-07  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-menu.el (erc-menu-definition): Fixed so that the separator
