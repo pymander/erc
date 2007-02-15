@@ -415,16 +415,20 @@ protection algorithm."
   "*Interval of sending pings to the server, in seconds.
 If this is set to nil, pinging the server is disabled."
   :group 'erc-server
-  :type '(choice (const nil) (integer :tag "Seconds")))
+  :type '(choice (const :tag "Disabled" nil)
+                 (integer :tag "Seconds")))
 
 (defcustom erc-server-send-ping-timeout 120
   "*If the time between ping and response is greater than this, reconnect.
 The time is in seconds.
 
 This must be greater than or equal to the value for
-`erc-server-send-ping-interval'."
+`erc-server-send-ping-interval'.
+
+If this is set to nil, never try to reconnect."
   :group 'erc-server
-  :type '(choice (const nil) (integer :tag "Seconds")))
+  :type '(choice (const :tag "Disabled" nil)
+                 (integer :tag "Seconds")))
 
 (defvar erc-server-ping-handler nil
   "This variable holds the periodic ping timer.")
@@ -462,9 +466,11 @@ Currently this is called by `erc-send-input'."
 Additionally, detect whether the IRC process has hung."
   (if (buffer-live-p buf)
       (with-current-buffer buf
-        (if (> (erc-time-diff (erc-current-time)
-                              erc-server-last-received-time)
-               erc-server-send-ping-timeout)
+        (if (and erc-server-send-ping-timeout
+                 (>
+                  (erc-time-diff (erc-current-time)
+                                 erc-server-last-received-time)
+                  erc-server-send-ping-timeout))
             (progn
               ;; if the process is hung, kill it
               (setq erc-server-timed-out t)

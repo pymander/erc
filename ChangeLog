@@ -3,12 +3,14 @@
 	* CREDITS: Update.
 
 	* erc-backend.el (erc-server-send-ping-interval): Change to use a
-	default of 30 seconds.
+	default of 30 seconds.  Improve customize interface.
 	(erc-server-send-ping-timeout): New option that determines when to
 	consider a connection stalled and restart it.  The default is
 	after 120 seconds.
 	(erc-server-send-ping): Use erc-server-send-ping-timeout instead
-	of erc-server-send-ping-interval.
+	of erc-server-send-ping-interval.  If
+	erc-server-send-ping-timeout is nil, do not ever kill and restart
+	a hung IRC process.
 
 	* erc.el (erc-modules): Include the name of the module in its
 	description.  This should make it easier for people to find and
