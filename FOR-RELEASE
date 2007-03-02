@@ -21,7 +21,7 @@ the release of 5.2.
 
 *** [DONE] Add binding for S-TAB (backtab) that moves backwards by link.
 
-*** Merge filename changes from the 5.2 release branch into the
+*** [DONE] Merge filename changes from the 5.2 release branch into the
 erc--main--0 branch.
 
 * Emacs 22 release
