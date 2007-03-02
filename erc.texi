@@ -12,7 +12,7 @@
 @syncodeindex fn cp
 
 @copying
-This manual is for ERC version 5.1.4.
+This manual is for ERC version 5.2 (pre-release).
 
 Copyright @copyright{} 2005, 2006, 2007 Free Software Foundation, Inc.
 

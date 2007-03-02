@@ -12,6 +12,8 @@
 	(erc-button-add-keys): New function that adds the <backtab> key to
 	erc-mode-map.
 
+	* erc.texi: Change version to 5.2 (pre-release).
+
 2007-02-15  Michael Olson  <mwolson@gnu.org>
 
 	* CREDITS: Update.
