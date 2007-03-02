@@ -1,6 +1,7 @@
 ;; erc-menu.el -- Menu-bar definitions for ERC
 
-;; Copyright (C) 2001, 2002, 2004, 2005, 2006 Free Software Foundation, Inc.
+;; Copyright (C) 2001, 2002, 2004, 2005, 2006,
+;;   2007 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@delysid.org>
 ;; Keywords: comm, processes, menu
@@ -40,40 +41,42 @@
 	 (and erc-server-connected (fboundp 'erc-list-channels))]
 	["Join channel..." erc-join-channel erc-server-connected]
 	["Start a query..." erc-cmd-QUERY erc-server-connected]
-	"-"
-	["List users in channel" erc-channel-names erc-channel-users]
-	["List channel operators" erc-cmd-OPS erc-channel-users]
 	["Input action..." erc-input-action (erc-default-target)]
-	["Set topic..." erc-set-topic
-	 (and (and (erc-default-target) (not (erc-query-buffer-p)))
-	      (or (not (member "t" erc-channel-modes))
-		  (erc-channel-user-op-p (erc-current-nick))))]
-	(list "Channel modes"
-	      ["Change mode..." erc-insert-mode-command
-	       (erc-channel-user-op-p (erc-current-nick))]
-	      ["No external send" (erc-toggle-channel-mode "n")
-	       :active (erc-channel-user-op-p (erc-current-nick))
-	       :style toggle :selected (member "n" erc-channel-modes)]
-	      ["Topic set by channel operator" (erc-toggle-channel-mode "t")
-	       :style toggle :selected (member "t" erc-channel-modes)
-	       :active (erc-channel-user-op-p (erc-current-nick))]
-	      ["Invite only" (erc-toggle-channel-mode "i")
-	       :style toggle :selected (member "i" erc-channel-modes)
-	       :active (erc-channel-user-op-p (erc-current-nick))]
-	      ["Private" (erc-toggle-channel-mode "p")
-	       :style toggle :selected (member "p" erc-channel-modes)
-	       :active (erc-channel-user-op-p (erc-current-nick))]
-	      ["Secret" (erc-toggle-channel-mode "s")
-	       :style toggle :selected (member "s" erc-channel-modes)
-	       :active (erc-channel-user-op-p (erc-current-nick))]
-	      ["Moderated" (erc-toggle-channel-mode "m")
-	       :style toggle :selected (member "m" erc-channel-modes)
-	       :active (erc-channel-user-op-p (erc-current-nick))]
-	      ["Set a limit..." erc-set-channel-limit
-	       (erc-channel-user-op-p (erc-current-nick))]
-	      ["Set a key..." erc-set-channel-key
-	       (erc-channel-user-op-p (erc-current-nick))])
-	["Leave this channel..." erc-part-from-channel erc-channel-users]
+	"-"
+	(list
+	 "Current channel"
+	 ["List users in channel" erc-channel-names erc-channel-users]
+	 ["List channel operators" erc-cmd-OPS erc-channel-users]
+	 ["Set topic..." erc-set-topic
+	  (and (and (erc-default-target) (not (erc-query-buffer-p)))
+	       (or (not (member "t" erc-channel-modes))
+		   (erc-channel-user-op-p (erc-current-nick))))]
+	 (list "Channel modes"
+	       ["Change mode..." erc-insert-mode-command
+		(erc-channel-user-op-p (erc-current-nick))]
+	       ["No external send" (erc-toggle-channel-mode "n")
+		:active (erc-channel-user-op-p (erc-current-nick))
+		:style toggle :selected (member "n" erc-channel-modes)]
+	       ["Topic set by channel operator" (erc-toggle-channel-mode "t")
+		:style toggle :selected (member "t" erc-channel-modes)
+		:active (erc-channel-user-op-p (erc-current-nick))]
+	       ["Invite only" (erc-toggle-channel-mode "i")
+		:style toggle :selected (member "i" erc-channel-modes)
+		:active (erc-channel-user-op-p (erc-current-nick))]
+	       ["Private" (erc-toggle-channel-mode "p")
+		:style toggle :selected (member "p" erc-channel-modes)
+		:active (erc-channel-user-op-p (erc-current-nick))]
+	       ["Secret" (erc-toggle-channel-mode "s")
+		:style toggle :selected (member "s" erc-channel-modes)
+		:active (erc-channel-user-op-p (erc-current-nick))]
+	       ["Moderated" (erc-toggle-channel-mode "m")
+		:style toggle :selected (member "m" erc-channel-modes)
+		:active (erc-channel-user-op-p (erc-current-nick))]
+	       ["Set a limit..." erc-set-channel-limit
+		(erc-channel-user-op-p (erc-current-nick))]
+	       ["Set a key..." erc-set-channel-key
+		(erc-channel-user-op-p (erc-current-nick))])
+	 ["Leave this channel..." erc-part-from-channel erc-channel-users])
 	"-"
 	(list "Pals, fools and other keywords"
 	      ["Add pal..." erc-add-pal]

@@ -1,6 +1,14 @@
 Tasks that need to be accomplished in order for a release to happen.
 
-* 5.2 release (future)
+* 5.3 release (future)
+
+** Source
+
+*** Make erc-backend not need to (require) any other part of ERC.
+This will hopefully increase the chance that it will be useful for
+other IRC clients, like Circe.
+
+* 5.2 release
 
 ** Documentation
 
@@ -9,13 +17,9 @@ the release of 5.2.
 
 ** Source
 
-*** Make erc-backend not need to (require) any other part of ERC.
-This will hopefully increase the chance that it will be useful for
-other IRC clients, like Circe.
-
 *** Add binding for S-TAB (backtab) that moves backwards by link.
 
-* next Emacs release
+* Emacs 22 release
 
 ** Source
 

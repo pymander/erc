@@ -1,6 +1,6 @@
 ;;; erc-networks.el --- IRC networks
 
-;; Copyright (C) 2002, 2004, 2005, 2006 Free Software Foundation, Inc.
+;; Copyright (C) 2002, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@lexx.delysid.org>
 ;; Keywords: comm
@@ -317,6 +317,7 @@
   ("Novernet: Random server" Novernet "irc.novernet.com" ((6665 6669) 7000 ))
   ("Nullrouted: Random server" Nullrouted "irc.nullrouted.org" ((6666 6669) 7000 ))
   ("NullusNet: Random server" NullusNet "irc.nullus.net" 6667)
+  ("OFTC: Random server" OFTC "irc.oftc.net" ((6667 6670) 7000))
   ("OpChat: Random server" OpChat "irc.opchat.org" ((6667 6669)))
   ("Othernet: Random server" Othernet "irc.othernet.org" 6667)
   ("Othernet: US, FL, Miami" Othernet "miami.fl.us.othernet.org" 6667)
@@ -611,6 +612,7 @@ PORTS is either a number, a list of numbers, or a list of port ranges."
     (Novernet "novernet.com")
     (Nullrouted "nullrouted.org")
     (NullusNet "nullus.net")
+    (OFTC "oftc.net")
     (OpChat "opchat.org")
     (Openprojects "openprojects.net")
     (Othernet "othernet.org")

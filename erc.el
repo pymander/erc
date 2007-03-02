@@ -1814,45 +1814,45 @@ removed from the list will be disabled."
   :type
   '(set
     :greedy t
-    (const :tag "Set away status automatically" autoaway)
-    (const :tag "Join channels automatically" autojoin)
-    (const :tag "Integrate with Big Brother Database" bbdb)
-    (const :tag "Buttonize URLs, nicknames, and other text" button)
-    (const
-     :tag
-     "Mark unidentified users on freenode and other servers supporting CAPAB"
-     capab-identify)
-    (const :tag "Complete nicknames and commands (programmable)"
+    (const :tag "autoaway: Set away status automatically" autoaway)
+    (const :tag "autojoin: Join channels automatically" autojoin)
+    (const :tag "bbdb: Integrate with Big Brother Database" bbdb)
+    (const :tag "button: Buttonize URLs, nicknames, and other text" button)
+    (const :tag "capab: Mark unidentified users on servers supporting CAPAB"
+	   capab-identify)
+    (const :tag "completion: Complete nicknames and commands (programmable)"
 	   completion)
-    (const :tag "Complete nicknames and commands (old)" hecomplete)
-    (const :tag "Wrap long lines" fill)
-    (const :tag "Launch an identd server on port 8113" identd)
-    (const :tag "Highlight or remove IRC control characters"
+    (const :tag "hecomplete: Complete nicknames and commands (old)" hecomplete)
+    (const :tag "fill: Wrap long lines" fill)
+    (const :tag "identd: Launch an identd server on port 8113" identd)
+    (const :tag "irccontrols: Highlight or remove IRC control characters"
 	   irccontrols)
-    (const :tag "List channels in a separate buffer" list)
-    (const :tag "Save buffers in logs" log)
-    (const :tag "Highlight pals, fools, and other keywords" match)
-    (const :tag "Display a menu in ERC buffers" menu)
-    (const :tag "Detect netsplits" netsplit)
-    (const :tag "Don't display non-IRC commands after evaluation"
+    (const :tag "list: List channels in a separate buffer" list)
+    (const :tag "log: Save buffers in logs" log)
+    (const :tag "match: Highlight pals, fools, and other keywords" match)
+    (const :tag "menu: Display a menu in ERC buffers" menu)
+    (const :tag "netsplit: Detect netsplits" netsplit)
+    (const :tag "noncommands: Don't display non-IRC commands after evaluation"
 	   noncommands)
-    (const :tag "Notify when the online status of certain users changes"
+    (const :tag
+	   "notify: Notify when the online status of certain users changes"
 	   notify)
-    (const :tag "Process CTCP PAGE requests from IRC" page)
-    (const :tag "Make displayed lines read-only" readonly)
-    (const :tag "Replace text in messages" replace)
-    (const :tag "Enable an input history" ring)
-    (const :tag "Scroll to the bottom of the buffer" scrolltobottom)
-    (const :tag "Identify to Nickserv (IRC Services) automatically"
+    (const :tag "page: Process CTCP PAGE requests from IRC" page)
+    (const :tag "readonly: Make displayed lines read-only" readonly)
+    (const :tag "replace: Replace text in messages" replace)
+    (const :tag "ring: Enable an input history" ring)
+    (const :tag "scrolltobottom: Scroll to the bottom of the buffer"
+	   scrolltobottom)
+    (const :tag "services: Identify to Nickserv (IRC Services) automatically"
 	   services)
-    (const :tag "Convert smileys to pretty icons" smiley)
-    (const :tag "Play sounds when you receive CTCP SOUND requests"
+    (const :tag "smiley: Convert smileys to pretty icons" smiley)
+    (const :tag "sound: Play sounds when you receive CTCP SOUND requests"
 	   sound)
-    (const :tag "Add timestamps to messages" stamp)
-    (const :tag "Check spelling" spelling)
-    (const :tag "Track channel activity in the mode-line" track)
-    (const :tag "Truncate buffers to a certain size" truncate)
-    (const :tag "Translate morse code in messages" unmorse)
+    (const :tag "stamp: Add timestamps to messages" stamp)
+    (const :tag "spelling: Check spelling" spelling)
+    (const :tag "track: Track channel activity in the mode-line" track)
+    (const :tag "truncate: Truncate buffers to a certain size" truncate)
+    (const :tag "unmorse: Translate morse code in messages" unmorse)
     (repeat :tag "Others" :inline t symbol))
   :group 'erc)
 
@@ -1925,6 +1925,7 @@ Returns the buffer for the given server or channel."
 	(old-buffer (current-buffer))
 	old-point
 	continued-session)
+    (when connect (run-hook-with-args 'erc-before-connect server port nick))
     (erc-update-modules)
     (set-buffer buffer)
     (setq old-point (point))
@@ -2136,8 +2137,6 @@ server and full-name will be set to those values, whereas
 `erc-compute-port', `erc-compute-nick' and `erc-compute-full-name' will
 be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
-
-  (run-hook-with-args 'erc-before-connect server port nick)
   (erc-open server port nick full-name t password))
 
 (defalias 'erc-select 'erc)
@@ -3205,8 +3204,17 @@ the message given by REASON."
 
 (defun erc-cmd-RECONNECT ()
   "Try to reconnect to the current IRC server."
-  (setq erc-server-reconnect-count 0)
-  (erc-server-reconnect)
+  (let ((buffer (or (erc-server-buffer) (current-buffer)))
+	(process nil))
+    (with-current-buffer (if (bufferp buffer) buffer (current-buffer))
+      (setq erc-server-quitting nil)
+      (setq erc-server-reconnecting t)
+      (setq erc-server-reconnect-count 0)
+      (setq process (get-buffer-process (erc-server-buffer)))
+      (if process
+	  (delete-process process)
+	(erc-server-reconnect))
+      (setq erc-server-reconnecting nil)))
   t)
 
 (defun erc-cmd-SERVER (server)
@@ -4922,6 +4930,9 @@ Specifically, return the position of `erc-insert-marker'."
    erc-input-marker
    (erc-end-of-input-line)))
 
+(defvar erc-command-regexp "^/\\([A-Za-z]+\\)\\(\\s-+.*\\|\\s-*\\)$"
+  "Regular expression used for matching commands in ERC.")
+
 (defun erc-send-input (input)
   "Treat INPUT as typed in by the user. It is assumed that the input
 and the prompt is already deleted.
@@ -4943,7 +4954,7 @@ This returns non-nil only iff we actually send anything."
       (run-hook-with-args 'erc-send-pre-hook input)
       (when erc-send-this
 	(if (or (string-match "\n" str)
-		(not (char-equal (aref str 0) ?/)))
+		(not (string-match erc-command-regexp str)))
 	    (mapc
 	     (lambda (line)
 	       (mapc
@@ -5008,7 +5019,7 @@ current position."
   "Extract command and args from the input LINE.
 If no command was given, return nil.  If command matches, return a
 list of the form: (command args) where both elements are strings."
-  (when (string-match "^/\\([A-Za-z]+\\)\\(\\s-+.*\\|\\s-*\\)$" line)
+  (when (string-match erc-command-regexp line)
     (let* ((cmd (erc-command-symbol (match-string 1 line)))
 	   ;; note: return is nil, we apply this simply for side effects
 	   (canon-defun (while (and cmd (symbolp (symbol-function cmd)))
@@ -5713,9 +5724,17 @@ The following characters are replaced:
   "A string to be formatted and shown in the header-line in `erc-mode'.
 Only used starting in Emacs 21.
 
+Set this to nil if you do not want the header line to be
+displayed.
+
 See `erc-mode-line-format' for which characters are can be used."
   :group 'erc-mode-line-and-header
-  :type 'string)
+  :set (lambda (sym val)
+	 (set sym val)
+	 (when (fboundp 'erc-update-mode-line)
+	   (erc-update-mode-line nil)))
+  :type '(choice (const :tag "Disabled" nil)
+		 string))
 
 (defcustom erc-header-line-uses-help-echo-p t
   "Show the contents of the header line in the echo area or as a tooltip
@@ -6140,7 +6159,8 @@ functions."
       (format "%s (%s@%s) has left channel %s%s"
 	      nick user host channel
 	      (if (not (string= reason ""))
-		  (format ": %s" reason)
+		  (format ": %s"
+			  (erc-replace-regexp-in-string "%" "%%" reason))
 		"")))))
 
 
@@ -6230,6 +6250,18 @@ This function should be on `erc-kill-channel-hook'."
 		       nil tgt))))
 
 ;;; Dealing with `erc-parsed'
+
+(defun erc-find-parsed-property ()
+  "Find the next occurrence of the `erc-parsed' text property."
+  (text-property-not-all (point-min) (point-max) 'erc-parsed nil))
+
+(defun erc-restore-text-properties ()
+  "Restore the property 'erc-parsed for the region."
+  (let ((parsed-posn (erc-find-parsed-property)))
+    (put-text-property
+     (point-min) (point-max)
+     'erc-parsed (when parsed-posn
+                   (get-text-property parsed-posn 'erc-parsed)))))
 
 (defun erc-get-parsed-vector (point)
   "Return the whole parsed vector on POINT."

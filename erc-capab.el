@@ -1,6 +1,6 @@
 ;;; erc-capab.el --- support for dancer-ircd and hyperion's CAPAB
 
-;; Copyright (C) 2006 Free Software Foundation, Inc.
+;; Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
 ;; GNU Emacs is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -174,8 +174,7 @@ PARSED is an `erc-parsed' response struct."
   "Add `erc-capab-identify-prefix' to nickname if user is unidentified."
   (when (and erc-capab-identify-prefix
              (erc-with-server-buffer erc-capab-identify-activated))
-    (goto-char (point-min))
-    (goto-char (or (erc-capab-find-parsed) (point-min)))
+    (goto-char (or (erc-find-parsed-property) (point-min)))
     (let ((nickname (erc-capab-get-unidentified-nickname
                      (erc-get-parsed-vector (point)))))
       (when (and nickname
@@ -186,17 +185,6 @@ PARSED is an `erc-parsed' response struct."
         (insert (erc-propertize erc-capab-identify-prefix
                                 'face (get-char-property (- (point) 1)
                                                          'face)))))))
-
-(defun erc-capab-find-parsed ()
-  "Return the position of text found with the `erc-parsed' property."
-  (catch 'position
-    (while (< (point) (point-max))
-      (cond ((get-char-property (point) 'erc-parsed)
-             (throw 'position (point)))
-            (t
-             (goto-char (or (next-single-property-change
-                             (point) 'erc-parsed)
-                            (point-max))))))))
 
 (defun erc-capab-get-unidentified-nickname (parsed)
   "Return the nickname of the user if unidentified.

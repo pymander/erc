@@ -14,7 +14,7 @@
 @copying
 This manual is for ERC version 5.2 (pre-release).
 
-Copyright @copyright{} 2005, 2006 Free Software Foundation, Inc.
+Copyright @copyright{} 2005, 2006, 2007 Free Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -411,6 +411,10 @@ Integrate with the Big Brother Database
 @item button
 Buttonize URLs, nicknames, and other text
 
+@cindex modules, capab-identify
+@item capab-identify
+Mark unidentified users on freenode and other servers supporting CAPAB.
+
 @cindex modules, completion
 @item pcomplete
 Complete nicknames and commands (programmable)
@@ -443,6 +447,10 @@ Save buffers in logs
 @cindex modules, match
 @item match
 Highlight pals, fools, and other keywords
+
+@cindex modules, menu
+@item menu
+Display a menu in ERC buffers
 
 @cindex modules, netsplit
 @item netsplit

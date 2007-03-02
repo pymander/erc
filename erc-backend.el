@@ -1,6 +1,6 @@
 ;;; erc-backend.el --- Backend network communication for ERC
 
-;; Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
+;; Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 ;; Filename: erc-backend.el
 ;; Author: Lawrence Mitchell <wence@gmx.li>
@@ -193,6 +193,11 @@ active, use the `erc-server-process-alive' function instead.")
   "Non-nil if the user requests a quit.")
 (make-variable-buffer-local 'erc-server-quitting)
 
+(defvar erc-server-reconnecting nil
+  "Non-nil if the user requests an explicit reconnect, and the
+current IRC process is still alive.")
+(make-variable-buffer-local 'erc-server-reconnecting)
+
 (defvar erc-server-timed-out nil
   "Non-nil if the IRC server failed to respond to a ping.")
 (make-variable-buffer-local 'erc-server-timed-out)
@@ -200,6 +205,10 @@ active, use the `erc-server-process-alive' function instead.")
 (defvar erc-server-banned nil
   "Non-nil if the user is denied access because of a server ban.")
 (make-variable-buffer-local 'erc-server-banned)
+
+(defvar erc-server-error-occurred nil
+  "Non-nil if the user triggers some server error.")
+(make-variable-buffer-local 'erc-server-error-occurred)
 
 (defvar erc-server-lines-sent nil
   "Line counter.")
@@ -402,11 +411,24 @@ protection algorithm."
 
 ;; Ping handling
 
-(defcustom erc-server-send-ping-interval 90
+(defcustom erc-server-send-ping-interval 30
   "*Interval of sending pings to the server, in seconds.
 If this is set to nil, pinging the server is disabled."
   :group 'erc-server
-  :type '(choice (const nil) (integer :tag "Seconds")))
+  :type '(choice (const :tag "Disabled" nil)
+                 (integer :tag "Seconds")))
+
+(defcustom erc-server-send-ping-timeout 120
+  "*If the time between ping and response is greater than this, reconnect.
+The time is in seconds.
+
+This must be greater than or equal to the value for
+`erc-server-send-ping-interval'.
+
+If this is set to nil, never try to reconnect."
+  :group 'erc-server
+  :type '(choice (const :tag "Disabled" nil)
+                 (integer :tag "Seconds")))
 
 (defvar erc-server-ping-handler nil
   "This variable holds the periodic ping timer.")
@@ -444,9 +466,11 @@ Currently this is called by `erc-send-input'."
 Additionally, detect whether the IRC process has hung."
   (if (buffer-live-p buf)
       (with-current-buffer buf
-        (if (> (erc-time-diff (erc-current-time)
-                              erc-server-last-received-time)
-               erc-server-send-ping-interval)
+        (if (and erc-server-send-ping-timeout
+                 (>
+                  (erc-time-diff (erc-current-time)
+                                 erc-server-last-received-time)
+                  erc-server-send-ping-timeout))
             (progn
               ;; if the process is hung, kill it
               (setq erc-server-timed-out t)
@@ -493,8 +517,10 @@ We will store server variables in the buffer given by BUFFER."
       (with-current-buffer buffer
         (setq erc-server-process process)
         (setq erc-server-quitting nil)
+        (setq erc-server-reconnecting nil)
         (setq erc-server-timed-out nil)
         (setq erc-server-banned nil)
+        (setq erc-server-error-occurred nil)
         (let ((time (erc-current-time)))
           (setq erc-server-last-sent-time time)
           (setq erc-server-last-ping-time time)
@@ -568,17 +594,20 @@ Make sure you are in an ERC buffer when running this."
 (defsubst erc-server-reconnect-p (event)
   "Return non-nil if ERC should attempt to reconnect automatically.
 EVENT is the message received from the closed connection process."
-  (and erc-server-auto-reconnect
-       (not erc-server-banned)
-       ;; make sure we don't infinitely try to reconnect, unless the
-       ;; user wants that
-       (or (eq erc-server-reconnect-attempts t)
-           (and (integerp erc-server-reconnect-attempts)
-                (< erc-server-reconnect-count erc-server-reconnect-attempts)))
-       (or erc-server-timed-out
-           (not (string-match "^deleted" event)))
-       ;; open-network-stream-nowait error for connection refused
-       (not (string-match "^failed with code 111" event))))
+  (or erc-server-reconnecting
+      (and erc-server-auto-reconnect
+           (not erc-server-banned)
+           (not erc-server-error-occurred)
+           ;; make sure we don't infinitely try to reconnect, unless the
+           ;; user wants that
+           (or (eq erc-server-reconnect-attempts t)
+               (and (integerp erc-server-reconnect-attempts)
+                    (< erc-server-reconnect-count
+                       erc-server-reconnect-attempts)))
+           (or erc-server-timed-out
+               (not (string-match "^deleted" event)))
+           ;; open-network-stream-nowait error for connection refused
+           (not (string-match "^failed with code 111" event)))))
 
 (defun erc-process-sentinel-1 (event)
   "Called when `erc-process-sentinel' has decided that we're disconnecting.
@@ -602,6 +631,7 @@ Conditionally try to reconnect and take appropriate action."
         (if (erc-server-reconnect-p event)
             (condition-case err
                 (progn
+                  (setq erc-server-reconnecting nil)
                   (erc-server-reconnect)
                   (setq erc-server-reconnect-count 0))
               (error (when (integerp erc-server-reconnect-attempts)
@@ -1098,6 +1128,7 @@ add things to `%s' instead."
 
 (define-erc-response-handler (ERROR)
   "Handle an ERROR command from the server." nil
+  (setq erc-server-error-occurred t)
   (erc-display-message
    parsed 'error nil 'ERROR
    ?s (erc-response.sender parsed) ?c (erc-response.contents parsed)))
@@ -1571,7 +1602,7 @@ See `erc-display-server-message'." nil
 (define-erc-response-handler (321)
   "LIST header." nil
   (setq erc-channel-list nil)
-  (erc-display-message parsed 'notice 'active 's321))
+  (erc-display-message parsed 'notice proc 's321))
 
 (define-erc-response-handler (322)
   "LIST notice." nil
@@ -1581,7 +1612,7 @@ See `erc-display-server-message'." nil
       (add-to-list 'erc-channel-list (list channel))
       (erc-update-channel-topic channel topic)
       (erc-display-message
-       parsed 'notice 'active 's322
+       parsed 'notice proc 's322
        ?c channel ?u num-users ?t (or topic "")))))
 
 (define-erc-response-handler (324)
