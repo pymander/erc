@@ -3,7 +3,14 @@
 	* FOR-RELEASE: Make section for 5.3 release and move erc-backend
 	cleanup there.  Awaiting discussion before doing other things.
 	Add tasks for merging filename changes from the 5.2 release
-	branch, and for making a tarball of modules not in Emacs 22.
+	branch, and for making a tarball of modules not in Emacs 22.  Add
+	item to remind me to update NEWS.  Mark backtab entry as done.
+
+	* erc-button.el (button): Add call to `erc-button-add-keys'.
+	(erc-button-keys-added): New variable tracking whether we've added
+	the keys yet.
+	(erc-button-add-keys): New function that adds the <backtab> key to
+	erc-mode-map.
 
 2007-02-15  Michael Olson  <mwolson@gnu.org>
 
