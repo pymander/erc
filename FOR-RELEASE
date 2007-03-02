@@ -15,9 +15,14 @@ other IRC clients, like Circe.
 *** Items with "@c PRE5_2" won't block the 5.1 release, but may block
 the release of 5.2.
 
+*** Update NEWS for changes since 5.1.4.
+
 ** Source
 
-*** Add binding for S-TAB (backtab) that moves backwards by link.
+*** [DONE] Add binding for S-TAB (backtab) that moves backwards by link.
+
+*** Merge filename changes from the 5.2 release branch into the
+erc--main--0 branch.
 
 * Emacs 22 release
 
@@ -31,6 +36,9 @@ New users never think of using M-x erc-select.
 conflict with rcirc, for example.  Would setting `erc-track-mode-map'
 work?  Otherwise we could encourage people to use something like
 `C-c e SPC' or `C-c c'.
+
+*** Make a tarball with the modules that weren't included with
+Emacs 22 that can be downloaded from GNU's ftp server.
 
 * 5.1 release
 
