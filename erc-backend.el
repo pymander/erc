@@ -185,6 +185,10 @@ If you wish to determine whether an IRC connection is currently
 active, use the `erc-server-process-alive' function instead.")
 (make-variable-buffer-local 'erc-server-connected)
 
+(defvar erc-server-reconnect-count 0
+  "Number of times we have failed to reconnect to the current server.")
+(make-variable-buffer-local 'erc-server-reconnect-count)
+
 (defvar erc-server-quitting nil
   "Non-nil if the user requests a quit.")
 (make-variable-buffer-local 'erc-server-quitting)
@@ -277,6 +281,23 @@ protection algorithm.")
 Reconnection will happen automatically for any unexpected disconnection."
   :group 'erc-server
   :type 'boolean)
+
+(defcustom erc-server-reconnect-attempts 2
+  "The number of times that ERC will attempt to reestablish a
+broken connection, or t to always attempt to reconnect.
+
+This only has an effect if `erc-server-auto-reconnect' is non-nil."
+  :group 'erc-server
+  :type '(choice (const :tag "Always reconnect" t)
+                 integer))
+
+(defcustom erc-server-reconnect-timeout 1
+  "The amount of time, in seconds, that ERC will wait between
+successive reconnect attempts.
+
+If a key is pressed while ERC is waiting, it will stop waiting."
+  :group 'erc-server
+  :type 'number)
 
 (defcustom erc-split-line-length 440
   "*The maximum length of a single message.
@@ -500,6 +521,21 @@ We will store server variables in the buffer given by BUFFER."
       (erc-display-message nil nil buffer "Opening connection..\n")
     (erc-login)))
 
+(defun erc-server-reconnect ()
+"Reestablish the current IRC connection.
+Make sure you are in an ERC buffer when running this."
+  (let ((server (erc-server-buffer)))
+    (unless (and server
+                 (buffer-live-p server))
+      (error "Couldn't switch to server buffer"))
+    (with-current-buffer server
+      (erc-update-mode-line)
+      (erc-set-active-buffer (current-buffer))
+      (setq erc-server-last-sent-time 0)
+      (setq erc-server-lines-sent 0)
+      (erc-open erc-session-server erc-session-port erc-server-current-nick
+                erc-session-user-full-name t erc-session-password))))
+
 (defun erc-server-filter-function (process string)
   "The process filter for the ERC server."
   (with-current-buffer (process-buffer process)
@@ -529,6 +565,21 @@ We will store server variables in the buffer given by BUFFER."
                                (match-end 0))))
             (erc-parse-server-response process line)))))))
 
+(defsubst erc-server-reconnect-p (event)
+  "Return non-nil if ERC should attempt to reconnect automatically.
+EVENT is the message received from the closed connection process."
+  (and erc-server-auto-reconnect
+       (not erc-server-banned)
+       ;; make sure we don't infinitely try to reconnect, unless the
+       ;; user wants that
+       (or (eq erc-server-reconnect-attempts t)
+           (and (integerp erc-server-reconnect-attempts)
+                (< erc-server-reconnect-count erc-server-reconnect-attempts)))
+       (or erc-server-timed-out
+           (not (string-match "^deleted" event)))
+       ;; open-network-stream-nowait error for connection refused
+       (not (string-match "^failed with code 111" event))))
+
 (defun erc-process-sentinel-1 (event)
   "Called when `erc-process-sentinel' has decided that we're disconnecting.
 Determine whether user has quit or whether erc has been terminated.
@@ -541,32 +592,26 @@ Conditionally try to reconnect and take appropriate action."
           (set-buffer-modified-p nil)
           (kill-buffer (current-buffer))))
     ;; unexpected disconnect
-    (erc-display-message nil 'error (current-buffer)
-                         (if (erc-server-reconnect-p event)
-                             'disconnected
-                           'disconnected-noreconnect))
-    (erc-update-mode-line)
-    (erc-set-active-buffer (current-buffer))
-    (setq erc-server-last-sent-time 0)
-    (setq erc-server-lines-sent 0)
-    (if (erc-server-reconnect-p event)
-        ;; Yuck, this should perhaps funcall
-        ;; erc-server-reconnect-function with no args
-        (erc-open erc-session-server erc-session-port erc-server-current-nick
-                  erc-session-user-full-name t erc-session-password)
-      ;; terminate, do not reconnect
-      (erc-display-message nil 'error (current-buffer)
-                           'terminated ?e event))))
-
-(defun erc-server-reconnect-p (event)
-  "Return non-nil if ERC should attempt to reconnect automatically.
-EVENT is the message received from the closed connection process."
-  (and erc-server-auto-reconnect
-       (not erc-server-banned)
-       (or erc-server-timed-out
-           (not (string-match "^deleted" event)))
-       ;; open-network-stream-nowait error for connection refused
-       (not (string-match "^failed with code 111" event))))
+    (let ((again t))
+      (while again
+        (setq again nil)
+        (erc-display-message nil 'error (current-buffer)
+                             (if (erc-server-reconnect-p event)
+                                 'disconnected
+                               'disconnected-noreconnect))
+        (if (erc-server-reconnect-p event)
+            (condition-case err
+                (progn
+                  (erc-server-reconnect)
+                  (setq erc-server-reconnect-count 0))
+              (error (when (integerp erc-server-reconnect-attempts)
+                       (setq erc-server-reconnect-count
+                             (1+ erc-server-reconnect-count))
+                       (sit-for erc-server-reconnect-timeout)
+                       (setq again t))))
+          ;; terminate, do not reconnect
+          (erc-display-message nil 'error (current-buffer)
+                               'terminated ?e event))))))
 
 (defun erc-process-sentinel (cproc event)
   "Sentinel function for ERC process."
@@ -1272,7 +1317,7 @@ add things to `%s' instead."
         (when buffer
           (with-current-buffer buffer
             ;; update the chat partner info.  Add to the list if private
-            ;; message.	 We will accumulate private identities indefinitely
+            ;; message.  We will accumulate private identities indefinitely
             ;; at this point.
             (erc-update-channel-member (if privp nick tgt) nick nick
                                        privp nil nil host login nil nil t)
@@ -1387,7 +1432,7 @@ add things to `%s' instead."
 According to RFC 2812, suggests alternate servers on the network.
 Many servers, however, use this code to show which parameters they have set,
 for example, the network identifier, maximum allowed topic length, whether
-certain commands are accepted and more.	 See documentation for
+certain commands are accepted and more.  See documentation for
 `erc-server-parameters' for more information on the parameters sent.
 
 A server may send more than one 005 message."
@@ -1630,11 +1675,11 @@ See `erc-display-server-message'." nil
   "NAMES notice." nil
   (let ((channel (third (erc-response.command-args parsed)))
         (users (erc-response.contents parsed)))
-    (erc-with-buffer (channel proc)
-      (erc-channel-receive-names users))
     (erc-display-message parsed 'notice (or (erc-get-buffer channel proc)
                                             'active)
-                         's353 ?c channel ?u users)))
+                         's353 ?c channel ?u users)
+    (erc-with-buffer (channel proc)
+      (erc-channel-receive-names users))))
 
 (define-erc-response-handler (366)
   "End of NAMES." nil

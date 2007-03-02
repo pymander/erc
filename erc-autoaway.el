@@ -50,7 +50,7 @@ user's away status.")
 (eval-when-compile (defvar erc-autoaway-idle-seconds))
 
 (defun erc-autoaway-reestablish-idletimer ()
-  "Reestablish the emacs idletimer.
+  "Reestablish the Emacs idletimer.
 If `erc-autoaway-idle-method' is 'emacs, you must call this
 function each time you change `erc-autoaway-idle-seconds'."
   (interactive)

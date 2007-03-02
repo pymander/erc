@@ -44,6 +44,10 @@ Adrian Aichner <adrian@xemacs.org>:
 Marcelo Toledo <marcelo@marcelotoledo.org>:
   * Made it possible to display notices in the current buffer.
 
+Brian Palmer <bpalmer@gmail.com>
+  * Made changes to erc.el (10 lines).
+  * Made changes to erc-list.el (>15 lines).
+
 Arne Schwabe <arne@rfc2549.org>:
   * Helped with handlers for 313 and 330 (erc.el).
 
@@ -138,8 +142,29 @@ Eric Hanchrow <offby1@blarg.net>:
   * Implemented check of /ignore argument to see whether it was a
     regexp or a normal string (4 lines changed).
 
+John J Foerch <jjfoerch@earthlink.net>
+  * Fix bug with movement around right timestamps (2 lines changed).
+
+ukasz Demianiuk <ldemianiuk@gmail.com>:
+  * Fix bug in erc-header-line (1 line changed).
+
+Andrea Russo <rastandy@inventati.org>:
+  * Fixed wrong type argument bug in erc-dcc (1 line changed).
+
+Juanma Barranquero <lekktu@gmail.com>:
+  * Vetted the inline documentation and provided many fixes.
+
+Leo <sdl.web AT gmail.com>:
+  * Fixed the erc-iswitchb function to only temporarily enable
+    iswitchb mode if it isn't active already (4 lines changed).
+
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
 forgot.  If you aren't listed here and should be, send an email to
 mwolson@gnu.org along with a list of your contributions.
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
