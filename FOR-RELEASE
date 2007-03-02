@@ -19,7 +19,7 @@ the release of 5.2.
 
 ** Source
 
-*** Add binding for S-TAB (backtab) that moves backwards by link.
+*** [DONE] Add binding for S-TAB (backtab) that moves backwards by link.
 
 *** Merge filename changes from the 5.2 release branch into the
 erc--main--0 branch.
