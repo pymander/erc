@@ -2,6 +2,8 @@
 
 	* FOR-RELEASE: Make section for 5.3 release and move erc-backend
 	cleanup there.  Awaiting discussion before doing other things.
+	Add tasks for merging filename changes from the 5.2 release
+	branch, and for making a tarball of modules not in Emacs 22.
 
 2007-02-15  Michael Olson  <mwolson@gnu.org>
 
