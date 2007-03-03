@@ -1905,9 +1905,7 @@ removed from the list will be disabled."
 
 (defun erc-open (&optional server port nick full-name
 			   connect passwd tgt-list channel process)
-  "ERC is a powerful, modular, and extensible IRC client.
-
-Connect to SERVER on PORT as NICK with FULL-NAME.
+  "Connect to SERVER on PORT as NICK with FULL-NAME.
 
 If CONNECT is non-nil, connect to the server.  Otherwise assume
 already connected and just create a separate buffer for the new
@@ -2121,8 +2119,12 @@ functions in here get called with the parameters SERVER and NICK."
 		  (nick   (erc-compute-nick))
 		  password
 		  (full-name (erc-compute-full-name)))
-  "Select connection parameters and run ERC.
-Non-interactively, it takes keyword arguments
+  "ERC is a powerful, modular, and extensible IRC client.
+This function is the main entry point for ERC.
+
+It permits you to select connection parameters, and then starts ERC.
+
+Non-interactively, it takes the keyword arguments
    (server (erc-compute-server))
    (port   (erc-compute-port))
    (nick   (erc-compute-nick))
@@ -2133,7 +2135,7 @@ That is, if called with
 
    (erc :server \"irc.freenode.net\" :full-name \"Harry S Truman\")
 
-server and full-name will be set to those values, whereas
+then the server and full-name will be set to those values, whereas
 `erc-compute-port', `erc-compute-nick' and `erc-compute-full-name' will
 be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))

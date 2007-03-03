@@ -1,3 +1,7 @@
+2007-03-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-open, erc): Docfixes.
+
 2007-03-02  Michael Olson  <mwolson@gnu.org>
 
 	* FOR-RELEASE: Make section for 5.3 release and move erc-backend
