@@ -1,4 +1,18 @@
-2007-03-05  Diane Murray  <disumu@x3y2z1.net>
+2007-03-10  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-capab.el: Added more information to the Usage section.
+	(erc-capab-identify-prefix): Doc fix.
+	(erc-capab-identify-unidentified): New face.
+	(290): Removed.  Definition moved to erc-backend.el.
+	(erc-capab-identify-send-messages): Renamed from
+	`erc-capab-send-identify-messages'.
+	(erc-capab-identify-setup): Use it.
+	(erc-capab-identify-get-unidentified-nickname): Renamed from
+	`erc-capab-get-unidentified-nickname'.
+	(erc-capab-identify-add-prefix): Use it.  Use
+	`erc-capab-identify-unidentified' as the face.
+
+	* erc-backend.el (290): Moved here from erc-capab.el.
 
 	* erc.el (erc-select): Added an autoload cookie.
 	(erc-message-type-member, erc-restore-text-properties): Use

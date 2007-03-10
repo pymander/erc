@@ -1513,6 +1513,9 @@ A server may send more than one 005 message."
 See `erc-display-server-message'." nil
   (erc-display-server-message proc parsed))
 
+(define-erc-response-handler (290)
+  "Handle dancer-ircd CAPAB messages." nil nil)
+
 (define-erc-response-handler (301)
   "AWAY notice." nil
   (erc-display-message parsed 'notice 'active 's301
