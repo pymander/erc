@@ -8,6 +8,9 @@ an alias of `erc'. Likewise, `erc-select-ssl' has been renamed to
 `erc-ssl' with `erc-select-ssl' as its alias.  The function that was
 known as `erc' is now `erc-open'.
 
+** Open query buffers by default when private messages are received.
+The default value of `erc-auto-query' has been changed to 'bury.
+
 ** New command: /RECONNECT
 This command tries to reconnect to the current IRC server exactly
 once.  It does not work in server buffers (throws an error before the

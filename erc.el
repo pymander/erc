@@ -2141,6 +2141,7 @@ be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
   (erc-open server port nick full-name t password))
 
+;;;###autoload
 (defalias 'erc-select 'erc)
 
 (defun erc-ssl (&rest r)
@@ -2430,7 +2431,7 @@ See also `erc-format-message' and `erc-display-line'."
 
 This function relies on the erc-parsed text-property being
 present."
-  (let ((prop-val (get-text-property position 'erc-parsed)))
+  (let ((prop-val (erc-get-parsed-vector position)))
     (and prop-val (member (erc-response.command prop-val) list))))
 
 (defvar erc-send-input-line-function 'erc-send-input-line)
@@ -3753,7 +3754,7 @@ To change how this query window is displayed, use `let' to bind
     (erc-update-mode-line)
     buf))
 
-(defcustom erc-auto-query nil
+(defcustom erc-auto-query 'bury
   "If non-nil, create a query buffer each time you receive a private message.
 
 If the buffer doesn't already exist it is created.  This can be
@@ -5762,7 +5763,8 @@ Otherwise, use the `erc-header-line' face."
 
 (defcustom erc-common-server-suffixes
   '(("openprojects.net$" . "OPN")
-    ("freenode.net$" . "OPN"))
+    ("freenode.net$" . "freenode")
+    ("oftc.net$" . "OFTC"))
   "Alist of common server name suffixes.
 This variable is used in mode-line display to save screen
 real estate.  Set it to nil if you want to avoid changing
@@ -6262,8 +6264,7 @@ This function should be on `erc-kill-channel-hook'."
   (let ((parsed-posn (erc-find-parsed-property)))
     (put-text-property
      (point-min) (point-max)
-     'erc-parsed (when parsed-posn
-                   (get-text-property parsed-posn 'erc-parsed)))))
+     'erc-parsed (when parsed-posn (erc-get-parsed-vector parsed-posn)))))
 
 (defun erc-get-parsed-vector (point)
   "Return the whole parsed vector on POINT."

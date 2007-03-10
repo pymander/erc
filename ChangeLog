@@ -1,3 +1,16 @@
+2007-03-05  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el (erc-select): Added an autoload cookie.
+	(erc-message-type-member, erc-restore-text-properties): Use
+	`erc-get-parsed-vector'.
+	(erc-auto-query): Set the default to 'bury since many new users
+	expect private messages from others to be in dedicated query
+	buffers, not the server buffer.
+	(erc-common-server-suffixes): Use "freenode" for freenode.net, not
+	"OPN".  Added oftc.net.
+
+	* NEWS: Added note about erc-auto-query's new default setting.
+
 2007-03-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-open, erc): Docfixes.
