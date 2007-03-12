@@ -1,3 +1,10 @@
+2007-03-12  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-autoaway.el (erc-autoaway-idle-method): When setting the new
+	value, disable and re-enable `erc-autoaway-mode' only if it was
+	already enabled.  This fixes a bug where autoaway was enabled just
+	by loading the file.
+
 2007-03-10  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-capab.el: Added more information to the Usage section.
