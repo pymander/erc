@@ -73,6 +73,11 @@ Obtaining ERC
 * Releases::                    Released versions of ERC.
 * Development::                 Latest unreleased development changes.
 
+Getting Started
+
+* Sample Session::              Example of connecting to the #emacs channel
+* Special Features::            Differences from standalone IRC clients
+
 Advanced Usage
 
 * Connecting::                  Ways of connecting to an IRC server.
@@ -193,9 +198,9 @@ tla update
 
 @end enumerate
 
-If you are new to Arch and want to learn more about developing with it,
-you might find this tutorial helpful:
-@uref{http://www.mwolson.org/projects/ArchTutorial.html}.
+If you are new to Arch and want to learn more about developing ERC with
+it, visit @uref{http://emacswiki.org/cgi-bin/wiki/ErcDevelopment} for
+full instructions.
 
 @subheading Development snapshots
 
@@ -266,8 +271,6 @@ locations that require this.
 @chapter Getting Started
 @cindex settings
 
-@c PRE5_2: Mention .ercrc.el
-
 To use ERC, add the directory containing its files to your
 @code{load-path} variable, in your @file{.emacs} file.  Then, load ERC
 itself.  An example follows.
@@ -279,20 +282,117 @@ itself.  An example follows.
 Once ERC is loaded, the command @kbd{M-x erc} will start ERC and
 prompt for the server to connect to.
 
+If you want to place ERC settings in their own file, you can place them
+in @file{~/.emacs.d/.ercrc.el}, creating it if necessary.
+
+If you would rather use the Customize interface to change how ERC works,
+do @kbd{M-x customize-group RET erc RET}.  In particular, ERC comes with
+lots of modules that may be enabled or disabled; to select which ones
+you want, do @kbd{M-x customize-variable RET erc-modules RET}.
+
+@menu
+* Sample Session::              Example of connecting to the #emacs channel
+* Special Features::            Differences from standalone IRC clients
+@end menu
+
+@node Sample Session, Special Features, Getting Started, Getting Started
+@comment  node-name,  next,  previous,  up
+@section Sample Session
+
+This is an example ERC session which shows how to connect to the #emacs
+channel on Freenode.
+
+@itemize @bullet
+
+@item Connect to Freenode
+
+@item Get used to the interface
+
+@item Join the #emacs channel
+
+@item Register your nickname with Freenode
+
+@item Talk to people in the channel
+
+@item Open a query buffer to talk to someone
+
+@c (must identify first in FreeNode)
+
+@end itemize
+
+@node Special Features, , Sample Session, Getting Started
+@comment  node-name,  next,  previous,  up
+@section Special Features
+
+ERC has some features that distinguish it from some IRC clients.
+
+@itemize @bullet
+
+@item multiple channels and multiple servers
+
+Every channel is put in a separate buffer.  Several IRC servers may be
+connected to at the same time.
+
+@cindex query buffers
+@item private message separation
+
+Private conversations are treated as channels, and are put into separate
+buffers in Emacs.  We call these ``query buffers''.
+
+@item highlighting
+
+Some occurences of words can be highlighted, which makes it easier to
+track different kinds of conversations.
+
+@item notification
+
+ERC can notify you that certain users are online.
+
+@item channel tracking
+
+Channels can be hidden and conversation continue in the background.  You
+are notified when something is said in such a channel that is not
+currently visible.  This makes it easy to get Real Work done while still
+maintaining an IRC presence.
+
+@item nick completion
+
+ERC can complete words upon hitting @kbd{TAB}, which eases the writing
+of nicknames in messages.
+
+@cindex history ring
+@item history
+
+Past actions are kept in history rings for future use.  To navigate a
+history ring, hit @kbd{M-p} to go backwards and @kbd{M-n} to go
+forwards.
+
+@item multiple languages
+
+Different channels and servers may have different language encodings.
+
+In addition, it is possible to translate the messages that ERC uses into
+multiple languages.  Please contact the developers of ERC at
+@email{erc-discuss@@gnu.org} if you are interested in helping with the
+translation effort.
+
+@item user scripting
+
+Users can load scripts (e.g. auto greeting scripts) when ERC starts up.
+
+It is also possible to make custom IRC commands, if you know a little
+Emacs Lisp.  Just make an Emacs Lisp function and call it
+@code{erc-cmd-NEWCOMMAND}, where @code{NEWCOMMAND} is the name of the
+new command in capital letters.
+
+@item auto reconnect
+
 If the connection goes away at some point, ERC will try to reconnect
 automatically.  If it fails to reconnect, and you want to try to
 manually reestablish the connection at some later point, switch to an
-ERC buffer and run the /RECONNECT command.
+ERC  buffer and run the @code{/RECONNECT} command.
 
-@c PRE5_2: Sample session, including:
-@c - connect to Freenode
-@c - /join #emacs
-@c - see messages flying past, point out topic lines, messages, channel
-@c   members
-@c - identifying your nick with NickServ (most IRC servers have this)
-@c - talking to the channel
-@c - open a /query buffer to talk to someone (must identify first in
-@c   FreeNode)
+@end itemize
 
 
 @node Keystroke Summary, Modules, Getting Started, Top

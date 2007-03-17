@@ -1,3 +1,15 @@
+2007-03-17  Michael Olson  <mwolson@gnu.org>
+
+	* erc.texi (Development): Mention ErcDevelopment page on
+	emacswiki.
+	(Getting Started): Mention ~/.emacs.d/.ercrc.el and the Customize
+	interface.
+	(Sample Session): New section that has a very rough draft for a
+	sample ERC session.
+	(Special Features): New section that explains some of the special
+	features of ERC.  Taken from ErcFeatures on emacswiki, with
+	enhancements.
+
 2007-03-12  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-autoaway.el (erc-autoaway-idle-method): When setting the new
