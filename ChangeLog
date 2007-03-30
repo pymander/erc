@@ -1,3 +1,14 @@
+2007-03-30  Michael Olson  <mwolson@gnu.org>
+
+	* erc-autoaway.el (erc-autoaway-idle-method): Use `if' rather than
+	`cond' and `set' rather than `set-default'.
+
+	* erc-track.el (track): Assimilate track-when-active module, since
+	there's no need to have two modules in one file -- an option will
+	do.  Remove track-modified-channels alias.
+	(erc-track-when-inactive): New option which determines whether to
+	track visible buffers when inactive.  The default is not to do so.
+
 2007-03-17  Michael Olson  <mwolson@gnu.org>
 
 	* erc.texi (Development): Mention ErcDevelopment page on

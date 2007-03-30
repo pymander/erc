@@ -492,42 +492,61 @@ START is the minimum length of the name used."
 ;;; Module
 
 ;;;###autoload (autoload 'erc-track-mode "erc-track" nil t)
-(define-erc-module track track-modified-channels
+(define-erc-module track nil
   "This mode tracks ERC channel buffers with activity."
-  ((erc-track-add-to-mode-line erc-track-position-in-mode-line)
-   (setq erc-modified-channels-object (erc-modified-channels-object nil))
-   (erc-update-mode-line)
-   (if (featurep 'xemacs)
-       (defadvice switch-to-buffer (after erc-update (&rest args) activate)
-	 (erc-modified-channels-update))
-     (add-hook 'window-configuration-change-hook 'erc-modified-channels-update))
-   (add-hook 'erc-insert-post-hook 'erc-track-modified-channels)
-   (add-hook 'erc-disconnected-hook 'erc-modified-channels-update))
-  ((erc-track-remove-from-mode-line)
-   (if (featurep 'xemacs)
-       (ad-disable-advice 'switch-to-buffer 'after 'erc-update)
-     (remove-hook 'window-configuration-change-hook
-		  'erc-modified-channels-update))
-   (remove-hook 'erc-disconnected-hook 'erc-modified-channels-update)
-   (remove-hook 'erc-insert-post-hook 'erc-track-modified-channels)))
+  ;; Enable:
+  ((when (boundp 'erc-track-when-inactive)
+     (if erc-track-when-inactive
+	 (progn
+	   (if (featurep 'xemacs)
+	       (defadvice switch-to-buffer (after erc-update-when-inactive
+						  (&rest args) activate)
+		 (erc-user-is-active))
+	     (add-hook 'window-configuration-change-hook 'erc-user-is-active))
+	   (add-hook 'erc-send-completed-hook 'erc-user-is-active)
+	   (add-hook 'erc-server-001-functions 'erc-user-is-active))
+       (erc-track-add-to-mode-line erc-track-position-in-mode-line)
+       (setq erc-modified-channels-object (erc-modified-channels-object nil))
+       (erc-update-mode-line)
+       (if (featurep 'xemacs)
+	   (defadvice switch-to-buffer (after erc-update (&rest args) activate)
+	     (erc-modified-channels-update))
+	 (add-hook 'window-configuration-change-hook
+		   'erc-modified-channels-update))
+       (add-hook 'erc-insert-post-hook 'erc-track-modified-channels)
+       (add-hook 'erc-disconnected-hook 'erc-modified-channels-update))))
+  ;; Disable:
+  ((when (boundp 'erc-track-when-inactive)
+     (erc-track-remove-from-mode-line)
+     (if erc-track-when-inactive
+	 (progn
+	   (if (featurep 'xemacs)
+	       (ad-disable-advice 'switch-to-buffer 'after
+				  'erc-update-when-inactive)
+	     (remove-hook 'window-configuration-change-hook
+			  'erc-user-is-active))
+	   (remove-hook 'erc-send-completed-hook 'erc-user-is-active)
+	   (remove-hook 'erc-server-001-functions 'erc-user-is-active)
+	   (remove-hook 'erc-timer-hook 'erc-user-is-active))
+       (if (featurep 'xemacs)
+	   (ad-disable-advice 'switch-to-buffer 'after 'erc-update)
+	 (remove-hook 'window-configuration-change-hook
+		      'erc-modified-channels-update))
+       (remove-hook 'erc-disconnected-hook 'erc-modified-channels-update)
+       (remove-hook 'erc-insert-post-hook 'erc-track-modified-channels)))))
 
-;;;###autoload (autoload 'erc-track-when-inactive-mode "erc-track" nil t)
-(define-erc-module track-when-inactive nil
-  "This mode enables channel tracking even for visible buffers,
-if you are inactivity."
-  ((if (featurep 'xemacs)
-       (defadvice switch-to-buffer (after erc-update-when-inactive (&rest args) activate)
-	 (erc-user-is-active))
-     (add-hook 'window-configuration-change-hook 'erc-user-is-active))
-   (add-hook 'erc-send-completed-hook 'erc-user-is-active)
-   (add-hook 'erc-server-001-functions 'erc-user-is-active))
-  ((erc-track-remove-from-mode-line)
-   (if (featurep 'xemacs)
-       (ad-disable-advice 'switch-to-buffer 'after 'erc-update-when-inactive)
-     (remove-hook 'window-configuration-change-hook 'erc-user-is-active))
-   (remove-hook 'erc-send-completed-hook 'erc-user-is-active)
-   (remove-hook 'erc-server-001-functions 'erc-user-is-active)
-   (remove-hook 'erc-timer-hook 'erc-user-is-active)))
+(defcustom erc-track-when-inactive nil
+  "Enable channel tracking even for visible buffers, if you are
+inactive."
+  :group 'erc-track
+  :type 'boolean
+  :set (lambda (sym val)
+	 (if erc-track-mode
+	     (progn
+	       (erc-track-disable)
+	       (set sym val)
+	       (erc-track-enable))
+	   (set sym val))))
 
 ;;; Visibility
 

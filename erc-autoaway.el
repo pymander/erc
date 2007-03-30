@@ -154,11 +154,12 @@ definitions of being idle."
 		 (const :tag "Emacs idle time" emacs)
 		 (const :tag "Last IRC action" irc))
   :set (lambda (sym val)
-	 (cond (erc-autoaway-mode
-		(erc-autoaway-disable)
-		(set-default sym val)
-		(erc-autoaway-enable))
-	       (t (set-default sym val)))))
+	 (if erc-autoaway-mode
+	     (progn
+	       (erc-autoaway-disable)
+	       (set sym val)
+	       (erc-autoaway-enable))
+	   (set sym val))))
 
 (defcustom erc-auto-set-away t
   "*If non-nil, set away after `erc-autoaway-idle-seconds' seconds of idling.
