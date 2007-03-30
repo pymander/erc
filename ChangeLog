@@ -3,6 +3,14 @@
 	* erc-autoaway.el (erc-autoaway-idle-method): Use `if' rather than
 	`cond' and `set' rather than `set-default'.
 
+	* erc-log.el: Avoid compiler warning by requiring erc-network
+	during compilation.
+	(erc-generate-log-file-name-function): Add tag to each option.
+	Add erc-generate-log-file-name-network.
+	(erc-generate-log-file-name-network): New function which generates
+	a log file name that uses network name rather than server name,
+	when possible.
+
 	* erc-track.el (track): Assimilate track-when-active module, since
 	there's no need to have two modules in one file -- an option will
 	do.  Remove track-modified-channels alias.
