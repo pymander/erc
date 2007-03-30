@@ -31,11 +31,16 @@ erc--main--0 branch.
 *** [DONE] Make M-x erc start a session.
 New users never think of using M-x erc-select.
 
-*** Change keybinding definitions for `erc-track-switch-buffer'.
+*** [DONE] Change keybinding definitions for `erc-track-switch-buffer'.
 `C-c C-SPC' / `C-c C-@' is set as a global keybinding and is known to
 conflict with rcirc, for example.  Would setting `erc-track-mode-map'
 work?  Otherwise we could encourage people to use something like
 `C-c e SPC' or `C-c c'.
+
+**** Solution: We went with a global minor mode which does nothing
+but set the global-level C-c C-SPC and C-c C-@ keybindings.  It
+defaults to warning the user if one of their keybindings would be
+overridden, so this solution should be OK to install in Emacs.
 
 *** Make a tarball with the modules that weren't included with
 Emacs 22 that can be downloaded from GNU's ftp server.

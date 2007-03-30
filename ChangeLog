@@ -1,5 +1,7 @@
 2007-03-30  Michael Olson  <mwolson@gnu.org>
 
+	* FOR-RELEASE: Solve C-c C-SPC keybinding dilemma.
+
 	* erc-autoaway.el (erc-autoaway-idle-method): Use `if' rather than
 	`cond' and `set' rather than `set-default'.
 
@@ -13,11 +15,26 @@
 
 	* erc-track.el (track): Assimilate track-when-active module, since
 	there's no need to have two modules in one file -- an option will
-	do.  Remove track-modified-channels alias.
+	do.  Remove track-modified-channels alias.  Call
+	erc-track-minor-mode-maybe, and tear down the minor mode when
+	disabling.
 	(erc-track-when-inactive): New option which determines whether to
 	track visible buffers when inactive.  The default is not to do so.
 	(erc-track-visibility): Mention erc-track-when-inactive.
 	(erc-buffer-visible): Use erc-track-when-inactive.
+	(erc-track-enable-keybindings): New option which determines
+	whether to enable the global-level tracking keybindings.  The
+	default is to do so, unless they would override another binding,
+	in which case we prompt the user about it.
+	(erc-track-minor-mode-map): Move global keybindings here.
+	(erc-track-minor-mode): New minor mode which only enables the
+	keybindings and does nothing else.
+	(erc-track-minor-mode-maybe): New function which starts
+	erc-track-minor-mode, but only if it hasn't already been started,
+	an ERC buffer exists, and the user OK's it, depending on the value
+	of `erc-track-enable-keybindings'.
+	(erc-track-switch-buffer): Display a message if someone calls this
+	without first enabling erc-track-mode.
 
 2007-03-17  Michael Olson  <mwolson@gnu.org>
 
