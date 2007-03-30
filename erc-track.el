@@ -52,7 +52,7 @@
 The value of this variable determines, when a buffer is considered
 visible or invisible.  New messages in invisible buffers are tracked,
 while switching to visible buffers when they are tracked removes them
-from the list.  See also `erc-track-when-inactive-mode'.
+from the list.  See also `erc-track-when-inactive'.
 
 Possible values are:
 
@@ -565,7 +565,7 @@ only consider active buffers visible.")
 
 (defun erc-buffer-visible (buffer)
   "Return non-nil when the buffer is visible."
-  (if erc-track-when-inactive-mode
+  (if erc-track-when-inactive
       (when erc-buffer-activity; could be nil
 	(and (get-buffer-window buffer erc-track-visibility)
 	     (<= (erc-time-diff erc-buffer-activity (erc-current-time))

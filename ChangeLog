@@ -8,6 +8,8 @@
 	do.  Remove track-modified-channels alias.
 	(erc-track-when-inactive): New option which determines whether to
 	track visible buffers when inactive.  The default is not to do so.
+	(erc-track-visibility): Mention erc-track-when-inactive.
+	(erc-buffer-visible): Use erc-track-when-inactive.
 
 2007-03-17  Michael Olson  <mwolson@gnu.org>
 
