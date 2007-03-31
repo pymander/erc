@@ -1,3 +1,14 @@
+2007-03-31  Michael Olson  <mwolson@gnu.org>
+
+	* erc-bbdb.el (erc-bbdb-search-name-and-create): Make prompt more
+	informative about how to skip merging.
+	(erc-bbdb-insinuate-and-show-entry-1): Move contents of
+	erc-bbdb-insinuate-and-show-entry here.
+	(erc-bbdb-insinuate-and-show-entry): Run
+	erc-bbdb-insinuate-and-show-entry-1 "outside" of the calling
+	function, so that we can avoid triggering a process-filter error
+	if the user hits C-g.
+
 2007-03-30  Michael Olson  <mwolson@gnu.org>
 
 	* FOR-RELEASE: Solve C-c C-SPC keybinding dilemma.

@@ -306,17 +306,49 @@ channel on Freenode.
 
 @item Connect to Freenode
 
+Run @kbd{M-x erc}.  Use ``irc.freenode.net'' as the IRC server, ``6667''
+as the port, and choose a nickname.
+
 @item Get used to the interface
+
+Switch to the ``irc.freenode.net:6667'' buffer, if you're not already
+there.  You will see first some messages about checking for ident, and
+then a bunch of other messages that describe the current IRC server.
 
 @item Join the #emacs channel
 
+In that buffer, type ``/join SPC #emacs'' and hit @kbd{RET}.  Depending
+on how you've set up ERC, either a new buffer for ``#emacs'' will be
+displayed, or a new buffer called ``#emacs'' will be created in the
+background.  If the latter, switch to the ``#emacs'' buffer.  You will
+see the channel topic and a list of the people who are currently on the
+channel.
+
 @item Register your nickname with Freenode
+
+If you would like to be able to talk with people privately on the
+Freenode network, you will have to ``register'' your nickname.  To do
+so, switch to the ``irc.freenode.net:6667'' buffer and type ``/msg
+NickServ register <password>'', replacing ``<password>'' with your
+desired password.  It should tell you that the operation was successful.
 
 @item Talk to people in the channel
 
+If you switch back to the ``#emacs'' buffer, you can type a message, and
+everyone on the channel will see it.
+
 @item Open a query buffer to talk to someone
 
-@c (must identify first in FreeNode)
+If you want to talk with someone in private (this should usually not be
+done for technical help, only for personal questions), type ``/query
+<nick>'', replacing ``<nick>'' with the nickname of the person you would
+like to talk to.  Depending on how ERC is set up, you will either see a
+new buffer with the name of the person, or such a buffer will be created
+in the background and you will have to switch to it.  Begin typing
+messages, and you will be able to have a conversation.
+
+Note that if the other person is not registered, you will not be able to
+talk with them.
 
 @end itemize
 

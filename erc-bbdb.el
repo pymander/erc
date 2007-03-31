@@ -130,7 +130,7 @@ their \"displayed name\"."
 		     (bbdb-search (bbdb-records) nil nil nil finger)
 		     (unless silent
 		       (bbdb-completing-read-one-record
-			"Merge using record of: "))
+			"Merge using record of (C-g to skip, RET for new): "))
 		     (when create-p
 		       (bbdb-create-internal (or name
 						 "John Doe")
@@ -152,7 +152,7 @@ their \"displayed name\"."
 							   'visible))))))
       (bbdb-display-records (list record)))))
 
-(defun erc-bbdb-insinuate-and-show-entry (create-p proc nick name finger-host silent &optional chan new-nick)
+(defun erc-bbdb-insinuate-and-show-entry-1 (create-p proc nick name finger-host silent &optional chan new-nick)
   (let ((record (erc-bbdb-search-name-and-create
 		 create-p nil nick finger-host silent))) ;; don't search for a name
     (when record
@@ -165,6 +165,13 @@ their \"displayed name\"."
 	   (bbdb-annotate-notes record chan erc-bbdb-irc-channel-field))
       (erc-bbdb-highlight-record record)
       (erc-bbdb-show-entry record chan proc))))
+
+(defun erc-bbdb-insinuate-and-show-entry (create-p proc nick name finger-host silent &optional chan new-nick)
+  ;; run this outside of the IRC filter process, to avoid an annoying
+  ;; error when the user hits C-g
+  (run-at-time nil nil
+	       #'erc-bbdb-insinuate-and-show-entry-1
+	       create-p proc nick name finger-host silent chan new-nick))
 
 (defun erc-bbdb-whois (proc parsed)
   (let (; We could use server name too, probably
