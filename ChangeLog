@@ -1,6 +1,17 @@
 2007-03-31  Michael Olson  <mwolson@gnu.org>
 
-	* erc.texi (Sample Session): Flesh out.
+	* FOR-RELEASE: Finish up 5.2 manual item.  Add documentation item
+	for 5.3.
+
+	* erc.texi (Sample Session): Flesh out.  Mention #erc.
+	(Modules): Defer to 5.3 release.
+	(Advanced Usage): Move Sample Configuration chapter ahead of
+	unfinished chapters.
+	(Sample Configuration): Write.
+	(Options): Mention how to see available ERC options.  Defer to 5.3
+	release.
+	(Tips and Tricks): Remove, since it seems better to just include
+	tips and tricks in the sample configuration, commented out.
 
 	* erc-bbdb.el (erc-bbdb-search-name-and-create): Make prompt more
 	informative about how to skip merging.

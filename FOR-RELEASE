@@ -2,6 +2,10 @@ Tasks that need to be accomplished in order for a release to happen.
 
 * 5.3 release (future)
 
+** Documentation
+
+*** Finish items marked with "@c PRE5_3" in the documentation.
+
 ** Source
 
 *** Make erc-backend not need to (require) any other part of ERC.
@@ -12,8 +16,7 @@ other IRC clients, like Circe.
 
 ** Documentation
 
-*** Items with "@c PRE5_2" won't block the 5.1 release, but may block
-the release of 5.2.
+*** [DONE] Finish items marked with "@c PRE5_2" in the documentation.
 
 *** Update NEWS for changes since 5.1.4.
 
@@ -45,7 +48,7 @@ overridden, so this solution should be OK to install in Emacs.
 *** Make a tarball with the modules that weren't included with
 Emacs 22 that can be downloaded from GNU's ftp server.
 
-* 5.1 release
+* 5.1 release (old)
 
 ** [DONE] Documentation
 

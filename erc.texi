@@ -81,9 +81,8 @@ Getting Started
 Advanced Usage
 
 * Connecting::                  Ways of connecting to an IRC server.
-* Options::                     Options that are available for ERC.
-* Tips and Tricks::             Ways of enhancing your ERC experience.
 * Sample Configuration::        An example configuration file.
+* Options::                     Options that are available for ERC.
 
 @end detailmenu
 @end menu
@@ -300,7 +299,9 @@ you want, do @kbd{M-x customize-variable RET erc-modules RET}.
 @section Sample Session
 
 This is an example ERC session which shows how to connect to the #emacs
-channel on Freenode.
+channel on Freenode.  Another IRC channel on Freenode that may be of
+interest is #erc, which is a channel where ERC users and developers hang
+out.
 
 @itemize @bullet
 
@@ -650,7 +651,7 @@ Translate morse code in messages
 
 @end table
 
-@c PRE5_2: Document every option of every module in its own subnode
+@c PRE5_3: Document every option of every module in its own subnode
 
 
 @node Advanced Usage, Getting Help and Reporting Bugs, Modules, Top
@@ -660,12 +661,11 @@ Translate morse code in messages
 
 @menu
 * Connecting::                  Ways of connecting to an IRC server.
-* Options::                     Options that are available for ERC.
-* Tips and Tricks::             Ways of enhancing your ERC experience.
 * Sample Configuration::        An example configuration file.
+* Options::                     Options that are available for ERC.
 @end menu
 
-@node Connecting, Options, Advanced Usage, Advanced Usage
+@node Connecting, Sample Configuration, Advanced Usage, Advanced Usage
 @comment  node-name,  next,  previous,  up
 @section Connecting to an IRC Server
 @cindex connecting
@@ -799,33 +799,100 @@ User full name.
 This can be either a string or a function to call.
 @end defopt
 
-@node Options, Tips and Tricks, Connecting, Advanced Usage
-@comment  node-name,  next,  previous,  up
-@section Options
-@cindex options
-
-@c PRE5_2: (Node) Document every ERC option (module options go in
-@c previous chapter)
-
-This section has not yet been written.
-
-@node Tips and Tricks, Sample Configuration, Options, Advanced Usage
-@comment  node-name,  next,  previous,  up
-@section Tips and Tricks
-@cindex tips and tricks
-
-@c PRE5_2: (Node) Tips and tricks
-
-This section has not yet been written.
-
-@node Sample Configuration, , Tips and Tricks, Advanced Usage
+@node Sample Configuration, Options, Connecting, Advanced Usage
 @comment  node-name,  next,  previous,  up
 @section Sample Configuration
 @cindex configuration, sample
 
-@c PRE5_2: (Node) Sample configs
+Here is an example of configuration settings for ERC.  This can go into
+your Emacs configuration file.  Everything after the @code{(require
+'erc)} command can optionally go into @file{~/.emacs.d/.ercrc.el}.
 
-This section has not yet been written.
+@lisp
+;;; Sample ERC configuration
+
+;; The code in this section (Sample Configuration) may be used,
+;; distributed, and modified without restriction.
+
+;; Add the ERC directory to load path -- you don't need this if you are
+;; using the version of ERC that comes with Emacs
+(add-to-list 'load-path "~/elisp/erc")
+
+;; Load ERC
+(require 'erc)
+
+;; Load authentication info from an external source.  Put sensitive
+;; passwords and the like in here.
+(load "~/.emacs.d/.erc-auth")
+
+;; This is an example of how to make a new command.  Type "/uptime" to
+;; use it.
+(defun erc-cmd-UPTIME (&rest ignore)
+  "Display the uptime of the system, as well as some load-related
+stuff, to the current ERC buffer."
+  (let ((uname-output
+         (replace-regexp-in-string
+          ", load average: " "] @{Load average@} ["
+          ;; Collapse spaces, remove
+          (replace-regexp-in-string
+           " +" " "
+           ;; Remove beginning and trailing whitespace
+           (replace-regexp-in-string
+            "^ +\\|[ \n]+$" ""
+            (shell-command-to-string "uptime"))))))
+    (erc-send-message
+     (concat "@{Uptime@} [" uname-output "]"))))
+
+;; This causes ERC to connect to the Freenode network upon hitting
+;; C-c e f.  Replace MYNICK with your IRC nick.
+(global-set-key "\C-cef" (lambda () (interactive)
+                           (erc :server "irc.freenode.net" :port "6667"
+                                :nick "MYNICK")))
+
+;; This causes ERC to connect to the IRC server on your own machine (if
+;; you have one) upon hitting C-c e b.  Replace MYNICK with your IRC
+;; nick.  Often, people like to run bitlbee (http://bitlbee.org/) as an
+;; AIM/Jabber/MSN to IRC gateway, so that they can use ERC to chat with
+;; people on those networks.
+(global-set-key "\C-ceb" (lambda () (interactive)
+                           (erc :server "localhost" :port "6667"
+                                :nick "MYNICK")))
+
+;; Make C-c RET (or C-c C-RET) send messages instead of RET. This has
+;; been commented out to avoid confusing new users.
+;; (define-key erc-mode-map (kbd "RET") nil)
+;; (define-key erc-mode-map (kbd "C-c RET") 'erc-send-current-line)
+;; (define-key erc-mode-map (kbd "C-c C-RET") 'erc-send-current-line)
+
+;;; Options
+
+;; Join the #emacs and #erc channels whenever connecting to Freenode.
+(setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#erc")))
+
+;; Interpret mIRC-style color commands in IRC chats
+(setq erc-interpret-mirc-color t)
+
+;; The following are commented out by default, but users of other
+;; non-Emacs IRC clients might find them useful.
+;; Kill buffers for channels after /part
+;; (setq erc-kill-buffer-on-part t)
+;; Kill buffers for private queries after quitting the server
+;; (setq erc-kill-queries-on-quit t)
+;; Kill buffers for server messages after quitting the server
+;; (setq erc-kill-server-buffer-on-quit t)
+@end lisp
+
+@node Options, , Sample Configuration, Advanced Usage
+@comment  node-name,  next,  previous,  up
+@section Options
+@cindex options
+
+@c PRE5_3: (Node) Document every ERC option (module options go in
+@c previous chapter)
+
+This section has not yet been written.  For now, the easiest way to
+check out the available option for ERC is to do
+@kbd{M-x customize-group erc RET}.
 
 
 @node Getting Help and Reporting Bugs, History, Advanced Usage, Top
