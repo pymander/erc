@@ -1,5 +1,7 @@
 2007-03-31  Michael Olson  <mwolson@gnu.org>
 
+	* erc.texi (Sample Session): Flesh out.
+
 	* erc-bbdb.el (erc-bbdb-search-name-and-create): Make prompt more
 	informative about how to skip merging.
 	(erc-bbdb-insinuate-and-show-entry-1): Move contents of
