@@ -1,5 +1,7 @@
 2007-03-31  Michael Olson  <mwolson@gnu.org>
 
+	* NEWS: Update for the 5.2 release.
+
 	* FOR-RELEASE: Finish up 5.2 manual item.  Add documentation item
 	for 5.3.
 
@@ -37,9 +39,9 @@
 	a log file name that uses network name rather than server name,
 	when possible.
 
-	* erc-track.el (track): Assimilate track-when-active module, since
-	there's no need to have two modules in one file -- an option will
-	do.  Remove track-modified-channels alias.  Call
+	* erc-track.el (track): Assimilate track-when-inactive module,
+	since there's no need to have two modules in one file -- an option
+	will do.  Remove track-modified-channels alias.  Call
 	erc-track-minor-mode-maybe, and tear down the minor mode when
 	disabling.
 	(erc-track-when-inactive): New option which determines whether to
