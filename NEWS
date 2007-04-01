@@ -75,6 +75,7 @@ MS-DOS operating system.
  o erc-autojoin.el -> erc-join.el
  o erc-complete.el -> erc-hecomplete.el
  o erc-nickserv.el -> erc-services.el
+ o ChangeLog.NNNN -> ChangeLog.NN
 
 ** Header line changes
 

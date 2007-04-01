@@ -16,8 +16,8 @@ SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED), $(ALLSOURCE))
 TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MANUAL  = erc
 MISC	= AUTHORS COPYING CREDITS HISTORY NEWS README Makefile ChangeLog \
-		ChangeLog.2006 ChangeLog.2005 ChangeLog.2004 \
-		ChangeLog.2003 ChangeLog.2002 ChangeLog.2001 \
+		ChangeLog.06 ChangeLog.05 ChangeLog.04 ChangeLog.03 \
+		ChangeLog.02 ChangeLog.01 \
 		servers.pl erc-auto.in erc.texi
 
 EMACS       = emacs

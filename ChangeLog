@@ -19,7 +19,8 @@
 	(EXTRAS): New variable containing the contents of our "Emacs 22
 	extras" tarball.
 	(SOURCE): Remove $(TESTING).
-	(MISC): Add COPYING and ChangeLog.2006.
+	(MISC): Add COPYING and ChangeLog.06.  Fix ChangeLog.NNNN ->
+	ChangeLog.NN.
 	(release): Use $(SNAPDIR) instead of erc-$(VERSION).
 	(extras): New rule which implements the building of the extras
 	tarball.
