@@ -1,7 +1,7 @@
 2007-04-01  Michael Olson  <mwolson@gnu.org>
 
-	* erc-auto.in, erc-chess.el, erc-speak.el, erc-viper.el: Update
-	copyright notices.
+	* erc-auto.in, erc-chess.el, erc-list.el, erc-speak.el:
+	* erc-viper.el: Update copyright notices.
 
 	* erc.texi: Make Emacs Lisp source code in this document
 	essentially public domain.
