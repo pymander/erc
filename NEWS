@@ -67,6 +67,15 @@ extras files may be found at:
  o http://ftp.gnu.org/gnu/erc/erc-5.2-extras.tar.gz, or
  o http://ftp.gnu.org/gnu/erc/erc-5.2-extras.zip.
 
+** Renamed files
+
+Several files were renamed so as to make them distinct to users of the
+MS-DOS operating system.
+
+ o erc-autojoin.el -> erc-join.el
+ o erc-complete.el -> erc-hecomplete.el
+ o erc-nickserv.el -> erc-services.el
+
 ** Header line changes
 
 *** Remove "[IRC]" from the header line.
@@ -215,6 +224,10 @@ Specifies the port to use if none is given as an argument to
 
 **** New function: `erc-identd-quickstart'
 Ignores any arguments and calls `erc-identd-start'.
+
+*** Channel lists (erc-list.el)
+
+**** Enable by default, except in the version of ERC bundled with Emacs 22.
 
 *** Logging (erc-log.el)
 
