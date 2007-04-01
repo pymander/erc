@@ -1,10 +1,12 @@
 2007-04-01  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-version-string): Release ERC 5.2.
+
 	* erc-auto.in, erc-chess.el, erc-list.el, erc-speak.el:
 	* erc-viper.el: Update copyright notices.
 
 	* erc.texi: Make Emacs Lisp source code in this document
-	essentially public domain.
+	essentially public domain.  Update version to 5.2.
 	(Obtaining ERC): Mention extras tarball.
 	(Releases): Mention local GNU mirror.
 	(Sample Configuration): Remove notice.
