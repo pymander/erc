@@ -26,6 +26,9 @@
 	tarball.
 	(upload-extras): New rule to upload the extras tarball.  It's
 	yucky to replicate upload, but oh well.
+	(DISTRIBUTOR): New variable used to differentiate between building
+	packages for Ubuntu and Debian.
+	(debrelease, debrevision): Use it.
 
 	* NEWS: Mention extras tarball.  Note which files have been
 	renamed.  Note that erc-list is enabled by default, except in
