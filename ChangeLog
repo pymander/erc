@@ -29,6 +29,7 @@
 	(DISTRIBUTOR): New variable used to differentiate between building
 	packages for Ubuntu and Debian.
 	(debrelease, debrevision): Use it.
+	(debbuild): Run linda in addition to lintian.
 
 	* NEWS: Mention extras tarball.  Note which files have been
 	renamed.  Note that erc-list is enabled by default, except in
