@@ -66,7 +66,7 @@
 
 ;;; Code:
 
-(defconst erc-version-string "Version 5.2 (pre-release)"
+(defconst erc-version-string "Version 5.2"
   "ERC version.  This is used by function `erc-version'.")
 
 (eval-when-compile (require 'cl))
@@ -1905,9 +1905,7 @@ removed from the list will be disabled."
 
 (defun erc-open (&optional server port nick full-name
 			   connect passwd tgt-list channel process)
-  "ERC is a powerful, modular, and extensible IRC client.
-
-Connect to SERVER on PORT as NICK with FULL-NAME.
+  "Connect to SERVER on PORT as NICK with FULL-NAME.
 
 If CONNECT is non-nil, connect to the server.  Otherwise assume
 already connected and just create a separate buffer for the new
@@ -2121,8 +2119,12 @@ functions in here get called with the parameters SERVER and NICK."
 		  (nick   (erc-compute-nick))
 		  password
 		  (full-name (erc-compute-full-name)))
-  "Select connection parameters and run ERC.
-Non-interactively, it takes keyword arguments
+  "ERC is a powerful, modular, and extensible IRC client.
+This function is the main entry point for ERC.
+
+It permits you to select connection parameters, and then starts ERC.
+
+Non-interactively, it takes the keyword arguments
    (server (erc-compute-server))
    (port   (erc-compute-port))
    (nick   (erc-compute-nick))
@@ -2133,12 +2135,13 @@ That is, if called with
 
    (erc :server \"irc.freenode.net\" :full-name \"Harry S Truman\")
 
-server and full-name will be set to those values, whereas
+then the server and full-name will be set to those values, whereas
 `erc-compute-port', `erc-compute-nick' and `erc-compute-full-name' will
 be invoked for the values of the other parameters."
   (interactive (erc-select-read-args))
   (erc-open server port nick full-name t password))
 
+;;;###autoload
 (defalias 'erc-select 'erc)
 
 (defun erc-ssl (&rest r)
@@ -2428,7 +2431,7 @@ See also `erc-format-message' and `erc-display-line'."
 
 This function relies on the erc-parsed text-property being
 present."
-  (let ((prop-val (get-text-property position 'erc-parsed)))
+  (let ((prop-val (erc-get-parsed-vector position)))
     (and prop-val (member (erc-response.command prop-val) list))))
 
 (defvar erc-send-input-line-function 'erc-send-input-line)
@@ -3751,7 +3754,7 @@ To change how this query window is displayed, use `let' to bind
     (erc-update-mode-line)
     buf))
 
-(defcustom erc-auto-query nil
+(defcustom erc-auto-query 'bury
   "If non-nil, create a query buffer each time you receive a private message.
 
 If the buffer doesn't already exist it is created.  This can be
@@ -5760,7 +5763,8 @@ Otherwise, use the `erc-header-line' face."
 
 (defcustom erc-common-server-suffixes
   '(("openprojects.net$" . "OPN")
-    ("freenode.net$" . "OPN"))
+    ("freenode.net$" . "freenode")
+    ("oftc.net$" . "OFTC"))
   "Alist of common server name suffixes.
 This variable is used in mode-line display to save screen
 real estate.  Set it to nil if you want to avoid changing
@@ -6260,8 +6264,7 @@ This function should be on `erc-kill-channel-hook'."
   (let ((parsed-posn (erc-find-parsed-property)))
     (put-text-property
      (point-min) (point-max)
-     'erc-parsed (when parsed-posn
-                   (get-text-property parsed-posn 'erc-parsed)))))
+     'erc-parsed (when parsed-posn (erc-get-parsed-vector parsed-posn)))))
 
 (defun erc-get-parsed-vector (point)
   "Return the whole parsed vector on POINT."

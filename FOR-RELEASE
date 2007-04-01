@@ -2,20 +2,25 @@ Tasks that need to be accomplished in order for a release to happen.
 
 * 5.3 release (future)
 
+** Documentation
+
+*** Finish items marked with "@c PRE5_3" in the documentation.
+
 ** Source
 
 *** Make erc-backend not need to (require) any other part of ERC.
 This will hopefully increase the chance that it will be useful for
 other IRC clients, like Circe.
 
+*** Make erc-nicklist into a proper ERC module.
+
 * 5.2 release
 
 ** Documentation
 
-*** Items with "@c PRE5_2" won't block the 5.1 release, but may block
-the release of 5.2.
+*** [DONE] Finish items marked with "@c PRE5_2" in the documentation.
 
-*** Update NEWS for changes since 5.1.4.
+*** [DONE] Update NEWS for changes since 5.1.4.
 
 ** Source
 
@@ -31,16 +36,25 @@ erc--main--0 branch.
 *** [DONE] Make M-x erc start a session.
 New users never think of using M-x erc-select.
 
-*** Change keybinding definitions for `erc-track-switch-buffer'.
+*** [DONE] Change keybinding definitions for `erc-track-switch-buffer'.
 `C-c C-SPC' / `C-c C-@' is set as a global keybinding and is known to
 conflict with rcirc, for example.  Would setting `erc-track-mode-map'
 work?  Otherwise we could encourage people to use something like
 `C-c e SPC' or `C-c c'.
 
-*** Make a tarball with the modules that weren't included with
+Solution: We went with a global minor mode which does nothing but set
+the global-level C-c C-SPC and C-c C-@ keybindings.  It defaults to
+warning the user if one of their keybindings would be overridden, so
+this solution should be OK to install in Emacs.
+
+*** [DONE] Make a tarball with the modules that weren't included with
 Emacs 22 that can be downloaded from GNU's ftp server.
 
-* 5.1 release
+This is now available as "erc-5.2-extras.(tar.gz|zip)" at
+ftp.gnu.org/gnu/erc/.  It may be built with "make extras" and uploaded
+with "make upload-extras".
+
+* 5.1 release (old)
 
 ** [DONE] Documentation
 

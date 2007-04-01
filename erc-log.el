@@ -85,7 +85,9 @@
 ;;; Code:
 
 (require 'erc)
-(eval-when-compile (require 'cl))
+(eval-when-compile
+  (require 'erc-networks)
+  (require 'cl))
 
 (defgroup erc-log nil
   "Logging facilities for ERC."
@@ -100,10 +102,12 @@ NICK is the current nick,
 SERVER and PORT are the parameters used to connect BUFFERs
 `erc-server-process'."
   :group 'erc-log
-  :type '(choice (const erc-generate-log-file-name-long)
-		 (const erc-generate-log-file-name-short)
-		 (const erc-generate-log-file-name-with-date)
-		 (symbol)))
+  :type '(choice (const :tag "Long style" erc-generate-log-file-name-long)
+		 (const :tag "Long, but with network name rather than server"
+			erc-generate-log-file-name-network)
+		 (const :tag "Short" erc-generate-log-file-name-short)
+		 (const :tag "With date" erc-generate-log-file-name-with-date)
+		 (symbol :tag "Other function")))
 
 (defcustom erc-truncate-buffer-on-save nil
   "Truncate any ERC (channel, query, server) buffer when it is saved."
@@ -344,6 +348,19 @@ This function is a possible value for `erc-generate-log-file-name-function'."
 	       nick "@" server ":" (cond ((stringp port) port)
 					 ((numberp port)
 					  (number-to-string port))) ".txt")))
+    ;; we need a make-safe-file-name function.
+    (convert-standard-filename file)))
+
+(defun erc-generate-log-file-name-network (buffer target nick server port)
+  "Generates a log-file name using the network name rather than server name.
+This results in a file name of the form #channel!nick@network.txt.
+This function is a possible value for `erc-generate-log-file-name-function'."
+  (require 'erc-networks)
+  (let ((file (concat
+	       (if target (concat target "!"))
+	       nick "@"
+	       (or (with-current-buffer buffer (erc-network-name)) server)
+	       ".txt")))
     ;; we need a make-safe-file-name function.
     (convert-standard-filename file)))
 

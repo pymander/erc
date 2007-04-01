@@ -1,3 +1,152 @@
+2007-04-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-version-string): Release ERC 5.2.
+
+	* erc-auto.in, erc-chess.el, erc-list.el, erc-speak.el:
+	* erc-viper.el: Update copyright notices.
+
+	* erc.texi: Make Emacs Lisp source code in this document
+	essentially public domain.  Update version to 5.2.
+	(Obtaining ERC): Mention extras tarball.
+	(Releases): Mention local GNU mirror.
+	(Sample Configuration): Remove notice.
+
+	* FOR-RELEASE (5.3): Add item for erc-nicklist.
+	Mark NEWS as done.  Mark extras tarball as done.
+
+	* Makefile (VERSION): Increment to 5.2.
+	(TESTING): Remove.
+	(EXTRAS): New variable containing the contents of our "Emacs 22
+	extras" tarball.
+	(SOURCE): Remove $(TESTING).
+	(MISC): Add COPYING and ChangeLog.2006.
+	(release): Use $(SNAPDIR) instead of erc-$(VERSION).
+	(extras): New rule which implements the building of the extras
+	tarball.
+	(upload-extras): New rule to upload the extras tarball.  It's
+	yucky to replicate upload, but oh well.
+
+	* NEWS: Mention extras tarball.  Note which files have been
+	renamed.  Note that erc-list is enabled by default, except in
+	Emacs 22.
+
+	* README.extras: New file which serves as a README for the extras
+	tarball.
+
+2007-03-31  Michael Olson  <mwolson@gnu.org>
+
+	* NEWS: Update for the 5.2 release.
+
+	* FOR-RELEASE: Finish up 5.2 manual item.  Add documentation item
+	for 5.3.
+
+	* erc.texi (Sample Session): Flesh out.  Mention #erc.
+	(Modules): Defer to 5.3 release.
+	(Advanced Usage): Move Sample Configuration chapter ahead of
+	unfinished chapters.
+	(Sample Configuration): Write.
+	(Options): Mention how to see available ERC options.  Defer to 5.3
+	release.
+	(Tips and Tricks): Remove, since it seems better to just include
+	tips and tricks in the sample configuration, commented out.
+
+	* erc-bbdb.el (erc-bbdb-search-name-and-create): Make prompt more
+	informative about how to skip merging.
+	(erc-bbdb-insinuate-and-show-entry-1): Move contents of
+	erc-bbdb-insinuate-and-show-entry here.
+	(erc-bbdb-insinuate-and-show-entry): Run
+	erc-bbdb-insinuate-and-show-entry-1 "outside" of the calling
+	function, so that we can avoid triggering a process-filter error
+	if the user hits C-g.
+
+2007-03-30  Michael Olson  <mwolson@gnu.org>
+
+	* FOR-RELEASE: Solve C-c C-SPC keybinding dilemma.
+
+	* erc-autoaway.el (erc-autoaway-idle-method): Use `if' rather than
+	`cond' and `set' rather than `set-default'.
+
+	* erc-log.el: Avoid compiler warning by requiring erc-network
+	during compilation.
+	(erc-generate-log-file-name-function): Add tag to each option.
+	Add erc-generate-log-file-name-network.
+	(erc-generate-log-file-name-network): New function which generates
+	a log file name that uses network name rather than server name,
+	when possible.
+
+	* erc-track.el (track): Assimilate track-when-inactive module,
+	since there's no need to have two modules in one file -- an option
+	will do.  Remove track-modified-channels alias.  Call
+	erc-track-minor-mode-maybe, and tear down the minor mode when
+	disabling.
+	(erc-track-when-inactive): New option which determines whether to
+	track visible buffers when inactive.  The default is not to do so.
+	(erc-track-visibility): Mention erc-track-when-inactive.
+	(erc-buffer-visible): Use erc-track-when-inactive.
+	(erc-track-enable-keybindings): New option which determines
+	whether to enable the global-level tracking keybindings.  The
+	default is to do so, unless they would override another binding,
+	in which case we prompt the user about it.
+	(erc-track-minor-mode-map): Move global keybindings here.
+	(erc-track-minor-mode): New minor mode which only enables the
+	keybindings and does nothing else.
+	(erc-track-minor-mode-maybe): New function which starts
+	erc-track-minor-mode, but only if it hasn't already been started,
+	an ERC buffer exists, and the user OK's it, depending on the value
+	of `erc-track-enable-keybindings'.
+	(erc-track-switch-buffer): Display a message if someone calls this
+	without first enabling erc-track-mode.
+
+2007-03-17  Michael Olson  <mwolson@gnu.org>
+
+	* erc.texi (Development): Mention ErcDevelopment page on
+	emacswiki.
+	(Getting Started): Mention ~/.emacs.d/.ercrc.el and the Customize
+	interface.
+	(Sample Session): New section that has a very rough draft for a
+	sample ERC session.
+	(Special Features): New section that explains some of the special
+	features of ERC.  Taken from ErcFeatures on emacswiki, with
+	enhancements.
+
+2007-03-12  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-autoaway.el (erc-autoaway-idle-method): When setting the new
+	value, disable and re-enable `erc-autoaway-mode' only if it was
+	already enabled.  This fixes a bug where autoaway was enabled just
+	by loading the file.
+
+2007-03-10  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-capab.el: Added more information to the Usage section.
+	(erc-capab-identify-prefix): Doc fix.
+	(erc-capab-identify-unidentified): New face.
+	(290): Removed.  Definition moved to erc-backend.el.
+	(erc-capab-identify-send-messages): Renamed from
+	`erc-capab-send-identify-messages'.
+	(erc-capab-identify-setup): Use it.
+	(erc-capab-identify-get-unidentified-nickname): Renamed from
+	`erc-capab-get-unidentified-nickname'.
+	(erc-capab-identify-add-prefix): Use it.  Use
+	`erc-capab-identify-unidentified' as the face.
+
+	* erc-backend.el (290): Moved here from erc-capab.el.
+
+	* erc.el (erc-select): Added an autoload cookie.
+	(erc-message-type-member, erc-restore-text-properties): Use
+	`erc-get-parsed-vector'.
+	(erc-auto-query): Set the default to 'bury since many new users
+	expect private messages from others to be in dedicated query
+	buffers, not the server buffer.
+	(erc-common-server-suffixes): Use "freenode" for freenode.net, not
+	"OPN".  Added oftc.net.
+
+	* NEWS: Added note about erc-auto-query's new default setting.
+
+2007-03-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-open, erc): Docfixes.
+
 2007-03-02  Michael Olson  <mwolson@gnu.org>
 
 	* FOR-RELEASE: Make section for 5.3 release and move erc-backend
