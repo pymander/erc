@@ -104,6 +104,9 @@ debbuild:
 	  echo "Running lintian ..." && \
 	  lintian -i ../erc_$(VERSION)*.deb || : && \
 	  echo "Done running lintian." && \
+	  echo "Running linda ..." && \
+	  linda -i ../erc_$(VERSION)*.deb || : && \
+	  echo "Done running linda." && \
 	  debsign)
 
 debrelease: debprepare
