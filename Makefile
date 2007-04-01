@@ -27,6 +27,9 @@ PREFIX   = /usr/local
 ELISPDIR = $(PREFIX)/share/emacs/site-lisp/erc
 INFODIR  = $(PREFIX)/info
 
+# Used to differentiate building packages for Debian and Ubuntu
+DISTRIBUTOR = debian
+
 # XEmacs users will probably want the following settings.
 #EMACS    = xemacs
 #SITEFLAG = -no-site-file
@@ -104,7 +107,7 @@ debbuild:
 	  debsign)
 
 debrelease: debprepare
-	-rm -f ../../dist/erc_*
+	-rm -f ../../dist/$(DISTRIBUTOR)/erc_*
 	-rm -f ../erc_$(VERSION)*
 	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
 	cp -R debian ../$(SNAPDIR)
@@ -117,10 +120,10 @@ debrelease: debprepare
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	$(MAKE) debbuild
-	cp ../erc_$(VERSION)* ../../dist
+	cp ../erc_$(VERSION)* ../../dist/$(DISTRIBUTOR)
 
 debrevision:
-	-rm -f ../../dist/erc_*
+	-rm -f ../../dist/$(DISTRIBUTOR)/erc_*
 	-rm -f ../erc_$(VERSION)-*
 	-rm -fr ../erc-$(VERSION)
 	$(MAKE) debprepare
@@ -134,7 +137,7 @@ debrevision:
 	  ../$(SNAPDIR)/debian/maint/.arch-ids \
 	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
 	$(MAKE) debbuild
-	cp ../erc_$(VERSION)* ../../dist
+	cp ../erc_$(VERSION)* ../../dist/$(DISTRIBUTOR)
 
 release: autoloads distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
