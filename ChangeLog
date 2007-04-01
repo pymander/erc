@@ -1,3 +1,31 @@
+2007-04-01  Michael Olson  <mwolson@gnu.org>
+
+	* erc.texi: Make Emacs Lisp source code in this document
+	essentially public domain.
+	(Obtaining ERC): Mention extras tarball.
+	(Releases): Mention local GNU mirror.
+	(Sample Configuration): Remove notice.
+
+	* FOR-RELEASE (5.3): Add item for erc-nicklist.
+	Mark NEWS as done.  Mark extras tarball as done.
+
+	* Makefile (VERSION): Increment to 5.2.
+	(TESTING): Remove.
+	(EXTRAS): New variable containing the contents of our "Emacs 22
+	extras" tarball.
+	(SOURCE): Remove $(TESTING).
+	(MISC): Add COPYING and ChangeLog.2006.
+	(release): Use $(SNAPDIR) instead of erc-$(VERSION).
+	(extras): New rule which implements the building of the extras
+	tarball.
+	(upload-extras): New rule to upload the extras tarball.  It's
+	yucky to replicate upload, but oh well.
+
+	* NEWS: Mention extras tarball.
+
+	* README.extras: New file which serves as a README for the extras
+	tarball.
+
 2007-03-31  Michael Olson  <mwolson@gnu.org>
 
 	* NEWS: Update for the 5.2 release.

@@ -21,6 +21,9 @@ Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2 or
 any later version published by the Free Software Foundation; with no
 Invariant Sections, Front-Cover texts, or Back-Cover Texts.
+
+All Emacs Lisp code contained in this document may be used, distributed,
+and modified without restriction.
 @end quotation
 @end copying
 
@@ -120,8 +123,17 @@ It comes with the following capabilities enabled by default.
 * Development::                 Latest unreleased development changes.
 @end menu
 
-These sections may be skipped if you are using the version of ERC that
-comes with Emacs.
+Note that some ERC files are not included with Emacs due to copyright or
+dependency issues.  If desired, they may be found at the following
+locations, or from your local GNU mirror.
+
+@itemize @bullet
+@item @uref{http://ftp.gnu.org/gnu/erc/erc-5.2-extras.tar.gz}
+@item @uref{http://ftp.gnu.org/gnu/erc/erc-5.2-extras.zip}
+@end itemize
+
+The rest of this chapter may be skipped if you are using the version of
+ERC that comes with Emacs.
 
 @node Releases, Development, Obtaining ERC, Obtaining ERC
 @comment  node-name,  next,  previous,  up
@@ -140,7 +152,7 @@ available in the official Debian repository.
 
 @cindex releases, from source
 Alternatively, you can download the latest release from
-@uref{http://ftp.gnu.org/gnu/erc}.
+@uref{http://ftp.gnu.org/gnu/erc}, or your local GNU mirror.
 
 @node Development,  , Releases, Obtaining ERC
 @comment  node-name,  next,  previous,  up
@@ -810,9 +822,6 @@ your Emacs configuration file.  Everything after the @code{(require
 
 @lisp
 ;;; Sample ERC configuration
-
-;; The code in this section (Sample Configuration) may be used,
-;; distributed, and modified without restriction.
 
 ;; Add the ERC directory to load path -- you don't need this if you are
 ;; using the version of ERC that comes with Emacs

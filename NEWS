@@ -1,6 +1,6 @@
 ERC NEWS                                                       -*- outline -*-
 
-* Changes in ERC 5.2 (unreleased)
+* Changes in ERC 5.2
 
 ** M-x erc RET now starts ERC.
 `erc-select' has been changed to `erc'.  `erc-select' still remains as
@@ -59,6 +59,13 @@ ERC's internal documentation.
 This makes it easier to find modules by name.
 
 ** erc-server-send-ping-interval: Change to use a default of 30 seconds.
+
+** Some files which are included with the release of ERC 5.2 will not
+appear in the version of ERC that is bundled with Emacs 22.  These
+extras files may be found at:
+
+ o http://ftp.gnu.org/gnu/erc/erc-5.2-extras.tar.gz, or
+ o http://ftp.gnu.org/gnu/erc/erc-5.2-extras.zip.
 
 ** Header line changes
 

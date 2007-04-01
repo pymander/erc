@@ -12,13 +12,15 @@ Tasks that need to be accomplished in order for a release to happen.
 This will hopefully increase the chance that it will be useful for
 other IRC clients, like Circe.
 
+*** Make erc-nicklist into a proper ERC module.
+
 * 5.2 release
 
 ** Documentation
 
 *** [DONE] Finish items marked with "@c PRE5_2" in the documentation.
 
-*** Update NEWS for changes since 5.1.4.
+*** [DONE] Update NEWS for changes since 5.1.4.
 
 ** Source
 
@@ -40,13 +42,17 @@ conflict with rcirc, for example.  Would setting `erc-track-mode-map'
 work?  Otherwise we could encourage people to use something like
 `C-c e SPC' or `C-c c'.
 
-**** Solution: We went with a global minor mode which does nothing
-but set the global-level C-c C-SPC and C-c C-@ keybindings.  It
-defaults to warning the user if one of their keybindings would be
-overridden, so this solution should be OK to install in Emacs.
+Solution: We went with a global minor mode which does nothing but set
+the global-level C-c C-SPC and C-c C-@ keybindings.  It defaults to
+warning the user if one of their keybindings would be overridden, so
+this solution should be OK to install in Emacs.
 
-*** Make a tarball with the modules that weren't included with
+*** [DONE] Make a tarball with the modules that weren't included with
 Emacs 22 that can be downloaded from GNU's ftp server.
+
+This is now available as "erc-5.2-extras.(tar.gz|zip)" at
+ftp.gnu.org/gnu/erc/.  It may be built with "make extras" and uploaded
+with "make upload-extras".
 
 * 5.1 release (old)
 

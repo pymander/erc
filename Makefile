@@ -1,19 +1,24 @@
-VERSION=5.1.4
+VERSION=5.2
 SNAPDIR=erc-$(VERSION)
-LASTUPLOAD = 5.1.3-2
+LASTUPLOAD = 5.1.4-4
 BUILDOPTS  =
 
 SPECIAL = erc-auto.el
-UNCOMPILED = erc-chess.el erc-bbdb.el erc-ibuffer.el erc-speak.el \
+UNCOMPILED = erc-bbdb.el erc-chess.el erc-ibuffer.el erc-speak.el \
 		erc-speedbar.el erc-compat.el
-TESTING = erc-members.el erc-macs.el
+
+# Files to include in the extras pack for Emacs 22
+EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-speak.el \
+		 README.extras COPYING
+
 ALLSOURCE = $(wildcard *.el)
-SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) $(TESTING),$(ALLSOURCE))
+SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED), $(ALLSOURCE))
 TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MANUAL  = erc
-MISC	= AUTHORS CREDITS HISTORY NEWS README Makefile ChangeLog \
-		ChangeLog.2005 ChangeLog.2004 ChangeLog.2003 ChangeLog.2002 \
-		ChangeLog.2001 servers.pl erc-auto.in erc.texi
+MISC	= AUTHORS COPYING CREDITS HISTORY NEWS README Makefile ChangeLog \
+		ChangeLog.2006 ChangeLog.2005 ChangeLog.2004 \
+		ChangeLog.2003 ChangeLog.2002 ChangeLog.2001 \
+		servers.pl erc-auto.in erc.texi
 
 EMACS       = emacs
 SITEFLAG    = --no-site-file
@@ -133,14 +138,21 @@ debrevision:
 
 release: autoloads distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
-	cp $(SPECIAL) $(UNCOMPILED) $(SOURCE) $(MISC) ../erc-$(VERSION)
-	cp -r images ../erc-$(VERSION)
+	cp $(SPECIAL) $(UNCOMPILED) $(SOURCE) $(MISC) ../$(SNAPDIR)
+	cp -r images ../$(SNAPDIR)
 	test -d ../$(SNAPDIR)/images/CVS && \
 	  rm -R ../$(SNAPDIR)/images/CVS || :
 	test -d ../$(SNAPDIR)/images/.arch-ids && \
 	  rm -R ../$(SNAPDIR)/images/.arch-ids || :
-	(cd .. && tar czf erc-$(VERSION).tar.gz erc-$(VERSION)/*; \
-	  zip -r erc-$(VERSION).zip erc-$(VERSION))
+	(cd .. && tar czf erc-$(VERSION).tar.gz $(SNAPDIR)/*; \
+	  zip -r erc-$(VERSION).zip $(SNAPDIR))
+
+extras:
+	-rm -Rf ../$(SNAPDIR)-extras
+	mkdir ../$(SNAPDIR)-extras && chmod 0755 ../$(SNAPDIR)-extras
+	cp $(EXTRAS) ../$(SNAPDIR)-extras
+	(cd .. && tar czf erc-$(VERSION)-extras.tar.gz $(SNAPDIR)-extras/*; \
+	  zip -r erc-$(VERSION)-extras.zip $(SNAPDIR)-extras)
 
 upload:
 	(cd .. && gpg --detach erc-$(VERSION).tar.gz && \
@@ -153,6 +165,21 @@ upload:
 	  echo cd /incoming/ftp >> upload.lftp ; \
 	  echo mput erc-$(VERSION).zip* >> upload.lftp ; \
 	  echo mput erc-$(VERSION).tar.gz* >> upload.lftp ; \
+	  echo close >> upload.lftp ; \
+	  lftp -f upload.lftp ; \
+	  rm -f upload.lftp)
+
+upload-extras:
+	(cd .. && gpg --detach erc-$(VERSION)-extras.tar.gz && \
+	  gpg --detach erc-$(VERSION)-extras.zip && \
+	  echo "Directory: erc" | gpg --clearsign > \
+	    erc-$(VERSION)-extras.tar.gz.directive.asc && \
+	  cp erc-$(VERSION)-extras.tar.gz.directive.asc \
+	    erc-$(VERSION)-extras.zip.directive.asc && \
+	  echo open ftp://ftp-upload.gnu.org > upload.lftp ; \
+	  echo cd /incoming/ftp >> upload.lftp ; \
+	  echo mput erc-$(VERSION)-extras.zip* >> upload.lftp ; \
+	  echo mput erc-$(VERSION)-extras.tar.gz* >> upload.lftp ; \
 	  echo close >> upload.lftp ; \
 	  lftp -f upload.lftp ; \
 	  rm -f upload.lftp)
