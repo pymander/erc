@@ -1,3 +1,8 @@
+2007-04-08  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-nicklist.el (erc-nicklist-voiced-position): Fixed
+	customization mismatch.
+
 2007-04-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-version-string): Release ERC 5.2.

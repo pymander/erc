@@ -104,8 +104,8 @@ Icons are displayed if `erc-nicklist-use-icons' is non-nil."
 The value can be `top', `bottom' or nil (don't sort)."
   :group 'erc-nicklist
   :type  '(choice
-	   (const :tag "Top" 'top)
-	   (const :tag "Bottom" 'bottom)
+	   (const :tag "Top" top)
+	   (const :tag "Bottom" bottom)
 	   (const :tag "Mixed" nil)))
 
 (defcustom erc-nicklist-window-size 20.0
