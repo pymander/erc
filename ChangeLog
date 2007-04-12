@@ -1,3 +1,10 @@
+2007-04-12  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (define-erc-response-handler): Mention that hook
+	processing stops when the function returns non-nil.  This should
+	help avoid a nasty "gotcha" when making custom functions.  Thanks
+	to John Sullivan for the report.
+
 2007-04-08  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-nicklist.el (erc-nicklist-voiced-position): Fixed

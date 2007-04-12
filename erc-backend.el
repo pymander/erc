@@ -1054,8 +1054,11 @@ Would expand to:
       \"Some non-generic variable documentation.
 
   Hook called upon receiving a WHOIS server response.
+
   Each function is called with two arguments, the process associated
-  with the response and the parsed response.
+  with the response and the parsed response.  If the function returns
+  non-nil, stop processing the hook.  Otherwise, continue.
+
   See also `erc-server-311'.\")
 
     (defalias 'erc-server-WI 'erc-server-311)
@@ -1064,7 +1067,9 @@ Would expand to:
 
   Hook called upon receiving a WI server response.
   Each function is called with two arguments, the process associated
-  with the response and the parsed response.
+  with the response and the parsed response.  If the function returns
+  non-nil, stop processing the hook.  Otherwise, continue.
+
   See also `erc-server-311'.\"))
 
 \(fn (NAME &rest ALIASES) &optional EXTRA-FN-DOC EXTRA-VAR-DOC &rest FN-BODY)"
@@ -1078,7 +1083,9 @@ Would expand to:
          (fn-name (intern (format "erc-server-%s" name)))
          (hook-doc (format "%sHook called upon receiving a %%s server response.
 Each function is called with two arguments, the process associated
-with the response and the parsed response.
+with the response and the parsed response.  If the function returns
+non-nil, stop processing the hook.  Otherwise, continue.
+
 See also `%s'."
                            (if extra-var-doc
                                (concat extra-var-doc "\n\n")
