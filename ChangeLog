@@ -1,3 +1,16 @@
+2007-04-15  Michael Olson  <mwolson@gnu.org>
+
+	* erc-log.el (erc-generate-log-file-name-function): Docfix.
+	Mention how to deal with the case for putting log files in
+	different directories.  Change a customization type from `symbol'
+	to `function'.
+	(erc-log-channels-directory): Allow this to contain a function
+	name, which is called with the same args as in
+	`erc-generate-log-file-name-function'.  Thanks to andrewy for the
+	report and use case.
+	(erc-current-logfile): Detect if `erc-log-channels-directory' is a
+	function and call it with arguments if so.
+
 2007-04-12  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (define-erc-response-handler): Mention that hook

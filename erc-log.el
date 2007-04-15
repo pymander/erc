@@ -99,15 +99,19 @@ The function must take five arguments: BUFFER, TARGET, NICK, SERVER and PORT.
 BUFFER is the buffer to be saved,
 TARGET is the name of the channel, or the target of the query,
 NICK is the current nick,
-SERVER and PORT are the parameters used to connect BUFFERs
-`erc-server-process'."
+SERVER and PORT are the parameters that were used to connect to BUFFERs
+`erc-server-process'.
+
+If you want to write logs into different directories, make a
+custom function which returns the directory part and set
+`erc-log-channels-directory' to its name."
   :group 'erc-log
   :type '(choice (const :tag "Long style" erc-generate-log-file-name-long)
 		 (const :tag "Long, but with network name rather than server"
 			erc-generate-log-file-name-network)
 		 (const :tag "Short" erc-generate-log-file-name-short)
 		 (const :tag "With date" erc-generate-log-file-name-with-date)
-		 (symbol :tag "Other function")))
+		 (function :tag "Other function")))
 
 (defcustom erc-truncate-buffer-on-save nil
   "Truncate any ERC (channel, query, server) buffer when it is saved."
@@ -134,10 +138,16 @@ Log files are stored in `erc-log-channels-directory'."
   "The directory to place log files for channels.
 Leave blank to disable logging.  If not nil, all the channel
 buffers are logged in separate files in that directory.  The
-directory should not end with a trailing slash."
+directory should not end with a trailing slash.
+
+If this is the name of a function, the function will be called
+with the buffer, target, nick, server, and port arguments.  See
+`erc-generate-log-file-name-function' for a description of these
+arguments."
   :group 'erc-log
   :type '(choice directory
-		 (const nil)))
+		 (function "Function")
+		 (const :tag "Disable logging" nil)))
 
 (defcustom erc-log-insert-log-on-open nil
   "*Insert log file contents into the buffer if a log file exists."
@@ -316,14 +326,19 @@ filename is downcased."
 If BUFFER is nil, the value of `current-buffer' is used.
 This is determined by `erc-generate-log-file-name-function'.
 The result is converted to lowercase, as IRC is case-insensitive"
-  (expand-file-name
-   (erc-log-standardize-name
-    (funcall erc-generate-log-file-name-function
-	     (or buffer (current-buffer))
-	     (or (buffer-name buffer) (erc-default-target))
-	     (erc-current-nick)
-	     erc-session-server erc-session-port))
-   erc-log-channels-directory))
+  (unless buffer (setq buffer (current-buffer)))
+  (let ((target (or (buffer-name buffer) (erc-default-target)))
+	(nick (erc-current-nick))
+	(server erc-session-server)
+	(port erc-session-port))
+    (expand-file-name
+     (erc-log-standardize-name
+      (funcall erc-generate-log-file-name-function
+	       buffer target nick server port))
+     (if (functionp erc-log-channels-directory)
+	 (funcall erc-log-channels-directory
+		  buffer target nick server port)
+       erc-log-channels-directory))))
 
 (defun erc-generate-log-file-name-with-date (buffer &rest ignore)
   "This function computes a short log file name.
