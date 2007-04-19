@@ -1,3 +1,16 @@
+2007-04-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-parse-prefix): New function that retrieves the
+	PREFIX server parameter from the current server and returns an
+	alist of prefix type to prefix character.
+	(erc-channel-receive-names): Use `erc-parse-prefix' to determine
+	whether the first character of a nick is a prefix character or
+	not.  This should fix a bug reported by bromine about needing to
+	type "%" first to complete nicks of people who are "hops" on
+	Slashnet.  This should also support for very exotic IRC server
+	setups, if any exist.
+	(erc-update-current-channel-member): Indentation.
+
 2007-04-15  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (erc-generate-log-file-name-function): Docfix.

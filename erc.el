@@ -4412,33 +4412,65 @@ See also `erc-channel-begin-receiving-names'."
 	   erc-channel-users)
   (setq erc-channel-new-member-names nil))
 
+(defun erc-parse-prefix ()
+  "Return an alist of valid prefix character types and their representations.
+Example: (operator) o => @, (voiced) v => +."
+  (let ((str (or (cdr (assoc "PREFIX" (erc-with-server-buffer
+					erc-server-parameters)))
+		 ;; provide a sane default
+		 "(ov)@+"))
+	types chars)
+    (when (string-match "^(\\([^)]+\\))\\(.+\\)$" str)
+      (setq types (match-string 1 str)
+	    chars (match-string 2 str))
+      (let ((len (min (length types) (length chars)))
+	    (i 0)
+	    (alist nil))
+	(while (< i len)
+	  (setq alist (cons (cons (elt types i) (elt chars i))
+			    alist))
+	  (setq i (1+ i)))
+	alist))))
+
 (defun erc-channel-receive-names (names-string)
   "This function is for internal use only.
 
 Update `erc-channel-users' according to NAMES-STRING.
 NAMES-STRING is a string listing some of the names on the
 channel."
-  (let (names name op voice)
-      ;; We need to delete "" because in XEmacs, (split-string "a ")
-      ;; returns ("a" "").
-      (setq names (delete "" (split-string names-string)))
-      (let ((erc-channel-members-changed-hook nil))
-	(dolist (item names)
-	  (cond ((string-match "^@\\(.*\\)$" item)
-		 (setq name (match-string 1 item)
-		       op 'on
-		       voice 'off))
-		((string-match "^+\\(.*\\)$" item)
-		 (setq name (match-string 1 item)
-		       op 'off
-		       voice 'on))
-		(t (setq name item
-			 op 'off
-			 voice 'off)))
-	(puthash (erc-downcase name) t
-		 erc-channel-new-member-names)
-	(erc-update-current-channel-member
-	 name name t op voice)))
+  (let (prefix op-ch voice-ch names name op voice)
+    (setq prefix (erc-parse-prefix))
+    (setq op-ch (cdr (assq ?o prefix))
+	  voice-ch (cdr (assq ?v prefix)))
+    ;; We need to delete "" because in XEmacs, (split-string "a ")
+    ;; returns ("a" "").
+    (setq names (delete "" (split-string names-string)))
+    (let ((erc-channel-members-changed-hook nil))
+      (dolist (item names)
+	(let ((updatep t)
+	      ch)
+	  (if (rassq (elt item 0) prefix)
+	      (cond ((= (length item) 1)
+		     (setq updatep nil))
+		    ((eq (elt item 0) op-ch)
+		     (setq name (substring item 1)
+			   op 'on
+			   voice 'off))
+		    ((eq (elt item 0) voice-ch)
+		     (setq name (substring item 1)
+			   op 'off
+			   voice 'on))
+		    (t (setq name (substring item 1)
+			     op 'off
+			     voice 'off)))
+	    (setq name item
+		  op 'off
+		  voice 'off))
+	  (when updatep
+	    (puthash (erc-downcase name) t
+		     erc-channel-new-member-names)
+	    (erc-update-current-channel-member
+	     name name t op voice)))))
     (run-hooks 'erc-channel-members-changed-hook)))
 
 (defcustom erc-channel-members-changed-hook nil
@@ -4530,15 +4562,15 @@ See also: `erc-update-user' and `erc-update-channel-member'."
 	      (setq changed t)
 	    (setf (erc-channel-user-op cuser)
 		  (cond ((eq op 'on) t)
-				   ((eq op 'off) nil)
-				   (t op))))
+			((eq op 'off) nil)
+			(t op))))
 	  (when (and voice
 		     (not (eq (erc-channel-user-voice cuser) voice)))
 	      (setq changed t)
 	    (setf (erc-channel-user-voice cuser)
 		  (cond ((eq voice 'on) t)
-				      ((eq voice 'off) nil)
-				      (t voice))))
+			((eq voice 'off) nil)
+			(t voice))))
 	  (when update-message-time
 	    (setf (erc-channel-user-last-message-time cuser) (current-time)))
 	  (setq user-changed
@@ -4560,11 +4592,11 @@ See also: `erc-update-user' and `erc-update-channel-member'."
 		      (erc-server-user-buffers user))))
 	(setq cuser (make-erc-channel-user
 		     :op (cond ((eq op 'on) t)
-				       ((eq op 'off) nil)
-				       (t op))
+			       ((eq op 'off) nil)
+			       (t op))
 		     :voice (cond ((eq voice 'on) t)
-				       ((eq voice 'off) nil)
-				       (t voice))
+				  ((eq voice 'off) nil)
+				  (t voice))
 		     :last-message-time
 		     (if update-message-time (current-time))))
 	(puthash (erc-downcase nick) (cons user cuser)
