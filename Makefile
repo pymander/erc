@@ -40,6 +40,9 @@ INSTALLINFO = install-info --info-dir=$(INFODIR)
 #the above line.
 #INSTALLINFO = install-info --section "Emacs" "emacs" --info-dir=$(INFODIR)
 
+# Location of Emacs Lisp Package Archive entries
+ELPA=../../elpa
+
 all: lisp $(MANUAL).info
 
 lisp: $(TARGET) 
@@ -189,3 +192,21 @@ upload-extras:
 	  echo close >> upload.lftp ; \
 	  lftp -f upload.lftp ; \
 	  rm -f upload.lftp)
+
+elpa: $(MANUAL).info
+	rm -fR $(ELPA)/$(SNAPDIR)
+	rm -f $(ELPA)/erc-$(VERSION).tar
+	mkdir -p $(ELPA)/$(SNAPDIR) && chmod 0755 $(ELPA)/$(SNAPDIR)
+	cp $(UNCOMPILED) $(SOURCE) $(ELPA)/$(SNAPDIR)
+	cp -r images $(ELPA)/$(SNAPDIR)
+	cp erc-pkg.el $(ELPA)/$(SNAPDIR)
+	cp $(MANUAL).info $(ELPA)/$(SNAPDIR)
+	echo '* Menu:' > $(ELPA)/$(SNAPDIR)/dir
+	echo >> $(ELPA)/$(SNAPDIR)/dir
+	install-info --section "Emacs" "Emacs" \
+	  --info-dir=$(ELPA)/$(SNAPDIR) \
+	  $(ELPA)/$(SNAPDIR)/$(MANUAL).info
+	rm -f $(ELPA)/$(SNAPDIR)/dir.old
+	test -d $(ELPA)/$(SNAPDIR)/images/.arch-ids && \
+	  rm -R $(ELPA)/$(SNAPDIR)/images/.arch-ids || :
+	(cd $(ELPA) && tar cf erc-$(VERSION).tar $(SNAPDIR))

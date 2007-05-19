@@ -1,3 +1,9 @@
+2007-05-19  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (ELPA): New variable that contains the location of my
+	local ELPA repository.
+	(elpa): New rule that makes an ELPA package for ERC.
+
 2007-04-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-version-string): Release ERC 5.2.
