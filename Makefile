@@ -8,8 +8,8 @@ UNCOMPILED = erc-bbdb.el erc-chess.el erc-ibuffer.el erc-speak.el \
 		erc-speedbar.el erc-compat.el
 
 # Files to include in the extras pack for Emacs 22
-EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-speak.el \
-		 README.extras COPYING
+EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-nicklist.el \
+		erc-speak.el README.extras COPYING
 
 ALLSOURCE = $(wildcard *.el)
 SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) erc-pkg.el, $(ALLSOURCE))
@@ -139,6 +139,11 @@ extras:
 	-rm -Rf ../$(SNAPDIR)-extras
 	mkdir ../$(SNAPDIR)-extras && chmod 0755 ../$(SNAPDIR)-extras
 	cp $(EXTRAS) ../$(SNAPDIR)-extras
+	cp -r images ../$(SNAPDIR)-extras
+	test -d ../$(SNAPDIR)-extras/images/CVS && \
+	  rm -R ../$(SNAPDIR)-extras/images/CVS || :
+	test -d ../$(SNAPDIR)-extras/images/.arch-ids && \
+	  rm -R ../$(SNAPDIR)-extras/images/.arch-ids || :
 	(cd .. && tar czf erc-$(VERSION)-extras.tar.gz $(SNAPDIR)-extras/*; \
 	  zip -r erc-$(VERSION)-extras.zip $(SNAPDIR)-extras)
 

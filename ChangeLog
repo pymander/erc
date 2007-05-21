@@ -9,6 +9,8 @@
 	a distro-specific location.
 	(deb): New rule that chains together the stages in building a
 	Debian package.
+	(EXTRAS): Add erc-nicklist.el, since it is not release-quality.
+	(extras): Copy images directory.
 
 	* erc-nicklist.el (erc-nicklist-icons-directory): Use
 	locate-library to find the "images" directory.  This should be
