@@ -93,7 +93,9 @@ By \"chat medium\", we mean IRC, AOL, MSN, ICQ, etc."
   :type 'boolean)
 
 (defcustom erc-nicklist-icons-directory
-  (concat default-directory "images/")
+  (let ((dir (locate-library "erc-nicklist.el")))
+    (when dir
+      (concat (file-name-directory dir) "images/")))
   "*Directory of the PNG files for chat icons.
 Icons are displayed if `erc-nicklist-use-icons' is non-nil."
   :group 'erc-nicklist

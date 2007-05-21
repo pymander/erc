@@ -10,6 +10,10 @@
 	(deb): New rule that chains together the stages in building a
 	Debian package.
 
+	* erc-nicklist.el (erc-nicklist-icons-directory): Use
+	locate-library to find the "images" directory.  This should be
+	more failsafe.  Thanks to Tom Tromey for the idea.
+
 2007-05-19  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (ELPA): New variable that contains the location of my
