@@ -1,3 +1,15 @@
+2007-05-21  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (SOURCE): Remove erc-pkg.el.
+	(debclean): New rule to clean old Debian packages of ERC.
+	(debprepare): Don't modify the released tarball, but copy it as
+	the .orig.tar.gz file.
+	(debrelease. debrevision): Remove.
+	(debinstall): New target that copies the generated Debian file to
+	a distro-specific location.
+	(deb): New rule that chains together the stages in building a
+	Debian package.
+
 2007-05-19  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (ELPA): New variable that contains the location of my

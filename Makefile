@@ -12,7 +12,7 @@ EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-speak.el \
 		 README.extras COPYING
 
 ALLSOURCE = $(wildcard *.el)
-SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED), $(ALLSOURCE))
+SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) erc-pkg.el, $(ALLSOURCE))
 TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MANUAL  = erc
 MISC	= AUTHORS COPYING CREDITS HISTORY NEWS README Makefile ChangeLog \
@@ -91,14 +91,21 @@ distclean:
 	-rm -f $(MANUAL).info $(MANUAL).html $(TARGET)
 	-rm -Rf ../$(SNAPDIR)
 
-debprepare: $(ALLSOURCE) $(SPECIAL) distclean
-	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
-	cp $(ALLSOURCE) $(SPECIAL) $(MISC) ../$(SNAPDIR)
-	cp -r images ../$(SNAPDIR)
-	test -d ../$(SNAPDIR)/images/.arch-ids && rm -R \
-	  ../$(SNAPDIR)/images/.arch-ids || :
-	test -d ../$(SNAPDIR)/images/CVS && rm -R \
-	  ../$(SNAPDIR)/images/.arch-ids || :
+debclean:
+	-rm -f ../../dist/$(DISTRIBUTOR)/erc_*
+	-rm -f ../erc_$(VERSION)*
+
+debprepare:
+	-rm -Rf ../$(SNAPDIR)
+	cp ../erc-$(VERSION).tar.gz ../erc_$(VERSION).orig.tar.gz
+	(cd .. && tar -xzf erc_$(VERSION).orig.tar.gz)
+	cp -R debian ../$(SNAPDIR)
+	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -Rf \
+	  ../$(SNAPDIR)/debian/.arch-ids \
+	  ../$(SNAPDIR)/debian/maint/.arch-ids \
+	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
+	test -d ../$(SNAPDIR)/debian/\{arch\} && rm -Rf \
+	  ../$(SNAPDIR)/debian/\{arch\}
 
 debbuild:
 	(cd ../$(SNAPDIR) && \
@@ -112,38 +119,10 @@ debbuild:
 	  echo "Done running linda." && \
 	  debsign)
 
-debrelease: debprepare
-	-rm -f ../../dist/$(DISTRIBUTOR)/erc_*
-	-rm -f ../erc_$(VERSION)*
-	(cd .. && tar -czf erc_$(VERSION).orig.tar.gz $(SNAPDIR))
-	cp -R debian ../$(SNAPDIR)
-	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
-	  ../$(SNAPDIR)/debian/CVS \
-	  ../$(SNAPDIR)/debian/maint/CVS \
-	  ../$(SNAPDIR)/debian/scripts/CVS || :
-	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -R \
-	  ../$(SNAPDIR)/debian/.arch-ids \
-	  ../$(SNAPDIR)/debian/maint/.arch-ids \
-	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
-	$(MAKE) debbuild
+debinstall:
 	cp ../erc_$(VERSION)* ../../dist/$(DISTRIBUTOR)
 
-debrevision:
-	-rm -f ../../dist/$(DISTRIBUTOR)/erc_*
-	-rm -f ../erc_$(VERSION)-*
-	-rm -fr ../erc-$(VERSION)
-	$(MAKE) debprepare
-	cp -R debian ../$(SNAPDIR)
-	test -d ../$(SNAPDIR)/debian/CVS && rm -R \
-	  ../$(SNAPDIR)/debian/CVS \
-	  ../$(SNAPDIR)/debian/maint/CVS \
-	  ../$(SNAPDIR)/debian/scripts/CVS || :
-	test -d ../$(SNAPDIR)/debian/.arch-ids && rm -R \
-	  ../$(SNAPDIR)/debian/.arch-ids \
-	  ../$(SNAPDIR)/debian/maint/.arch-ids \
-	  ../$(SNAPDIR)/debian/scripts/.arch-ids || :
-	$(MAKE) debbuild
-	cp ../erc_$(VERSION)* ../../dist/$(DISTRIBUTOR)
+deb: debclean debprepare debbuild debinstall
 
 release: autoloads distclean
 	mkdir ../$(SNAPDIR) && chmod 0755 ../$(SNAPDIR)
