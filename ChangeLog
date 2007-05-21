@@ -1,3 +1,27 @@
+2007-05-21  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (SOURCE): Remove erc-pkg.el.
+	(debclean): New rule to clean old Debian packages of ERC.
+	(debprepare): Don't modify the released tarball, but copy it as
+	the .orig.tar.gz file.
+	(debrelease. debrevision): Remove.
+	(debinstall): New target that copies the generated Debian file to
+	a distro-specific location.
+	(deb): New rule that chains together the stages in building a
+	Debian package.
+	(EXTRAS): Add erc-nicklist.el, since it is not release-quality.
+	(extras): Copy images directory.
+
+	* erc-nicklist.el (erc-nicklist-icons-directory): Use
+	locate-library to find the "images" directory.  This should be
+	more failsafe.  Thanks to Tom Tromey for the idea.
+
+2007-05-19  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (ELPA): New variable that contains the location of my
+	local ELPA repository.
+	(elpa): New rule that makes an ELPA package for ERC.
+
 2007-04-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-parse-prefix): New function that retrieves the
