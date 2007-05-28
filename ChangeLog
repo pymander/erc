@@ -1,3 +1,8 @@
+2007-05-28  Michael Olson  <mwolson@gnu.org>
+
+	* erc-button.el (erc-button-url-regexp): Recognize parentheses as
+	part of URLs.  Thanks to Lawrence Mitchell for the fix.
+
 2007-05-21  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (SOURCE): Remove erc-pkg.el.
