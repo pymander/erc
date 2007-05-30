@@ -209,6 +209,18 @@ one is kept."
     (format-time-string "%Y-%m-%d" emacs-build-time))
   "Time at which Emacs was dumped out.")
 
+;; Emacs 21 and XEmacs do not have user-emacs-directory, but XEmacs
+;; has user-init-directory.
+(defvar erc-user-emacs-directory
+  (cond ((boundp 'user-emacs-directory)
+	 user-emacs-directory)
+	((boundp 'user-init-directory)
+	 user-init-directory)
+	(t "~/.emacs.d/"))
+  "Directory beneath which additional per-user Emacs-specific files
+are placed.
+Note that this should end with a directory separator.")
+
 ;; XEmacs' `replace-match' does not replace matching subexpressions in strings.
 (defun erc-replace-match-subexpression-in-string
   (newtext string match subexp start &optional fixedcase literal)

@@ -836,8 +836,9 @@ See `erc-server-flood-margin' for other flood-related parameters.")
 ;; Script parameters
 
 (defcustom erc-startup-file-list
-  '("~/.emacs.d/.ercrc.el" "~/.emacs.d/.ercrc"
-    "~/.ercrc.el" "~/.ercrc" ".ercrc.el" ".ercrc")
+  (list (concat erc-user-emacs-directory ".ercrc.el")
+	(concat erc-user-emacs-directory ".ercrc")
+	"~/.ercrc.el" "~/.ercrc" ".ercrc.el" ".ercrc")
   "List of files to try for a startup script.
 The first existent and readable one will get executed.
 

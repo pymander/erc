@@ -1,3 +1,12 @@
+2007-05-30  Michael Olson  <mwolson@gnu.org>
+
+	* erc-compat.el (erc-user-emacs-directory): New variable that
+	determines where to find user-specific Emacs settings.  For Emacs,
+	this is usually ~/.emacs.d, and for XEmacs this is usually
+	~/.xemacs.
+
+	* erc.el (erc-startup-file-list): Use erc-user-emacs-directory.
+
 2007-05-28  Michael Olson  <mwolson@gnu.org>
 
 	* erc-button.el (erc-button-url-regexp): Recognize parentheses as
