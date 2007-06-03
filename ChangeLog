@@ -1,3 +1,14 @@
+2007-06-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc-compat.el (erc-view-mode-enter): Make this its own function,
+	in order to document what we do, and provide sane fallback
+	behavior.
+
+	* erc.el (erc-toggle-debug-irc-protocol): Don't pass any arguments
+	to erc-view-mode-enter, since we don't do anything special with
+	the exit function.  This fixes a bug with Emacs 21 and Emacs 22.
+	Thanks to Leo for noticing.
+
 2007-05-30  Michael Olson  <mwolson@gnu.org>
 
 	* erc-compat.el (erc-user-emacs-directory): New variable that

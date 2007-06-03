@@ -154,11 +154,21 @@ See `erc-encoding-coding-alist'."
 
 ;; But note Emacs view-mode: (view-mode &optional ARG)
 
-(defalias 'erc-view-mode-enter
-  (if (and (fboundp 'view-mode)
-	   (not (fboundp 'view-mode-enter)))
-      'view-mode
-    'view-mode-enter))
+(defun erc-view-mode-enter (&optional return-to exit-action)
+  "Enter View mode.
+See either `view-mode-enter' (if using Emacs)
+or `view-mode' (if using XEmacs)
+to determine what the arguments accomplish.
+
+If we cannot find a suitable way of passing the arguments, we
+default to just entering View mode."
+  (cond ((fboundp 'view-mode-enter)
+	 (view-mode-enter return-to exit-action))
+	((featurep 'xemacs)
+	 (condition-case nil
+	     (view-mode return-to exit-action)
+	   (view-mode 1)))
+	(t nil)))
 
 ;; if we're in emacs21 CVS, we use help-function-arglist which is more
 ;; sophisticated and can handle subrs, etc
