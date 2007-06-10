@@ -307,7 +307,8 @@ Logging is enabled if `erc-log-channels-directory' is non-nil, the directory
 is writeable (it will be created as necessary) and
 `erc-enable-logging' returns a non-nil value."
   (and erc-log-channels-directory
-       (erc-directory-writable-p erc-log-channels-directory)
+       (or (functionp erc-log-channels-directory)
+	   (erc-directory-writable-p erc-log-channels-directory))
        (if (functionp erc-enable-logging)
 	   (funcall erc-enable-logging (or buffer (current-buffer)))
 	 erc-enable-logging)))

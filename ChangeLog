@@ -1,3 +1,8 @@
+2007-06-10  Michael Olson  <mwolson@gnu.org>
+
+	* erc-log.el (erc-logging-enabled): Fix a bug that occurred when
+	`erc-log-channels-directory' had the name of a function.
+
 2007-06-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc-compat.el (erc-view-mode-enter): Make this its own function,
