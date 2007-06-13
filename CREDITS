@@ -161,6 +161,9 @@ Leo <sdl.web AT gmail.com>:
 Vivek Dasmohapatra <vivek AT etla DOT org>:
   * Fixed issue with reconnecting to a not-yet-dead server connection.
 
+Ivan Kanis <apple AT kanis DOT eu>:
+  * Fixed window ordering bug in erc-goodies.el (1 line changed).
+
 
 ----
 

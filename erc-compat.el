@@ -288,6 +288,40 @@ starting with a character."
 	 (setq pairs (cddr pairs)))
        (nreverse alist)))))
 
+;; Emacs21 does not have `with-selected-window', but Emacs22 and
+;; XEmacs do.
+(if (or (fboundp 'with-selected-window)
+	(condition-case nil
+	    (progn
+	      (require 'window)
+	      (fboundp 'with-selected-window))
+	  (error nil)))
+    (defmacro erc-with-selected-window (window &rest body)
+      "Execute the forms in BODY with WINDOW as the selected window.
+The value returned is the value of the last form in BODY."
+      (cons 'with-selected-window (cons window body)))
+  ;; ripped from subr.el in Emacs 22
+  (defmacro erc-with-selected-window (window &rest body)
+    "Execute the forms in BODY with WINDOW as the selected window.
+The value returned is the value of the last form in BODY."
+    `(let ((save-selected-window-window (selected-window))
+	   (save-selected-window-alist
+	    (mapcar (lambda (frame) (list frame (frame-selected-window frame)))
+		    (frame-list))))
+       (save-current-buffer
+	 (unwind-protect
+	     (progn (select-window ,window 'norecord)
+		    ,@body)
+	   (dolist (elt save-selected-window-alist)
+	     (and (frame-live-p (car elt))
+		  (window-live-p (cadr elt))
+		  (set-frame-selected-window (car elt) (cadr elt))))
+	   (if (window-live-p save-selected-window-window)
+	       (select-window save-selected-window-window 'norecord)))))))
+
+(put 'erc-with-selected-window 'lisp-indent-function 1)
+(put 'erc-with-selected-window 'edebug-form-spec '(form body))
+
 ;; Emacs has `cancel-timer', but XEmacs uses `delete-itimer'.
 (defun erc-cancel-timer (timer)
   (cond ((fboundp 'cancel-timer)

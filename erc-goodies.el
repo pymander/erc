@@ -84,8 +84,7 @@ DISPLAY-START is ignored."
       ;; works, but it solves the problem, and has no negative side effects.
       ;; (Fran Litterio, 2003/01/07)
       (let ((resize-mini-windows nil))
-        (save-selected-window
-          (select-window window)
+        (erc-with-selected-window window
           (save-restriction
             (widen)
             (when (and erc-insert-marker
