@@ -1,3 +1,7 @@
+2007-06-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc-log.el: Update header with accurate instructions.
+
 2007-06-17  Michael Olson  <mwolson@gnu.org>
 
 	* erc-pkg.el: Update description to match what is currently in

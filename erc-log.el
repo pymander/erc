@@ -31,17 +31,26 @@
 
 ;; Quick start:
 ;;
-;; (setq erc-enable-logging t)
-;; (setq erc-log-channels-directory "/path/to/logfiles") ; must be writable
-;;
-;; There are two ways to setup logging. The first will write to the log files
-;; on each incoming or outgoing line - this may not be optimal on a laptop
-;; HDD. To do this, M-x customize-variable erc-modules, and add "log".
-;;
-;; The second method will save buffers on /part, /quit, or killing the
-;; channel buffer. To do this, add the following to your .emacs:
-;;
 ;; (require 'erc-log)
+;; (setq erc-log-channels-directory "/path/to/logfiles") ; must be writable
+;; (erc-log-enable)
+;;
+;; Or:
+;;
+;; M-x customize-variable erc-modules, and add "log".
+;;
+;; There are two ways to setup logging.  The first (default) method
+;; will save buffers on /part, /quit, or killing the channel
+;; buffer.
+;;
+;; The second will write to the log files on each incoming or outgoing
+;; line - this may not be optimal on a laptop HDD.  To use this
+;; method, add the following to the above instructions.
+;;
+;; (setq erc-save-buffer-on-part nil
+;;       erc-save-queries-on-quit nil
+;;       erc-log-write-after-send t
+;;       erc-log-write-after-insert t)
 ;;
 ;; If you only want to save logs for some buffers, customise the
 ;; variable `erc-enable-logging'.
