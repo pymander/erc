@@ -1,3 +1,21 @@
+2007-06-20  Michael Olson  <mwolson@gnu.org>
+
+	* erc-stamp.el (erc-timestamp-format-left): New option that
+	specifies the left timestamp to use for
+	erc-insert-timestamp-left-and-right.
+	(erc-timestamp-format-right): New option that specifies the right
+	timestamp to use for erc-insert-timestamp-left-and-right.
+	(erc-insert-timestamp-function): Change default to
+	erc-insert-timestamp-left-and-right.
+	(erc-insert-away-timestamp-function): Ditto.
+	(erc-timestamp-last-inserted-left)
+	(erc-timestamp-last-inserted-right): New variables to keep track
+	of data for erc-insert-timestamp-left-and-right.
+	(erc-insert-timestamp-left-and-right): New function that places
+	timestamps on both the left and right sides of the screen, but
+	only if each timestamp has changed since it was last computed.
+	Thanks to offby1 for urging me to merge this.
+
 2007-06-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el: Update header with accurate instructions.
