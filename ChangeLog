@@ -16,6 +16,12 @@
 	only if each timestamp has changed since it was last computed.
 	Thanks to offby1 for urging me to merge this.
 
+	* erc.el (erc-open-ssl-stream): Display informative error when
+	ssl.el not found.
+	(erc-tls): New function to connect using tls.el.
+	(erc-open-tls-stream): New function to initiate tls connection.
+	Display informative error when tls.el not found.
+
 2007-06-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el: Update header with accurate instructions.

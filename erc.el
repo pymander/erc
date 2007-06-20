@@ -2158,7 +2158,11 @@ Arguments are the same as for `erc'."
   "Open an SSL stream to an IRC server.
 The process will be given the name NAME, its target buffer will be
 BUFFER.  HOST and PORT specify the connection target."
-  (when (require 'ssl)
+  (when (condition-case nil
+	    (require 'ssl)
+	  (error (message "You don't have ssl.el.  %s"
+			  "Try using `erc-tls' instead.")
+		 nil))
     (let ((proc (open-ssl-stream name buffer host port)))
       ;; Ugly hack, but it works for now. Problem is it is
       ;; very hard to detect when ssl is established, because s_client
@@ -2166,6 +2170,24 @@ BUFFER.  HOST and PORT specify the connection target."
       ;; most IRC servers send nothing and wait for you to identify.
       (sit-for 5)
       proc)))
+
+(defun erc-tls (&rest r)
+  "Interactively select TLS connection parameters and run ERC.
+Arguments are the same as for `erc'."
+  (interactive (erc-select-read-args))
+  (let ((erc-server-connect-function 'erc-open-tls-stream))
+    (apply 'erc r)))
+
+(defun erc-open-tls-stream (name buffer host port)
+  "Open an TLS stream to an IRC server.
+The process will be given the name NAME, its target buffer will be
+BUFFER.  HOST and PORT specify the connection target."
+  (when (condition-case nil
+	    (require 'tls)
+	  (error (message "You don't have tls.el.  %s"
+			  "Try using `erc-ssl' instead.")
+		 nil))
+    (open-tls-stream name buffer host port)))
 
 ;;; Debugging the protocol
 
