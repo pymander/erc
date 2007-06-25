@@ -900,7 +900,7 @@ stuff, to the current ERC buffer."
 @c previous chapter)
 
 This section has not yet been written.  For now, the easiest way to
-check out the available option for ERC is to do
+check out the available options for ERC is to do
 @kbd{M-x customize-group erc RET}.
 
 
@@ -916,7 +916,7 @@ or if you have bugs to report, there are several places you can go.
 @itemize @bullet
 
 @item
-@uref{http://www.emacswiki.org/cgi-bin/wiki/EmacsIRCClient} is the
+@uref{http://www.emacswiki.org/cgi-bin/wiki/ERC} is the
 emacswiki.org page for ERC.  Anyone may add tips, hints, or bug
 descriptions to it.
 
@@ -929,14 +929,11 @@ The mailing lists are also available on Gmane.
 accessing the mailing lists, adding content to them, and searching them.
 
 @enumerate
-@item gmane.emacs.erc.announce
-Announcements
+@item gmane.emacs.erc.announce: Announcements
 
-@item gmane.emacs.erc.discuss
-General discussion
+@item gmane.emacs.erc.discuss: General discussion
 
-@item gmane.emacs.erc.cvs
-Log messages for changes to the ERC source code
+@item gmane.emacs.erc.cvs: Log messages for changes to the ERC source code
 
 @end enumerate
 
