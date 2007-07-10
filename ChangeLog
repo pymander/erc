@@ -1,3 +1,7 @@
+2007-07-10  Michael Olson  <mwolson@gnu.org>
+
+	* Relicense all FSF-assigned code to GPLv3.
+
 2007-06-25  Michael Olson  <mwolson@gnu.org>
 
 	* erc.texi (Options): Fix typo.
@@ -502,7 +506,7 @@ See ChangeLog.06 for earlier changes.
 
   GNU Emacs is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or (at your option)
+  the Free Software Foundation; either version 3, or (at your option)
   any later version.
 
   GNU Emacs is distributed in the hope that it will be useful,
