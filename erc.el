@@ -2480,6 +2480,13 @@ See also `erc-server-send'."
 	(match-string 1 arglist)
       arglist)))
 
+(defun erc-command-no-process-p (str)
+  "Return non-nil if STR is an ERC command that can be run when the process
+is not alive, nil otherwise."
+  (let ((fun (erc-extract-command-from-line str)))
+    (and fun
+	 (get fun 'process-not-needed))))
+
 (defun erc-command-name (cmd)
   "For CMD being the function name of a ERC command, something like
 erc-cmd-FOO, this returns a string /FOO."
@@ -2589,6 +2596,7 @@ VALUE is computed by evaluating the rest of LINE in Lisp."
 (defalias 'erc-cmd-VAR 'erc-cmd-SET)
 (defalias 'erc-cmd-VARIABLE 'erc-cmd-SET)
 (put 'erc-cmd-SET 'do-not-parse-args t)
+(put 'erc-cmd-SET 'process-not-needed t)
 
 (defun erc-cmd-default (line)
   "Fallback command.
@@ -2647,6 +2655,7 @@ If no USER argument is specified, list the contents of `erc-ignore-list'."
   "Clear the window content."
   (recenter 0)
   t)
+(put 'erc-cmd-CLEAR 'process-not-needed t)
 
 (defun erc-cmd-OPS ()
   "Show the ops in the current channel."
@@ -2680,6 +2689,7 @@ If no USER argument is specified, list the contents of `erc-ignore-list'."
       (erc-display-message
        nil 'notice 'active 'country-unknown ?d tld))
   t))
+(put 'erc-cmd-COUNTRY 'process-not-needed t)
 
 (defun erc-cmd-AWAY (line)
   "Mark the user as being away, the reason being indicated by LINE.
@@ -2760,6 +2770,7 @@ For a list of user commands (/join /part, ...):
     t))
 
 (defalias 'erc-cmd-H 'erc-cmd-HELP)
+(put 'erc-cmd-HELP 'process-not-needed t)
 
 (defun erc-cmd-JOIN (channel &optional key)
   "Join the channel given in CHANNEL, optionally with KEY.
@@ -2997,6 +3008,7 @@ the matching is case-sensitive."
   (occur line)
   t)
 (put 'erc-cmd-LASTLOG 'do-not-parse-args t)
+(put 'erc-cmd-LASTLOG 'process-not-needed t)
 
 (defun erc-send-message (line &optional force)
   "Send LINE to the current channel or user and display it.
@@ -3219,6 +3231,7 @@ the message given by REASON."
 (defalias 'erc-cmd-EXIT 'erc-cmd-QUIT)
 (defalias 'erc-cmd-SIGNOFF 'erc-cmd-QUIT)
 (put 'erc-cmd-QUIT 'do-not-parse-args t)
+(put 'erc-cmd-QUIT 'process-not-needed t)
 
 (defun erc-cmd-GQUIT (reason)
   "Disconnect from all servers at once with the same quit REASON."
@@ -3227,6 +3240,7 @@ the message given by REASON."
 
 (defalias 'erc-cmd-GQ 'erc-cmd-GQUIT)
 (put 'erc-cmd-GQUIT 'do-not-parse-args t)
+(put 'erc-cmd-GQUIT 'process-not-needed t)
 
 (defun erc-cmd-RECONNECT ()
   "Try to reconnect to the current IRC server."
@@ -3242,6 +3256,7 @@ the message given by REASON."
 	(erc-server-reconnect))
       (setq erc-server-reconnecting nil)))
   t)
+(put 'erc-cmd-RECONNECT 'process-not-needed t)
 
 (defun erc-cmd-SERVER (server)
   "Connect to SERVER, leaving existing connection intact."
@@ -3252,6 +3267,7 @@ the message given by REASON."
      (message "Cannot find host %s." server)
      (beep)))
   t)
+(put 'erc-cmd-SERVER 'process-not-needed t)
 
 (eval-when-compile
   (defvar motif-version-string)
@@ -4948,39 +4964,40 @@ Specifically, return the position of `erc-insert-marker'."
   (interactive)
   (save-restriction
     (widen)
-    (cond
-     ((< (point) (erc-beg-of-input-line))
-      (message "Point is not in the input area")
-      (beep))
-     ((not (erc-server-buffer-live-p))
-      (message "ERC: No process running")
-      (beep))
-     (t
-      (erc-set-active-buffer (current-buffer))
+    (if (< (point) (erc-beg-of-input-line))
+	(progn
+	  (message "Point is not in the input area")
+	  (beep))
       (let ((inhibit-read-only t)
 	    (str (erc-user-input))
 	    (old-buf (current-buffer)))
+	(if (and (not (erc-server-buffer-live-p))
+		 (not (erc-command-no-process-p str)))
+	    (progn
+	      (message "ERC: No process running")
+	      (beep))
+	  (erc-set-active-buffer (current-buffer))
 
-	;; Kill the input and the prompt
-	(delete-region (erc-beg-of-input-line)
-		       (erc-end-of-input-line))
+	  ;; Kill the input and the prompt
+	  (delete-region (erc-beg-of-input-line)
+			 (erc-end-of-input-line))
 
-	(unwind-protect
-	    (erc-send-input str)
-	  ;; Fix the buffer if the command didn't kill it
-	  (when (buffer-live-p old-buf)
-	    (with-current-buffer old-buf
-	      (save-restriction
-		(widen)
-		(goto-char (point-max))
-		(set-marker (process-mark erc-server-process) (point))
-		(set-marker erc-insert-marker (point))
-		(let ((buffer-modified (buffer-modified-p)))
-		  (erc-display-prompt)
-		  (set-buffer-modified-p buffer-modified))))))
+	  (unwind-protect
+	      (erc-send-input str)
+	    ;; Fix the buffer if the command didn't kill it
+	    (when (buffer-live-p old-buf)
+	      (with-current-buffer old-buf
+		(save-restriction
+		  (widen)
+		  (goto-char (point-max))
+		  (set-marker (process-mark erc-server-process) (point))
+		  (set-marker erc-insert-marker (point))
+		  (let ((buffer-modified (buffer-modified-p)))
+		    (erc-display-prompt)
+		    (set-buffer-modified-p buffer-modified))))))
 
-	;; Only when last hook has been run...
-	(run-hook-with-args 'erc-send-completed-hook str))))))
+	  ;; Only when last hook has been run...
+	  (run-hook-with-args 'erc-send-completed-hook str))))))
 
 (defun erc-user-input ()
   "Return the input of the user in the current buffer."

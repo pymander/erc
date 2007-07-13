@@ -1,3 +1,16 @@
+2007-07-13  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-command-no-process-p): New function that determines
+	if its argument is an ERC command that can be run when the server
+	process is not alive.
+	(erc-cmd-SET, erc-cmd-CLEAR, erc-cmd-COUNTRY, erc-cmd-HELP)
+	(erc-cmd-LASTLOG, erc-cmd-QUIT, erc-cmd-GQUIT)
+	(erc-cmd-RECONNECT, erc-cmd-SERVER): Denote that these commands
+	can be run even when the server process is not alive.
+	(erc-send-current-line): Call erc-command-no-process-p if the
+	server process is not alive, to determine if we have a command
+	that can be run anyway.  Thanks to Tom Tromey for the bug report.
+
 2007-07-10  Michael Olson  <mwolson@gnu.org>
 
 	* Relicense all FSF-assigned code to GPLv3.
