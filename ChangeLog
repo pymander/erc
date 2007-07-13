@@ -1,5 +1,10 @@
 2007-07-13  Michael Olson  <mwolson@gnu.org>
 
+	* erc-goodies.el (erc-get-bg-color-face, erc-get-fg-color-face):
+	Use erc-error rather than message and beep.
+
+	* erc-sound.el: Indentation fix.
+
 	* erc.el (erc-command-no-process-p): New function that determines
 	if its argument is an ERC command that can be run when the server
 	process is not alive.
@@ -10,6 +15,9 @@
 	(erc-send-current-line): Call erc-command-no-process-p if the
 	server process is not alive, to determine if we have a command
 	that can be run anyway.  Thanks to Tom Tromey for the bug report.
+	(erc-error): New function that either displays a message or throws
+	an error, depending on whether debug-on-error is non-nil.
+	(erc-cmd-SERVER, erc-send-current-line): Use it.
 
 2007-07-10  Michael Olson  <mwolson@gnu.org>
 

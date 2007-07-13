@@ -2189,6 +2189,17 @@ BUFFER.  HOST and PORT specify the connection target."
 		 nil))
     (open-tls-stream name buffer host port)))
 
+;;; Displaying error messages
+
+(defun erc-error (&rest args)
+  "Pass ARGS to `format', and display the result as an error message.
+If `debug-on-error' is set to non-nil, then throw a real error with this
+message instead, to make debugging easier."
+  (if debug-on-error
+      (apply #'error args)
+    (apply #'message args)
+    (beep)))
+
 ;;; Debugging the protocol
 
 (defvar erc-debug-irc-protocol nil
@@ -3264,8 +3275,7 @@ the message given by REASON."
   (condition-case nil
       (erc :server server :nick (erc-current-nick))
     (error
-     (message "Cannot find host %s." server)
-     (beep)))
+     (erc-error "Cannot find host %s." server)))
   t)
 (put 'erc-cmd-SERVER 'process-not-needed t)
 
@@ -4965,17 +4975,13 @@ Specifically, return the position of `erc-insert-marker'."
   (save-restriction
     (widen)
     (if (< (point) (erc-beg-of-input-line))
-	(progn
-	  (message "Point is not in the input area")
-	  (beep))
+	(erc-error "Point is not in the input area")
       (let ((inhibit-read-only t)
 	    (str (erc-user-input))
 	    (old-buf (current-buffer)))
 	(if (and (not (erc-server-buffer-live-p))
 		 (not (erc-command-no-process-p str)))
-	    (progn
-	      (message "ERC: No process running")
-	      (beep))
+	    (erc-error "ERC: No process running")
 	  (erc-set-active-buffer (current-buffer))
 
 	  ;; Kill the input and the prompt

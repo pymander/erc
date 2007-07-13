@@ -281,10 +281,8 @@ The value `erc-interpret-controls-p' must also be t for this to work."
   "Fetches the right face for background color N (0-15)."
   (if (stringp n) (setq n (string-to-number n)))
   (if (not (numberp n))
-      (progn
-        (message "erc-get-bg-color-face: n is NaN: %S" n)
-        (beep)
-        'default)
+      (prog1 'default
+        (erc-error "erc-get-bg-color-face: n is NaN: %S" n))
     (when (> n 16)
       (erc-log (format "   Wrong color: %s" n))
       (setq n (mod n 16)))
@@ -297,10 +295,8 @@ The value `erc-interpret-controls-p' must also be t for this to work."
   "Fetches the right face for foreground color N (0-15)."
   (if (stringp n) (setq n (string-to-number n)))
   (if (not (numberp n))
-      (progn
-        (message "erc-get-fg-color-face: n is NaN: %S" n)
-        (beep)
-        'default)
+      (prog1 'default
+        (erc-error "erc-get-fg-color-face: n is NaN: %S" n))
     (when (> n 16)
       (erc-log (format "   Wrong color: %s" n))
       (setq n (mod n 16)))
