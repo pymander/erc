@@ -1,3 +1,9 @@
+2007-07-29  Michael Olson  <mwolson@gnu.org>
+
+	* erc-list.el: Relicense to GPLv3.  Since the file was already
+	licensed under version 2 or later, it turns out that we do not
+	need the permission of all of the authors in order to proceed.
+
 2007-07-13  Michael Olson  <mwolson@gnu.org>
 
 	* erc-goodies.el (erc-get-bg-color-face, erc-get-fg-color-face):
