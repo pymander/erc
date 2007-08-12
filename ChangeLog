@@ -1,3 +1,10 @@
+2007-08-12  Michael Olson  <mwolson@gnu.org>
+
+	* erc-identd.el (erc-identd-filter): Instead of sending an EOF
+	character, which now confuses freenode, stop the server process,
+	so that no new connections are accepted, and kill the current
+	client process.
+
 2007-07-29  Michael Olson  <mwolson@gnu.org>
 
 	* erc-list.el: Relicense to GPLv3.  Since the file was already
