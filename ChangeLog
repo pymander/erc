@@ -25,6 +25,9 @@
 	symbol.  Thanks to jbms for the report.
 	(erc-cmd-RECONNECT): Use simpler logic, and use buffer-live-p
 	rather than bufferp.
+	(erc-send-current-line, erc-display-command, erc-display-msg):
+	Handle case where erc-server-process is nil, so that /reconnect
+	works.
 
 2007-08-12  Michael Olson  <mwolson@gnu.org>
 

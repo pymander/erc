@@ -4999,7 +4999,8 @@ Specifically, return the position of `erc-insert-marker'."
 		(save-restriction
 		  (widen)
 		  (goto-char (point-max))
-		  (set-marker (process-mark erc-server-process) (point))
+		  (when (processp erc-server-process)
+		    (set-marker (process-mark erc-server-process) (point)))
 		  (set-marker erc-insert-marker (point))
 		  (let ((buffer-modified (buffer-modified-p)))
 		    (erc-display-prompt)
@@ -5067,7 +5068,8 @@ This returns non-nil only iff we actually send anything."
 	(erc-put-text-property beg (point)
 			       'face 'erc-command-indicator-face)
 	(insert "\n"))
-      (set-marker (process-mark erc-server-process) (point))
+      (when (processp erc-server-process)
+	(set-marker (process-mark erc-server-process) (point)))
       (set-marker erc-insert-marker (point))
       (save-excursion
 	(save-restriction
@@ -5086,7 +5088,8 @@ current position."
 	(erc-put-text-property beg (point)
 			       'face 'erc-input-face))
       (insert "\n")
-      (set-marker (process-mark erc-server-process) (point))
+      (when (processp erc-server-process)
+	(set-marker (process-mark erc-server-process) (point)))
       (set-marker erc-insert-marker (point))
       (save-excursion
 	(save-restriction

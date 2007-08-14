@@ -553,8 +553,8 @@ Make sure you are in an ERC buffer when running this."
   (let ((buffer (erc-server-buffer)))
     (unless (buffer-live-p buffer)
       (if (eq major-mode 'erc-mode)
-          (error "Reconnect must be run from an ERC buffer")
-        (setq buffer (current-buffer))))
+          (setq buffer (current-buffer))
+        (error "Reconnect must be run from an ERC buffer")))
     (with-current-buffer buffer
       (erc-update-mode-line)
       (erc-set-active-buffer (current-buffer))
