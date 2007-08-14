@@ -550,11 +550,12 @@ We will store server variables in the buffer given by BUFFER."
 (defun erc-server-reconnect ()
 "Reestablish the current IRC connection.
 Make sure you are in an ERC buffer when running this."
-  (let ((server (erc-server-buffer)))
-    (unless (and server
-                 (buffer-live-p server))
-      (error "Couldn't switch to server buffer"))
-    (with-current-buffer server
+  (let ((buffer (erc-server-buffer)))
+    (unless (buffer-live-p buffer)
+      (if (eq major-mode 'erc-mode)
+          (error "Reconnect must be run from an ERC buffer")
+        (setq buffer (current-buffer))))
+    (with-current-buffer buffer
       (erc-update-mode-line)
       (erc-set-active-buffer (current-buffer))
       (setq erc-server-last-sent-time 0)

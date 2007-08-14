@@ -1,8 +1,16 @@
 2007-08-14  Michael Olson  <mwolson@gnu.org>
 
+	* erc-backend.el (erc-server-reconnect): If the server buffer has
+	been killed, use the current buffer instead.  If the current
+	buffer is not an ERC buffer, give an error.  This fixes a bug when
+	/reconnect is run from a channel buffer whose server buffer has
+	been deleted.  Thanks to jbms for the report.
+
 	* erc.el (erc-command-no-process-p): Fix bug: the return value of
 	erc-extract-command-from-line is a list rather than a single
 	symbol.  Thanks to jbms for the report.
+	(erc-cmd-RECONNECT): Use simpler logic, and use buffer-live-p
+	rather than bufferp.
 
 2007-08-12  Michael Olson  <mwolson@gnu.org>
 

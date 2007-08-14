@@ -3256,9 +3256,11 @@ the message given by REASON."
 
 (defun erc-cmd-RECONNECT ()
   "Try to reconnect to the current IRC server."
-  (let ((buffer (or (erc-server-buffer) (current-buffer)))
+  (let ((buffer (erc-server-buffer))
 	(process nil))
-    (with-current-buffer (if (bufferp buffer) buffer (current-buffer))
+    (unless (buffer-live-p buffer)
+      (setq buffer (current-buffer)))
+    (with-current-buffer buffer
       (setq erc-server-quitting nil)
       (setq erc-server-reconnecting t)
       (setq erc-server-reconnect-count 0)
