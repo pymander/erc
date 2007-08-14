@@ -2496,7 +2496,8 @@ See also `erc-server-send'."
 is not alive, nil otherwise."
   (let ((fun (erc-extract-command-from-line str)))
     (and fun
-	 (get fun 'process-not-needed))))
+	 (symbolp (car fun))
+	 (get (car fun) 'process-not-needed))))
 
 (defun erc-command-name (cmd)
   "For CMD being the function name of a ERC command, something like

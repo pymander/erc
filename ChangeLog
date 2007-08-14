@@ -1,3 +1,9 @@
+2007-08-14  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-command-no-process-p): Fix bug: the return value of
+	erc-extract-command-from-line is a list rather than a single
+	symbol.  Thanks to jbms for the report.
+
 2007-08-12  Michael Olson  <mwolson@gnu.org>
 
 	* erc-identd.el (erc-identd-filter): Instead of sending an EOF
