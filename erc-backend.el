@@ -623,14 +623,15 @@ Conditionally try to reconnect and take appropriate action."
             (set-buffer-modified-p nil)
             (kill-buffer (current-buffer))))
       ;; unexpected disconnect
-      (let ((again t))
+      (let ((again t)
+            reconnect-p)
         (while again
           (setq again nil)
+          (setq reconnect-p (erc-server-reconnect-p event))
           (erc-display-message nil 'error (current-buffer)
-                               (if (erc-server-reconnect-p event)
-                                   'disconnected
+                               (if reconnect-p 'disconnected
                                  'disconnected-noreconnect))
-          (if (erc-server-reconnect-p event)
+          (if reconnect-p
               (condition-case err
                   (progn
                     (setq erc-server-reconnecting nil)
@@ -640,9 +641,11 @@ Conditionally try to reconnect and take appropriate action."
                          (set-buffer buffer)
                          (when (integerp erc-server-reconnect-attempts)
                            (setq erc-server-reconnect-count
-                                 (1+ erc-server-reconnect-count))
-                           (sit-for erc-server-reconnect-timeout)
-                           (setq again t)))))
+                                 (1+ erc-server-reconnect-count)))
+                         ;; TODO: Make this use a one-time timer
+                         ;; instead of sit-for
+                         (sit-for erc-server-reconnect-timeout)
+                         (setq again t))))
             ;; terminate, do not reconnect
             (erc-display-message nil 'error (current-buffer)
                                  'terminated ?e event)))))))
