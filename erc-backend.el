@@ -635,13 +635,13 @@ EVENT is the message received from the closed connection process."
                                (1+ erc-server-reconnect-count))
                        (message "%s ... %s"
                                 "Reconnecting until we succeed"
-                                "kill the server buffer to stop"))
-                     (if (integerp erc-server-reconnect-timeout)
+                                "kill the ERC server buffer to stop"))
+                     (if (numberp erc-server-reconnect-timeout)
                          (run-at-time erc-server-reconnect-timeout nil
                                       #'erc-process-sentinel-2
                                       event buffer)
                        (error (concat "`erc-server-reconnect-timeout`"
-                                      " must be an integer")))))))))))
+                                      " must be a number")))))))))))
 
 (defun erc-process-sentinel-1 (event buffer)
   "Called when `erc-process-sentinel' has decided that we're disconnecting.

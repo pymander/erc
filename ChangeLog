@@ -18,7 +18,7 @@
 	sentinel by means of run-at-time, so that there is time to kill
 	the buffer if need be; this also removes the need for a while
 	loop.  Refuse to reconnect again if erc-server-reconnect-timeout
-	is not an integer.
+	is not an number.
 
 	* erc.el (erc-command-no-process-p): Fix bug: the return value of
 	erc-extract-command-from-line is a list rather than a single
