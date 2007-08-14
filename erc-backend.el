@@ -612,33 +612,36 @@ EVENT is the message received from the closed connection process."
 
 (defun erc-process-sentinel-2 (event buffer)
   "Called when `erc-process-sentinel-1' has detected an unexpected disconnect."
-  (with-current-buffer buffer
-    (let ((again t)
-          reconnect-p)
-      (while again
-        (setq again nil)
-        (setq reconnect-p (erc-server-reconnect-p event))
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (let ((reconnect-p (erc-server-reconnect-p event)))
         (erc-display-message nil 'error (current-buffer)
                              (if reconnect-p 'disconnected
                                'disconnected-noreconnect))
-        (if reconnect-p
-            (condition-case err
-                (progn
-                  (setq erc-server-reconnecting nil)
-                  (erc-server-reconnect)
-                  (setq erc-server-reconnect-count 0))
-              (error (when (buffer-live-p buffer)
-                       (set-buffer buffer)
-                       (when (integerp erc-server-reconnect-attempts)
+        (if (not reconnect-p)
+            ;; terminate, do not reconnect
+            (erc-display-message nil 'error (current-buffer)
+                                 'terminated ?e event)
+          ;; reconnect
+          (condition-case err
+              (progn
+                (setq erc-server-reconnecting nil)
+                (erc-server-reconnect)
+                (setq erc-server-reconnect-count 0))
+            (error (when (buffer-live-p buffer)
+                     (set-buffer buffer)
+                     (if (integerp erc-server-reconnect-attempts)
                          (setq erc-server-reconnect-count
-                               (1+ erc-server-reconnect-count)))
-                       ;; TODO: Make this use a one-time timer
-                       ;; instead of sit-for
-                       (sit-for erc-server-reconnect-timeout)
-                       (setq again t))))
-          ;; terminate, do not reconnect
-          (erc-display-message nil 'error (current-buffer)
-                               'terminated ?e event))))))
+                               (1+ erc-server-reconnect-count))
+                       (message "%s ... %s"
+                                "Reconnecting until we succeed"
+                                "kill the server buffer to stop"))
+                     (if (integerp erc-server-reconnect-timeout)
+                         (run-at-time erc-server-reconnect-timeout nil
+                                      #'erc-process-sentinel-2
+                                      event buffer)
+                       (error (concat "`erc-server-reconnect-timeout`"
+                                      " must be an integer")))))))))))
 
 (defun erc-process-sentinel-1 (event buffer)
   "Called when `erc-process-sentinel' has decided that we're disconnecting.

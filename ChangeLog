@@ -6,13 +6,19 @@
 	/reconnect is run from a channel buffer whose server buffer has
 	been deleted.  Thanks to jbms for the report.
 	(erc-process-sentinel-1): Take server buffer as an argument, so
-	that we can make sure that it is current.  If it is deleted during
-	a reconnect attempt, stop trying to reconnect.  Fix bug where
-	reconnect was not happening when erc-server-reconnect-attempts was
-	t.  Call erc-server-reconnect-p only once per loop iteration.
+	that we can make sure that it is current.
 	(erc-process-sentinel): Pass buffer to erc-process-sentinel-1.
 	(erc-process-sentinel-2): New function split from
-	erc-process-sentinel-1.
+	erc-process-sentinel-1.  If server buffer is deleted during a
+	reconnect attempt, stop trying to reconnect.  Fix bug where
+	reconnect was not happening when erc-server-reconnect-attempts was
+	t.  Call erc-server-reconnect-p only once each time.  If we are
+	instructed to try connecting indefinitely, tell the user that they
+	can stop this by killing the server buffer.  Call the process
+	sentinel by means of run-at-time, so that there is time to kill
+	the buffer if need be; this also removes the need for a while
+	loop.  Refuse to reconnect again if erc-server-reconnect-timeout
+	is not an integer.
 
 	* erc.el (erc-command-no-process-p): Fix bug: the return value of
 	erc-extract-command-from-line is a list rather than a single
