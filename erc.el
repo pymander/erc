@@ -1492,6 +1492,14 @@ This only has effect when `erc-join-buffer' is set to `frame'."
   :group 'erc-buffers
   :type 'boolean)
 
+(defcustom erc-reuse-frames t
+  "*Determines whether new frames are always created.
+Non-nil means that a new frame is not created to display an ERC
+buffer if there is already a window displaying it.  This only has
+effect when `erc-join-buffer' is set to `frame'."
+  :group 'erc-buffers
+  :type 'boolean)
+
 (defun erc-channel-p (channel)
   "Return non-nil if CHANNEL seems to be an IRC channel name."
   (cond ((stringp channel)
@@ -1891,14 +1899,16 @@ removed from the list will be disabled."
 	((eq erc-join-buffer 'bury)
 	 nil)
 	((eq erc-join-buffer 'frame)
-	 (funcall '(lambda (frame)
+	 (when (or (not erc-reuse-frames)
+		   (not (get-buffer-window buffer t)))
+	   ((lambda (frame)
 		     (raise-frame frame)
 		     (select-frame frame))
 		  (make-frame (or erc-frame-alist
 				  default-frame-alist)))
 	 (switch-to-buffer buffer)
 	 (when erc-frame-dedicated-flag
-	   (set-window-dedicated-p (selected-window) t)))
+	     (set-window-dedicated-p (selected-window) t))))
 	(t
 	 (if (active-minibuffer-window)
 	     (display-buffer buffer)
