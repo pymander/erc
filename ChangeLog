@@ -5,6 +5,10 @@
 	buffer is not an ERC buffer, give an error.  This fixes a bug when
 	/reconnect is run from a channel buffer whose server buffer has
 	been deleted.  Thanks to jbms for the report.
+	(erc-process-sentinel-1): Take server buffer as an argument, so
+	that we can make sure that it is current.  If it is deleted during
+	a reconnect attempt, stop trying to reconnect.
+	(erc-process-sentinel): Pass buffer to erc-process-sentinel-1.
 
 	* erc.el (erc-command-no-process-p): Fix bug: the return value of
 	erc-extract-command-from-line is a list rather than a single
