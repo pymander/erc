@@ -610,6 +610,36 @@ EVENT is the message received from the closed connection process."
            ;; open-network-stream-nowait error for connection refused
            (not (string-match "^failed with code 111" event)))))
 
+(defun erc-process-sentinel-2 (event buffer)
+  "Called when `erc-process-sentinel-1' has detected an unexpected disconnect."
+  (with-current-buffer buffer
+    (let ((again t)
+          reconnect-p)
+      (while again
+        (setq again nil)
+        (setq reconnect-p (erc-server-reconnect-p event))
+        (erc-display-message nil 'error (current-buffer)
+                             (if reconnect-p 'disconnected
+                               'disconnected-noreconnect))
+        (if reconnect-p
+            (condition-case err
+                (progn
+                  (setq erc-server-reconnecting nil)
+                  (erc-server-reconnect)
+                  (setq erc-server-reconnect-count 0))
+              (error (when (buffer-live-p buffer)
+                       (set-buffer buffer)
+                       (when (integerp erc-server-reconnect-attempts)
+                         (setq erc-server-reconnect-count
+                               (1+ erc-server-reconnect-count)))
+                       ;; TODO: Make this use a one-time timer
+                       ;; instead of sit-for
+                       (sit-for erc-server-reconnect-timeout)
+                       (setq again t))))
+          ;; terminate, do not reconnect
+          (erc-display-message nil 'error (current-buffer)
+                               'terminated ?e event))))))
+
 (defun erc-process-sentinel-1 (event buffer)
   "Called when `erc-process-sentinel' has decided that we're disconnecting.
 Determine whether user has quit or whether erc has been terminated.
@@ -623,32 +653,7 @@ Conditionally try to reconnect and take appropriate action."
             (set-buffer-modified-p nil)
             (kill-buffer (current-buffer))))
       ;; unexpected disconnect
-      (let ((again t)
-            reconnect-p)
-        (while again
-          (setq again nil)
-          (setq reconnect-p (erc-server-reconnect-p event))
-          (erc-display-message nil 'error (current-buffer)
-                               (if reconnect-p 'disconnected
-                                 'disconnected-noreconnect))
-          (if reconnect-p
-              (condition-case err
-                  (progn
-                    (setq erc-server-reconnecting nil)
-                    (erc-server-reconnect)
-                    (setq erc-server-reconnect-count 0))
-                (error (when (buffer-live-p buffer)
-                         (set-buffer buffer)
-                         (when (integerp erc-server-reconnect-attempts)
-                           (setq erc-server-reconnect-count
-                                 (1+ erc-server-reconnect-count)))
-                         ;; TODO: Make this use a one-time timer
-                         ;; instead of sit-for
-                         (sit-for erc-server-reconnect-timeout)
-                         (setq again t))))
-            ;; terminate, do not reconnect
-            (erc-display-message nil 'error (current-buffer)
-                                 'terminated ?e event)))))))
+      (erc-process-sentinel-2 event buffer))))
 
 (defun erc-process-sentinel (cproc event)
   "Sentinel function for ERC process."

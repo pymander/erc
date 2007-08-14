@@ -11,6 +11,8 @@
 	reconnect was not happening when erc-server-reconnect-attempts was
 	t.  Call erc-server-reconnect-p only once per loop iteration.
 	(erc-process-sentinel): Pass buffer to erc-process-sentinel-1.
+	(erc-process-sentinel-2): New function split from
+	erc-process-sentinel-1.
 
 	* erc.el (erc-command-no-process-p): Fix bug: the return value of
 	erc-extract-command-from-line is a list rather than a single
