@@ -281,12 +281,14 @@ when there are no more active channels."
 (defcustom erc-track-switch-direction 'oldest
   "Direction `erc-track-switch-buffer' should switch.
 
+  importance  -  find buffer with the most important message
   oldest      -  find oldest active buffer
   newest      -  find newest active buffer
   leastactive -  find buffer with least unseen messages
   mostactive  -  find buffer with most unseen messages."
   :group 'erc-track
-  :type '(choice (const oldest)
+  :type '(choice (const importance)
+		 (const oldest)
 		 (const newest)
 		 (const leastactive)
 		 (const mostactive)))
@@ -758,10 +760,11 @@ If FACES are provided, color STRING with them."
   "Set `erc-modified-channels-object'
 according to `erc-modified-channels-alist'.
 Use `erc-make-mode-line-buffer-name' to create buttons."
-  (if (or
-	(eq 'mostactive erc-track-switch-direction)
-	(eq 'leastactive erc-track-switch-direction))
-      (erc-track-sort-by-activest))
+  (cond ((or (eq 'mostactive erc-track-switch-direction)
+	     (eq 'leastactive erc-track-switch-direction))
+	 (erc-track-sort-by-activest))
+	((eq 'importance erc-track-switch-direction)
+	 (erc-track-sort-by-importance)))
   (run-hooks 'erc-track-list-changed-hook)
   (unless (eq erc-track-position-in-mode-line nil)
   (if (null erc-modified-channels-alist)
@@ -917,6 +920,29 @@ That means the number of unseen messages in a channel."
 	(sort erc-modified-channels-alist
 	      (lambda (a b) (> (nth 1 a) (nth 1 b))))))
 
+(defun erc-track-face-priority (face)
+  "Return a number indicating the priority of FACE in
+`erc-track-faces-priority-list'.  Lower number means higher
+priority.
+
+If face is not in `erc-track-faces-priority-list', it will have a
+higher number than any other face in that list."
+  (let ((count 0))
+    (catch 'done
+      (dolist (item erc-track-faces-priority-list)
+	(if (eq item face)
+	    (throw 'done t)
+	  (setq count (1+ count)))))
+    count))
+
+(defun erc-track-sort-by-importance ()
+  "Sort erc-modified-channels-alist by importance.
+That means the position of the face in `erc-track-faces-priority-list'."
+  (setq erc-modified-channels-alist
+	(sort erc-modified-channels-alist
+	      (lambda (a b) (< (erc-track-face-priority (cddr a))
+			       (erc-track-face-priority (cddr b)))))))
+
 (defun erc-track-get-active-buffer (arg)
   "Return the buffer name of ARG in `erc-modified-channels-alist'.
 Negative arguments index in the opposite direction.  This direction is
@@ -928,7 +954,8 @@ relative to `erc-track-switch-direction'"
 		  (oldest      'newest)
 		  (newest      'oldest)
 		  (mostactive  'leastactive)
-		  (leastactive 'mostactive)))
+		  (leastactive 'mostactive)
+		  (importance  'oldest)))
       (setq arg (- arg)))
     (setq offset (case dir
 		   ((oldest leastactive)

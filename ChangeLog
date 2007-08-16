@@ -2,6 +2,16 @@
 
 	* erc-track.el (erc-track-list-changed-hook): Turn this into a
 	customizable option.
+	(erc-track-switch-direction): Add 'importance option.
+	(erc-modified-channels-display): If erc-track-switch-direction is
+	'importance, call erc-track-sort-by-importance.
+	(erc-track-face-priority): New function that returns a number
+	indicating the position of a face in
+	erc-track-faces-priority-list.
+	(erc-track-sort-by-importance): New function that sorts
+	erc-modified-channels-list according to erc-track-face-priority.
+	(erc-track-get-active-buffer): Make 'oldest a rough opposite of
+	'importance.
 
 2007-08-14  Jeremy Maitin-Shepard <jbms@cmu.edu>
 
