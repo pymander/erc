@@ -157,7 +157,15 @@ If nil instead of a function, shortening is disabled."
   :type '(choice (const :tag "Disabled")
 		 function))
 
-(defvar erc-track-list-changed-hook nil)
+(defcustom erc-track-list-changed-hook nil
+  "Hook that is run whenever the contents of
+`erc-modified-channels-alist' changes.
+
+This is useful for people that don't use the default mode-line
+notification but instead use a separate mechanism to provide
+notification of channel activity."
+  :group 'erc-track
+  :type 'hook)
 
 (defcustom erc-track-use-faces t
   "*Use faces in the mode-line.

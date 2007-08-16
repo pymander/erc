@@ -1,3 +1,45 @@
+2007-08-16  Michael Olson  <mwolson@gnu.org>
+
+	* erc-track.el (erc-track-list-changed-hook): Turn this into a
+	customizable option.
+
+2007-08-14  Jeremy Maitin-Shepard <jbms@cmu.edu>
+
+	* erc-track.el (erc-track-remove-disconnected-buffers): New
+	variable which controls whether buffers associated with a server
+	that is disconnected should be removed from
+	`erc-modified-channels-alist'.  Existing behavior is to
+	unconditionally remove such buffers, which is achieved by setting
+	`erc-track-removed-disconnected-buffers' to t.  When set to t,
+	which is the new default value, such buffers remain in the list,
+	which I think is often the desired behavior, since the user may
+	likely wish to find out about activity that occurred in a channel
+	prior to it being disconnected.
+	(erc-track-list-changed-hook): New hook that is run whenever the
+	contents of `erc-modified-channels-alist' changes; it is useful
+	for users such as myself that don't use the default mode-line
+	notification but instead use a separate mechanism (which is tied
+	to my window manager) to provide notification of channel activity.
+	(erc-track-get-buffer-window): New function that acts as a wrapper
+	around `get-buffer-window' that handles the `selected-visible'
+	option of `erc-track-visibility'; previously, the value of
+	`erc-track-visibility' was passed directly to `get-buffer-window',
+	which does not support `selected-visible'; consequently,
+	`selected-visible' was not properly supported.
+	(erc-track-modified-channels): Fix a bug in the logic for removing
+	buffers from the list in certain cases.
+	(erc-track-position-in-mode-line): Add a supported value that
+	specifies that the tracking information should not be added to the
+	mode line at all.  The value of nil is used to indicate that the
+	information should not be added at all to the mode line.
+	(erc-track-add-to-mode-line): Check for position eq to t, rather
+	than non-nil.
+	(erc-buffer-visible): Use erc-track-get-buffer-window.
+	(erc-modified-channels-update): Take
+	erc-track-remove-disconnected-buffers into account.
+	(erc-modified-channels-display): Run
+	`erc-track-list-changed-hook'.
+
 2007-08-14  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-server-reconnect): If the server buffer has
