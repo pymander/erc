@@ -53,6 +53,11 @@
 	(erc-modified-channels-display): Run
 	`erc-track-list-changed-hook'.
 
+	* erc.el (erc-reuse-frames): New option that determines whether
+	new frames are always created.  Defaults to t.  This only has an
+	effect when erc-join-buffer is set to 'frame.
+	(erc-setup-buffer): Use it.
+
 2007-08-14  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-server-reconnect): If the server buffer has
