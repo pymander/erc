@@ -612,7 +612,8 @@ EVENT is the message received from the closed connection process."
 
 (defun erc-process-sentinel-2 (event buffer)
   "Called when `erc-process-sentinel-1' has detected an unexpected disconnect."
-  (when (buffer-live-p buffer)
+  (if (not (buffer-live-p buffer))
+      (erc-update-mode-line)
     (with-current-buffer buffer
       (let ((reconnect-p (erc-server-reconnect-p event)))
         (erc-display-message nil 'error (current-buffer)
@@ -620,8 +621,12 @@ EVENT is the message received from the closed connection process."
                                'disconnected-noreconnect))
         (if (not reconnect-p)
             ;; terminate, do not reconnect
-            (erc-display-message nil 'error (current-buffer)
-                                 'terminated ?e event)
+            (progn
+              (erc-display-message nil 'error (current-buffer)
+                                   'terminated ?e event)
+              ;; Update mode line indicators
+              (erc-update-mode-line)
+              (set-buffer-modified-p nil))
           ;; reconnect
           (condition-case err
               (progn
@@ -652,8 +657,11 @@ Conditionally try to reconnect and take appropriate action."
         ;; normal quit
         (progn
           (erc-display-message nil 'error (current-buffer) 'finished)
+          ;; Update mode line indicators
+          (erc-update-mode-line)
+          ;; Kill server buffer if user wants it
+          (set-buffer-modified-p nil)
           (when erc-kill-server-buffer-on-quit
-            (set-buffer-modified-p nil)
             (kill-buffer (current-buffer))))
       ;; unexpected disconnect
       (erc-process-sentinel-2 event buffer))))
@@ -683,12 +691,7 @@ Conditionally try to reconnect and take appropriate action."
         (delete-region (point) (point-max))
         ;; Decide what to do with the buffer
         ;; Restart if disconnected
-        (erc-process-sentinel-1 event buf)
-        ;; Make sure we don't write to the buffer if it has been
-        ;; killed
-        (when (buffer-live-p buf)
-          (erc-update-mode-line)
-          (set-buffer-modified-p nil))))))
+        (erc-process-sentinel-1 event buf)))))
 
 ;;;; Sending messages
 
