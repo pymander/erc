@@ -3258,7 +3258,17 @@ the message given by REASON."
 (defun erc-cmd-GQUIT (reason)
   "Disconnect from all servers at once with the same quit REASON."
   (erc-with-all-buffers-of-server nil #'erc-open-server-buffer-p
-				  (erc-cmd-QUIT reason)))
+				  (erc-cmd-QUIT reason))
+  (when erc-kill-queries-on-quit
+    ;; if the query buffers have not been killed within 4 seconds,
+    ;; kill them
+    (run-at-time
+     4 nil
+     (lambda ()
+       (dolist (buffer (erc-buffer-list (lambda (buf)
+					  (not (erc-server-buffer-p buf)))))
+	 (kill-buffer buffer)))))
+  t)
 
 (defalias 'erc-cmd-GQ 'erc-cmd-GQUIT)
 (put 'erc-cmd-GQUIT 'do-not-parse-args t)
