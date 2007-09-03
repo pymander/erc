@@ -26,7 +26,7 @@
 	(erc-track-get-active-buffer): Make 'oldest a rough opposite of
 	'importance.
 
-2007-08-14  Jeremy Maitin-Shepard <jbms@cmu.edu>
+2007-08-14  Jeremy Maitin-Shepard  <jbms@cmu.edu>
 
 	* erc-track.el (erc-track-remove-disconnected-buffers): New
 	variable which controls whether buffers associated with a server
@@ -176,6 +176,10 @@
 	* erc-pkg.el: Update description to match what is currently in
 	ELPA.
 
+2007-06-14  Juanma Barranquero  <lekktu@gmail.com>
+
+	* erc-goodies.el (erc-scroll-to-bottom): Remove redundant check.
+
 2007-06-13  Michael Olson  <mwolson@gnu.org>
 
 	* erc-compat.el (erc-with-selected-window): New compatibility
@@ -189,6 +193,11 @@
 
 	* erc-log.el (erc-logging-enabled): Fix a bug that occurred when
 	`erc-log-channels-directory' had the name of a function.
+
+2007-06-06  Juanma Barranquero  <lekktu@gmail.com>
+
+	* erc.el (erc-show-channel-key-p, erc-startup-file-list):
+	Fix typo in docstring.
 
 2007-06-03  Michael Olson  <mwolson@gnu.org>
 
