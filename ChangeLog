@@ -1,3 +1,8 @@
+2007-09-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-default-port): Make this an integer value rather
+	than a string.  Thanks to Luca Capello for the report.
+
 2007-08-27  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-cmd-GQUIT): If erc-kill-queries-on-quit is non-nil,
