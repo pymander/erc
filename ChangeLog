@@ -1,5 +1,12 @@
 2007-09-08  Michael Olson  <mwolson@gnu.org>
 
+	* erc-log.el (erc-log-filter-function): New option that specifies
+	the function to call for filtering text before writing it to a log
+	file.  Thanks to David O'Toole for the suggestion.
+	(erc-save-buffer-in-logs): Use erc-log-filter-function.  Make sure
+	we carry along the value of coding-system-for-write, because this
+	could potentially be shadowed by the temporary buffer.
+
 	* erc.el (erc-version-string): Update to 5.3, development version.
 
 2007-09-07  Glenn Morris  <rgm@gnu.org>
