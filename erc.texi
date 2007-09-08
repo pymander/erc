@@ -65,7 +65,7 @@ and modified without restriction.
                                   permission to redistribute ERC on
                                   certain terms; it also explains that
                                   there is no warranty.
-* GNU Free Documentation License::  The license for this documentation.
+* GNU Free Documentation License:: The license for this documentation.
 * Concept Index::               Search for terms.
 
 @detailmenu
@@ -561,7 +561,8 @@ Buttonize URLs, nicknames, and other text
 Mark unidentified users on freenode and other servers supporting CAPAB.
 
 @cindex modules, completion
-@item pcomplete
+@cindex modules, pcomplete
+@item completion (aka pcomplete)
 Complete nicknames and commands (programmable)
 
 @cindex modules, fill
@@ -569,7 +570,7 @@ Complete nicknames and commands (programmable)
 Wrap long lines
 
 @cindex modules, hecomplete
-@item completion
+@item hecomplete
 Complete nicknames and commands (old).  This is the old module---you
 might prefer the ``completion'' module instead.
 

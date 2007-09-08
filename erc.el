@@ -1908,7 +1908,7 @@ removed from the list will be disabled."
 				  default-frame-alist)))
 	 (switch-to-buffer buffer)
 	 (when erc-frame-dedicated-flag
-	     (set-window-dedicated-p (selected-window) t))))
+	   (set-window-dedicated-p (selected-window) t))))
 	(t
 	 (if (active-minibuffer-window)
 	     (display-buffer buffer)

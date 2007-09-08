@@ -237,6 +237,10 @@
 	* erc-button.el (erc-button-url-regexp): Recognize parentheses as
 	part of URLs.  Thanks to Lawrence Mitchell for the fix.
 
+2007-05-26  Michael Olson  <mwolson@gnu.org>
+
+	* erc.texi (Modules): Fix references to completion modules.
+
 2007-05-21  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (SOURCE): Remove erc-pkg.el.
