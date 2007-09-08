@@ -1,3 +1,7 @@
+2007-09-08  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-version-string): Update to 5.3, development version.
+
 2007-09-07  Glenn Morris  <rgm@gnu.org>
 
 	* erc.el (erc-toggle-debug-irc-protocol): Fix call to
