@@ -1,3 +1,12 @@
+2007-09-07  Glenn Morris  <rgm@gnu.org>
+
+	* erc.el (erc-toggle-debug-irc-protocol): Fix call to
+	erc-view-mode-enter.
+
+2007-08-08  Glenn Morris  <rgm@gnu.org>
+
+	* erc-log.el, erc.el: Replace `iff' in doc-strings and comments.
+
 2007-09-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-default-port): Make this an integer value rather
