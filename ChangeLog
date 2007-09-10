@@ -1,3 +1,11 @@
+2007-09-10  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (elpa): Copy dir template rather than echoing a few
+	lines.  The reason for this is that the ELPA package for ERC was
+	getting a corrupt dir entry.
+
+	* dir-template: Template for the ELPA dir file.
+
 2007-09-08  Michael Olson  <mwolson@gnu.org>
 
 	* erc-log.el (erc-log-filter-function): New option that specifies

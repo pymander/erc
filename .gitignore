@@ -1,0 +1,5 @@
+*~
+*.elc
+*.info
+/++xgit-log-edit
+erc-auto.el
