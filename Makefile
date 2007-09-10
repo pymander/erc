@@ -185,8 +185,7 @@ elpa: $(MANUAL).info
 	cp -r images $(ELPA)/$(SNAPDIR)
 	cp erc-pkg.el $(ELPA)/$(SNAPDIR)
 	cp $(MANUAL).info $(ELPA)/$(SNAPDIR)
-	echo '* Menu:' > $(ELPA)/$(SNAPDIR)/dir
-	echo >> $(ELPA)/$(SNAPDIR)/dir
+	cp dir-template $(ELPADIR)/$(SNAPDIR)/dir
 	install-info --section "Emacs" "Emacs" \
 	  --info-dir=$(ELPA)/$(SNAPDIR) \
 	  $(ELPA)/$(SNAPDIR)/$(MANUAL).info
