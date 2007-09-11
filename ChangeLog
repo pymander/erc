@@ -1,3 +1,7 @@
+2007-09-11  Exal de Jesus  Garcia Carrillo  <exal@gnu.org>
+
+	* erc-sound.el: Fix typo in setting up instructions.
+
 2007-09-10  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (elpa): Copy dir template rather than echoing a few
