@@ -1,3 +1,7 @@
+2007-09-18  Exal de Jesus Garcia Carrillo  <exal@gmx.de>
+
+	* erc.texi (Special-Features): Fix small typo.
+
 2007-09-16  Michael Olson  <mwolson@gnu.org>
 
 	* erc-track.el (erc-track-switch-direction): Mention
