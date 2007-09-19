@@ -7,7 +7,7 @@
 	* erc-track.el (erc-track-switch-direction): Mention
 	erc-track-faces-priority-list.  Thanks to Leo for the suggestion.
 
-2007-09-11  Exal de Jesus  Garcia Carrillo  <exal@gnu.org>
+2007-09-11  Exal de Jesus Garcia Carrillo  <exal@gnu.org>
 
 	* erc-sound.el: Fix typo in setting up instructions.
 
