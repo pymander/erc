@@ -1,3 +1,8 @@
+2007-09-30  Aidan Kehoe  <kehoea@parhasard.net>  (tiny change)
+
+	* erc-log.el (erc-save-buffer-in-logs): Prevent spurious warnings
+	when looking at a log file and concurrently saving to it.
+
 2007-09-18  Exal de Jesus Garcia Carrillo  <exal@gmx.de>  (tiny change)
 
 	* erc.texi (Special-Features): Fix small typo.
