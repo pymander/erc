@@ -3,7 +3,7 @@
 	* erc-log.el (erc-save-buffer-in-logs): Prevent spurious warnings
 	when looking at a log file and concurrently saving to it.
 
-2007-09-18  Exal de Jesus Garcia Carrillo  <exal@gmx.de>  (tiny change)
+2007-09-18  Exal de Jesus Garcia Carrillo  <exal@gnu.org>  (tiny change)
 
 	* erc.texi (Special-Features): Fix small typo.
 
