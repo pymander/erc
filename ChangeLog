@@ -1,3 +1,11 @@
+2007-10-07  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-cmd-ME'S): New command that handles the case where
+	someone types "/me's".  It concatenates the text " 's" to the
+	beginning of the input and then sends the result like a normal
+	"/me" command.
+	(erc-command-regexp): Permit single-quote character.
+
 2007-09-30  Aidan Kehoe  <kehoea@parhasard.net>  (tiny change)
 
 	* erc-log.el (erc-save-buffer-in-logs): Prevent spurious warnings

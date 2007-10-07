@@ -3016,6 +3016,11 @@ LINE has the format \"USER ACTION\"."
    (t nil)))
 (put 'erc-cmd-ME 'do-not-parse-args t)
 
+(defun erc-cmd-ME\'S (line)
+  "Do a /ME command, but add the string \" 's\" to the beginning."
+  (erc-cmd-ME (concat " 's" line)))
+(put 'erc-cmd-ME\'S 'do-not-parse-args t)
+
 (defun erc-cmd-LASTLOG (line)
   "Show all lines in the current buffer matching the regexp LINE.
 
@@ -5035,7 +5040,7 @@ Specifically, return the position of `erc-insert-marker'."
    erc-input-marker
    (erc-end-of-input-line)))
 
-(defvar erc-command-regexp "^/\\([A-Za-z]+\\)\\(\\s-+.*\\|\\s-*\\)$"
+(defvar erc-command-regexp "^/\\([A-Za-z']+\\)\\(\\s-+.*\\|\\s-*\\)$"
   "Regular expression used for matching commands in ERC.")
 
 (defun erc-send-input (input)
