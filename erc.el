@@ -3676,7 +3676,7 @@ If `point' is at the beginning of a channel name, use that as default."
 		   (set-buffer (process-buffer erc-server-process))
 		   erc-channel-list)))
       (completing-read "Join channel: " table nil nil nil nil chnl))
-    (when erc-prompt-for-channel-key
+    (when (or current-prefix-arg erc-prompt-for-channel-key)
       (read-from-minibuffer "Channel key (RET for none): " nil))))
   (erc-cmd-JOIN channel (when (>= (length key) 1) key)))
 

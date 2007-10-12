@@ -1,3 +1,10 @@
+2007-10-12  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc.el (erc-join-channel): Prompt for channel key if C-u or
+	another prefix-arg was typed.
+
+	* NEWS: Noted this change.
+
 2007-10-07  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-cmd-ME'S): New command that handles the case where
