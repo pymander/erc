@@ -1,3 +1,13 @@
+2007-10-25  Dan Nicolaescu  <dann@ics.uci.edu>
+
+	* erc-ibuffer.el (erc-modified-channels-alist): Pacify
+	byte-compiler.
+
+2007-10-13  Glenn Morris  <rgm@gnu.org>
+
+	* erc-track.el (erc-modified-channels-update): Use mapc rather
+	than mapcar.
+
 2007-10-12  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc.el (erc-join-channel): Prompt for channel key if C-u or
