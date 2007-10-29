@@ -1,3 +1,9 @@
+2007-10-29  Michael Olson  <mwolson@gnu.org>
+
+	* erc-track.el: Make sure that the state of erc-track-minor-mode
+	is not preserved when using desktop.el.  Thanks to Levin for the
+	report.
+
 2007-10-25  Dan Nicolaescu  <dann@ics.uci.edu>
 
 	* erc-ibuffer.el (erc-modified-channels-alist): Pacify
