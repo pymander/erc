@@ -208,6 +208,19 @@ one is kept."
       ((fboundp 'replace-in-string)
        (defun erc-replace-regexp-in-string (regexp rep string &optional fixedcase literal)
          (replace-in-string string regexp rep literal))))
+
+;;; Several different Emacsen have different variables for setting
+;;; write hooks.
+(cond ((boundp 'write-file-functions)
+       (defun erc-set-write-file-functions (new-val)
+	 (set (make-local-variable 'write-file-functions) new-val)))
+      ((boundp 'local-write-file-hooks)
+       (defun erc-set-write-file-functions (new-val)
+	 (setq local-write-file-hooks new-val)))
+      (t
+       (defun erc-set-write-file-functions (new-val)
+	 (set (make-local-variable 'write-file-hooks) new-val))))
+
 ;;; Done!
 
 ;; XEmacs has a string representation of the build time.  It's
