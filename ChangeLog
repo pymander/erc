@@ -1,3 +1,8 @@
+2007-11-29  Giorgos Keramidas  <keramida@ceid.upatras.gr>
+
+	* erc-backend.el, erc.el:
+	Parse 307 (nick has identified) responses.
+
 2007-11-15  Juanma Barranquero  <lekktu@gmail.com>
 
 	* erc.el (erc-open):
