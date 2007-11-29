@@ -170,6 +170,10 @@ Exal de Jesus Garcia Carrillo  <exal AT gnu DOT org>:
 Aidan Kehoe  <kehoea AT parhasard DOT net>:
   * Fixed a bug with log buffers in XEmacs in erc-log.el (1 line changed).
 
+Giorgos Keramidas <keramida@ceid.upatras.gr>:
+  * Made a handler for 307 (nick has identified) responses
+    (6 lines changed).
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably
