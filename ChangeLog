@@ -1,3 +1,8 @@
+2007-12-01  Glenn Morris  <rgm@gnu.org>
+
+	* erc-backend.el (erc-server-send-ping): Move after definition of
+	erc-server-send.
+
 2007-11-29  Giorgos Keramidas  <keramida@ceid.upatras.gr>  (tiny change)
 
 	* erc-backend.el, erc.el:
