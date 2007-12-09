@@ -1,3 +1,7 @@
+2007-12-09  Michael Olson  <mwolson@gnu.org>
+
+	* erc-services.el (erc-nickserv-alist): Fix regexps for GRnet.
+
 2007-12-09  Giorgos Keramidas  <keramida@ceid.upatras.gr>  (tiny change)
 
 	* erc-backend.el, erc.el:

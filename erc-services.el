@@ -238,10 +238,10 @@ Example of use:
      "AUTH" t nil nil)
     (GRnet
      "NickServ!service@irc.gr"
-     "This\\snickname\\sis\\sregistered\\sand\\sprotected."
+     "This\\s-nickname\\s-is\\s-registered\\s-and\\s-protected."
      "NickServ"
      "IDENTIFY" nil nil
-     "Password\\saccepted\\s-\\syou\\sare\\snow\\srecognized.")
+     "Password\\s-accepted\\s--\\s-you\\s-are\\s-now\\s-recognized.")
     (iip
      "Trent@anon.iip"
      "type\\s-/squery\\s-Trent\\s-identify\\s-<password>"
