@@ -172,7 +172,9 @@ Aidan Kehoe  <kehoea AT parhasard DOT net>:
 
 Giorgos Keramidas <keramida@ceid.upatras.gr>:
   * Made handlers for 307 (nick has identified) and
-    275 (using ssl connection) responses (12 lines changed).
+    275 (using ssl connection) responses.
+  * Added nickserv info for GRnet.
+  * 15 lines changed total.
 
 ----
 
