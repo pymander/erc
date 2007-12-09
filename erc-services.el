@@ -29,9 +29,10 @@
 ;; are made to test if NickServ is the real NickServ for a given network or
 ;; server.
 
-;; As a default, ERC has the data for the official nickname services on the
-;; networks Austnet, BrasNET, Dalnet, freenode, GalaxyNet, and Slashnet.
-;; You can add more by using M-x customize-variable RET erc-nickserv-alist.
+;; As a default, ERC has the data for the official nickname services on
+;; the networks Austnet, BrasNET, Dalnet, freenode, GalaxyNet, GRnet,
+;; and Slashnet.  You can add more by using M-x customize-variable RET
+;; erc-nickserv-alist.
 
 ;; Usage:
 ;;
@@ -182,6 +183,7 @@ Example of use:
 			(const DALnet)
 			(const freenode)
 			(const GalaxyNet)
+			(const GRnet)
 			(const iip)
 			(const OFTC)
 			(const QuakeNet)
@@ -234,6 +236,12 @@ Example of use:
      "Please\\s-change\\s-nicks\\s-or\\s-authenticate."
      "NS@services.galaxynet.org"
      "AUTH" t nil nil)
+    (GRnet
+     "NickServ!service@irc.gr"
+     "This\\snickname\\sis\\sregistered\\sand\\sprotected."
+     "NickServ"
+     "IDENTIFY" nil nil
+     "Password\\saccepted\\s-\\syou\\sare\\snow\\srecognized.")
     (iip
      "Trent@anon.iip"
      "type\\s-/squery\\s-Trent\\s-identify\\s-<password>"

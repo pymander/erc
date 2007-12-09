@@ -3,6 +3,9 @@
 	* erc-backend.el, erc.el:
 	Parse 275 (secure connection) responses.
 
+	* erc-services.el: Add identification hooks for GRnet, the Greek
+	IRC network <http://www.irc.gr>.
+
 2007-12-08  David Kastrup  <dak@gnu.org>
 
 	* erc-stamp.el (erc-echo-timestamp):
