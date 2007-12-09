@@ -1,3 +1,8 @@
+2007-12-09  Giorgos Keramidas  <keramida@ceid.upatras.gr>  (tiny change)
+
+	* erc-backend.el, erc.el:
+	Parse 275 (secure connection) responses.
+
 2007-12-07  Edward O'Connor  <ted@oconnor.cx>
 
 	* erc-services.el: Provide a hook that runs when nickserv confirms
