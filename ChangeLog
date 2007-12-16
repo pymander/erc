@@ -1,3 +1,10 @@
+2007-12-16  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-services.el (erc-nickserv-alist): Removed autodetect regexp,
+	added identified regexp for OFTC.
+	(erc-nickserv-identification-autodetect): Make sure success-regex
+	is non-nil.
+
 2007-12-13  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-backend.el (PRIVMSG, QUIT, TOPIC, WALLOPS, 376, 004, 221)

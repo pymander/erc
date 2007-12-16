@@ -227,6 +227,8 @@ Example of use:
      "IDENTIFY" nil nil nil)
     (freenode
      "NickServ!NickServ@services."
+     ;; freenode also accepts a password at login, see the `erc'
+     ;; :password argument.
      "/msg\\s-NickServ\\s-IDENTIFY\\s-<password>"
      "NickServ"
      "IDENTIFY" nil nil
@@ -249,9 +251,11 @@ Example of use:
      "IDENTIFY" nil "SQUERY" nil)
     (OFTC
      "NickServ!services@services.oftc.net"
-     "type\\s-/msg\\s-NickServ\\s-IDENTIFY\\s-password."
+     ;; OFTC's NickServ doesn't ask you to identify anymore.
+     nil
      "NickServ"
-     "IDENTIFY" nil nil nil)
+     "IDENTIFY" nil nil
+     "You\\s-are\\s-successfully\\s-identified\\s-as\\s-")
     (QuakeNet
      nil nil
      "Q@CServe.quakenet.org"
@@ -334,6 +338,7 @@ If this is the case, run `erc-nickserv-identified-hook'."
     ;; continue only if we're sure it's the real nickserv for this network
     ;; and it's told us we've successfully identified
     (when (and sender (equal sspec sender)
+	       success-regex
 	       (string-match success-regex msg))
       (erc-log "NickServ IDENTIFY success notification detected")
       (run-hook-with-args 'erc-nickserv-identified-hook network nick)
