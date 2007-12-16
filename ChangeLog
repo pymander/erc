@@ -4,6 +4,8 @@
 	added identified regexp for OFTC.
 	(erc-nickserv-identification-autodetect): Make sure success-regex
 	is non-nil.
+	(erc-nickserv-identify-autodetect): Make sure identify-regex is
+	non-nil.  Doc fix.
 
 2007-12-13  Diane Murray  <disumu@x3y2z1.net>
 
