@@ -158,8 +158,8 @@
 		  (format "l %d" erc-channel-user-limit)
 		"")
 	      ")")
-    (if (not (eq major-mode 'erc-mode))
-	mode-name
+    (if (not (derived-mode-p 'erc-mode))
+	(format-mode-line mode-name nil nil (current-buffer))
       "")))
 
 (define-ibuffer-column erc-nick (:name "Nick")
