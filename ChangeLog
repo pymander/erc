@@ -29,6 +29,10 @@
 	(erc-notice-face): If we have less than 88 colors, make this
 	blue.  Otherwise the text will be pink in a tty, which looks
 	dreadful.  Thanks to e1f for the report.
+	(erc-remove-parsed-property): New option that determines whether
+	to remove the erc-parsed property after displaying a message.
+	This should have the effect of making ERC take up less memory.
+	(erc-display-line-1): Use it.
 
 2008-01-04  Stefan Monnier  <monnier@iro.umontreal.ca>
 

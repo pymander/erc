@@ -2321,6 +2321,15 @@ If ARG is non-nil, show the *erc-protocol* buffer."
 I.e. any char in it has the `invisible' property set."
   (text-property-any 0 (length string) 'invisible t string))
 
+(defcustom erc-remove-parsed-property t
+  "Whether to remove the erc-parsed text property after displaying a message.
+
+The default is to remove it, since it causes ERC to take up extra
+memory.  If you have code that relies on this property, then set
+this option to nil."
+  :type 'boolean
+  :group 'erc)
+
 (defun erc-display-line-1 (string buffer)
   "Display STRING in `erc-mode' BUFFER.
 Auxiliary function used in `erc-display-line'.  The line gets filtered to
@@ -2361,7 +2370,10 @@ If STRING is nil, the function does nothing."
 		(save-restriction
 		  (narrow-to-region insert-position (point))
 		  (run-hooks 'erc-insert-modify-hook)
-		  (run-hooks 'erc-insert-post-hook))))))
+		  (run-hooks 'erc-insert-post-hook)
+		  (when erc-remove-parsed-property
+		    (remove-text-properties (point-min) (point-max)
+					    '(erc-parsed nil))))))))
 	(erc-update-undo-list (- (or (marker-position erc-insert-marker)
 				     (point-max))
 				 insert-position))))))
