@@ -1649,8 +1649,13 @@ See `erc-display-server-message'." nil
 
 (define-erc-response-handler (321)
   "LIST header." nil
-  (setq erc-channel-list nil)
-  (erc-display-message parsed 'notice proc 's321))
+  (setq erc-channel-list nil))
+
+(defun erc-server-321-message (proc parsed)
+  "Display a message for the 321 event."
+  (erc-display-message parsed 'notice proc 's321)
+  nil)
+(add-hook 'erc-server-321-functions 'erc-server-321-message t)
 
 (define-erc-response-handler (322)
   "LIST notice." nil
@@ -1658,10 +1663,17 @@ See `erc-display-server-message'." nil
     (multiple-value-bind (channel num-users)
         (cdr (erc-response.command-args parsed))
       (add-to-list 'erc-channel-list (list channel))
-      (erc-update-channel-topic channel topic)
+      (erc-update-channel-topic channel topic))))
+
+(defun erc-server-322-message (proc parsed)
+  "Display a message for the 322 event."
+  (let ((topic (erc-response.contents parsed)))
+    (multiple-value-bind (channel num-users)
+        (cdr (erc-response.command-args parsed))
       (erc-display-message
        parsed 'notice proc 's322
        ?c channel ?u num-users ?t (or topic "")))))
+(add-hook 'erc-server-322-functions 'erc-server-322-message t)
 
 (define-erc-response-handler (324)
   "Channel or nick modes." nil

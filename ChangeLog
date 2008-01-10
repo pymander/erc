@@ -1,6 +1,8 @@
 2008-01-10  Michael Olson  <mwolson@gnu.org>
 
-	* erc.el (erc-modules): Add list-old.
+	* erc-backend.el (321, 322): Split message-displaying parts into
+	new functions, which are added to each response's respective
+	hook.  This makes them easier to disable.
 
 	* erc-list.el: New file from Tom Tromey.  Use erc-propertize
 	instead of propertize.  Add simple module definition.
@@ -10,6 +12,8 @@
 	it is non-nil.
 
 	* erc-list-old.el: Renamed from old erc-list.el.
+
+	* erc.el (erc-modules): Add list-old.
 
 2008-01-04  Stefan Monnier  <monnier@iro.umontreal.ca>
 
