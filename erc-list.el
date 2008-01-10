@@ -29,6 +29,8 @@
 
 ;;; Code:
 
+(require 'erc)
+
 ;; This is implicitly the width of the channel name column.  Pick
 ;; something small enough that the topic has a chance of being
 ;; readable, but long enough that most channel names won't make for
@@ -53,8 +55,13 @@
 ;;;###autoload (autoload 'erc-list-mode "erc-list")
 (define-erc-module list nil
   "List channels nicely in a separate buffer."
-  (nil)
-  (nil))
+  ((remove-hook 'erc-server-321-functions 'erc-server-321-message)
+   (remove-hook 'erc-server-322-functions 'erc-server-322-message))
+  ((erc-with-all-buffers-of-server nil
+     #'erc-open-server-buffer-p
+     (remove-hook 'erc-server-322-functions 'erc-list-handle-322 t))
+   (add-hook 'erc-server-321-functions 'erc-server-321-message t)
+   (add-hook 'erc-server-322-functions 'erc-server-322-message t)))
 
 ;; Format a record for display.
 (defun erc-list-make-string (channel users topic)
@@ -170,27 +177,27 @@
   t)
 
 ;; Helper function to install our 322 handler and make our buffer.
-(defun erc-list-install-322-handler ()
-  ;; Arrange for 322 responses to insert into our buffer.
-  (add-hook 'erc-server-322-functions 'erc-list-handle-322 t)
-  ;; Arrange for 323 (end of list) to end this.
-  (erc-once-with-server-event
-   323
-   '(progn
-      (remove-hook 'erc-server-322-functions 'erc-list-handle-322 t)))
-  ;; Find the list buffer, empty it, and display it.
-  (set (make-local-variable 'erc-list-buffer)
-       (get-buffer-create (concat "*Channels of "
-				  erc-server-announced-name
-				  "*")))
-  (let ((server-buffer (current-buffer)))
+(defun erc-list-install-322-handler (server-buffer)
+  (with-current-buffer server-buffer
+    ;; Arrange for 322 responses to insert into our buffer.
+    (add-hook 'erc-server-322-functions 'erc-list-handle-322 t t)
+    ;; Arrange for 323 (end of list) to end this.
+    (erc-once-with-server-event
+     323
+     '(progn
+	(remove-hook 'erc-server-322-functions 'erc-list-handle-322 t)))
+    ;; Find the list buffer, empty it, and display it.
+    (set (make-local-variable 'erc-list-buffer)
+	 (get-buffer-create (concat "*Channels of "
+				    erc-server-announced-name
+				    "*")))
     (with-current-buffer erc-list-buffer
       (erc-list-menu-mode)
       (setq buffer-read-only nil)
       (erase-buffer)
       (set (make-local-variable 'erc-list-server-buffer) server-buffer)
-      (setq buffer-read-only t)))
-  (pop-to-buffer erc-list-buffer)
+      (setq buffer-read-only t))
+    (pop-to-buffer erc-list-buffer))
   t)
 
 ;; The main entry point.
@@ -203,11 +210,11 @@ should usually be one or more channels, separated by commas.
 Please note that this function only works with IRC servers which conform
 to RFC and send the LIST header (#321) at start of list transmission."
   (erc-with-server-buffer
-    (set (make-variable-buffer-local 'erc-list-last-argument) line)
+    (set (make-local-variable 'erc-list-last-argument) line)
     (erc-once-with-server-event
      321
-     '(progn
-	(erc-list-install-322-handler))))
+     (list 'progn
+	   (list 'erc-list-install-322-handler (current-buffer)))))
   (erc-server-send (concat "LIST :" (or (and line (substring line 1))
 					""))))
 (put 'erc-cmd-LIST 'do-not-parse-args t)
