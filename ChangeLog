@@ -24,6 +24,8 @@
 	* erc-list-old.el: Renamed from old erc-list.el.
 
 	* erc.el (erc-modules): Add list-old.
+	(erc-set-topic): Handle case where there are no newlines in the
+	existing topic, which happens when /LIST is run.
 
 2008-01-04  Stefan Monnier  <monnier@iro.umontreal.ca>
 

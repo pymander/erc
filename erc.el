@@ -3701,8 +3701,9 @@ If `point' is at the beginning of a channel name, use that as default."
     (read-from-minibuffer
      (concat "Set topic of " (erc-default-target) ": ")
      (when erc-channel-topic
-       (cons (apply 'concat (butlast (split-string erc-channel-topic "\C-o")))
-	     0)))))
+       (let ((ss (split-string erc-channel-topic "\C-o")))
+	 (cons (apply 'concat (if (cdr ss) (butlast ss) ss))
+	       0))))))
   (let ((topic-list (split-string topic "\C-o"))) ; strip off the topic setter
     (erc-cmd-TOPIC (concat (erc-default-target) " " (car topic-list)))))
 
