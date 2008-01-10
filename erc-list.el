@@ -49,6 +49,13 @@
 ;; local in the list buffer.
 (defvar erc-list-server-buffer nil)
 
+;; Define module:
+;;;###autoload (autoload 'erc-list-mode "erc-list")
+(define-erc-module list nil
+  "List channels nicely in a separate buffer."
+  (nil)
+  (nil))
+
 ;; Format a record for display.
 (defun erc-list-make-string (channel users topic)
   (concat
@@ -156,8 +163,9 @@
 	 (channel (car args))
 	 (nusers (car (cdr args)))
 	 (topic (erc-response.contents parsed)))
-    (with-current-buffer erc-list-buffer
-      (erc-list-insert-item channel nusers topic)))
+    (when (buffer-live-p erc-list-buffer)
+      (with-current-buffer erc-list-buffer
+	(erc-list-insert-item channel nusers topic))))
   ;; Don't let another hook run.
   t)
 
@@ -187,13 +195,21 @@
 
 ;; The main entry point.
 (defun erc-cmd-LIST (&optional line)
+  "Show a listing of channels on the current server in a separate window.
+
+If LINE is specified, include it with the /LIST command.  It
+should usually be one or more channels, separated by commas.
+
+Please note that this function only works with IRC servers which conform
+to RFC and send the LIST header (#321) at start of list transmission."
   (erc-with-server-buffer
     (set (make-variable-buffer-local 'erc-list-last-argument) line)
     (erc-once-with-server-event
      321
      '(progn
 	(erc-list-install-322-handler))))
-  (erc-server-send (concat "LIST :" (or line ""))))
+  (erc-server-send (concat "LIST :" (or (and line (substring line 1))
+					""))))
 (put 'erc-cmd-LIST 'do-not-parse-args t)
 
 ;;; erc-list.el ends here

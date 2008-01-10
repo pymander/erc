@@ -1840,6 +1840,7 @@ removed from the list will be disabled."
     (const :tag "irccontrols: Highlight or remove IRC control characters"
 	   irccontrols)
     (const :tag "list: List channels in a separate buffer" list)
+    (const :tag "list-old: List channels in a separate buffer (old)" list-old)
     (const :tag "log: Save buffers in logs" log)
     (const :tag "match: Highlight pals, fools, and other keywords" match)
     (const :tag "menu: Display a menu in ERC buffers" menu)

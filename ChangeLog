@@ -1,3 +1,16 @@
+2008-01-10  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-modules): Add list-old.
+
+	* erc-list.el: New file from Tom Tromey.  Use erc-propertize
+	instead of propertize.  Add simple module definition.
+	(erc-list-handle-322): Handle the case where we run the LIST
+	command, but do not go through the normal steps.
+	(erc-cmd-LIST): Add docstring.  Strip initial space from line if
+	it is non-nil.
+
+	* erc-list-old.el: Renamed from old erc-list.el.
+
 2008-01-04  Stefan Monnier  <monnier@iro.umontreal.ca>
 
 	* erc-ibuffer.el (erc-channel-modes):
