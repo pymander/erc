@@ -46,7 +46,7 @@ Marcelo Toledo <marcelo@marcelotoledo.org>:
 
 Brian Palmer <bpalmer@gmail.com>
   * Made changes to erc.el (10 lines).
-  * Made changes to erc-list.el (>15 lines).
+  * Made changes to erc-list-old.el (>15 lines).
 
 Arne Schwabe <arne@rfc2549.org>:
   * Helped with handlers for 313 and 330 (erc.el).

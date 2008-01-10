@@ -1,4 +1,4 @@
-;;; erc-list.el --- Provide a faster channel listing mechanism
+;;; erc-list-old.el --- Provide a faster channel listing mechanism
 
 ;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007
 ;;   2008 Free Software Foundation, Inc.
@@ -43,30 +43,30 @@
 ;; User customizable variables.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgroup erc-list nil
+(defgroup erc-list-old nil
   "Display IRC channels in another window when using /LIST"
   :group 'erc)
 
 (defcustom erc-chanlist-progress-message t
   "*Show progress message while accumulating channel list."
-  :group 'erc-list
+  :group 'erc-list-old
   :type 'boolean)
 
 (defcustom erc-no-list-networks nil
   "*A list of network names on which the /LIST command refuses to work."
-  :group 'erc-list
+  :group 'erc-list-old
   :type '(repeat string))
 
 (defcustom erc-chanlist-frame-parameters nil
   "*If nil, the channel list is displayed in a new window; if non-nil,
 this variable holds the frame parameters used to make a frame to
 display the channel list."
-  :group 'erc-list
+  :group 'erc-list-old
   :type 'list)
 
 (defcustom erc-chanlist-hide-modeline nil
   "*If nil, the channel list buffer has a modeline, otherwise the modeline is hidden."
-  :group 'erc-list
+  :group 'erc-list-old
   :type 'boolean)
 
 (defface erc-chanlist-header-face '((t (:bold t)))
@@ -123,7 +123,7 @@ display the channel list."
 
 (defcustom erc-chanlist-mode-hook nil
   "Hook run by erc-chanlist-mode."
-  :group 'erc-list
+  :group 'erc-list-old
   :type 'hook)
 
 (define-derived-mode erc-chanlist-mode fundamental-mode "ERC Channel List"
@@ -142,7 +142,7 @@ display the channel list."
   (add-hook 'post-command-hook 'erc-chanlist-post-command-hook 'append 'local))
 
 ;; Define module:
-;;;###autoload (autoload 'erc-list-mode "erc-list")
+;;;###autoload (autoload 'erc-list-old-mode "erc-list-old")
 (define-erc-module list nil
   "List channels nicely in a separate buffer."
   ((defalias 'erc-cmd-LIST 'erc-list-channels))
@@ -404,9 +404,9 @@ Private channels, which are shown as asterisks (*), are ignored."
 		   (not (string= channel-name "*")))
 	  (run-at-time 0.5 nil 'erc-join-channel channel-name))))))
 
-(provide 'erc-list)
+(provide 'erc-list-old)
 
-;;; erc-list.el ends here
+;;; erc-list-old.el ends here
 ;;
 ;; Local Variables:
 ;; indent-tabs-mode: t
