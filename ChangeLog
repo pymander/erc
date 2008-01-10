@@ -26,6 +26,9 @@
 	* erc.el (erc-modules): Add list-old.
 	(erc-set-topic): Handle case where there are no newlines in the
 	existing topic, which happens when /LIST is run.
+	(erc-notice-face): If we have less than 88 colors, make this
+	blue.  Otherwise the text will be pink in a tty, which looks
+	dreadful.  Thanks to e1f for the report.
 
 2008-01-04  Stefan Monnier  <monnier@iro.umontreal.ca>
 
