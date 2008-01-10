@@ -1,7 +1,7 @@
 ;;; erc-list.el --- Provide a faster channel listing mechanism
 
-;; Copyright (C) 2002, 2003, 2004, 2005, 2006,
-;;   2007 Free Software Foundation, Inc.
+;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007
+;;   2008 Free Software Foundation, Inc.
 ;; Copyright (C) 2004 Brian Palmer
 
 ;; Author: Mario Lang <mlang@lexx.delysid.org>

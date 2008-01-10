@@ -1,6 +1,6 @@
 ;;; erc-chess.el --- CTCP chess playing support for ERC
 
-;; Copyright (C) 2002, 2004, 2007 Free Software Foundation, Inc.
+;; Copyright (C) 2002, 2004, 2007, 2008 Free Software Foundation, Inc.
 
 ;; Author: Mario Lang <mlang@delysid.org>
 ;; Keywords: games, comm

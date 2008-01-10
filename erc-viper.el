@@ -1,6 +1,6 @@
 ;;; erc-viper.el --- Viper compatibility hacks for ERC
 
-;; Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+;; Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 
 ;; Author: Edward O'Connor <ted@oconnor.cx>
 ;; Keywords: emulation
