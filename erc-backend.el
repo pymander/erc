@@ -332,11 +332,10 @@ This is either a coding system, a cons, a function, or nil.
 
 If a cons, the encoding system for outgoing text is in the car
 and the decoding system for incoming text is in the cdr. The most
-interesting use for this is to put `undecided' in the cdr. If a
-function, it is called with no arguments and should return a
-coding system or a cons as described above. Note that you can use
-the dynamically bound variable `target' to get the current
-target. See `erc-coding-system-for-target'.
+interesting use for this is to put `undecided' in the cdr.
+
+If a function, it is called with the argument `target' and should
+return a coding system or a cons as described above.
 
 If you need to send non-ASCII text to people not using a client that
 does decoding on its own, you must tell ERC what encoding to use.
@@ -686,7 +685,7 @@ This is determined via `erc-encoding-coding-alist' or
               (when (string-match (car pat) target)
                 (throw 'match (cdr pat)))))))
       (and (functionp erc-server-coding-system)
-           (funcall erc-server-coding-system))
+           (funcall erc-server-coding-system target))
       erc-server-coding-system))
 
 (defun erc-decode-string-from-target (str target)

@@ -1,3 +1,10 @@
+2008-01-15  Michael Olson  <mwolson@gnu.org>
+
+	* erc-backend.el (erc-server-coding-system): Docfix.
+	(erc-coding-system-for-target): Pass the `target' argument along
+	as the first and only argument.  It's not good to just depend on a
+	dynamic binding.
+
 2008-01-10  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (321, 322): Split message-displaying parts into
