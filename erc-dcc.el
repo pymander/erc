@@ -742,7 +742,11 @@ bytes sent."
        ((> confirmed-marker sent-marker)
         (erc-display-message
          nil 'notice parent
-         (format "DCC: Client confirmed too much!"))
+         (format "DCC: Client confirmed too much (%s vs %s)!"
+                 (marker-position confirmed-marker)
+                 (marker-position sent-marker)))
+        (set-buffer-modified-p nil)
+        (kill-buffer (current-buffer))
         (delete-process proc))))))
 
 (defun erc-dcc-display-send (proc)

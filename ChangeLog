@@ -16,6 +16,9 @@
 	(erc-dcc-display-send): New function split from erc-dcc-send-hook.
 	(erc-dcc-send-connect-hook): Use it -- we don't like lambda forms
 	in hooks.
+	(erc-dcc-send-filter): Display byte count if the client confirmed
+	too much, and kill the buffer.  Otherwise a DoS might be possible
+	by making Emacs run out of RAM.
 
 	* erc-networks.el (erc-server-alist): Add Rizon network.
 
