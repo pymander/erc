@@ -821,15 +821,26 @@ Use `erc-make-mode-line-buffer-name' to create buttons."
 (defun erc-track-find-face (faces)
   "Return the face to use in the modeline from the faces in FACES.
 If `erc-track-faces-priority-list' is set, the one from FACES who is
-first in that list will be used."
+first in that list will be used.
+
+If `erc-track-faces-priority-list' is not set, the first element
+in FACES will be used.
+
+One exception is made for the `erc-button' face.  It is only
+allowed to take priority over other faces if it is paired with
+`erc-default-face' in the cdr of FACES."
   (let ((candidates erc-track-faces-priority-list)
-	candidate face)
-    (while (and candidates (not face))
-      (setq candidate (car candidates)
-	    candidates (cdr candidates))
-      (when (memq candidate faces)
-	(setq face candidate)))
-    face))
+	candidate)
+    ;; Remove erc-button unless it is paired with erc-default-face
+    (when (and (memq 'erc-button (cdr faces))
+	       (not (memq 'erc-default-face (cdr faces))))
+      (setq faces (cons (car faces) (remq 'erc-button (cdr faces)))))
+    ;; Take the highest priority face remaining
+    (or (catch 'face
+	  (dolist (candidate erc-track-faces-priority-list)
+	    (when (memq candidate faces)
+	      (throw 'face candidate))))
+	(car faces))))
 
 (defun erc-track-modified-channels ()
   "Hook function for `erc-insert-post-hook' to check if the current
