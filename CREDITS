@@ -179,6 +179,9 @@ Giorgos Keramidas <keramida@ceid.upatras.gr>:
 Tom Tromey <tromey@redhat.com>:
   * Contributed erc-list.el.
 
+Brent Goodrick <bgoodr AT gmail.com>:
+  * Fixed a bug in erc-dcc-send-sentinel.
+
 ----
 
 P.S.: Many people contributed small bits to ERC whose names I probably

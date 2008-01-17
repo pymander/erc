@@ -10,6 +10,10 @@
 	display their test messages.
 	(erc-auto-query): Add explanatory :tag for nil choice.
 
+	* erc-dcc.el (erc-dcc-send-sentinel): Better handle case where elt
+	is nil, in order to avoid an error.  Thanks to Brent Goodrick for
+	the initial patch.
+
 	* erc-networks.el (erc-server-alist): Add Rizon network.
 
 	* erc-services.el (erc-nickserv-passwords): Add Rizon to options.

@@ -762,14 +762,14 @@ listening port."
   (erc-extract-nick (plist-get plist :nick)))
 
 (defun erc-dcc-send-sentinel (proc event)
-  (let* ((elt (erc-dcc-member :peer proc))
-         (buf (marker-buffer (plist-get elt :sent))))
+  (let* ((elt (erc-dcc-member :peer proc)))
     (cond
      ((string-match "^open from " event)
       (when elt
-        (with-current-buffer buf
-          (set-process-buffer proc buf)
-          (setq erc-dcc-entry-data elt))
+        (let ((buf (marker-buffer (plist-get elt :sent))))
+          (with-current-buffer buf
+            (set-process-buffer proc buf)
+            (setq erc-dcc-entry-data elt)))
         (run-hook-with-args 'erc-dcc-send-connect-hook proc))))))
 
 (defun erc-dcc-find-file (file)
