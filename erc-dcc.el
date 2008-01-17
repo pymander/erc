@@ -745,13 +745,14 @@ bytes sent."
          (format "DCC: Client confirmed too much!"))
         (delete-process proc))))))
 
+(defun erc-dcc-display-send (proc)
+  (erc-display-message
+   nil 'notice (erc-dcc-get-parent proc)
+   (format "DCC: SEND connect from %s"
+           (format-network-address (process-contact proc :remote)))))
+
 (defcustom erc-dcc-send-connect-hook
-  '((lambda (proc)
-      (erc-display-message
-       nil 'notice (erc-dcc-get-parent proc)
-       (format "DCC: SEND connect from %s"
-               (format-network-address (process-contact proc :remote)))))
-    erc-dcc-send-block)
+  '(erc-dcc-display-send erc-dcc-send-block)
   "*Hook run whenever the remote end of a DCC SEND offer connected to your
 listening port."
   :group 'erc-dcc

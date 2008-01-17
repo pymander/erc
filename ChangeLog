@@ -13,6 +13,9 @@
 	* erc-dcc.el (erc-dcc-send-sentinel): Better handle case where elt
 	is nil, in order to avoid an error.  Thanks to Brent Goodrick for
 	the initial patch.
+	(erc-dcc-display-send): New function split from erc-dcc-send-hook.
+	(erc-dcc-send-connect-hook): Use it -- we don't like lambda forms
+	in hooks.
 
 	* erc-networks.el (erc-server-alist): Add Rizon network.
 
