@@ -351,6 +351,7 @@
   ("Relicnet: Random server" Relicnet "irc.relic.net" 6667)
   ("Rezosup: Random server" Rezosup "irc.rezosup.org" 6667)
   ("Risanet: Random server" Risanet "irc.risanet.com" ((6667 6669)))
+  ("Rizon: Random server" Rizon "irc.rizon.net" (6633 (6660 6669) 6697 7000 8080 9999))
   ("Rubiks: Random server" Rubiks "irc.rubiks.net" 6667)
   ("Rusnet: EU, RU, Tomsk" Rusnet "irc.tsk.ru" ((6667 6669) (7770 7775) ))
   ("Rusnet: EU, RU, Vladivostok" Rusnet "irc.vladivostok.ru" ((6667 6669) (7770 7775) ))

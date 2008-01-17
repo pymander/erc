@@ -187,6 +187,7 @@ Example of use:
 			(const iip)
 			(const OFTC)
 			(const QuakeNet)
+			(const Rizon)
 			(const SlashNET)
 			(symbol :tag "Network name"))
 		(repeat :tag "Nickname and password"
@@ -256,6 +257,12 @@ Example of use:
      "NickServ"
      "IDENTIFY" nil nil
      "You\\s-are\\s-successfully\\s-identified\\s-as\\s-")
+    (Rizon
+     "NickServ!service@rizon.net"
+     "This\\s-nickname\\s-is\\s-registered\\s-and\\s-protected."
+     "NickServ"
+     "IDENTIFY" nil nil
+     "Password\\s-accepted\\s--\\s-you\\s-are\\s-now\\s-recognized.")
     (QuakeNet
      nil nil
      "Q@CServe.quakenet.org"
