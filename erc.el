@@ -1168,9 +1168,11 @@ See the variable `erc-command-indicator'."
   :group 'erc-faces)
 
 (defface erc-notice-face
-  '((((class color) (min-colors 88))
-     (:bold t :foreground "SlateBlue"))
-    (t (:bold t :foreground "blue")))
+  (if (featurep 'xemacs)
+      '((t (:bold t :foreground "blue")))
+    '((((class color) (min-colors 88))
+       (:bold t :foreground "SlateBlue"))
+      (t (:bold t :foreground "blue"))))
   "ERC face for notices."
   :group 'erc-faces)
 

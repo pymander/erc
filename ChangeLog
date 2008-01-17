@@ -9,6 +9,7 @@
 	already seen bug reports about new users thinking that ERC didn't
 	display their test messages.
 	(erc-auto-query): Add explanatory :tag for nil choice.
+	(erc-notice-face): Make this work with XEmacs.
 
 	* erc-dcc.el (erc-dcc-send-sentinel): Better handle case where elt
 	is nil, in order to avoid an error.  Thanks to Brent Goodrick for
