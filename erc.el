@@ -1478,13 +1478,15 @@ The available choices are:
   'window-noselect - in another window, but don't select that one,
   'frame           - in another frame,
   'bury            - bury it in a new buffer,
+  'buffer          - in place of the current buffer,
   any other value  - in place of the current buffer."
   :group 'erc-buffers
-  :type '(choice (const window)
-		 (const window-noselect)
-		 (const frame)
-		 (const bury)
-		 (const buffer)))
+  :type '(choice (const :tag "Split window and select" window)
+		 (const :tag "Split window, don't select" window-noselect)
+		 (const :tag "New frame" frame)
+		 (const :tag "Bury in new buffer" bury)
+		 (const :tag "Use current buffer" buffer)
+		 (const :tag "Use current buffer" t)))
 
 (defcustom erc-frame-alist nil
   "*Alist of frame parameters for creating erc frames.
@@ -3175,28 +3177,31 @@ just as you provided it.  Use this command with care!"
    (t nil)))
 (put 'erc-cmd-QUOTE 'do-not-parse-args t)
 
-(defcustom erc-query-display 'buffer
+(defcustom erc-query-display 'window
   "Indicates how to display query buffers when using the /QUERY
 command to talk to someone.
 
-The default behavior is to display the message in a new buffer
-and bring it to the front.  See the documentation for `erc-join-buffer' for
-available choices.
+The default behavior is to display the message in a new window
+and bring it to the front.  See the documentation for
+`erc-join-buffer' for a description of the available choices.
 
 See also `erc-auto-query' to decide how private messages from
 other people should be displayed."
   :group 'erc-query
-  :type '(choice (const buffer)
-		 (const window)
-		 (const window-noselect)
-		 (const bury)
-		 (const frame)))
+  :type '(choice (const :tag "Split window and select" window)
+		 (const :tag "Split window, don't select" window-noselect)
+		 (const :tag "New frame" frame)
+		 (const :tag "Bury in new buffer" bury)
+		 (const :tag "Use current buffer" buffer)
+		 (const :tag "Use current buffer" t)))
 
 (defun erc-cmd-QUERY (&optional user)
   "Open a query with USER.
 The type of query window/frame/etc will depend on the value of
-`erc-join-buffer'.  If USER is omitted, close the current query buffer if one
-exists - except this is broken now ;-)"
+`erc-query-display'.
+
+If USER is omitted, close the current query buffer if one exists
+- except this is broken now ;-)"
   (interactive
    (list (read-from-minibuffer "Start a query with: " nil)))
   (let ((session-buffer (erc-server-buffer))
@@ -3874,20 +3879,22 @@ To change how this query window is displayed, use `let' to bind
     (erc-update-mode-line)
     buf))
 
-(defcustom erc-auto-query 'buffer
+(defcustom erc-auto-query 'window-noselect
   "If non-nil, create a query buffer each time you receive a private message.
+If the buffer doesn't already exist, it is created.
 
-If the buffer doesn't already exist it is created.  This can be
-set to a symbol, to control how the new query window should
-appear.  See the documentation for `erc-join-buffer' for
-available choices."
+This can be set to a symbol, to control how the new query window
+should appear.  The default behavior is to display the buffer in
+a new window, but not to select it.  See the documentation for
+`erc-join-buffer' for a description of the available choices."
   :group 'erc-query
   :type '(choice (const :tag "Don't create query window" nil)
-		 (const buffer)
-		 (const window)
-		 (const window-noselect)
-		 (const bury)
-		 (const frame)))
+		 (const :tag "Split window and select" window)
+		 (const :tag "Split window, don't select" window-noselect)
+		 (const :tag "New frame" frame)
+		 (const :tag "Bury in new buffer" bury)
+		 (const :tag "Use current buffer" buffer)
+		 (const :tag "Use current buffer" t)))
 
 (defcustom erc-query-on-unjoined-chan-privmsg t
   "If non-nil create query buffer on receiving any PRIVMSG at all.
