@@ -5,6 +5,8 @@
 
 	* erc-networks.el (erc-server-alist): Add Rizon network.
 
+	* erc-xdcc.el: Add local variables for proper indentation setup.
+
 2008-01-15  Michael Olson  <mwolson@gnu.org>
 
 	* erc-backend.el (erc-server-coding-system): Docfix.

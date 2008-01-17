@@ -126,5 +126,11 @@ being evaluated and should return stings."
 
 (provide 'erc-xdcc)
 
-;; arch-tag: a13b62fe-2399-4562-af4e-f18a8dd4b9c8
 ;;; erc-xdcc.el ends here
+;;
+;; Local Variables:
+;; indent-tabs-mode: t
+;; tab-width: 8
+;; End:
+
+;; arch-tag: a13b62fe-2399-4562-af4e-f18a8dd4b9c8
