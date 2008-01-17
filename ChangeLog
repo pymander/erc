@@ -20,6 +20,10 @@
 	too much, and kill the buffer.  Otherwise a DoS might be possible
 	by making Emacs run out of RAM.
 
+	* erc-backend.el (erc-server-connect): Detect early on whether the
+	connection attempt has failed in order to avoid confusing error
+	messages.
+
 	* erc-networks.el (erc-server-alist): Add Rizon network.
 
 	* erc-services.el (erc-nickserv-passwords): Add Rizon to options.

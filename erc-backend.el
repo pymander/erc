@@ -490,6 +490,8 @@ We will store server variables in the buffer given by BUFFER."
     (let ((process (funcall erc-server-connect-function
                             (format "erc-%s-%s" server port)
                             nil server port)))
+      (unless (processp process)
+        (error "Connection attempt failed"))
       (message "%s...done" msg)
       ;; Misc server variables
       (with-current-buffer buffer
