@@ -1,5 +1,15 @@
 2008-01-17  Michael Olson  <mwolson@gnu.org>
 
+	* erc.el (erc-join-buffer): Improve documentation.
+	(erc-query-display): New option indicating how to display a query
+	buffer that is made by using the /QUERY command.  The default is
+	to make a new buffer and bring it to the front.
+	(erc-cmd-QUERY): Use it.
+	(erc-auto-query): Default this to 'buffer instead, because I've
+	already seen bug reports about new users thinking that ERC didn't
+	display their test messages.
+	(erc-auto-query): Add explanatory :tag for nil choice.
+
 	* erc-networks.el (erc-server-alist): Add Rizon network.
 
 	* erc-services.el (erc-nickserv-passwords): Add Rizon to options.

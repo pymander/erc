@@ -1468,12 +1468,15 @@ Turning on `erc-mode' runs the hook `erc-mode-hook'."
   "IRC port to use if it cannot be detected otherwise.")
 
 (defcustom erc-join-buffer 'buffer
-  "Determines how to display the newly created IRC buffer.
-'window - in another window,
-'window-noselect - in another window, but don't select that one,
-'frame - in another frame,
-'bury - bury it in a new buffer,
-any other value - in place of the current buffer."
+  "Determines how to display a newly created IRC buffer.
+
+The available choices are:
+
+  'window          - in another window,
+  'window-noselect - in another window, but don't select that one,
+  'frame           - in another frame,
+  'bury            - bury it in a new buffer,
+  any other value  - in place of the current buffer."
   :group 'erc-buffers
   :type '(choice (const window)
 		 (const window-noselect)
@@ -3170,6 +3173,23 @@ just as you provided it.  Use this command with care!"
    (t nil)))
 (put 'erc-cmd-QUOTE 'do-not-parse-args t)
 
+(defcustom erc-query-display 'buffer
+  "Indicates how to display query buffers when using the /QUERY
+command to talk to someone.
+
+The default behavior is to display the message in a new buffer
+and bring it to the front.  See the documentation for `erc-join-buffer' for
+available choices.
+
+See also `erc-auto-query' to decide how private messages from
+other people should be displayed."
+  :group 'erc-query
+  :type '(choice (const buffer)
+		 (const window)
+		 (const window-noselect)
+		 (const bury)
+		 (const frame)))
+
 (defun erc-cmd-QUERY (&optional user)
   "Open a query with USER.
 The type of query window/frame/etc will depend on the value of
@@ -3177,7 +3197,8 @@ The type of query window/frame/etc will depend on the value of
 exists - except this is broken now ;-)"
   (interactive
    (list (read-from-minibuffer "Start a query with: " nil)))
-  (let ((session-buffer (erc-server-buffer)))
+  (let ((session-buffer (erc-server-buffer))
+	(erc-join-buffer erc-query-display))
     (if user
 	(erc-query user session-buffer)
       ;; currently broken, evil hack to display help anyway
@@ -3851,7 +3872,7 @@ To change how this query window is displayed, use `let' to bind
     (erc-update-mode-line)
     buf))
 
-(defcustom erc-auto-query 'bury
+(defcustom erc-auto-query 'buffer
   "If non-nil, create a query buffer each time you receive a private message.
 
 If the buffer doesn't already exist it is created.  This can be
@@ -3859,7 +3880,7 @@ set to a symbol, to control how the new query window should
 appear.  See the documentation for `erc-join-buffer' for
 available choices."
   :group 'erc-query
-  :type '(choice (const nil)
+  :type '(choice (const :tag "Don't create query window" nil)
 		 (const buffer)
 		 (const window)
 		 (const window-noselect)
