@@ -70,7 +70,7 @@ Using DCC get and send, you can transfer files directly from and to other
 IRC users."
   :group 'erc)
 
-(defcustom erc-verbose-dcc t
+(defcustom erc-dcc-verbose nil
   "*If non-nil, be verbose about DCC activity reporting."
   :group 'erc-dcc
   :type 'boolean)
@@ -195,20 +195,22 @@ compared with `erc-nick-equal-p' which is IRC case-insensitive."
           (setq list (cdr list)))))
     result))
 
-;; msa wrote this nifty little frob to convert an n-byte integer to a packed
-;; string.
-(defun erc-pack-int (value count)
-  (if (> count 0)
-      (concat (erc-pack-int (/ value 256) (1- count))
-              (char-to-string (% value 256)))
-    ""))
+(defun erc-pack-int (value)
+  "Convert an integer into a packed string."
+  (let* ((len (ceiling (/ value 256.0)))
+         (str (make-string len ?a))
+         (i (1- len)))
+    (while (>= i 0)
+      (aset str i (% value 256))
+      (setq value (/ value 256))
+      (setq i (1- i)))
+    str))
 
 (defun erc-unpack-int (str)
-  "Unpack a 1-4 character packed string into an integer."
+  "Unpack a packed string into an integer."
   (let ((len (length str))
         (num 0)
         (count 0))
-    (erc-assert (<= len 4)) ;; this isn't going to fit in elisp bounds
     (while (< count len)
       (setq num (+ num (lsh (aref str (- len count 1)) (* 8 count))))
       (setq count (1+ count)))
@@ -311,6 +313,7 @@ created subprocess, or nil."
         process)
     (while (not process)
       (condition-case err
+          (progn
             (setq process
                   (make-network-process :name name
                                         :buffer nil
@@ -322,6 +325,11 @@ created subprocess, or nil."
                                         :sentinel sentinel
                                         :log #'erc-dcc-server-accept
                                         :server t))
+            (when (processp process)
+              (when (fboundp 'set-process-coding-system)
+                (set-process-coding-system process 'binary 'binary))
+              (when (fboundp 'set-process-filter-multibyte)
+                (set-process-filter-multibyte process nil))))
         (file-error
          (unless (and (string= "Cannot bind server socket" (cadr err))
                       (string= "address already in use" (caddr err)))
@@ -698,7 +706,7 @@ bytes sent."
          (confirmed-marker (plist-get elt :sent))
          (sent-marker (plist-get elt :sent)))
     (with-current-buffer (process-buffer proc)
-      (when erc-verbose-dcc
+      (when erc-dcc-verbose
         (erc-display-message
          nil 'notice (erc-dcc-get-parent proc)
          (format "DCC: Confirmed %d, sent %d, sending block now"
@@ -713,8 +721,7 @@ bytes sent."
         (length string)))))
 
 (defun erc-dcc-send-filter (proc string)
-  (erc-assert (= (% (length string) 4) 0))
-  (let* ((size (erc-unpack-int (substring string (- (length string) 4))))
+  (let* ((size (erc-unpack-int string))
          (elt (erc-dcc-member :peer proc))
          (parent (plist-get elt :parent))
          (sent-marker (plist-get elt :sent))
@@ -819,8 +826,15 @@ other client."
 
 ;;; GET handling
 
+(defcustom erc-dcc-receive-cache (* 1024 512)
+  "Number of bytes to let the receive buffer grow before flushing it."
+  :group 'erc-dcc
+  :type 'integer)
+
 (defvar erc-dcc-byte-count nil)
 (make-variable-buffer-local 'erc-dcc-byte-count)
+(defvar erc-dcc-file-name nil)
+(make-variable-buffer-local 'erc-dcc-file-name)
 
 (defun erc-dcc-get-file (entry file parent-proc)
   "This function does the work of setting up a transfer from the remote client
@@ -830,6 +844,7 @@ filter and a process sentinel, and making the connection."
          proc)
     (with-current-buffer buffer
       (fundamental-mode)
+      (buffer-disable-undo (current-buffer))
       ;; This is necessary to have the buffer saved as-is in GNU
       ;; Emacs.
       ;; XEmacs change: We don't have `set-buffer-multibyte', setting
@@ -840,7 +855,10 @@ filter and a process sentinel, and making the connection."
       (setq mode-line-process '(":%s")
             buffer-file-type t
             buffer-read-only t)
-      (set-visited-file-name file)
+      (setq erc-dcc-file-name file)
+
+      ;; Truncate the given file to size 0 before appending to it.
+      (write-region (point) (point) erc-dcc-file-name nil 'nomessage)
 
       (setq erc-server-process parent-proc
             erc-dcc-entry-data entry)
@@ -852,7 +870,6 @@ filter and a process sentinel, and making the connection."
                      (string-to-number (plist-get entry :port))
                      entry))
       (set-process-buffer proc buffer)
-      ;; The following two lines make saving as-is work under Windows
       (set-process-coding-system proc 'binary 'binary)
       (set-buffer-file-coding-system 'binary t)
 
@@ -860,6 +877,14 @@ filter and a process sentinel, and making the connection."
       (set-process-sentinel proc 'erc-dcc-get-sentinel)
       (setq entry (plist-put entry :start-time (erc-current-time)))
       (setq entry (plist-put entry :peer proc)))))
+
+(defun erc-dcc-append-contents (buffer file)
+  "Append the contents of BUFFER to FILE.
+The contents of the BUFFER will then be erased."
+  (with-current-buffer buffer
+    (let ((coding-system-for-write 'binary))
+      (write-region (point-min) (point-max) erc-dcc-file-name t 'nomessage)
+      (erase-buffer))))
 
 (defun erc-dcc-get-filter (proc str)
   "This is the process filter for transfers from other clients to this one.
@@ -873,8 +898,10 @@ rather than every 1024 byte block, but nobody seems to care."
       (insert (string-make-unibyte str))
 
       (setq erc-dcc-byte-count (+ (length str) erc-dcc-byte-count))
-      (erc-assert (= erc-dcc-byte-count (1- (point-max))))
-      (and erc-verbose-dcc
+      (when (> (point-max) erc-dcc-receive-cache)
+        (erc-dcc-append-contents (current-buffer) erc-dcc-file-name))
+
+      (and erc-dcc-verbose
            (erc-display-message
             nil 'notice erc-server-process
             'dcc-get-bytes-received
@@ -890,7 +917,7 @@ rather than every 1024 byte block, but nobody seems to care."
         (delete-process proc))
        (t
         (process-send-string
-         proc (erc-pack-int erc-dcc-byte-count 4)))))))
+         proc (erc-pack-int erc-dcc-byte-count)))))))
 
 
 (defun erc-dcc-get-sentinel (proc event)
@@ -902,15 +929,16 @@ transfer is complete."
     (delete-process proc)
     (setq buffer-read-only nil)
     (setq erc-dcc-list (delete erc-dcc-entry-data erc-dcc-list))
+    (unless (= (point-min) (point-max))
+      (erc-dcc-append-contents (current-buffer) erc-dcc-file-name))
     (erc-display-message
      nil 'notice erc-server-process
      'dcc-get-complete
-     ?f (file-name-nondirectory buffer-file-name)
+     ?f erc-dcc-file-name
      ?s (number-to-string (buffer-size))
      ?t (format "%.0f"
                 (erc-time-diff (plist-get erc-dcc-entry-data :start-time)
-                               (erc-current-time))))
-    (save-buffer))
+                               (erc-current-time)))))
   (kill-buffer (process-buffer proc))
   (delete-process proc))
 

@@ -1,5 +1,27 @@
 2008-01-18  Michael Olson  <mwolson@gnu.org>
 
+	* erc-dcc.el (erc-dcc-verbose): Rename from erc-verbose-dcc.
+	(erc-pack-int): Rewrite to not depend on a count argument.
+	(erc-unpack-int): Rewrite to remove 4-character limitation.
+	(erc-dcc-server): Call set-process-coding-system and
+	set-process-filter-multibyte so that the contents get sent out
+	without modification.
+	(erc-dcc-send-filter): Don't take a substring -- just pass the
+	whole string to erc-unpack-int.
+	(erc-dcc-receive-cache): New option that indicates the number of
+	bytes to let the receive buffer grow before flushing it.
+	(erc-dcc-file-name): New buffer-local variable to keep track of
+	the filename of the currently-received file.
+	(erc-dcc-get-file): Disable undo for a speed increase.  Set
+	erc-dcc-file-name.  Truncate the file before writing to it.
+	(erc-dcc-append-contents): New function to append the contents of
+	a buffer to a file and then erase the contents of the buffer.
+	(erc-dcc-get-filter): Flush buffer contents after exceeding
+	erc-dcc-receive-cache.  This allows large files to be downloaded
+	without storing the whole thing in memory.
+	(erc-dcc-get-sentinel): Flush any remaining contents before
+	closing.  No need to save buffer.
+
 	* erc.el (erc-mode-line-format): Add %N and %S.  %N is the name of
 	the network, and %S is much like %s but with the network name
 	trumping the server name.  Default to "%S %a".  Thanks to e1f for
