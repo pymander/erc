@@ -8,8 +8,8 @@ UNCOMPILED = erc-bbdb.el erc-chess.el erc-ibuffer.el erc-speak.el \
 		erc-speedbar.el erc-compat.el
 
 # Files to include in the extras pack for Emacs 22
-EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-nicklist.el \
-		erc-speak.el README.extras COPYING
+EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-list-old.el \
+		erc-nicklist.el erc-speak.el README.extras COPYING
 
 ALLSOURCE = $(wildcard *.el)
 SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) erc-pkg.el, $(ALLSOURCE))

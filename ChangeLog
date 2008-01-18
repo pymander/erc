@@ -1,5 +1,7 @@
 2008-01-18  Michael Olson  <mwolson@gnu.org>
 
+	* Makefile (EXTRAS): Include erc-list-old.el.
+
 	* erc-dcc.el (erc-dcc-verbose): Rename from erc-verbose-dcc.
 	(erc-pack-int): Rewrite to not depend on a count argument.
 	(erc-unpack-int): Rewrite to remove 4-character limitation.
