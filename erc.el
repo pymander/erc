@@ -5862,7 +5862,7 @@ See `current-time' for details on the time format."
 
 ;; Mode line handling
 
-(defcustom erc-mode-line-format "%s %a"
+(defcustom erc-mode-line-format "%S %a"
   "A string to be formatted and shown in the mode-line in `erc-mode'.
 
 The string is formatted using `format-spec' and the result is set as the value
@@ -5873,12 +5873,16 @@ The following characters are replaced:
 %l: The estimated lag time to the server
 %m: The modes of the channel
 %n: The current nick name
+%N: The name of the network
 %o: The topic of the channel
 %p: The session port
 %t: The name of the target (channel, nickname, or servername:port)
 %s: In the server-buffer, this gets filled with the value of
     `erc-server-announced-name', in a channel, the value of
-    (erc-default-target) also get concatenated."
+    (erc-default-target) also get concatenated.
+%S: In the server-buffer, this gets filled with the value of
+    `erc-network', in a channel, the value of (erc-default-target)
+    also get concatenated."
   :group 'erc-mode-line-and-header
   :type 'string)
 
@@ -5972,6 +5976,29 @@ This should be a string with substitution variables recognized by
 	  (server-name server-name)
 	  (t (buffer-name (current-buffer))))))
 
+(defun erc-format-network ()
+  "Return the name of the network we are currently on."
+  (let ((network (erc-with-server-buffer erc-network)))
+    (if (and network (symbolp network))
+	(symbol-name network)
+      "")))
+
+(defun erc-format-target-and/or-network ()
+  "Return the network or the current target and network combined.
+If the name of the network is not available, then use the
+shortened server name instead."
+  (let ((network-name (or (erc-with-server-buffer erc-network)
+			  (erc-shorten-server-name
+			   (or erc-server-announced-name
+			       erc-session-server)))))
+    (when (and network-name (symbolp network-name))
+      (setq network-name (symbol-name network-name)))
+    (cond ((erc-default-target)
+	   (concat (erc-string-no-properties (erc-default-target))
+		   "@" network-name))
+	  (network-name network-name)
+	  (t (buffer-name (current-buffer))))))
+
 (defun erc-format-away-status ()
   "Return a formatted `erc-mode-line-away-status-format'
 if `erc-away' is non-nil."
@@ -6012,9 +6039,11 @@ if `erc-away' is non-nil."
 		 ?l (erc-format-lag-time)
 		 ?m (erc-format-channel-modes)
 		 ?n (or (erc-current-nick) "")
+		 ?N (erc-format-network)
 		 ?o (erc-controls-strip erc-channel-topic)
 		 ?p (erc-port-to-string erc-session-port)
 		 ?s (erc-format-target-and/or-server)
+		 ?S (erc-format-target-and/or-network)
 		 ?t (erc-format-target)))
 	  (process-status (cond ((and (erc-server-process-alive)
 				      (not erc-server-connected))
