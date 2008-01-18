@@ -258,12 +258,21 @@ The result is also a string."
 
 ;;; Server code
 
-(defcustom erc-dcc-host nil
-  "*IP address to use for outgoing DCC offers.
-Should be set to a string or nil, if nil, automatic detection of the
-host interface to use will be attempted."
+(defcustom erc-dcc-listen-host nil
+  "IP address to listen on when offering files.
+Should be set to a string or nil.  If nil, automatic detection of
+the host interface to use will be attempted."
   :group 'erc-dcc
   :type (list 'choice (list 'const :tag "Auto-detect" nil)
+              (list 'string :tag "IP-address"
+                    :valid-regexp erc-dcc-ipv4-regexp)))
+
+(defcustom erc-dcc-public-host nil
+  "IP address to use for outgoing DCC offers.
+Should be set to a string or nil.  If nil, use the value of
+`erc-dcc-listen-host'."
+  :group 'erc-dcc
+  :type (list 'choice (list 'const :tag "Same as erc-dcc-listen-host" nil)
               (list 'string :tag "IP-address"
                     :valid-regexp erc-dcc-ipv4-regexp)))
 
@@ -284,7 +293,7 @@ host interface to use will be attempted."
   "Determine the IP address we are using.
 If variable `erc-dcc-host' is non-nil, use it.  Otherwise call
 `erc-dcc-get-host' on the erc-server-process."
-  (or erc-dcc-host (erc-dcc-get-host erc-server-process)
+  (or erc-dcc-listen-host (erc-dcc-get-host erc-server-process)
       (error "Unable to determine local address")))
 
 (defcustom erc-dcc-port-range nil
@@ -819,7 +828,8 @@ other client."
         (process-send-string
          pproc (format "PRIVMSG %s :\C-aDCC SEND %s %s %d %d\C-a\n"
                        nick (erc-dcc-file-to-name file)
-                       (erc-ip-to-decimal (nth 0 contact))
+                       (erc-ip-to-decimal (or erc-dcc-public-host
+                                              (nth 0 contact)))
                        (nth 1 contact)
                        size)))
     (error "`make-network-process' not supported by your Emacs")))
@@ -927,15 +937,15 @@ transfer is complete."
   ;; FIXME, we should look at EVENT, and also check size.
   (with-current-buffer (process-buffer proc)
     (delete-process proc)
-    (setq buffer-read-only nil)
     (setq erc-dcc-list (delete erc-dcc-entry-data erc-dcc-list))
     (unless (= (point-min) (point-max))
+      (setq erc-dcc-byte-count (+ (buffer-size) erc-dcc-byte-count))
       (erc-dcc-append-contents (current-buffer) erc-dcc-file-name))
     (erc-display-message
      nil 'notice erc-server-process
      'dcc-get-complete
      ?f erc-dcc-file-name
-     ?s (number-to-string (buffer-size))
+     ?s (number-to-string erc-dcc-byte-count)
      ?t (format "%.0f"
                 (erc-time-diff (plist-get erc-dcc-entry-data :start-time)
                                (erc-current-time)))))

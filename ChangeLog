@@ -21,6 +21,12 @@
 	without storing the whole thing in memory.
 	(erc-dcc-get-sentinel): Flush any remaining contents before
 	closing.  No need to save buffer.
+	(erc-dcc-listen-host): New option that determines which IP address
+	to listen on.
+	(erc-dcc-public-host): New option that determines which IP address
+	to advertise when sending a file.  This is useful for people who
+	are on a local subnet.  Together, these two options replace
+	erc-dcc-host.
 
 	* erc.el (erc-mode-line-format): Add %N and %S.  %N is the name of
 	the network, and %S is much like %s but with the network name
