@@ -8,6 +8,10 @@
 	* erc-goodies.el (erc-unmorse): Improve regexp for detecting
 	morse.  Deal with the morse style that has "/ " at the end of
 	every letter.
+	(erc-imenu-setup): New function that sets up Imenu support.  Add
+	it instead of a lambda form to erc-mode-hook.
+	(scrolltobottom): Remove erc-scroll-to-bottom from all ERC buffers
+	when module is removed.
 
 	* erc-page.el, erc-replace.el: Fix header and footer.
 

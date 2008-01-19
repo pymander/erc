@@ -33,10 +33,14 @@
 
 (require 'erc)
 
-;; Imenu Autoload
-(add-hook 'erc-mode-hook
-          (lambda ()
-            (setq imenu-create-index-function 'erc-create-imenu-index)))
+;;; Imenu support
+
+(defun erc-imenu-setup ()
+  "Setup Imenu support in an ERC buffer."
+  (set (make-local-variable 'imenu-create-index-function)
+       'erc-create-imenu-index))
+
+(add-hook 'erc-mode-hook 'erc-imenu-setup)
 (autoload 'erc-create-imenu-index "erc-imenu" "Imenu index creation function")
 
 ;;; Automatically scroll to bottom
@@ -55,7 +59,10 @@ argument to `recenter'."
 You have to activate or deactivate it in already created windows
 separately."
   ((add-hook 'erc-mode-hook 'erc-add-scroll-to-bottom))
-  ((remove-hook 'erc-mode-hook 'erc-add-scroll-to-bottom)))
+  ((remove-hook 'erc-mode-hook 'erc-add-scroll-to-bottom)
+   (dolist (buffer (erc-buffer-list))
+     (with-current-buffer buffer
+       (remove-hook 'window-scroll-functions 'erc-scroll-to-bottom t)))))
 
 (defun erc-add-scroll-to-bottom ()
   "A hook function for `erc-mode-hook' to recenter output at bottom of window.
