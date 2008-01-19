@@ -64,7 +64,8 @@
    (remove-hook 'erc-mode-hook 'erc-button-setup)
    (when (featurep 'xemacs)
      (dolist (buffer (erc-buffer-list))
-       (kill-local-variable 'widget-button-face)))))
+       (with-current-buffer buffer
+         (kill-local-variable 'widget-button-face))))))
 
 ;;; Variables
 
