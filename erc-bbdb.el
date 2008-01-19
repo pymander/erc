@@ -169,7 +169,7 @@ their \"displayed name\"."
 (defun erc-bbdb-insinuate-and-show-entry (create-p proc nick name finger-host silent &optional chan new-nick)
   ;; run this outside of the IRC filter process, to avoid an annoying
   ;; error when the user hits C-g
-  (run-at-time nil nil
+  (run-at-time 0.1 nil
 	       #'erc-bbdb-insinuate-and-show-entry-1
 	       create-p proc nick name finger-host silent chan new-nick))
 

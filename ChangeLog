@@ -1,5 +1,9 @@
 2008-01-19  Michael Olson  <mwolson@gnu.org>
 
+	* erc-bbdb.el (erc-bbdb-insinuate-and-show-entry): Work around bug
+	in XEmacs 21.4 that throws an error when the first argument to
+	run-at-time is nil.
+
 	* erc-button.el (button): Undo XEmacs-specific change to all ERC
 	buffers when module is removed.
 	(erc-button-setup): Rename from erc-button-add-keys, and move
