@@ -55,10 +55,11 @@ argument to `recenter'."
   :type '(choice integer (const nil)))
 
 (define-erc-module scrolltobottom nil
-  "This mode causes the prompt to stay at the end of the window.
-You have to activate or deactivate it in already created windows
-separately."
-  ((add-hook 'erc-mode-hook 'erc-add-scroll-to-bottom))
+  "This mode causes the prompt to stay at the end of the window."
+  ((add-hook 'erc-mode-hook 'erc-add-scroll-to-bottom)
+   (dolist (buffer (erc-buffer-list))
+     (with-current-buffer buffer
+       (erc-add-scroll-to-bottom))))
   ((remove-hook 'erc-mode-hook 'erc-add-scroll-to-bottom)
    (dolist (buffer (erc-buffer-list))
      (with-current-buffer buffer

@@ -15,7 +15,9 @@
 	(erc-imenu-setup): New function that sets up Imenu support.  Add
 	it instead of a lambda form to erc-mode-hook.
 	(scrolltobottom): Remove erc-scroll-to-bottom from all ERC buffers
-	when module is removed.
+	when module is removed.  Activate the functionality in all ERC
+	buffers when the module is activated, rather than leaving it up to
+	the user.
 
 	* erc-page.el, erc-replace.el: Fix header and footer.
 
