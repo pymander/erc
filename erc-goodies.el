@@ -496,8 +496,19 @@ channel that has weird people talking in morse to each other.
 
 See also `unmorse-region'."
   (goto-char (point-min))
-  (when (re-search-forward "[.-]+\\([.-]+[/ ]\\)+[.-]+" nil t)
-    (unmorse-region (match-beginning 0) (match-end 0))))
+  (when (re-search-forward "[.-]+\\([.-]*/? *\\)+[.-]+/?" nil t)
+    (save-restriction
+      (narrow-to-region (match-beginning 0) (match-end 0))
+      ;; Turn " / " into "  "
+      (goto-char (point-min))
+      (while (re-search-forward " / " nil t)
+        (replace-match "  "))
+      ;; Turn "/ " into "/"
+      (goto-char (point-min))
+      (while (re-search-forward "/ " nil t)
+        (replace-match "/"))
+      ;; Unmorse region
+      (unmorse-region (point-min) (point-max)))))
 
 ;;; erc-occur
 (defun erc-occur (string &optional proc)

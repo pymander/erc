@@ -1,5 +1,9 @@
 2008-01-19  Michael Olson  <mwolson@gnu.org>
 
+	* erc-goodies.el (erc-unmorse): Improve regexp for detecting
+	morse.  Deal with the morse style that has "/ " at the end of
+	every letter.
+
 	* erc.el (erc-format-network, erc-format-target-and/or-network):
 	Use erc-network-name function instead, and check to see whether
 	that function is bound.  This fixes an error in process filter for
