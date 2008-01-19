@@ -1,5 +1,10 @@
 2008-01-19  Michael Olson  <mwolson@gnu.org>
 
+	* erc-button.el (button): Undo XEmacs-specific change to all ERC
+	buffers when module is removed.
+	(erc-button-setup): Rename from erc-button-add-keys, and move
+	XEmacs-specific stuff here.
+
 	* erc-goodies.el (erc-unmorse): Improve regexp for detecting
 	morse.  Deal with the morse style that has "/ " at the end of
 	every letter.
