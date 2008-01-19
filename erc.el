@@ -5978,7 +5978,7 @@ This should be a string with substitution variables recognized by
 
 (defun erc-format-network ()
   "Return the name of the network we are currently on."
-  (let ((network (erc-with-server-buffer erc-network)))
+  (let ((network (and (fboundp 'erc-network-name) (erc-network-name))))
     (if (and network (symbolp network))
 	(symbol-name network)
       "")))
@@ -5987,7 +5987,7 @@ This should be a string with substitution variables recognized by
   "Return the network or the current target and network combined.
 If the name of the network is not available, then use the
 shortened server name instead."
-  (let ((network-name (or (erc-with-server-buffer erc-network)
+  (let ((network-name (or (and (fboundp 'erc-network-name) (erc-network-name))
 			  (erc-shorten-server-name
 			   (or erc-server-announced-name
 			       erc-session-server)))))

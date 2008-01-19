@@ -1,3 +1,10 @@
+2008-01-19  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-format-network, erc-format-target-and/or-network):
+	Use erc-network-name function instead, and check to see whether
+	that function is bound.  This fixes an error in process filter for
+	people who did not have erc-services or erc-networks loaded.
+
 2008-01-18  Michael Olson  <mwolson@gnu.org>
 
 	* Makefile (EXTRAS): Include erc-list-old.el.
