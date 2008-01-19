@@ -560,13 +560,15 @@ module, otherwise the keybindings will not do anything useful."
   :global t
   :group 'erc-track)
 
-(defun erc-track-minor-mode-maybe ()
+(defun erc-track-minor-mode-maybe (&optional buffer)
   "Enable `erc-track-minor-mode', depending on `erc-track-enable-keybindings'."
-  (unless (or erc-track-minor-mode
-	      ;; don't start the minor mode until we have an ERC
-	      ;; process running, because we don't want to prompt the
-	      ;; user while starting Emacs
-	      (null (erc-buffer-list)))
+  (when (and (not erc-track-minor-mode)
+	     ;; don't start the minor mode until we have an ERC
+	     ;; process running, because we don't want to prompt the
+	     ;; user while starting Emacs
+	     (or (and (buffer-live-p buffer)
+		      (with-current-buffer buffer (eq major-mode 'erc-mode)))
+		 (erc-buffer-list)))
     (cond ((eq erc-track-enable-keybindings 'ask)
 	   (let ((key (or (and (key-binding (kbd "C-c C-SPC")) "C-SPC")
 			  (and (key-binding (kbd "C-c C-@")) "C-@"))))
@@ -616,6 +618,7 @@ module, otherwise the keybindings will not do anything useful."
        (add-hook 'erc-insert-post-hook 'erc-track-modified-channels)
        (add-hook 'erc-disconnected-hook 'erc-modified-channels-update))
      ;; enable the tracking keybindings
+     (add-hook 'erc-connect-pre-hook 'erc-track-minor-mode-maybe)
      (erc-track-minor-mode-maybe)))
   ;; Disable:
   ((when (boundp 'erc-track-when-inactive)
@@ -637,6 +640,7 @@ module, otherwise the keybindings will not do anything useful."
        (remove-hook 'erc-disconnected-hook 'erc-modified-channels-update)
        (remove-hook 'erc-insert-post-hook 'erc-track-modified-channels))
      ;; disable the tracking keybindings
+     (remove-hook 'erc-connect-pre-hook 'erc-track-minor-mode-maybe)
      (when erc-track-minor-mode
        (erc-track-minor-mode -1)))))
 

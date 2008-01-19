@@ -19,6 +19,13 @@
 
 	* erc-page.el, erc-replace.el: Fix header and footer.
 
+	* erc-track.el (erc-track-minor-mode-maybe): Take an optional
+	buffer arg so that we can put this in erc-connect-pre-hook.  If
+	given this argument, include it in the check to determine whether
+	to activate erc-track-minor-mode.
+	(track): Add erc-track-minor-mode-maybe to erc-connect-pre-hook,
+	so that we can use it as soon as a connection is attempted.
+
 	* erc.el (erc-format-network, erc-format-target-and/or-network):
 	Use erc-network-name function instead, and check to see whether
 	that function is bound.  This fixes an error in process filter for
