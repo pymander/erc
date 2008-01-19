@@ -1812,7 +1812,7 @@ buffer rather than a server buffer.")
 
 (defcustom erc-modules '(netsplit fill button match track completion readonly
 				  ring autojoin noncommands irccontrols
-				  stamp menu list)
+				  move-to-prompt stamp menu list)
   "A list of modules which ERC should enable.
 If you set the value of this without using `customize' remember to call
 \(erc-update-modules) after you change it.  When using `customize', modules
@@ -1854,6 +1854,8 @@ removed from the list will be disabled."
     (const :tag "log: Save buffers in logs" log)
     (const :tag "match: Highlight pals, fools, and other keywords" match)
     (const :tag "menu: Display a menu in ERC buffers" menu)
+    (const :tag "move-to-prompt: Move to the prompt when typing text"
+	   move-to-prompt)
     (const :tag "netsplit: Detect netsplits" netsplit)
     (const :tag "noncommands: Don't display non-IRC commands after evaluation"
 	   noncommands)

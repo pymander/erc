@@ -18,6 +18,15 @@
 	when module is removed.  Activate the functionality in all ERC
 	buffers when the module is activated, rather than leaving it up to
 	the user.
+	(move-to-prompt): New module that moves to the ERC prompt if a
+	user tries to type elsewhere in the buffer, and then inserts their
+	keystrokes there.  This is mostly taken from Johan Bockgard's init
+	file.
+	(erc-move-to-prompt): New function that implements this.
+	(erc-move-to-prompt-xemacs): New function that implements this for
+	XEmacs.
+	(erc-move-to-prompt-init-xemacs): New function to perform the
+	extra initialization step needed for XEmacs.
 
 	* erc-page.el, erc-replace.el: Fix header and footer.
 
@@ -32,6 +41,8 @@
 	Use erc-network-name function instead, and check to see whether
 	that function is bound.  This fixes an error in process filter for
 	people who did not have erc-services or erc-networks loaded.
+	(erc-modules): Add move-to-prompt module and enable it by
+	default.  Thanks to e1f for the suggestion.
 
 2008-01-18  Michael Olson  <mwolson@gnu.org>
 
