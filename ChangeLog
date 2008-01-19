@@ -4,6 +4,8 @@
 	morse.  Deal with the morse style that has "/ " at the end of
 	every letter.
 
+	* erc-page.el, erc-replace.el: Fix header and footer.
+
 	* erc.el (erc-format-network, erc-format-target-and/or-network):
 	Use erc-network-name function instead, and check to see whether
 	that function is bound.  This fixes an error in process filter for
