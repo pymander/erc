@@ -153,13 +153,13 @@ does not appear in the ERC buffer after the user presses ENTER.")
 (defun erc-move-to-prompt ()
   "Move the point to the ERC prompt."
   (interactive)
-  (when (and erc-input-marker (<= (point) erc-input-marker))
+  (when (and erc-input-marker (< (point) erc-input-marker))
     (goto-char (point-max)))
   (call-interactively 'self-insert-command))
 
 (defun erc-move-to-prompt-xemacs ()
   "Move the point to the ERC prompt if this is a self-inserting command."
-  (when (and erc-input-marker (<= (point) erc-input-marker)
+  (when (and erc-input-marker (< (point) erc-input-marker)
              (eq 'self-insert-command this-command))
     (goto-char (point-max))))
 

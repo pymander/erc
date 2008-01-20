@@ -1,5 +1,10 @@
 2008-01-20  Michael Olson  <mwolson@gnu.org>
 
+	* erc-goodies.el (erc-move-to-prompt, erc-move-to-prompt-xemacs):
+	Fix off-by-one error that caused the point to move when placed at
+	the beginning of some already-typed text.  Thanks to e1f for the
+	report.
+
 	* erc-dcc.el, erc-xdcc.el: Add simple module definitions.
 
 	* erc.el (erc-modules): Add dcc and xdcc.
