@@ -62,6 +62,11 @@ being evaluated and should return stings."
   :group 'erc-dcc
   :type '(repeat (repeat :tag "Message" (choice string sexp))))
 
+;;;###autoload (autoload 'erc-xdcc-mode "erc-xdcc")
+(define-erc-module xdcc nil
+  "Act as an XDCC file-server."
+  nil nil)
+
 ;;;###autoload
 (defun erc-xdcc-add-file (file)
   "Add a file to `erc-xdcc-files'."

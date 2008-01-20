@@ -1844,6 +1844,7 @@ removed from the list will be disabled."
 	   capab-identify)
     (const :tag "completion: Complete nicknames and commands (programmable)"
 	   completion)
+    (const :tag "dcc: Provide Direct Client-to-Client support" dcc)
     (const :tag "hecomplete: Complete nicknames and commands (old)" hecomplete)
     (const :tag "fill: Wrap long lines" fill)
     (const :tag "identd: Launch an identd server on port 8113" identd)
@@ -1878,6 +1879,7 @@ removed from the list will be disabled."
     (const :tag "track: Track channel activity in the mode-line" track)
     (const :tag "truncate: Truncate buffers to a certain size" truncate)
     (const :tag "unmorse: Translate morse code in messages" unmorse)
+    (const :tag "xdcc: Act as an XDCC file-server" xdcc)
     (repeat :tag "Others" :inline t symbol))
   :group 'erc)
 

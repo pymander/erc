@@ -60,6 +60,12 @@
   (require 'cl)
   (require 'pcomplete))
 
+;;;###autoload (autoload 'erc-dcc-mode "erc-dcc")
+(define-erc-module dcc nil
+  "Provide Direct Client-to-Client support for ERC."
+  ((add-hook 'erc-server-401-functions 'erc-dcc-no-such-nick))
+  ((remove-hook 'erc-server-401-functions 'erc-dcc-no-such-nick)))
+
 (defgroup erc-dcc nil
   "DCC stands for Direct Client Communication, where you and your
 friend's client programs connect directly to each other,
@@ -1168,8 +1174,6 @@ other client."
       (setq erc-dcc-list (delq elt erc-dcc-list))
       (if (processp peer) (delete-process peer)))
     nil))
-
-(add-hook 'erc-server-401-functions 'erc-dcc-no-such-nick)
 
 (provide 'erc-dcc)
 

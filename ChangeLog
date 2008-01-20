@@ -1,3 +1,9 @@
+2008-01-20  Michael Olson  <mwolson@gnu.org>
+
+	* erc-dcc.el, erc-xdcc.el: Add simple module definitions.
+
+	* erc.el (erc-modules): Add dcc and xdcc.
+
 2008-01-19  Michael Olson  <mwolson@gnu.org>
 
 	* erc-bbdb.el (erc-bbdb-insinuate-and-show-entry): Work around bug
