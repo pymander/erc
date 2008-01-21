@@ -178,8 +178,8 @@ The faces used are the same as used for text in the buffers.
   '(erc-error-face erc-current-nick-face erc-keyword-face erc-pal-face
     erc-nick-msg-face erc-direct-msg-face (erc-button erc-default-face)
     erc-dangerous-host-face erc-default-face erc-action-face
-    erc-nick-default-face erc-fool-face erc-notice-face erc-input-face
-    erc-prompt-face)
+    (erc-nick-default-face erc-default-face) erc-fool-face
+    erc-notice-face erc-input-face erc-prompt-face)
   "A list of faces used to highlight active buffer names in the modeline.
 If a message contains one of the faces in this list, the buffer name will
 be highlighted using that face.  The first matching face is used."
@@ -889,7 +889,7 @@ is in `erc-mode'."
 		       (old-face (cddr cell))
 		       (new-face (erc-track-find-face
 				  (if old-face
-				      (list old-face faces)
+				      (cons old-face faces)
 				    faces))))
 		  (setcdr cell (cons (1+ (cadr cell)) new-face)))))
 	    ;; And display it
