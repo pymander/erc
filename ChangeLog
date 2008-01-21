@@ -1,5 +1,10 @@
 2008-01-21  Michael Olson  <mwolson@gnu.org>
 
+	* erc-compat.el (erc-const-expr-p, erc-list*, erc-assert): Remove,
+	since we can use the default `assert' function without it causing
+	us any problems, even in Emacs 21.  Thanks to bojohan for the
+	suggestion.
+
 	* erc-goodies.el (move-to-prompt): Use the "XEmacs" method
 	instead, because the [remap ...] method interferes with
 	delete-selection-mode.

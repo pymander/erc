@@ -445,7 +445,7 @@ START is the minimum length of the name used."
 
 ;;; Test:
 
-(erc-assert
+(assert
  (and
   ;; verify examples from the doc strings
   (equal (let ((erc-track-shorten-aggressively nil))
@@ -917,7 +917,7 @@ is in `erc-mode'."
 	(add-to-list 'faces cur)))
     faces))
 
-(erc-assert
+(assert
  (let ((str "is bold"))
    (put-text-property 3 (length str)
 		      'face '(bold erc-current-nick-face)
