@@ -9,6 +9,16 @@
 	(erc-move-to-prompt-setup): Rename from
 	erc-move-to-prompt-init-xemacs.
 
+	* erc-track.el (erc-track-faces-priority-list): Replace erc-button
+	with '(erc-button erc-default-face) so that we only care about
+	buttons that are part of normal text.  Adjust customization type
+	to handle this case.
+	(erc-track-find-face): Simplify.  Adapt for list of faces case.
+	(erc-track-modified-channels): Use a list, not a cons, when
+	constructing the list of faces.
+	(erc-faces-in): Don't deflate lists of faces.  Add them as-is.
+	(erc-track-face-priority): Use equal instead of eq.
+
 2008-01-20  Michael Olson  <mwolson@gnu.org>
 
 	* erc-goodies.el (erc-move-to-prompt, erc-move-to-prompt-xemacs):

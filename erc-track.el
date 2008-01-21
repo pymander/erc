@@ -176,14 +176,16 @@ The faces used are the same as used for text in the buffers.
 
 (defcustom erc-track-faces-priority-list
   '(erc-error-face erc-current-nick-face erc-keyword-face erc-pal-face
-    erc-nick-msg-face erc-direct-msg-face erc-button erc-dangerous-host-face
-    erc-default-face erc-action-face erc-nick-default-face erc-fool-face
-    erc-notice-face erc-input-face erc-prompt-face)
+    erc-nick-msg-face erc-direct-msg-face (erc-button erc-default-face)
+    erc-dangerous-host-face erc-default-face erc-action-face
+    erc-nick-default-face erc-fool-face erc-notice-face erc-input-face
+    erc-prompt-face)
   "A list of faces used to highlight active buffer names in the modeline.
 If a message contains one of the faces in this list, the buffer name will
 be highlighted using that face.  The first matching face is used."
   :group 'erc-track
-  :type '(repeat face))
+  :type '(repeat (choice face
+			 (repeat :tag "Combination" face))))
 
 (defcustom erc-track-priority-faces-only nil
   "Only track text highlighted with a priority face.
@@ -830,21 +832,15 @@ first in that list will be used.
 If `erc-track-faces-priority-list' is not set, the first element
 in FACES will be used.
 
-One exception is made for the `erc-button' face.  It is only
-allowed to take priority over other faces if it is paired with
-`erc-default-face' in the cdr of FACES."
-  (let ((candidates erc-track-faces-priority-list)
-	candidate)
-    ;; Remove erc-button unless it is paired with erc-default-face
-    (when (and (memq 'erc-button (cdr faces))
-	       (not (memq 'erc-default-face (cdr faces))))
-      (setq faces (cons (car faces) (remq 'erc-button (cdr faces)))))
-    ;; Take the highest priority face remaining
-    (or (catch 'face
-	  (dolist (candidate erc-track-faces-priority-list)
-	    (when (memq candidate faces)
-	      (throw 'face candidate))))
-	(car faces))))
+If one of the faces is a list, then it will be ranked according
+to its highest-tanking face member.  A list of faces including
+that member will take priority over just the single member
+element."
+  (catch 'face
+    (dolist (candidate erc-track-faces-priority-list)
+      (when (member candidate faces)
+	(throw 'face candidate)))
+    (car faces)))
 
 (defun erc-track-modified-channels ()
   "Hook function for `erc-insert-post-hook' to check if the current
@@ -893,7 +889,7 @@ is in `erc-mode'."
 		       (old-face (cddr cell))
 		       (new-face (erc-track-find-face
 				  (if old-face
-				      (cons old-face faces)
+				      (list old-face faces)
 				    faces))))
 		  (setcdr cell (cons (1+ (cadr cell)) new-face)))))
 	    ;; And display it
@@ -913,11 +909,12 @@ is in `erc-mode'."
   "Return a list of all faces used in STR."
   (let ((i 0)
 	(m (length str))
-	(faces (erc-list (get-text-property 0 'face str))))
+	(faces (erc-list (get-text-property 0 'face str)))
+	cur)
     (while (and (setq i (next-single-property-change i 'face str m))
 		(not (= i m)))
-      (dolist (face (erc-list (get-text-property i 'face str)))
-	(add-to-list 'faces face)))
+      (when (setq cur (get-text-property i 'face str))
+	(add-to-list 'faces cur)))
     faces))
 
 (erc-assert
@@ -950,7 +947,7 @@ higher number than any other face in that list."
   (let ((count 0))
     (catch 'done
       (dolist (item erc-track-faces-priority-list)
-	(if (eq item face)
+	(if (equal item face)
 	    (throw 'done t)
 	  (setq count (1+ count)))))
     count))
