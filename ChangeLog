@@ -3,9 +3,9 @@
 	* erc-goodies.el (move-to-prompt): Use the "XEmacs" method
 	instead, because the [remap ...] method interferes with
 	delete-selection-mode.
-	(erc-move-to-prompt): Rename from erc-move-to-prompt-xemacs.  Call
-	push-mark before moving point.  Thanks to bojohan for the
-	suggestion.
+	(erc-move-to-prompt): Rename from erc-move-to-prompt-xemacs.
+	Deactivate mark and call push-mark before moving point.  Thanks to
+	bojohan for the suggestion.
 	(erc-move-to-prompt-setup): Rename from
 	erc-move-to-prompt-init-xemacs.
 

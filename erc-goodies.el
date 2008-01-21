@@ -146,6 +146,7 @@ does not appear in the ERC buffer after the user presses ENTER.")
   "Move the point to the ERC prompt if this is a self-inserting command."
   (when (and erc-input-marker (< (point) erc-input-marker)
              (eq 'self-insert-command this-command))
+    (deactivate-mark)
     (push-mark)
     (goto-char (point-max))))
 
