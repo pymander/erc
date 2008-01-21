@@ -175,11 +175,21 @@ The faces used are the same as used for text in the buffers.
   :type 'boolean)
 
 (defcustom erc-track-faces-priority-list
-  '(erc-error-face erc-current-nick-face erc-keyword-face erc-pal-face
-    erc-nick-msg-face erc-direct-msg-face (erc-button erc-default-face)
-    erc-dangerous-host-face erc-default-face erc-action-face
-    (erc-nick-default-face erc-default-face) erc-fool-face
-    erc-notice-face erc-input-face erc-prompt-face)
+  '(erc-error-face
+    (erc-nick-default-face erc-current-nick-face)
+    erc-keyword-face
+    (erc-nick-default-face erc-pal-face)
+    erc-nick-msg-face
+    erc-direct-msg-face
+    (erc-button erc-default-face)
+    (erc-nick-default-face erc-dangerous-host-face)
+    erc-default-face
+    erc-action-face
+    (erc-nick-default-face erc-default-face)
+    (erc-nick-default-face erc-fool-face)
+    erc-notice-face
+    erc-input-face
+    erc-prompt-face)
   "A list of faces used to highlight active buffer names in the modeline.
 If a message contains one of the faces in this list, the buffer name will
 be highlighted using that face.  The first matching face is used."

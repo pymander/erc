@@ -17,7 +17,8 @@
 	* erc-track.el (erc-track-faces-priority-list): Replace erc-button
 	with '(erc-button erc-default-face) so that we only care about
 	buttons that are part of normal text.  Adjust customization type
-	to handle this case.  Make erc-nick-default-face a list.
+	to handle this case.  Make erc-nick-default-face a list.  Handle
+	pals, fools, current nick, and dangerous hosts.
 	(erc-track-find-face): Simplify.  Adapt for list of faces case.
 	(erc-faces-in): Don't deflate lists of faces.  Add them as-is.
 	(erc-track-face-priority): Use equal instead of eq.
