@@ -133,39 +133,25 @@ does not appear in the ERC buffer after the user presses ENTER.")
 ;;; Move to prompt when typing text
 (define-erc-module move-to-prompt nil
   "This mode causes the point to be moved to the prompt when typing text."
-  ((if (featurep 'xemacs)
-       (progn
-         (add-hook 'erc-mode-hook 'erc-move-to-prompt-init-xemacs)
-         (dolist (buffer (erc-buffer-list))
-           (with-current-buffer buffer
-             (erc-move-to-prompt-init-xemacs))))
-     (define-key erc-mode-map [remap self-insert-command]
-       'erc-move-to-prompt)))
-  ((if (featurep 'xemacs)
-       (progn
-         (remove-hook 'erc-mode-hook 'erc-move-to-prompt-init-xemacs)
-         (dolist (buffer (erc-buffer-list))
-           (with-current-buffer buffer
-             (remove-hook 'pre-command-hook 'erc-move-to-prompt-xemacs t))))
-     (define-key erc-mode-map [remap self-insert-command]
-       'self-insert-command))))
+  ((add-hook 'erc-mode-hook 'erc-move-to-prompt-setup)
+   (dolist (buffer (erc-buffer-list))
+     (with-current-buffer buffer
+       (erc-move-to-prompt-setup))))
+  ((remove-hook 'erc-mode-hook 'erc-move-to-prompt-setup)
+   (dolist (buffer (erc-buffer-list))
+     (with-current-buffer buffer
+       (remove-hook 'pre-command-hook 'erc-move-to-prompt t)))))
 
 (defun erc-move-to-prompt ()
-  "Move the point to the ERC prompt."
-  (interactive)
-  (when (and erc-input-marker (< (point) erc-input-marker))
-    (goto-char (point-max)))
-  (call-interactively 'self-insert-command))
-
-(defun erc-move-to-prompt-xemacs ()
   "Move the point to the ERC prompt if this is a self-inserting command."
   (when (and erc-input-marker (< (point) erc-input-marker)
              (eq 'self-insert-command this-command))
+    (push-mark)
     (goto-char (point-max))))
 
-(defun erc-move-to-prompt-init-xemacs ()
+(defun erc-move-to-prompt-setup ()
   "Initialize the move-to-prompt module for XEmacs."
-  (add-hook 'pre-command-hook 'erc-move-to-prompt-xemacs nil t))
+  (add-hook 'pre-command-hook 'erc-move-to-prompt nil t))
 
 (define-erc-module noncommands nil
   "This mode distinguishies non-commands.
