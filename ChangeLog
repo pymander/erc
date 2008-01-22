@@ -1,3 +1,9 @@
+2008-01-22  Michael Olson  <mwolson@gnu.org>
+
+	* erc-button.el (erc-button-add-nickname-buttons): When in a
+	channel buffer, only look at nicks from the current channel.
+	Thanks to e1f for the report.
+
 2008-01-21  Michael Olson  <mwolson@gnu.org>
 
 	* erc-compat.el (erc-const-expr-p, erc-list*, erc-assert): Remove,

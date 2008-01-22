@@ -302,9 +302,10 @@ specified by `erc-button-alist'."
         (setq bounds (bounds-of-thing-at-point 'word))
         (setq word (buffer-substring-no-properties
                     (car bounds) (cdr bounds)))
-        (if (erc-get-server-user word)
-            (erc-button-add-button (car bounds) (cdr bounds)
-                                   fun t (list word)))))))
+        (when (or (and (erc-server-buffer-p) (erc-get-server-user word))
+                  (and erc-channel-users (erc-get-channel-user word)))
+          (erc-button-add-button (car bounds) (cdr bounds)
+                                 fun t (list word)))))))
 
 (defun erc-button-add-buttons-1 (regexp entry)
   "Search through the buffer for matches to ENTRY and add buttons."
