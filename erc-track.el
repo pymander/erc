@@ -185,11 +185,13 @@ The faces used are the same as used for text in the buffers.
     erc-direct-msg-face
     (erc-button erc-default-face)
     (erc-nick-default-face erc-dangerous-host-face)
+    erc-dangerous-host-face
     erc-nick-default-face
     (erc-nick-default-face erc-default-face)
     erc-default-face
     erc-action-face
     (erc-nick-default-face erc-fool-face)
+    erc-fool-face
     erc-notice-face
     erc-input-face
     erc-prompt-face)

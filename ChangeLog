@@ -2,8 +2,9 @@
 
 	* erc-track.el (erc-track-faces-priority-list): Move
 	erc-nick-default-face higher, so that it can be used for the
-	activity indication effect.  Add erc-current-nick-face and
-	erc-pal-face by themselves.
+	activity indication effect.  Add erc-current-nick-face,
+	erc-pal-face, erc-dangerous-host-face, and erc-fool-face by
+	themselves.
 	(erc-track-faces-normal-list): New option that contains a list of
 	faces to consider "normal".
 	(erc-track-position-in-mode-line): Minor docfix.
