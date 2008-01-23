@@ -1,3 +1,14 @@
+2008-01-23  Michael Olson  <mwolson@gnu.org>
+
+	* erc-track.el (erc-track-faces-priority-list): Move
+	erc-nick-default-face higher, so that it can be used for the
+	activity indication effect.
+	(erc-track-faces-normal-list): New option that contains a list of
+	faces to consider "normal".
+	(erc-track-position-in-mode-line): Minor docfix.
+	(erc-track-find-face): Use erc-track-faces-normal-list to produce
+	a sort of blinking activity effect.
+
 2008-01-22  Michael Olson  <mwolson@gnu.org>
 
 	* erc-button.el (erc-button-add-nickname-buttons): When in a

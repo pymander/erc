@@ -183,9 +183,10 @@ The faces used are the same as used for text in the buffers.
     erc-direct-msg-face
     (erc-button erc-default-face)
     (erc-nick-default-face erc-dangerous-host-face)
+    erc-nick-default-face
+    (erc-nick-default-face erc-default-face)
     erc-default-face
     erc-action-face
-    (erc-nick-default-face erc-default-face)
     (erc-nick-default-face erc-fool-face)
     erc-notice-face
     erc-input-face
@@ -205,6 +206,7 @@ this variable.  You can set a list of channel name strings, so those
 will be ignored while all other channels will be tracked as normal.
 Other options are 'all, to apply this to all channels or nil, to disable
 this feature.
+
 Note: If you have a lot of faces listed in `erc-track-faces-priority-list',
 setting this variable might not be very useful."
   :group 'erc-track
@@ -212,17 +214,35 @@ setting this variable might not be very useful."
 		 (repeat string)
 		 (const all)))
 
+(defcustom erc-track-faces-normal-list
+  '((erc-button erc-default-face)
+    (erc-nick-default-face erc-dangerous-host-face)
+    erc-nick-default-face
+    (erc-nick-default-face erc-default-face)
+    erc-default-face
+    erc-action-face)
+  "A list of faces considered to be part of normal conversations.
+This list is used to highlight active buffer names in the modeline.
+
+If a message contains one of the faces in this list, and the
+previous modeline face for this buffer is also in this list, then
+the buffer name will be highlighted using the face from the
+message.  This gives a rough indication that active conversations
+are occurring in these channels."
+  :group 'erc-track
+  :type '(repeat (choice face
+			 (repeat :tag "Combination" face))))
+
 (defcustom erc-track-position-in-mode-line 'before-modes
   "Where to show modified channel information in the mode-line.
 
 Setting this variable only has effects in GNU Emacs versions above 21.3.
 
 Choices are:
-'before-modes - add to the beginning of `mode-line-modes'
-'after-modes  - add to the end of `mode-line-modes'
-t             - add to the end of `global-mode-string'.
-nil           - don't add to mode line
-"
+'before-modes - add to the beginning of `mode-line-modes',
+'after-modes  - add to the end of `mode-line-modes',
+t             - add to the end of `global-mode-string',
+nil           - don't add to mode line."
   :group 'erc-track
   :type '(choice (const :tag "Just before mode information" before-modes)
 		 (const :tag "Just after mode information" after-modes)
@@ -839,6 +859,11 @@ Use `erc-make-mode-line-buffer-name' to create buttons."
 If `erc-track-faces-priority-list' is set, the one from FACES who is
 first in that list will be used.
 
+If `erc-track-faces-normal-list' is non-nil, use it to produce a
+blinking effect that indicates channel activity when the first
+element in FACES and the highest-ranking face among the rest of
+FACES are both members of `erc-track-faces-normal-list'.
+
 If `erc-track-faces-priority-list' is not set, the first element
 in FACES will be used.
 
@@ -846,11 +871,22 @@ If one of the faces is a list, then it will be ranked according
 to its highest-tanking face member.  A list of faces including
 that member will take priority over just the single member
 element."
-  (catch 'face
-    (dolist (candidate erc-track-faces-priority-list)
-      (when (member candidate faces)
-	(throw 'face candidate)))
-    (car faces)))
+  (let ((choice (catch 'face
+		  (dolist (candidate erc-track-faces-priority-list)
+		    (when (member candidate faces)
+		      (throw 'face candidate)))))
+	(no-first (and erc-track-faces-normal-list
+		       (catch 'face
+			 (dolist (candidate erc-track-faces-priority-list)
+			   (when (member candidate (cdr faces))
+			     (throw 'face candidate)))))))
+    (cond ((null choice)
+	   (car faces))
+	  ((and (member choice erc-track-faces-normal-list)
+		(member no-first erc-track-faces-normal-list))
+	   no-first)
+	  (t
+	   choice))))
 
 (defun erc-track-modified-channels ()
   "Hook function for `erc-insert-post-hook' to check if the current
