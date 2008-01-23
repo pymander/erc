@@ -177,8 +177,10 @@ The faces used are the same as used for text in the buffers.
 (defcustom erc-track-faces-priority-list
   '(erc-error-face
     (erc-nick-default-face erc-current-nick-face)
+    erc-current-nick-face
     erc-keyword-face
     (erc-nick-default-face erc-pal-face)
+    erc-pal-face
     erc-nick-msg-face
     erc-direct-msg-face
     (erc-button erc-default-face)
