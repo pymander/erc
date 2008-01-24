@@ -6507,6 +6507,9 @@ Otherwise, connect to HOST:PORT as USER and /join CHANNEL."
 ;;; avoid a recursive require error when byte-compiling the entire package.
 (require 'erc-goodies)
 
+;;; Provide support for identification of networks.
+(require 'erc-networks)
+
 ;;; erc.el ends here
 ;;
 ;; Local Variables:
