@@ -221,6 +221,7 @@ setting this variable might not be very useful."
 (defcustom erc-track-faces-normal-list
   '((erc-button erc-default-face)
     (erc-nick-default-face erc-dangerous-host-face)
+    erc-dangerous-host-face
     erc-nick-default-face
     (erc-nick-default-face erc-default-face)
     erc-default-face
