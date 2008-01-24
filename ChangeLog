@@ -2,6 +2,8 @@
 
 	* erc-track.el (erc-track-faces-normal-list): Add
 	erc-dangerous-host-face.
+	(erc-track-exclude-types): Add 333 and 353 to the default list of
+	things to ignore, and explain what they are in the docstring.
 
 2008-01-23  Michael Olson  <mwolson@gnu.org>
 

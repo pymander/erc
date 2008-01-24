@@ -101,9 +101,13 @@ disconnected from `erc-modified-channels-alist'."
   :group 'erc-track
   :type 'boolean)
 
-(defcustom erc-track-exclude-types '("NICK")
+(defcustom erc-track-exclude-types '("NICK" "333" "353")
   "*List of message types to be ignored.
-This list could look like '(\"JOIN\" \"PART\")."
+This list could look like '(\"JOIN\" \"PART\").
+
+By default, exclude changes of nicknames (NICK), display of who
+set the channel topic (333), and listing of users on the current
+channel (353)."
   :group 'erc-track
   :type 'erc-message-type)
 
