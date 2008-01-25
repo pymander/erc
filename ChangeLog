@@ -1,3 +1,8 @@
+2008-01-25  Michael Olson  <mwolson@gnu.org>
+
+	* erc-track.el (erc-track-faces-normal-list): Indicate in the
+	docstring that this variable can be set to nil.
+
 2008-01-24  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el: Load erc-networks.el so that functions get access to the

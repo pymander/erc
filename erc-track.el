@@ -237,7 +237,9 @@ If a message contains one of the faces in this list, and the
 previous modeline face for this buffer is also in this list, then
 the buffer name will be highlighted using the face from the
 message.  This gives a rough indication that active conversations
-are occurring in these channels."
+are occurring in these channels.
+
+The effect may be disabled by setting this variable to nil."
   :group 'erc-track
   :type '(repeat (choice face
 			 (repeat :tag "Combination" face))))
