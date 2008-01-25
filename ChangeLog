@@ -2,6 +2,11 @@
 
 	* NEWS: Update.
 
+	* erc-goodies.el (keep-place): New module which keeps your place
+	in unvisited ERC buffers when new messages arrive.  This is mostly
+	taken from Johan Bockgård's init file.
+	(erc-noncommands-list): Move to correct place.
+
 	* erc-networks.el: Add a module definition.
 
 	* erc-services.el (erc-nickserv-identify-mode): Force-enable the
@@ -12,6 +17,8 @@
 
 	* erc.el: On second thought, don't load erc-networks.  Just enable
 	the networks module by default.
+	(erc-modules): Add option for keep-place and networks.  Enable
+	networks by default.
 
 2008-01-24  Michael Olson  <mwolson@gnu.org>
 
@@ -100,7 +107,7 @@
 	the user.
 	(move-to-prompt): New module that moves to the ERC prompt if a
 	user tries to type elsewhere in the buffer, and then inserts their
-	keystrokes there.  This is mostly taken from Johan Bockgard's init
+	keystrokes there.  This is mostly taken from Johan Bockgård's init
 	file.
 	(erc-move-to-prompt): New function that implements this.
 	(erc-move-to-prompt-xemacs): New function that implements this for

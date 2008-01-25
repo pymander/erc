@@ -1844,12 +1844,13 @@ removed from the list will be disabled."
 	   capab-identify)
     (const :tag "completion: Complete nicknames and commands (programmable)"
 	   completion)
-    (const :tag "dcc: Provide Direct Client-to-Client support" dcc)
     (const :tag "hecomplete: Complete nicknames and commands (old)" hecomplete)
+    (const :tag "dcc: Provide Direct Client-to-Client support" dcc)
     (const :tag "fill: Wrap long lines" fill)
     (const :tag "identd: Launch an identd server on port 8113" identd)
     (const :tag "irccontrols: Highlight or remove IRC control characters"
 	   irccontrols)
+    (const :tag "keep-place: Leave point above un-viewed text" keep-place)
     (const :tag "list: List channels in a separate buffer" list)
     (const :tag "list-old: List channels in a separate buffer (old)" list-old)
     (const :tag "log: Save buffers in logs" log)

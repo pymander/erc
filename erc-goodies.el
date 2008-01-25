@@ -118,18 +118,6 @@ Put this function on `erc-insert-post-hook' and/or `erc-send-post-hook'."
   (put-text-property (point-min) (point-max) 'front-sticky t)
   (put-text-property (point-min) (point-max) 'rear-nonsticky t))
 
-;; Distinguish non-commands
-(defvar erc-noncommands-list '(erc-cmd-ME
-                               erc-cmd-COUNTRY
-                               erc-cmd-SV
-                               erc-cmd-SM
-                               erc-cmd-SMV
-                               erc-cmd-LASTLOG)
-  "List of commands that are aliases for CTCP ACTION or for erc messages.
-
-If a command's function symbol is in this list, the typed command
-does not appear in the ERC buffer after the user presses ENTER.")
-
 ;;; Move to prompt when typing text
 (define-erc-module move-to-prompt nil
   "This mode causes the point to be moved to the prompt when typing text."
@@ -153,6 +141,33 @@ does not appear in the ERC buffer after the user presses ENTER.")
 (defun erc-move-to-prompt-setup ()
   "Initialize the move-to-prompt module for XEmacs."
   (add-hook 'pre-command-hook 'erc-move-to-prompt nil t))
+
+;;; Keep place in unvisited channels
+(define-erc-module keep-place nil
+  "Leave point above un-viewed text in other channels."
+  ((add-hook 'erc-insert-pre-hook  'erc-keep-place))
+  ((remove-hook 'erc-insert-pre-hook  'erc-keep-place)))
+
+(defun erc-keep-place (ignored)
+  "Move point away from the last line in a non-selected ERC buffer."
+  (when (and (not (eq (window-buffer (selected-window))
+                      (current-buffer)))
+             (>= (point) erc-insert-marker))
+    (deactivate-mark)
+    (goto-char (erc-beg-of-input-line))
+    (forward-line -1)))
+
+;;; Distinguish non-commands
+(defvar erc-noncommands-list '(erc-cmd-ME
+                               erc-cmd-COUNTRY
+                               erc-cmd-SV
+                               erc-cmd-SM
+                               erc-cmd-SMV
+                               erc-cmd-LASTLOG)
+  "List of commands that are aliases for CTCP ACTION or for erc messages.
+
+If a command's function symbol is in this list, the typed command
+does not appear in the ERC buffer after the user presses ENTER.")
 
 (define-erc-module noncommands nil
   "This mode distinguishies non-commands.

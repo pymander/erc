@@ -144,6 +144,9 @@ file buffer.
 if a user tries to type elsewhere in the buffer, and then inserts
 their keystrokes after the prompt.  It is enabled by default.
 
+**** New module keep-place keeps your place in unvisited ERC buffers
+when new messages arrive.
+
 **** Enable scroll-to-bottom in all ERC buffers when the module is enabled,
 rather than having the user do it manually.
 
