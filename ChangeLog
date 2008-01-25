@@ -19,6 +19,7 @@
 	the networks module by default.
 	(erc-modules): Add option for keep-place and networks.  Enable
 	networks by default.
+	(erc-version-string): Make release candidate 1 available.
 
 2008-01-24  Michael Olson  <mwolson@gnu.org>
 
