@@ -68,10 +68,14 @@ query in a new selected window.
 This should ERC use less space in the modeline.  To get the old
 behavior back, set `erc-mode-line-format' to "%s %a".
 
+** Modules newly enabled by default
+
+*** move-to-prompt: Move to the prompt when typing text.
+*** networks: Provide data about IRC networks.
+
 ** New formatting variables allowed in `erc-format-network':
 
 *** `%N': the name of the network.
-
 *** `%S': much like %s, but let the network name trump the server name.
 
 ** Compatibility with old releases
@@ -166,7 +170,8 @@ filtering is performed.
 
 *** Networks (erc-networks.el)
 
-**** Load this file so that we get access to `erc-network-name'.
+**** Turn this into the "networks" module for ERC, so that it can be more
+easily enabled.  Enable it by default.
 
 **** Add support for Rizon.
 

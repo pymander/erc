@@ -1811,8 +1811,8 @@ buffer rather than a server buffer.")
 	     mods))))
 
 (defcustom erc-modules '(netsplit fill button match track completion readonly
-				  ring autojoin noncommands irccontrols
-				  move-to-prompt stamp menu list)
+			 networks ring autojoin noncommands irccontrols
+			 move-to-prompt stamp menu list)
   "A list of modules which ERC should enable.
 If you set the value of this without using `customize' remember to call
 \(erc-update-modules) after you change it.  When using `customize', modules
@@ -1858,6 +1858,7 @@ removed from the list will be disabled."
     (const :tag "move-to-prompt: Move to the prompt when typing text"
 	   move-to-prompt)
     (const :tag "netsplit: Detect netsplits" netsplit)
+    (const :tag "networks: Provide data about IRC networks" networks)
     (const :tag "noncommands: Don't display non-IRC commands after evaluation"
 	   noncommands)
     (const :tag
@@ -6506,9 +6507,6 @@ Otherwise, connect to HOST:PORT as USER and /join CHANNEL."
 ;;; IMPORTANT: This require must appear _after_ the above (provide 'erc) to
 ;;; avoid a recursive require error when byte-compiling the entire package.
 (require 'erc-goodies)
-
-;;; Provide support for identification of networks.
-(require 'erc-networks)
 
 ;;; erc.el ends here
 ;;

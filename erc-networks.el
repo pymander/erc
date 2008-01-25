@@ -28,9 +28,7 @@
 ;;
 ;; Usage:
 ;;
-;; Put into your .emacs:
-;;
-;; (require 'erc-networks)
+;; This is the "networks" module.
 ;;
 ;; M-x erc-server-select provides an alternative way to connect to servers by
 ;; choosing networks.
@@ -766,9 +764,14 @@ network as a symbol."
   (setq erc-network nil)
   nil)
 
-(add-hook 'erc-server-375-functions 'erc-set-network-name)
-(add-hook 'erc-server-422-functions 'erc-set-network-name)
-(add-hook 'erc-disconnected-hook 'erc-unset-network-name)
+(define-erc-module networks nil
+  "Provide data about IRC networks."
+  ((add-hook 'erc-server-375-functions 'erc-set-network-name)
+   (add-hook 'erc-server-422-functions 'erc-set-network-name)
+   (add-hook 'erc-disconnected-hook 'erc-unset-network-name))
+  ((remove-hook 'erc-server-375-functions 'erc-set-network-name)
+   (remove-hook 'erc-server-422-functions 'erc-set-network-name)
+   (remove-hook 'erc-disconnected-hook 'erc-unset-network-name)))
 
 (defun erc-ports-list (ports)
   "Return a list of PORTS.

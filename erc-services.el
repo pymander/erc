@@ -123,6 +123,10 @@ You can also use M-x erc-nickserv-identify-mode to change modes."
 		  '(("autodetect") ("nick-change") ("both")) nil t))))
   (add-hook 'erc-server-NOTICE-functions
 	    'erc-nickserv-identification-autodetect)
+  (unless erc-networks-mode
+    ;; Force-enable networks module, because we need it to set
+    ;; erc-network for us.
+    (erc-networks-enable))
   (cond ((eq mode 'autodetect)
 	 (setq erc-nickserv-identify-mode 'autodetect)
 	 (add-hook 'erc-server-NOTICE-functions

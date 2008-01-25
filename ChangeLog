@@ -1,7 +1,17 @@
 2008-01-25  Michael Olson  <mwolson@gnu.org>
 
+	* NEWS: Update.
+
+	* erc-networks.el: Add a module definition.
+
+	* erc-services.el (erc-nickserv-identify-mode): Force-enable the
+	networks module, because we need it to set erc-network for us.
+
 	* erc-track.el (erc-track-faces-normal-list): Indicate in the
 	docstring that this variable can be set to nil.
+
+	* erc.el: On second thought, don't load erc-networks.  Just enable
+	the networks module by default.
 
 2008-01-24  Michael Olson  <mwolson@gnu.org>
 
