@@ -68,6 +68,10 @@ query in a new selected window.
 This should ERC use less space in the modeline.  To get the old
 behavior back, set `erc-mode-line-format' to "%s %a".
 
+** New option `erc-remove-parsed-property' determines whether to remove
+the 'erc-parsed property.  This should save some memory in channels
+with large amounts of text on screen.  It is enabled by default.
+
 ** Modules newly enabled by default
 
 *** move-to-prompt: Move to the prompt when typing text.
@@ -90,6 +94,10 @@ buttons in default text and buttons in notices.
 
 *** The `erc-assert' function has been removed in favor of using `assert'
 from cl-macs.el.
+
+*** If your application uses the 'erc-parsed text property outside of
+the insert hooks, you will need to set `erc-remove-parsed-property'
+to nil.
 
 ** Changes and additions to modules
 
