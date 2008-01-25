@@ -133,6 +133,9 @@ default is 0.5 MB.
 disk after we get at least `erc-dcc-receive-cache' bytes.  This allows
 users to receive very large files without running out of memory.
 
+**** Rename `erc-verbose-dcc' option to `erc-dcc-verbose' and also
+default it to nil.
+
 **** Fix edge case in erc-dcc-send-sentinel.
 
 **** If client confirms too much, then display byte count and kill the
