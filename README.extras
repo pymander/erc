@@ -7,7 +7,7 @@ About
 -----
 
 The files included here are those which could not be distributed with
-the version of ERC that comes with Emacs 22.  The reasons might include:
+the version of ERC that comes with Emacs 23.  The reasons might include:
 
  - No copyright disclaimer was completed for an author of the file.
  - Depends on files which are not distibuted with Emacs.

@@ -1,4 +1,4 @@
-VERSION=5.2
+VERSION=5.3
 SNAPDIR=erc-$(VERSION)
 LASTUPLOAD = 5.1.4-4
 BUILDOPTS  =
@@ -7,17 +7,17 @@ SPECIAL = erc-auto.el
 UNCOMPILED = erc-bbdb.el erc-chess.el erc-ibuffer.el erc-speak.el \
 		erc-speedbar.el erc-compat.el
 
-# Files to include in the extras pack for Emacs 22
-EXTRAS  = erc-bbdb.el erc-chess.el erc-list.el erc-list-old.el \
-		erc-nicklist.el erc-speak.el README.extras COPYING
+# Files to include in the extras pack for Emacs 23
+EXTRAS  = erc-bbdb.el erc-chess.el erc-list-old.el erc-nicklist.el \
+		erc-speak.el README.extras COPYING
 
 ALLSOURCE = $(wildcard *.el)
 SOURCE	= $(filter-out $(SPECIAL) $(UNCOMPILED) erc-pkg.el, $(ALLSOURCE))
 TARGET	= $(patsubst %.el,%.elc,$(SPECIAL) $(SOURCE))
 MANUAL  = erc
 MISC	= AUTHORS COPYING CREDITS HISTORY NEWS README Makefile ChangeLog \
-		ChangeLog.06 ChangeLog.05 ChangeLog.04 ChangeLog.03 \
-		ChangeLog.02 ChangeLog.01 \
+		ChangeLog.07 ChangeLog.06 ChangeLog.05 ChangeLog.04 \
+		ChangeLog.03 ChangeLog.02 ChangeLog.01 \
 		servers.pl erc-auto.in erc.texi
 
 EMACS       = emacs
