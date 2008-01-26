@@ -7,9 +7,11 @@
 	users of the version that comes with Emacs, and they will have
 	erc-list.el by Emacs 23.
 	(MISC): Add ChangeLog.07.
-	(elpa): Fix build issue.
+	(elpa): Fix build issue.  Add proper version to erc-pkg.el.
 
 	* README.extras: Mention Emacs 23.
+
+	* erc-pkg.el: Make the version string a template.
 
 	* erc.texi (Obtaining ERC): Update extras URLs for 5.3.
 	(Development): Write instructions for git, and remove those for
