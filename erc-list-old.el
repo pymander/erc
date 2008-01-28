@@ -143,7 +143,7 @@ display the channel list."
 
 ;; Define module:
 ;;;###autoload (autoload 'erc-list-old-mode "erc-list-old")
-(define-erc-module list nil
+(define-erc-module list-old nil
   "List channels nicely in a separate buffer."
   ((defalias 'erc-cmd-LIST 'erc-list-channels))
   ((defalias 'erc-cmd-LIST 'erc-list-channels-simple)))

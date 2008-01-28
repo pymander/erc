@@ -1,5 +1,9 @@
 2008-01-28  Diane Murray  <disumu@x3y2z1.net>
 
+	* erc-list-old.el (list-old): Define module as list-old, not list.
+	This fixes a bug where an unknown module error would occur when
+	starting ERC and using the list-old module.
+
 	* erc-track.el (erc-track-find-face): If no choice was found
 	return nil to use the default mode-line faces.
 
