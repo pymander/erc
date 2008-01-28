@@ -1,3 +1,8 @@
+2008-01-28  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-track.el (erc-track-find-face): If no choice was found
+	return nil to use the default mode-line faces.
+
 2008-01-26  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-version-string): Release ERC 5.3.
