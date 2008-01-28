@@ -854,7 +854,7 @@ Use `erc-make-mode-line-buffer-name' to create buttons."
       (when (featurep 'xemacs)
 	(erc-modified-channels-object nil))
       (setq erc-modified-channels-object
-	      (erc-modified-channels-object strings))))))
+	    (erc-modified-channels-object strings))))))
 
 (defun erc-modified-channels-remove-buffer (buffer)
   "Remove BUFFER from `erc-modified-channels-alist'."
@@ -868,7 +868,7 @@ Use `erc-make-mode-line-buffer-name' to create buttons."
 (defun erc-track-find-face (faces)
   "Return the face to use in the modeline from the faces in FACES.
 If `erc-track-faces-priority-list' is set, the one from FACES who
-is first in that list will be used.  If nothing matches of if
+is first in that list will be used.  If nothing matches or if
 `erc-track-faces-priority-list' is not set, the default mode-line
 faces will be used.
 
