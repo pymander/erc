@@ -1110,6 +1110,7 @@ which the local user typed."
     (define-key map "\C-c\C-r" 'erc-remove-text-properties-region)
     (define-key map "\C-c\C-t" 'erc-set-topic)
     (define-key map "\C-c\C-u" 'erc-kill-input)
+    (define-key map "\C-c\C-x" 'erc-quit-server)
     (define-key map "\M-\t" 'ispell-complete-word)
     (define-key map "\t" 'erc-complete-word)
 

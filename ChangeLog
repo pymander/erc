@@ -8,6 +8,10 @@
 	will try sending or receiving a file with multiple consecutive
 	spaces in its name, otherwise this fix will fail.
 
+	* erc.el (erc-mode-map): Add binding for C-c C-x to
+	erc-quit-server, since rcirc.el binds its quit command in a
+	similar manner.  Thanks to Jari Aalto for the suggestion.
+
 2008-01-28  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-list-old.el (list-old): Define module as list-old, not list.
