@@ -1,3 +1,13 @@
+2008-01-31  Michael Olson  <mwolson@gnu.org>
+
+	* erc-dcc.el (erc-dcc-do-GET-command, erc-dcc-do-SEND-command):
+	Improve docstring.  If FILE argument is split into multiple
+	arguments, re-join them into a single string, separated by a
+	space.  This fixes an issue where the user wants to send or
+	receive a file with spaces in its name.  It is assumed that no one
+	will try sending or receiving a file with multiple consecutive
+	spaces in its name, otherwise this fix will fail.
+
 2008-01-28  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-list-old.el (list-old): Define module as list-old, not list.
