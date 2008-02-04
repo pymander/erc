@@ -1,3 +1,9 @@
+2008-02-04  Jeremy Maitin-Shepard  <jbms@cmu.edu>
+
+	* erc.el (erc-cmd-QUERY): Bind the value of `erc-auto-query' to
+	`erc-query-display' rather than `erc-join-buffer'.  This fixes a
+	bug where the value of erc-auto-query was being ignored.
+
 2008-01-31  Michael Olson  <mwolson@gnu.org>
 
 	* erc-dcc.el (erc-dcc-do-GET-command, erc-dcc-do-SEND-command):
