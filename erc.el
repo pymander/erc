@@ -4020,7 +4020,7 @@ and as second argument the event parsed as a vector."
 	       (string= target (erc-current-nick)))
 	   (not (erc-get-buffer query proc))
 	   (not (erc-is-message-ctcp-and-not-action-p msg))
-	   (let ((erc-join-buffer erc-auto-query))
+	   (let ((erc-query-display erc-auto-query))
 	     (erc-cmd-QUERY query))
 	   nil))))
 
