@@ -1,3 +1,7 @@
+2008-02-20  Michael Olson  <mwolson@gnu.org>
+
+	* erc.el (erc-notice-face): Fix this face for Emacs 21 users.
+
 2008-02-04  Jeremy Maitin-Shepard  <jbms@cmu.edu>
 
 	* erc.el (erc-cmd-QUERY): Bind the value of `erc-auto-query' to

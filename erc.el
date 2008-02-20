@@ -1169,7 +1169,8 @@ See the variable `erc-command-indicator'."
   :group 'erc-faces)
 
 (defface erc-notice-face
-  (if (featurep 'xemacs)
+  (if (or (featurep 'xemacs)
+	  (< emacs-major-version 22))
       '((t (:bold t :foreground "blue")))
     '((((class color) (min-colors 88))
        (:bold t :foreground "SlateBlue"))
