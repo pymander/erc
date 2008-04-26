@@ -1,3 +1,9 @@
+2008-04-26  Johan Bockgård  <bojohan@gnu.org>
+
+	* erc.el (erc-put-text-properties): Don't use mapcar*.
+	(erc-display-line-1): Fix argument order in call to
+	erc-put-text-properties.
+
 2008-04-14  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-remove-text-properties-region): Disable this command

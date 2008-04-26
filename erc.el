@@ -2363,8 +2363,8 @@ If STRING is nil, the function does nothing."
 	  (unless (string-match "\n$" string)
 	    (setq string (concat string "\n"))
 	    (when (erc-string-invisible-p string)
-	      (erc-put-text-properties 0 (length string) string
-				       '(invisible intangible))))
+	      (erc-put-text-properties 0 (length string)
+				       '(invisible intangible) string)))
 	  (erc-log (concat "erc-display-line: " string
 			   (format "(%S)" string) " in buffer "
 			   (format "%s" buffer)))
@@ -5036,9 +5036,9 @@ each property to the corresponding value in VALUE-LIST."
     (setq value-list (mapcar (lambda (x)
 			       t)
 			     properties)))
-  (mapcar* (lambda (prop value)
-	     (erc-put-text-property start end prop value object))
-	   properties value-list))
+  (while (and properties value-list)
+    (erc-put-text-property
+     start end (pop properties) (pop value-list) object)))
 
 ;;; Input area handling:
 
