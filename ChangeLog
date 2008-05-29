@@ -1,3 +1,8 @@
+2008-05-29  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-services.el (erc-nickserv-alist): Updated REGEXP and
+	SUCCESS-REGEXP for freenode.
+
 2008-04-26  Johan Bockgård  <bojohan@gnu.org>
 
 	* erc.el (erc-put-text-properties): Don't use mapcar*.
