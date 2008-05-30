@@ -1,3 +1,9 @@
+2008-05-30  Diane Murray  <disumu@x3y2z1.net>
+
+	* erc-backend.el (328): New response handler.
+
+	* erc.el (english): Added 328 to catalog.
+
 2008-05-29  Diane Murray  <disumu@x3y2z1.net>
 
 	* erc-services.el (erc-nickserv-alist): Updated REGEXP and

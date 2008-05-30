@@ -6305,6 +6305,7 @@ All windows are opened in the current frame."
    (s321   . "Channel  Users  Topic")
    (s322   . "%c [%u] %t")
    (s324   . "%c modes: %m")
+   (s328   . "%c URL: %u")
    (s329   . "%c was created on %t")
    (s330   . "%n %a %i")
    (s331   . "No topic is set for %c")
