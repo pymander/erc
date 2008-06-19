@@ -131,8 +131,7 @@ ERC menu yet.")
      (message "You might have to restart Emacs to remove the ERC menu"))))
 
 ;; silence byte-compiler warning
-(eval-when-compile
-  (defvar erc-menu nil))
+(defvar erc-menu)
 
 (defun erc-menu-add ()
   "Add the ERC menu to the current buffer."

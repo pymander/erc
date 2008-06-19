@@ -72,8 +72,7 @@
 				     erc-session-server)))))
 
 ;; Silence the byte-compiler
-(eval-when-compile
-  (defvar erc-modified-channels-alist))
+(defvar erc-modified-channels-alist)
 
 (define-ibuffer-column erc-modified (:name "M")
   (if (and (boundp 'erc-track-mode)

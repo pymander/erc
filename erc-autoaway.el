@@ -47,7 +47,7 @@ This is only used when `erc-autoaway-idle-method' is set to 'emacs.")
   "Indicates whether this module was responsible for setting the
 user's away status.")
 
-(eval-when-compile (defvar erc-autoaway-idle-seconds))
+(defvar erc-autoaway-idle-seconds)
 
 (defun erc-autoaway-reestablish-idletimer ()
   "Reestablish the Emacs idletimer.

@@ -265,8 +265,7 @@ property to get to the POSth column."
   (insert string))
 
 ;; Silence byte-compiler
-(eval-when-compile
-  (defvar erc-fill-column))
+(defvar erc-fill-column)
 
 (defun erc-insert-timestamp-right (string)
   "Insert timestamp on the right side of the screen.
