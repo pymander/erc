@@ -79,6 +79,11 @@ IRC users."
   :group 'erc-dcc
   :type 'boolean)
 
+(defconst erc-dcc-connection-types
+  '("CHAT" "GET" "SEND")
+  "List of valid DCC connection types.
+All values of the list must be uppercase strings.")
+
 (defvar erc-dcc-list nil
   "List of DCC connections. Looks like:
   ((:nick \"nick!user@host\" :type GET :peer proc :parent proc :size size :file file)
@@ -477,19 +482,31 @@ where FOO is one of CLOSE, GET, SEND, LIST, CHAT, etc."
         t))))
 
 (defun erc-dcc-do-CLOSE-command (proc &optional type nick)
-  "/dcc close type nick
-type and nick are optional."
-  ;; FIXME, should also work if only nick is specified
-  (when (string-match (concat "^\\s-*\\(\\S-+\\)? *\\("
-                              erc-valid-nick-regexp "\\)?\\s-*$") line)
-    (let ((type (when (match-string 1 line)
-                  (intern (upcase (match-string 1 line)))))
-          (nick (match-string 2 line))
-          (ret t))
+  "Close a connection.  Usage: /dcc close type nick.
+At least one of TYPE and NICK must be provided."
+  ;; disambiguate type and nick if only one is provided
+  (when (and type (null nick)
+             (not (member (upcase type) erc-dcc-connection-types)))
+    (setq nick type)
+    (setq type nil))
+  ;; validate nick argument
+  (unless (and nick (string-match (concat "\\`" erc-valid-nick-regexp "\\'")
+                                  nick))
+    (setq nick nil))
+  ;; validate type argument
+  (unless (and type (member (upcase type) erc-dcc-connection-types))
+    (setq type nil))
+  (when (or nick type)
+    (let ((ret t))
       (while ret
-        (if nick
-            (setq ret (erc-dcc-member :type type :nick nick))
-          (setq ret (erc-dcc-member :type type)))
+        (cond ((and nick type)
+               (setq ret (erc-dcc-member :type type :nick nick)))
+              (nick
+               (setq ret (erc-dcc-member :nick nick)))
+              (type
+               (setq ret (erc-dcc-member :type type)))
+              (t
+               (setq ret nil)))
         (when ret
           ;; found a match - delete process if it exists.
           (and (processp (plist-get ret :peer))
@@ -500,7 +517,7 @@ type and nick are optional."
            'dcc-closed
            ?T (plist-get ret :type)
            ?n (erc-extract-nick (plist-get ret :nick))))))
-      t))
+    t))
 
 (defun erc-dcc-do-GET-command (proc nick &rest file)
   "Do a DCC GET command.  NICK is the person who is sending the file.
