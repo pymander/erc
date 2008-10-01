@@ -953,7 +953,11 @@ filter and a process sentinel, and making the connection."
 The contents of the BUFFER will then be erased."
   (with-current-buffer buffer
     (let ((coding-system-for-write 'binary)
-          (inhibit-read-only t))
+          (inhibit-read-only t)
+          (inhibit-file-name-handlers
+           (append '(jka-compr-handler image-file-handler)
+                   inhibit-file-name-handlers))
+          (inhibit-file-name-operation 'write-region))
       (write-region (point-min) (point-max) erc-dcc-file-name t 'nomessage)
       (erase-buffer))))
 
