@@ -494,7 +494,8 @@ At least one of TYPE and NICK must be provided."
                                   nick))
     (setq nick nil))
   ;; validate type argument
-  (unless (and type (member (upcase type) erc-dcc-connection-types))
+  (if (and type (member (upcase type) erc-dcc-connection-types))
+      (setq type (intern (upcase type)))
     (setq type nil))
   (when (or nick type)
     (let ((ret t))
