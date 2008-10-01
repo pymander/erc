@@ -928,7 +928,11 @@ filter and a process sentinel, and making the connection."
       (setq erc-dcc-file-name file)
 
       ;; Truncate the given file to size 0 before appending to it.
-      (write-region (point) (point) erc-dcc-file-name nil 'nomessage)
+      (let ((inhibit-file-name-handlers
+             (append '(jka-compr-handler image-file-handler)
+                     inhibit-file-name-handlers))
+            (inhibit-file-name-operation 'write-region))
+        (write-region (point) (point) erc-dcc-file-name nil 'nomessage))
 
       (setq erc-server-process parent-proc
             erc-dcc-entry-data entry)
