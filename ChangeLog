@@ -13,7 +13,9 @@
 	variable.  Try to disambiguate between type and nick when only one
 	is provided.  Validate both type and nick arguments.  Allow
 	matching by just nick.
-	(erc-dcc-append-contents): Set inhibit-read-only to t.
+	(erc-dcc-append-contents): Set inhibit-read-only to t.  Prevent
+	auto-compression from triggering when we write the contents to a
+	file.
 
 2008-07-27  Dan Nicolaescu  <dann@ics.uci.edu>
 
