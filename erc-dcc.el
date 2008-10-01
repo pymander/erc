@@ -200,25 +200,55 @@ compared with `erc-nick-equal-p' which is IRC case-insensitive."
     result))
 
 (defun erc-pack-int (value)
-  "Convert an integer into a packed string."
-  (let* ((len (ceiling (/ value 256.0)))
-         (str (make-string len ?a))
-         (i (1- len)))
-    (while (>= i 0)
+  "Convert an integer into a packed string in network byte order,
+which is big-endian."
+  ;; make sure value is not negative
+  (when (< value 0)
+    (error "ERC-DCC (erc-pack-int): packet size is negative"))
+  ;; make sure size is not larger than 4 bytes
+  (let ((len (if (= value 0) 0
+               (ceiling (/ (ceiling (/ (log value) (log 2))) 8.0)))))
+    (when (> len 4)
+      (error "ERC-DCC (erc-pack-int): packet too large")))
+  ;; pack
+  (let ((str (make-string 4 0))
+        (i 3))
+    (while (and (>= i 0) (> value 0))
       (aset str i (% value 256))
       (setq value (/ value 256))
       (setq i (1- i)))
     str))
 
+(defconst erc-most-positive-int-bytes
+  (ceiling (/ (ceiling (/ (log most-positive-fixnum) (log 2))) 8.0))
+  "Maximum number of bytes for a fixnum.")
+
+(defconst erc-most-positive-int-msb
+  (lsh most-positive-fixnum (- 0 (* 8 (1- erc-most-positive-int-bytes))))
+  "Content of the most significant byte of most-positive-fixnum.")
+
 (defun erc-unpack-int (str)
   "Unpack a packed string into an integer."
-  (let ((len (length str))
-        (num 0)
-        (count 0))
-    (while (< count len)
-      (setq num (+ num (lsh (aref str (- len count 1)) (* 8 count))))
-      (setq count (1+ count)))
-    num))
+  (let ((len (length str)))
+    ;; strip leading 0-bytes
+    (let ((start 0))
+      (while (and (> len start) (eq (aref str start) 0))
+        (setq start (1+ start)))
+      (when (> start 0)
+        (setq str (substring str start))
+        (setq len (- len start))))
+    ;; make sure size is not larger than Emacs can handle
+    (when (or (> len (min 4 erc-most-positive-int-bytes))
+              (and (eq len erc-most-positive-int-bytes)
+                   (> (aref str 0) erc-most-positive-int-msb)))
+      (error "ERC-DCC (erc-unpack-int): packet to send is too large"))
+    ;; unpack
+    (let ((num 0)
+          (count 0))
+      (while (< count len)
+        (setq num (+ num (lsh (aref str (- len count 1)) (* 8 count))))
+        (setq count (1+ count)))
+      num)))
 
 (defconst erc-dcc-ipv4-regexp
   (concat "^"
