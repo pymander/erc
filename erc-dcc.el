@@ -951,7 +951,8 @@ filter and a process sentinel, and making the connection."
   "Append the contents of BUFFER to FILE.
 The contents of the BUFFER will then be erased."
   (with-current-buffer buffer
-    (let ((coding-system-for-write 'binary))
+    (let ((coding-system-for-write 'binary)
+          (inhibit-read-only t))
       (write-region (point-min) (point-max) erc-dcc-file-name t 'nomessage)
       (erase-buffer))))
 
