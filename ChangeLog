@@ -16,6 +16,8 @@
 	(erc-dcc-append-contents): Set inhibit-read-only to t.  Prevent
 	auto-compression from triggering when we write the contents to a
 	file.
+	(erc-dcc-get-file): Prevent auto-compression from triggering when
+	we truncate a file.
 
 2008-07-27  Dan Nicolaescu  <dann@ics.uci.edu>
 
