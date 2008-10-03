@@ -1,3 +1,16 @@
+2008-10-03  Michael Olson  <mwolson@gnu.org>
+
+	* erc-dcc.el (english): Increase size heading by two places.
+	(erc-dcc-byte-count): Move higher.
+	(erc-dcc-do-LIST-command): Use erc-dcc-byte-count to get accurate
+	count.  Coerce byte total to floating point before performing
+	computation, otherwise division will truncate to 0.
+	(erc-dcc-append-contents): Update erc-dcc-byte-count.
+	(erc-dcc-get-filter): Don't update erc-dcc-byte-count, because
+	that will give incorrect size totals.  Instead, figure out how
+	much we have by summing byte count and current buffer size.
+	(erc-dcc-get-sentinel): Don't update erc-dcc-byte-count.
+
 2008-10-01  Michael Olson  <mwolson@gnu.org>
 
 	* erc-dcc.el (erc-pack-int): Make sure returned string is within 4
