@@ -150,9 +150,9 @@ All values of the list must be uppercase strings.")
    (dcc-get-file-too-long
     . "DCC: %f: File longer than sender claimed; aborting transfer")
    (dcc-get-notfound . "DCC: %n hasn't offered %f for DCC transfer")
-   (dcc-list-head . "DCC: From      Type  Active  Size          Filename")
-   (dcc-list-line . "DCC: --------  ----  ------  ------------  --------")
-   (dcc-list-item . "DCC: %-8n  %-4t  %-6a  %-12s  %f")
+   (dcc-list-head . "DCC: From      Type  Active  Size            Filename")
+   (dcc-list-line . "DCC: --------  ----  ------  --------------  --------")
+   (dcc-list-item . "DCC: %-8n  %-4t  %-6a  %-14s  %f")
    (dcc-list-end  . "DCC: End of list.")
    (dcc-malformed . "DCC: error: %n (%u@%h) sent malformed request: %q")
    (dcc-privileged-port
@@ -551,6 +551,9 @@ PROC is the server process."
        nil '(notice error) 'active
        'dcc-get-notfound ?n nick ?f filename))))
 
+(defvar erc-dcc-byte-count nil)
+(make-variable-buffer-local 'erc-dcc-byte-count)
+
 (defun erc-dcc-do-LIST-command (proc)
   "This is the handler for the /dcc list command.
 It lists the current state of `erc-dcc-list' in an easy to read manner."
@@ -586,12 +589,18 @@ It lists the current state of `erc-dcc-list' in an easy to read manner."
                            (plist-member elt :file)
                            (buffer-live-p (get-buffer (plist-get elt :file)))
                            (plist-member elt :size))
-                      (concat " (" (number-to-string
+                      (let ((byte-count (with-current-buffer
+                                            (get-buffer (plist-get elt :file))
+                                          (+ (buffer-size) 0.0
+                                             erc-dcc-byte-count))))
+                        (concat " ("
+                                (if (= byte-count 0)
+                                    "0"
+                                  (number-to-string
+                                   (truncate
                                     (* 100
-                                       (/ (buffer-size
-                                           (get-buffer (plist-get elt :file)))
-                                          (plist-get elt :size))))
-                              "%)")))
+                                       (/ byte-count (plist-get elt :size))))))
+                                "%)"))))
        ?f (or (and (plist-member elt :file) (plist-get elt :file)) "")))
     (erc-display-message
      nil 'notice 'active
@@ -901,8 +910,6 @@ other client."
   :group 'erc-dcc
   :type 'integer)
 
-(defvar erc-dcc-byte-count nil)
-(make-variable-buffer-local 'erc-dcc-byte-count)
 (defvar erc-dcc-file-name nil)
 (make-variable-buffer-local 'erc-dcc-file-name)
 
@@ -963,6 +970,7 @@ The contents of the BUFFER will then be erased."
                    inhibit-file-name-handlers))
           (inhibit-file-name-operation 'write-region))
       (write-region (point-min) (point-max) erc-dcc-file-name t 'nomessage)
+      (setq erc-dcc-byte-count (+ (buffer-size) erc-dcc-byte-count))
       (erase-buffer))))
 
 (defun erc-dcc-get-filter (proc str)
@@ -972,23 +980,24 @@ buffer, and sends back the replies after each block of data per the DCC
 protocol spec.  Well not really.  We write back a reply after each read,
 rather than every 1024 byte block, but nobody seems to care."
   (with-current-buffer (process-buffer proc)
-    (let ((inhibit-read-only t))
+    (let ((inhibit-read-only t)
+          received-bytes)
       (goto-char (point-max))
       (insert (string-make-unibyte str))
 
-      (setq erc-dcc-byte-count (+ (length str) erc-dcc-byte-count))
       (when (> (point-max) erc-dcc-receive-cache)
         (erc-dcc-append-contents (current-buffer) erc-dcc-file-name))
+      (setq received-bytes (+ (buffer-size) erc-dcc-byte-count))
 
       (and erc-dcc-verbose
            (erc-display-message
             nil 'notice erc-server-process
             'dcc-get-bytes-received
             ?f (file-name-nondirectory buffer-file-name)
-            ?b (number-to-string erc-dcc-byte-count)))
+            ?b (number-to-string received-bytes)))
       (cond
        ((and (> (plist-get erc-dcc-entry-data :size) 0)
-             (> erc-dcc-byte-count (plist-get erc-dcc-entry-data :size)))
+             (> received-bytes (plist-get erc-dcc-entry-data :size)))
         (erc-display-message
          nil '(error notice) 'active
          'dcc-get-file-too-long
@@ -996,7 +1005,7 @@ rather than every 1024 byte block, but nobody seems to care."
         (delete-process proc))
        (t
         (process-send-string
-         proc (erc-pack-int erc-dcc-byte-count)))))))
+         proc (erc-pack-int received-bytes)))))))
 
 
 (defun erc-dcc-get-sentinel (proc event)
@@ -1008,7 +1017,6 @@ transfer is complete."
     (delete-process proc)
     (setq erc-dcc-list (delete erc-dcc-entry-data erc-dcc-list))
     (unless (= (point-min) (point-max))
-      (setq erc-dcc-byte-count (+ (buffer-size) erc-dcc-byte-count))
       (erc-dcc-append-contents (current-buffer) erc-dcc-file-name))
     (erc-display-message
      nil 'notice erc-server-process
