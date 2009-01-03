@@ -5090,7 +5090,7 @@ Specifically, return the position of `erc-insert-marker'."
 
 (defun erc-user-input ()
   "Return the input of the user in the current buffer."
-  (buffer-substring
+  (buffer-substring-no-properties
    erc-input-marker
    (erc-end-of-input-line)))
 
