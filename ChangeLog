@@ -2,6 +2,22 @@
 
 	* erc.el (erc-header-line-uses-tabbar-p): Set to nil by default.
 
+2009-01-16  Glenn Morris  <rgm@gnu.org>
+
+	* erc.el (erc-input-message): Conditionalize previous change for XEmacs.
+
+	* erc-dcc.el (erc-dcc-server): Silence warning about obsolete function
+	behind fboundp test.
+
+2009-01-09  Glenn Morris  <rgm@gnu.org>
+
+	* erc.el (erc-input-message): Replace last-command-char with
+	last-command-event.
+
+2009-01-08  Glenn Morris  <rgm@gnu.org>
+
+	* erc.el (tabbar--local-hlf): Silence compiler.
+
 2009-01-03  Michael Olson  <mwolson@gnu.org>
 
 	* erc.el (erc-user-input): Do not include text properties when
