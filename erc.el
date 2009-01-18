@@ -6041,6 +6041,8 @@ if `erc-away' is non-nil."
     (cond (lag (format "lag:%.0f" lag))
 	  (t ""))))
 
+(defvar tabbar--local-hlf)
+
 (defun erc-update-mode-line-buffer (buffer)
   "Update the mode line in a single ERC buffer BUFFER."
   (with-current-buffer buffer
